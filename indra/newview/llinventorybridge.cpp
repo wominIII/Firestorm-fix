@@ -361,6 +361,47 @@ const std::string& LLInvFVBridge::getDisplayName() const
     return mDisplayName;
 }
 
+std::string LLInvFVBridge::getLocalLabel() const
+{
+    return isAgentInventory()
+        ? FSInventoryLocalLabels::instance().get(mUUID)
+        : std::string();
+}
+
+void LLInvFVBridge::editLocalLabel()
+{
+    LLSD args;
+    args["NAME"] = getLocalLabel();
+    LLSD payload;
+    payload["inventory_id"] = mUUID;
+    LLNotificationsUtil::add("FSEditInventoryLocalLabel", args, payload,
+        boost::bind(&LLInvFVBridge::onEditLocalLabel, this, _1, _2));
+}
+
+bool LLInvFVBridge::onEditLocalLabel(const LLSD& notification, const LLSD& response)
+{
+    if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
+    {
+        return false;
+    }
+
+    std::string label = response["local_label"].asString();
+    LLStringUtil::trim(label);
+    FSInventoryLocalLabels::instance().set(mUUID, label);
+
+    clearDisplayName();
+    dirtyFilter();
+    if (mInventoryPanel.get())
+    {
+        if (LLFolderViewItem* item = mInventoryPanel.get()->getItemByID(mUUID))
+        {
+            item->refresh();
+            item->requestArrange();
+        }
+    }
+    return false;
+}
+
 std::string LLInvFVBridge::getSearchableDescription() const
 {
     return get_searchable_description(getInventoryModel(), mUUID);
@@ -972,6 +1013,11 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
 
     if (obj)
     {
+
+        if (isAgentInventory() && !isItemInTrash())
+        {
+            items.push_back(std::string("Edit Local Label"));
+        }
 
         if (obj->getType() != LLAssetType::AT_CATEGORY)
         {
@@ -2057,6 +2103,11 @@ void LLItemBridge::performAction(LLInventoryModel* model, std::string action)
         LLFloaterReg::showInstance("change_item_thumbnail", data);
         return;
     }
+    else if ("edit_local_label" == action)
+    {
+        editLocalLabel();
+        return;
+    }
     else if ("copy_uuid" == action)
     {
         // Single item only
@@ -2375,6 +2426,12 @@ void LLItemBridge::buildDisplayName() const
     }
 
     mSearchableName.assign(mDisplayName);
+    const std::string local_label = getLocalLabel();
+    if (!local_label.empty())
+    {
+        mSearchableName.append(" ");
+        mSearchableName.append(local_label);
+    }
     mSearchableName.append(getLabelSuffix());
     LLStringUtil::toUpper(mSearchableName);
 
@@ -2803,13 +2860,6 @@ void LLFolderBridge::buildDisplayName() const
     {
         mParent->requestSort();
     }
-}
-
-std::string LLFolderBridge::getLocalLabel() const
-{
-    return isAgentInventory()
-        ? FSInventoryLocalLabels::instance().get(mUUID)
-        : std::string();
 }
 
 std::string LLFolderBridge::getLabelSuffix() const
@@ -3985,12 +4035,7 @@ void LLFolderBridge::performAction(LLInventoryModel* model, std::string action)
     }
     else if ("edit_local_label" == action)
     {
-        LLSD args;
-        args["NAME"] = FSInventoryLocalLabels::instance().get(mUUID);
-        LLSD payload;
-        payload["folder_id"] = mUUID;
-        LLNotificationsUtil::add("FSEditInventoryLocalLabel", args, payload,
-            boost::bind(&LLFolderBridge::onEditLocalLabel, this, _1, _2));
+        editLocalLabel();
         return;
     }
     else if ("paste" == action)
@@ -4309,30 +4354,6 @@ void LLFolderBridge::performAction(LLInventoryModel* model, std::string action)
         cat->fetch();
     }
     // </FS:Zi>
-}
-
-bool LLFolderBridge::onEditLocalLabel(const LLSD& notification, const LLSD& response)
-{
-    if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
-    {
-        return false;
-    }
-
-    std::string label = response["local_label"].asString();
-    LLStringUtil::trim(label);
-    FSInventoryLocalLabels::instance().set(mUUID, label);
-
-    clearDisplayName();
-    dirtyFilter();
-    if (mInventoryPanel.get())
-    {
-        if (LLFolderViewItem* item = mInventoryPanel.get()->getItemByID(mUUID))
-        {
-            item->refresh();
-            item->requestArrange();
-        }
-    }
-    return false;
 }
 
 void LLFolderBridge::gatherMessage(std::string& message, S32 depth, LLError::ELevel log_level)
@@ -5078,11 +5099,6 @@ void LLFolderBridge::buildContextMenuOptions(U32 flags, menuentry_vec_t&   items
     const LLUUID &outfits_id = model->findCategoryUUIDForType(LLFolderType::FT_MY_OUTFITS);
 
     const bool is_mp_listings_folder = isMarketplaceListingsFolder(); // <FS:PP> FIRE-36377 Do not show duplicated "new folder" in MP listings window context menu
-
-    if (isAgentInventory() && !isItemInTrash())
-    {
-        items.push_back(std::string("Edit Local Label"));
-    }
 
     // <FS:Ansariel> FIRE-11628: Option to delete broken links from AO folder
     if (mUUID == AOEngine::instance().getAOFolder())
