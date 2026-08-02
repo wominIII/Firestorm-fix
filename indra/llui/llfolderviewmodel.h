@@ -144,6 +144,8 @@ public:
     virtual const std::string& getName() const = 0;
     virtual const std::string& getDisplayName() const = 0;
     virtual const std::string& getSearchableName() const = 0;
+    // Optional viewer-local label, separate from the server-backed name.
+    virtual std::string getLocalLabel() const { return std::string(); }
 
     virtual std::string getSearchableDescription() const = 0;
     virtual std::string getSearchableCreatorName()const = 0;
