@@ -50,6 +50,21 @@ class LLViewerJointAttachment;
 class LLFolderView;
 struct LLMoveInv;
 
+class FSInventoryLocalLabels
+{
+public:
+    static FSInventoryLocalLabels& instance();
+    std::string get(const LLUUID& id);
+    void set(const LLUUID& id, const std::string& label);
+
+private:
+    FSInventoryLocalLabels() = default;
+    void load();
+    void save() const;
+    bool mLoaded{false};
+    LLSD mLabels;
+};
+
 typedef std::vector<std::string> menuentry_vec_t;
 typedef std::pair<LLUUID, LLUUID> two_uuids_t;
 typedef std::list<two_uuids_t> two_uuids_list_t;
@@ -308,8 +323,10 @@ public:
     void callback_dropCategoryIntoFolder(const LLSD& notification, const LLSD& response, LLInventoryCategory* inv_category);
 
     virtual void buildDisplayName() const;
+    std::string getLocalLabel() const override;
 
     virtual void performAction(LLInventoryModel* model, std::string action);
+    bool onEditLocalLabel(const LLSD& notification, const LLSD& response);
     virtual void openItem();
     virtual void closeItem();
     virtual bool isItemRenameable() const;
