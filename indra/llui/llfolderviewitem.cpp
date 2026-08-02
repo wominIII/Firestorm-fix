@@ -1118,8 +1118,18 @@ void LLFolderViewItem::draw()
     F32 y = (F32)rect_height - line_height - (F32)mTextPadTop - (F32)mItemTopPad;
     F32 text_left = (F32)getLabelXPos();
     LLWString combined_string = mLabel + mLabelSuffix;
+    const LLWString local_label = utf8str_to_wstring(mViewModelItem->getLocalLabel());
+    F32 local_label_x = -1.f;
+    S32 local_label_max_width = 0;
 
     S32 filter_offset = static_cast<S32>(mViewModelItem->getFilterStringOffset());
+    // Local labels participate in filtering but are drawn in their own
+    // right-aligned column. The legacy highlight code assumes every match is
+    // inside mLabel + mLabelSuffix, so skip that highlight for alias matches.
+    if (filter_offset >= static_cast<S32>(combined_string.size()))
+    {
+        filter_string_length = 0;
+    }
     if (filter_string_length > 0)
     {
         S32 bottom = rect_height - line_height - 3 - mItemTopPad;
@@ -1174,7 +1184,27 @@ void LLFolderViewItem::draw()
          // Fade out item color to indicate it's being cut
          color.mV[VALPHA] *= 0.5f;
     }
-    drawLabel(font, text_left, y, color, right_x);
+    if (local_label.empty())
+    {
+        drawLabel(font, text_left, y, color, right_x);
+    }
+    else
+    {
+        constexpr S32 LOCAL_LABEL_GAP = 12;
+        const S32 row_right = getRect().getWidth() - mLabelPaddingRight;
+        const S32 available_width = llmax(0, row_right - static_cast<S32>(text_left));
+        const S32 local_width = llmin(available_width, font->getWidth(local_label.c_str()));
+        local_label_x = static_cast<F32>(row_right - local_width);
+        local_label_max_width = available_width;
+        const S32 english_width = llmax(0, static_cast<S32>(local_label_x - text_left) - LOCAL_LABEL_GAP);
+
+        // Draw and ellipsize the server-backed English name first. The local
+        // label is rendered last so it always wins if the columns overlap.
+        mLabelFontBuffer.render(font, mLabel, 0, text_left, y, color,
+            LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW,
+            S32_MAX, english_width, &right_x, /*use_ellipses*/true);
+
+    }
 
     // <FS:Ansariel> Special for locked items
     if (mViewModelItem->isLocked())
@@ -1204,6 +1234,15 @@ void LLFolderViewItem::draw()
         mSuffixFontBuffer.render(sSuffixFont, mLabelSuffix, 0, right_x, y, isFadeItem() ? color : sSuffixColor.get(),
             LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW,
             S32_MAX, S32_MAX, &right_x);
+    }
+
+    // Render the local label after the English name and all suffixes so it
+    // retains visual priority even when the server-backed text is very long.
+    if (!local_label.empty())
+    {
+        font->render(local_label, 0, local_label_x, y, color,
+            LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::BOLD, LLFontGL::NO_SHADOW,
+            S32_MAX, local_label_max_width, nullptr, true);
     }
 
     //--------------------------------------------------------------------------------//
@@ -2749,4 +2788,3 @@ LLFolderViewItem* LLFolderViewFolder::getPreviousFromChild( LLFolderViewItem* it
 
     return result;
 }
-
