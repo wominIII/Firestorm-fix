@@ -113,6 +113,7 @@ public:
     //--------------------------------------------------------------------
     virtual const std::string& getName() const;
     virtual const std::string& getDisplayName() const;
+    std::string getLocalLabel() const override;
     const std::string& getSearchableName() const { return mSearchableName; }
 
     std::string getSearchableDescription() const;
@@ -156,6 +157,8 @@ public:
     void getClipboardEntries(bool show_asset_id, menuentry_vec_t &items,
                              menuentry_vec_t &disabled_items, U32 flags);
     virtual void buildContextMenu(LLMenuGL& menu, U32 flags);
+    void editLocalLabel();
+    bool onEditLocalLabel(const LLSD& notification, const LLSD& response);
     virtual LLToolDragAndDrop::ESource getDragSource() const;
     virtual bool startDrag(EDragAndDropType* type, LLUUID* id) const;
     virtual bool dragOrDrop(MASK mask, bool drop,
@@ -323,10 +326,8 @@ public:
     void callback_dropCategoryIntoFolder(const LLSD& notification, const LLSD& response, LLInventoryCategory* inv_category);
 
     virtual void buildDisplayName() const;
-    std::string getLocalLabel() const override;
 
     virtual void performAction(LLInventoryModel* model, std::string action);
-    bool onEditLocalLabel(const LLSD& notification, const LLSD& response);
     virtual void openItem();
     virtual void closeItem();
     virtual bool isItemRenameable() const;
