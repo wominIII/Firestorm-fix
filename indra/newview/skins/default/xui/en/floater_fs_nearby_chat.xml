@@ -272,6 +272,26 @@
                wrap="true" />
             </layout_panel>
             <layout_panel
+              auto_resize="false"
+              user_resize="false"
+              name="outgoing_translate_layout_panel"
+              width="32">
+              <button
+               follows="right|bottom"
+               bottom="-1"
+               height="24"
+               width="28"
+               font="SansSerifSmallBold"
+               image_hover_unselected="Toolbar_Middle_Over"
+               image_selected="Toolbar_Middle_Selected"
+               image_unselected="Toolbar_Middle_Off"
+               label="T"
+               left="1"
+               name="outgoing_translate_btn"
+               handle_right_mouse="true"
+               tool_tip="Outgoing translation" />
+            </layout_panel>
+            <layout_panel
               visibility_control="FSShowEmojiButton"
               auto_resize="false"
               user_resize="false"
