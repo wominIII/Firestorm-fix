@@ -96,6 +96,7 @@ LLLineEditor::Params::Params()
     commit_on_focus_lost("commit_on_focus_lost", true),
     ignore_tab("ignore_tab", true),
     is_password("is_password", false),
+    disable_ime("disable_ime", false),
     allow_emoji("allow_emoji", true),
     draw_focus_border("draw_focus_border", true),
     cursor_color("cursor_color"),
@@ -148,6 +149,7 @@ LLLineEditor::LLLineEditor(const LLLineEditor::Params& p)
     mIgnoreArrowKeys( false ),
     mIgnoreTab( p.ignore_tab ),
     mDrawAsterixes( p.is_password ),
+    mDisableIME( p.disable_ime ),
     mAllowEmoji( p.allow_emoji ),
     mDrawFocusBorder(p.draw_focus_border),
     mSpellCheck( p.spellcheck ),
@@ -1758,6 +1760,13 @@ bool LLLineEditor::handleKeyHere(KEY key, MASK mask )
 
 bool LLLineEditor::handleUnicodeCharHere(llwchar uni_char)
 {
+    if (mDisableIME && uni_char > 0x7f)
+    {
+        // A disabled IME can still emit its final composed character while
+        // focus is changing. Consume it without running validators or firing
+        // keystroke callbacks that could invalidate saved login credentials.
+        return true;
+    }
     if ((uni_char < 0x20) || (uni_char == 0x7F)) // Control character or DEL
     {
         return false;
@@ -2395,7 +2404,7 @@ void LLLineEditor::setFocus( bool new_state )
         // Linux/SDL2 doesn't currently allow to disable IME, so we remove the restrictions on
         // password entry fields and prevalidated input fields. Otherwise those fields would
         // be completely inaccessible.
-        getWindow()->allowLanguageTextInput(this, true);
+        getWindow()->allowLanguageTextInput(this, !mDisableIME);
 #else
         // </FS:Zi>
         // Allow Language Text Input only when this LineEditor has
@@ -2403,7 +2412,7 @@ void LLLineEditor::setFocus( bool new_state )
         // fine on 1.15.0.2, since all prevalidate func reject any
         // non-ASCII characters.  I'm not sure on future versions,
         // however.
-        getWindow()->allowLanguageTextInput(this, !mPrevalidator);
+        getWindow()->allowLanguageTextInput(this, !mDisableIME && !mPrevalidator);
 #endif // <FS:Zi>
     }
 }
@@ -2588,10 +2597,10 @@ void LLLineEditor::updateAllowingLanguageInput()
     // Linux/SDL2 doesn't currently allow to disable IME, so we remove the restrictions on
     // password entry fields and prevalidated input fields. Otherwise those fields would
     // be completely inaccessible.
-    if (hasFocus() && !mReadOnly)
+    if (hasFocus() && !mReadOnly && !mDisableIME)
 #else
     // </FS:Zi>
-    if (hasFocus() && !mReadOnly && !mDrawAsterixes && !mPrevalidator)
+    if (hasFocus() && !mReadOnly && !mDisableIME && !mDrawAsterixes && !mPrevalidator)
 #endif // <FS:Zi>
     {
         window->allowLanguageTextInput(this, true);
@@ -2658,8 +2667,15 @@ void LLLineEditor::updatePreedit(const LLWString &preedit_string,
         const segment_lengths_t &preedit_segment_lengths, const standouts_t &preedit_standouts, S32 caret_position)
 {
     // Just in case.
-    if (mReadOnly)
+    if (mReadOnly || mDisableIME)
     {
+        // Windows can deliver one stale IME composition event after focus has
+        // moved to a control which explicitly disabled IME. Never let that
+        // transient composition mutate login or other ASCII-only fields.
+        if (mDisableIME)
+        {
+            getWindow()->allowLanguageTextInput(this, false);
+        }
         return;
     }
 
