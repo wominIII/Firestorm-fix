@@ -2,10 +2,10 @@
 
 **[Firestorm](https://www.firestormviewer.org) is a free client for 3D virtual worlds such as Second Life and various OpenSim worlds where users can create, connect and chat with others from around the world.**
 
-# Firestorm-FIX- by:zmer 
+# Firestorm-FIX- 
 
 > [!TIP]
-> **🙋 我是萌新，请加我好友！** 欢迎在 Second Life 里一起玩、交流和测试这些功能。
+> **🙋 我是萌新，请加我好友！** 欢迎在 Second Life 里一起玩、交流和测试这些功能。(ID：zmer)
 
 > [!IMPORTANT]
 > 这是基于 Firestorm Viewer 制作的个人自定义分支，并非 Firestorm 官方发行版。原项目及相关商标归其各自所有者。
