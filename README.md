@@ -2,7 +2,7 @@
 
 **[Firestorm](https://www.firestormviewer.org) is a free client for 3D virtual worlds such as Second Life and various OpenSim worlds where users can create, connect and chat with others from around the world.**
 
-# Firestorm by:zmer 自定义版
+# Firestorm by:zmer 
 
 > [!TIP]
 > **🙋 我是萌新，请加我好友！** 欢迎在 Second Life 里一起玩、交流和测试这些功能。
@@ -39,19 +39,6 @@
 - 游戏内便签窗口增加“机翻”和“AI 翻译”两个按钮。
 - 翻译内容以只读方式显示，不会覆盖或修改原始便签。
 - 可以随时切换翻译方式，或再次点击按钮返回原文。
-
-### 中文界面与登录输入修复
-
-- 汉化新增的本地标签、翻译设置和便签翻译界面。
-- 调整翻译设置布局，避免 Azure API 地址输入框遮挡右侧设置。
-- 登录账号框和密码框禁用中文 IME 组合输入，避免保存的密码状态被误改。
-- 不影响附近聊天、私聊等其他输入框正常输入中文。
-
-### Windows 构建
-
-- 当前自定义频道显示为 `Firestorm-by:zmer`。
-- Windows 文件名使用兼容形式 `by-zmer`，因为 Windows 文件名不允许使用英文冒号。
-- 当前发布目标为 64 位 AVX2 开放版本，不依赖私有 KDU/FMOD 包。
 
 This repository is a customized fork of the Firestorm viewer source code.
 
