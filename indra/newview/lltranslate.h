@@ -62,6 +62,7 @@ public :
     typedef std::function<void(EService, bool, S32)> KeyVerificationResult_fn;
     typedef std::function<void(std::string, std::string)> TranslationSuccess_fn;
     typedef std::function<void(int, std::string)> TranslationFailure_fn;
+    typedef std::function<void(LLSD)> ScriptDialogTranslationSuccess_fn;
 
     enum EOutgoingMode
     {
@@ -85,6 +86,14 @@ public :
     static void translateOutgoingMessage(const std::string& mesg, const LLSD& context,
                                          TranslationSuccess_fn success, TranslationFailure_fn failure);
     static EOutgoingMode getOutgoingMode();
+
+    static void translateScriptDialog(const std::string& context_key, const std::string& message,
+                                      const LLSD& buttons, ScriptDialogTranslationSuccess_fn success,
+                                      TranslationFailure_fn failure);
+    static void setScriptDialogTranslation(const std::string& context_key,
+                                           const std::string& source, const std::string& translation);
+    static std::string getScriptDialogTranslation(const std::string& context_key,
+                                                  const std::string& source);
 
     /**
      * Verify given API key of a translation service.
@@ -117,6 +126,9 @@ private:
                                      TranslationSuccess_fn success, TranslationFailure_fn failure);
     static void translateOutgoingGPTCoro(std::string mesg, LLSD context,
                                          TranslationSuccess_fn success, TranslationFailure_fn failure);
+    static void translateScriptDialogGPTCoro(std::string context_key, std::string message,
+                                             LLSD buttons, ScriptDialogTranslationSuccess_fn success,
+                                             TranslationFailure_fn failure);
     static LLTranslationAPIHandler& getPreferredHandler();
     static LLTranslationAPIHandler& getHandler(EService service);
 
