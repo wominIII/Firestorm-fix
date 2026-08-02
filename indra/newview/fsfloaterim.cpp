@@ -74,6 +74,7 @@
 #include "lltextbox.h"
 #include "lltrans.h"
 #include "lltransientfloatermgr.h"
+#include "lltranslate.h"
 #include "llversioninfo.h"
 #include "llviewerchat.h"
 #include "llviewerregion.h"
@@ -116,6 +117,7 @@ FSFloaterIM::FSFloaterIM(const LLUUID& session_id)
     mDialog(IM_NOTHING_SPECIAL),
     mChatHistory(NULL),
     mInputEditor(NULL),
+    mOutgoingTranslateBtn(NULL),
     mSavedTitle(),
     mTypingStart(),
     mShouldSendTypingState(false),
@@ -541,7 +543,7 @@ void FSFloaterIM::sendMsgFromInputEditor(EChatType type)
                 }
                 // </FS:Techwolf Lupindo>
 
-                sendMsg(utf8_text);
+                translateAndSendMsg(utf8_text);
 
                 mInputEditor->setText(LLStringUtil::null);
             }
@@ -555,9 +557,93 @@ void FSFloaterIM::sendMsgFromInputEditor(EChatType type)
     setTyping(false);
 }
 
+void FSFloaterIM::translateAndSendMsg(const std::string& msg)
+{
+    if (LLTranslate::getOutgoingMode() == LLTranslate::OUTGOING_DISABLED)
+    {
+        sendMsg(msg);
+        return;
+    }
+
+    mPendingOutgoingText = msg;
+    if (mInputEditor) mInputEditor->setEnabled(false);
+
+    LLSD context = LLSD::emptyArray();
+    const LLIMModel::LLIMSession* session = LLIMModel::instance().findIMSession(mSessionID);
+    if (session)
+    {
+        const S32 wanted = llclamp(gSavedSettings.getS32("FSOutgoingGPTContextCount"), 0, 30);
+        std::vector<LLSD> recent;
+        for (auto it = session->mMsgs.begin(); it != session->mMsgs.end() && static_cast<S32>(recent.size()) < wanted; ++it)
+        {
+            if ((*it)["from"].asString() == SYSTEM_FROM) continue;
+            recent.push_back(*it);
+        }
+        for (auto it = recent.rbegin(); it != recent.rend(); ++it)
+        {
+            context.append(LLSD().with("name", (*it)["from"]).with("text", (*it)["message"]));
+        }
+    }
+
+    LLTranslate::translateOutgoingMessage(msg, context,
+        boost::bind(&FSFloaterIM::onOutgoingTranslationSuccess, this, _1, _2),
+        boost::bind(&FSFloaterIM::onOutgoingTranslationFailure, this, _1, _2));
+}
+
+void FSFloaterIM::onOutgoingTranslationSuccess(std::string translation, std::string detected_lang)
+{
+    const S32 format = gSavedSettings.getS32("FSOutgoingTranslateFormat");
+    if (format == 1) translation = mPendingOutgoingText + "\n" + translation;
+    else if (format == 2) translation += "\n" + mPendingOutgoingText;
+    sendMsg(translation);
+    mPendingOutgoingText.clear();
+    if (mInputEditor) mInputEditor->setEnabled(true);
+}
+
+void FSFloaterIM::onOutgoingTranslationFailure(int status, std::string error)
+{
+    if (mInputEditor)
+    {
+        mInputEditor->setEnabled(true);
+        mInputEditor->setText(mPendingOutgoingText);
+        mInputEditor->setFocus(true);
+    }
+    LLSD args;
+    args["ERROR"] = error;
+    args["STATUS"] = status;
+    LLNotificationsUtil::add("FSOutgoingTranslationFailed", args);
+    mPendingOutgoingText.clear();
+}
+
 void FSFloaterIM::onChatSearchButtonClicked()
 {
     LLFloaterSearchReplace::show(mChatHistory);
+}
+
+void FSFloaterIM::onOutgoingTranslateButtonClicked()
+{
+    const S32 next = (gSavedSettings.getS32("FSOutgoingTranslateMode") + 1) % 3;
+    gSavedSettings.setS32("FSOutgoingTranslateMode", next);
+    updateOutgoingTranslateButton();
+}
+
+bool FSFloaterIM::onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK mask)
+{
+    LLFloaterReg::showInstance("prefs_translation");
+    return true;
+}
+
+void FSFloaterIM::updateOutgoingTranslateButton()
+{
+    if (!mOutgoingTranslateBtn) return;
+    const LLTranslate::EOutgoingMode mode = LLTranslate::getOutgoingMode();
+    mOutgoingTranslateBtn->setLabel(mode == LLTranslate::OUTGOING_GPT ? "AI" : "T");
+    mOutgoingTranslateBtn->setToggleState(mode != LLTranslate::OUTGOING_DISABLED);
+    mOutgoingTranslateBtn->setToolTip(mode == LLTranslate::OUTGOING_DISABLED
+        ? "Outgoing translation: Off (click to use normal translator)"
+        : mode == LLTranslate::OUTGOING_STANDARD
+            ? "Outgoing translation: Normal API (click for AI)"
+            : "Outgoing translation: Context-aware AI (click to turn off)");
 }
 
 void FSFloaterIM::sendMsg(const std::string& msg)
@@ -1010,6 +1096,10 @@ bool FSFloaterIM::postBuild()
     mInputEditor->setFont(LLViewerChat::getChatFont());
     mInputEditor->enableSingleLineMode(gSavedSettings.getBOOL("FSUseSingleLineChatEntry"));
     mInputEditor->setCommitCallback(boost::bind(&FSFloaterIM::sendMsgFromInputEditor, this, CHAT_TYPE_NORMAL));
+    mOutgoingTranslateBtn = getChild<LLButton>("outgoing_translate_btn");
+    mOutgoingTranslateBtn->setClickedCallback(boost::bind(&FSFloaterIM::onOutgoingTranslateButtonClicked, this));
+    mOutgoingTranslateBtn->setRightMouseDownCallback(boost::bind(&FSFloaterIM::onOutgoingTranslateButtonRightClick, this, _2, _3, _4));
+    updateOutgoingTranslateButton();
     // <FS:TJ> [FIRE-35804] Allow the IM floater to have separate transparency
     mInputEditor->setTransparencyOverrideCallback(boost::bind(&FSFloaterIM::onGetChatEditorOpacityCallback, this, _1, _2));
     // </FS:TJ>
