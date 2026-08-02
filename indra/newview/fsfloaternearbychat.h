@@ -80,6 +80,9 @@ public:
     bool getVisible();
 
     void onHistoryButtonClicked();
+    void onOutgoingTranslateButtonClicked();
+    bool onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK mask);
+    void updateOutgoingTranslateButton();
 
     void onSearchButtonClicked();
 
@@ -116,6 +119,9 @@ protected:
 
     void sendChat(EChatType type);
     void sendChatFromViewer(const std::string& utf8text, EChatType type, bool animate);
+    void translateAndSendChat(const std::string& text, EChatType type, bool animate);
+    void onOutgoingTranslationSuccess(std::string translation, std::string detected_lang);
+    void onOutgoingTranslationFailure(int status, std::string error);
     void onChatBoxCommit();
     void onChatTypeChanged();
 
@@ -146,6 +152,7 @@ private:
     // chat type selector and send chat buttons
     LLButton*             mEmojiRecentPanelToggleBtn;
     LLButton*             mEmojiPickerToggleBtn;
+    LLButton*             mOutgoingTranslateBtn;
     LLLayoutPanel*        mEmojiRecentPanel;
     LLTextBox*            mEmojiRecentEmptyText;
     LLPanelEmojiComplete* mEmojiRecentIconsCtrl;
@@ -164,6 +171,9 @@ private:
     S32 mChatLayoutPanelHeight;
 
     std::vector<LLChat> mMessageArchive;
+    std::string mPendingOutgoingText;
+    EChatType mPendingOutgoingType{ CHAT_TYPE_NORMAL };
+    bool mPendingOutgoingAnimate{ false };
 
     bool FSUseNearbyChatConsole;
 
