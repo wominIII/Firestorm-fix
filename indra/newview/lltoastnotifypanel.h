@@ -71,9 +71,15 @@ public:
     virtual void updateNotification() {}
 
     bool isControlPanelEnabled() const;
+    void applyScriptDialogTranslations(const LLSD& translations);
 
 protected:
     LLButton* createButton(const LLSD& form_element, bool is_option);
+    void startScriptDialogTranslation();
+    bool onScriptButtonRightClick(const std::string& source, S32 x, S32 y, MASK mask);
+    bool onScriptTextRightClick(S32 x, S32 y, MASK mask);
+    static bool onEditScriptTranslation(const LLSD& notification, const LLSD& response,
+                                        weak_t panel, std::string source);
 
     // Used for callbacks
     struct InstanceAndS32
@@ -135,6 +141,9 @@ protected:
     S32 mNumButtons { 0 };
 
     S32 mButtonWidth;
+    std::string mScriptTranslationContext;
+    std::string mScriptOriginalMessage;
+    std::vector<std::pair<std::string, LLButton*> > mScriptButtons;
 
     static const std::string sFontDefault;
     static const std::string sFontScript;
