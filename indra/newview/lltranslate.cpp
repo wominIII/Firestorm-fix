@@ -1124,6 +1124,122 @@ void LLTranslate::translateMessage(const std::string &from_lang, const std::stri
     handler.translateMessage(LLTranslationAPIHandler::LanguagePair_t(from_lang, to_lang), addNoTranslateTags(mesg), success, failure);
 }
 
+LLTranslate::EOutgoingMode LLTranslate::getOutgoingMode()
+{
+    S32 mode = gSavedSettings.getS32("FSOutgoingTranslateMode");
+    return (mode >= OUTGOING_DISABLED && mode <= OUTGOING_GPT)
+        ? static_cast<EOutgoingMode>(mode)
+        : OUTGOING_DISABLED;
+}
+
+void LLTranslate::translateOutgoingMessage(const std::string& mesg, const LLSD& context,
+                                           TranslationSuccess_fn success, TranslationFailure_fn failure)
+{
+    switch (getOutgoingMode())
+    {
+        case OUTGOING_STANDARD:
+            translateMessage(std::string(), gSavedSettings.getString("FSOutgoingTranslateLanguage"),
+                             mesg, success, failure);
+            break;
+        case OUTGOING_GPT:
+            translateOutgoingGPT(mesg, context, success, failure);
+            break;
+        default:
+            success(mesg, std::string());
+            break;
+    }
+}
+
+void LLTranslate::translateOutgoingGPT(const std::string& mesg, const LLSD& context,
+                                       TranslationSuccess_fn success, TranslationFailure_fn failure)
+{
+    LLCoros::instance().launch("OutgoingGPTTranslation",
+        boost::bind(&LLTranslate::translateOutgoingGPTCoro, mesg, context, success, failure));
+}
+
+void LLTranslate::translateOutgoingGPTCoro(std::string mesg, LLSD context,
+                                           TranslationSuccess_fn success, TranslationFailure_fn failure)
+{
+    std::string url = gSavedSettings.getString("FSOutgoingGPTBaseURL");
+    std::string key = gSavedSettings.getString("FSOutgoingGPTAPIKey");
+    std::string model = gSavedSettings.getString("FSOutgoingGPTModel");
+    const std::string target = gSavedSettings.getString("FSOutgoingTranslateLanguage");
+
+    LLStringUtil::trim(url);
+    while (!url.empty() && url.back() == '/') url.pop_back();
+    if (url.size() < 17 || url.substr(url.size() - 17) != "/chat/completions")
+    {
+        const std::string::size_type scheme = url.find("://");
+        const std::string::size_type path = scheme == std::string::npos
+            ? std::string::npos
+            : url.find('/', scheme + 3);
+        if (path == std::string::npos)
+        {
+            url += "/v1";
+        }
+        url += "/chat/completions";
+    }
+    if (url.empty() || key.empty() || model.empty())
+    {
+        failure(0, "Outgoing GPT translation is not configured");
+        return;
+    }
+
+    std::string prompt = gSavedSettings.getString("FSOutgoingGPTPrompt");
+    LLStringUtil::replaceString(prompt, "{target_language}", target);
+
+    LLSD body;
+    body["model"] = model;
+    body["temperature"] = 0.2;
+    LLSD messages = LLSD::emptyArray();
+    messages.append(LLSD().with("role", "system").with("content", prompt));
+
+    const S32 wanted = llclamp(gSavedSettings.getS32("FSOutgoingGPTContextCount"), 0, 30);
+    const S32 first = llmax(0, static_cast<S32>(context.size()) - wanted);
+    for (S32 i = first; i < static_cast<S32>(context.size()); ++i)
+    {
+        std::string line = context[i]["name"].asString();
+        if (!line.empty()) line += ": ";
+        line += context[i]["text"].asString();
+        messages.append(LLSD().with("role", "user").with("content", "[Context] " + line));
+    }
+    messages.append(LLSD().with("role", "user").with("content",
+        "[Message to translate into " + target + "]\n" + mesg));
+    body["messages"] = messages;
+
+    LLCore::HttpRequest::policy_t policy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
+    auto adapter = std::make_shared<LLCoreHttpUtil::HttpCoroutineAdapter>("OutgoingGPTTranslation", policy);
+    auto request = std::make_shared<LLCore::HttpRequest>();
+    auto headers = std::make_shared<LLCore::HttpHeaders>();
+    headers->append("Accept", "application/json");
+    headers->append("Content-Type", "application/json");
+    headers->append("Authorization", "Bearer " + key);
+
+    LLSD result = adapter->postJsonAndSuspend(request, url, body, headers);
+    if (LLApp::isQuitting()) return;
+
+    LLSD http_results = result[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(http_results);
+    if (!status)
+    {
+        failure(status.getType(), status.toString());
+        return;
+    }
+
+    std::string translation;
+    if (result.has("choices") && result["choices"].size() > 0)
+    {
+        translation = result["choices"][0]["message"]["content"].asString();
+    }
+    LLStringUtil::trim(translation);
+    if (translation.empty())
+    {
+        failure(status.getType(), "GPT translation returned no text");
+        return;
+    }
+    success(translation, std::string());
+}
+
 std::string LLTranslate::addNoTranslateTags(std::string mesg)
 {
     if (getPreferredHandler().getCurrentService() == SERVICE_GOOGLE)
