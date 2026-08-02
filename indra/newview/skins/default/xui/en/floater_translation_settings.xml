@@ -7,7 +7,7 @@
  help_topic="translation_settings"
  save_rect="true"
  title="Chat Translation Settings"
- width="485">
+ width="900">
 
  <string name="azure_api_key_not_verified">Azure service identifier not verified. Status: [STATUS]. Please check your settings and try again.</string>
  <string name="google_api_key_not_verified">Google API key not verified. Status: [STATUS]. Please check your key and try again.</string>
@@ -389,6 +389,111 @@
      width="100">
         [https://www.deepl.com/pro/select-country?cta=header-prices Pricing]
     </text>
+
+ <panel
+  border="true"
+  follows="top|right|bottom"
+  height="405"
+  layout="topleft"
+  left="490"
+  name="outgoing_translation_panel"
+  top="28"
+  width="400">
+   <text
+    font="SansSerifBold"
+    height="20"
+    left="12"
+    top="10"
+    width="370">Outgoing message translation</text>
+   <radio_group
+    control_name="FSOutgoingTranslateMode"
+    height="22"
+    left="12"
+    name="outgoing_mode"
+    top_pad="4"
+    width="370">
+     <radio_item label="Off" name="off" value="0" />
+     <radio_item label="Normal API" name="normal" value="1" left="75" />
+     <radio_item label="Context AI" name="gpt" value="2" left="195" />
+   </radio_group>
+   <text height="18" left="12" top_pad="8" width="105">Target language:</text>
+   <line_editor
+    control_name="FSOutgoingTranslateLanguage"
+    height="22"
+    left="125"
+    name="outgoing_target_language"
+    top_delta="-3"
+    width="250" />
+   <text height="18" left="12" top_pad="8" width="105">Send format:</text>
+   <combo_box
+    control_name="FSOutgoingTranslateFormat"
+    height="22"
+    left="125"
+    name="outgoing_send_format"
+    top_delta="-3"
+    width="250">
+     <combo_box.item label="Translation only" name="translated" value="0" />
+     <combo_box.item label="Original + translation" name="original_first" value="1" />
+     <combo_box.item label="Translation + original" name="translation_first" value="2" />
+   </combo_box>
+   <text height="18" left="12" top_pad="10" width="105">GPT Base URL:</text>
+   <line_editor
+    control_name="FSOutgoingGPTBaseURL"
+    height="22"
+    left="125"
+    max_length_chars="512"
+    name="outgoing_gpt_url"
+    top_delta="-3"
+    width="250" />
+   <text height="18" left="12" top_pad="8" width="105">API key:</text>
+   <line_editor
+    control_name="FSOutgoingGPTAPIKey"
+    height="22"
+    is_password="true"
+    left="125"
+    max_length_chars="512"
+    name="outgoing_gpt_key"
+    top_delta="-3"
+    width="250" />
+   <text height="18" left="12" top_pad="8" width="105">Model:</text>
+   <line_editor
+    control_name="FSOutgoingGPTModel"
+    height="22"
+    left="125"
+    max_length_chars="128"
+    name="outgoing_gpt_model"
+    top_delta="-3"
+    width="250" />
+   <text height="18" left="12" top_pad="8" width="105">Context messages:</text>
+   <spinner
+    control_name="FSOutgoingGPTContextCount"
+    decimal_digits="0"
+    height="22"
+    increment="1"
+    left="125"
+    max_val="30"
+    min_val="0"
+    name="outgoing_gpt_context"
+    top_delta="-3"
+    width="75" />
+   <text height="18" left="12" top_pad="9" width="360">Editable system prompt ({target_language} is supported):</text>
+   <text_editor
+    control_name="FSOutgoingGPTPrompt"
+    follows="left|right|bottom"
+    height="82"
+    left="12"
+    max_length="8000"
+    name="outgoing_gpt_prompt"
+    right="-12"
+    top_pad="3"
+    wrap="true" />
+   <text
+    height="32"
+    left="12"
+    top_pad="5"
+    width="370"
+    wrap="true">The AI receives only the latest messages from the current nearby, group, or private conversation.</text>
+ </panel>
 
  <button
   follows="left|top"
