@@ -3470,6 +3470,20 @@ See https://wiki.secondlife.com/wiki/Adding_Spelling_Dictionaries
 
   <notification
    icon="alertmodal.tga"
+   label="Edit Local Inventory Label"
+   name="FSEditInventoryLocalLabel"
+   type="alertmodal">
+    Local label (stored only on this computer):
+    <tag>confirm</tag>
+    <form name="form">
+      <input name="local_label" type="text" width="360" default="true">[NAME]</input>
+      <button default="true" index="0" name="OK" text="Save"/>
+      <button index="1" name="Cancel" text="Cancel"/>
+    </form>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
    label="Rename Outfit"
    name="RenameOutfit"
    type="alertmodal">
