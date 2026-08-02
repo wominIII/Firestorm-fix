@@ -94,6 +94,7 @@ public:
                                         bg_image_always_focused,
                                         show_label_focused,
                                         is_password,
+                                        disable_ime,
                                         allow_emoji,
                                         use_bg_color,
                                         draw_focus_border;
@@ -256,6 +257,7 @@ public:
     void            setPassDelete(bool b)           { mPassDelete = b; }
     void            setAllowEmoji(bool b)           { mAllowEmoji = b; }
     void            setDrawAsterixes(bool b);
+    void            setDisableIME(bool disable) { mDisableIME = disable; updateAllowingLanguageInput(); }
 
     // get the cursor position of the beginning/end of the prev/next word in the text
     S32             prevWordPos(S32 cursorPos) const;
@@ -419,6 +421,7 @@ protected:
     bool        mIgnoreArrowKeys;
     bool        mIgnoreTab;
     bool        mDrawAsterixes;
+    bool        mDisableIME;
 
     bool        mSelectAllonFocusReceived;
     bool        mSelectAllonCommit;
