@@ -298,8 +298,22 @@
                          tab_group="3"
                          bottom="-3"
                          left_pad="5"
-                         right="-30"
+                         right="-60"
                          wrap="true" />
+                        <button
+                         name="outgoing_translate_btn"
+                         handle_right_mouse="true"
+                         tool_tip="Outgoing translation"
+                         follows="right|bottom"
+                         font="SansSerifSmallBold"
+                         image_hover_unselected="Toolbar_Middle_Over"
+                         image_selected="Toolbar_Middle_Selected"
+                         image_unselected="Toolbar_Middle_Off"
+                         bottom="-2"
+                         right="-31"
+                         height="25"
+                         width="28"
+                         label="T" />
                         <button
                          name="emoji_recent_panel_toggle_btn"
                          tool_tip="Shows/hides recent emojis"
