@@ -37,6 +37,9 @@
 #include "llviewercontrol.h"
 #include "llcoros.h"
 #include "llcorehttputil.h"
+#include "lldir.h"
+#include "llfstream.h"
+#include "llsdserialize.h"
 #include "llurlregistry.h"
 #include "stringize.h"
 
@@ -44,6 +47,59 @@
 
 static const std::string AZURE_NOTRANSLATE_OPENING_TAG("<div translate=\"no\">");
 static const std::string AZURE_NOTRANSLATE_CLOSING_TAG("</div>");
+
+namespace
+{
+    LLSD& scriptDialogTranslationCache()
+    {
+        static LLSD cache;
+        static bool loaded = false;
+        if (!loaded)
+        {
+            loaded = true;
+            llifstream file(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
+                                                           "script_dialog_translations.xml"));
+            if (!file.is_open() || LLSDSerialize::fromXML(cache, file) == LLSDParser::PARSE_FAILURE || !cache.isMap())
+            {
+                cache = LLSD::emptyMap();
+            }
+        }
+        return cache;
+    }
+
+    void saveScriptDialogTranslationCache()
+    {
+        llofstream file(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
+                                                       "script_dialog_translations.xml"));
+        if (file.is_open())
+        {
+            LLSDSerialize::toPrettyXML(scriptDialogTranslationCache(), file);
+        }
+    }
+
+    void cacheScriptDialogTranslation(const std::string& context_key, const std::string& source,
+                                      const std::string& translation, bool manual)
+    {
+        if (source.empty() || translation.empty()) return;
+        LLSD& entry = scriptDialogTranslationCache()[context_key][source];
+        if (entry["manual"].asBoolean() && !manual) return;
+        entry["text"] = translation;
+        entry["manual"] = manual;
+        saveScriptDialogTranslationCache();
+    }
+
+    struct StandardDialogTranslationState
+    {
+        std::string context_key;
+        std::string message;
+        LLSD buttons;
+        LLSD result;
+        S32 remaining{0};
+        LLTranslate::ScriptDialogTranslationSuccess_fn success;
+        LLTranslate::TranslationFailure_fn failure;
+        bool failed{false};
+    };
+}
 
 /**
 * Handler of an HTTP machine translation service.
@@ -1238,6 +1294,183 @@ void LLTranslate::translateOutgoingGPTCoro(std::string mesg, LLSD context,
         return;
     }
     success(translation, std::string());
+}
+
+std::string LLTranslate::getScriptDialogTranslation(const std::string& context_key,
+                                                    const std::string& source)
+{
+    const LLSD& entry = scriptDialogTranslationCache()[context_key][source];
+    return entry["text"].asString();
+}
+
+void LLTranslate::setScriptDialogTranslation(const std::string& context_key,
+                                             const std::string& source,
+                                             const std::string& translation)
+{
+    cacheScriptDialogTranslation(context_key, source, translation, true);
+}
+
+void LLTranslate::translateScriptDialog(const std::string& context_key, const std::string& message,
+                                        const LLSD& buttons, ScriptDialogTranslationSuccess_fn success,
+                                        TranslationFailure_fn failure)
+{
+    const S32 mode = gSavedSettings.getS32("FSScriptDialogTranslateMode");
+    LLSD cached;
+    cached["message"] = getScriptDialogTranslation(context_key, message);
+    cached["buttons"] = LLSD::emptyArray();
+    bool complete = message.empty() || !cached["message"].asString().empty();
+    for (LLSD::array_const_iterator it = buttons.beginArray(); it != buttons.endArray(); ++it)
+    {
+        const std::string translated = getScriptDialogTranslation(context_key, it->asString());
+        cached["buttons"].append(translated);
+        complete = complete && !translated.empty();
+    }
+    if (mode == 0)
+    {
+        return;
+    }
+    if (complete)
+    {
+        success(cached);
+        return;
+    }
+    if (mode == 2)
+    {
+        LLCoros::instance().launch("ScriptDialogGPTTranslation",
+            boost::bind(&LLTranslate::translateScriptDialogGPTCoro, context_key, message,
+                        buttons, success, failure));
+        return;
+    }
+
+    std::shared_ptr<StandardDialogTranslationState> state = std::make_shared<StandardDialogTranslationState>();
+    state->context_key = context_key;
+    state->message = message;
+    state->buttons = buttons;
+    state->result["message"] = cached["message"];
+    state->result["buttons"] = cached["buttons"];
+    state->success = success;
+    state->failure = failure;
+    state->remaining = (message.empty() || !cached["message"].asString().empty() ? 0 : 1);
+    for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
+    {
+        if (state->result["buttons"][i].asString().empty()) ++state->remaining;
+    }
+
+    auto finish_one = [state]()
+    {
+        if (--state->remaining == 0 && !state->failed) state->success(state->result);
+    };
+    auto fail_once = [state](int status, std::string error)
+    {
+        if (!state->failed)
+        {
+            state->failed = true;
+            state->failure(status, error);
+        }
+    };
+    const std::string target = gSavedSettings.getString("FSScriptDialogTranslateLanguage");
+    if (!message.empty() && cached["message"].asString().empty())
+    {
+        translateMessage(std::string(), target, message,
+            [state, finish_one](std::string text, std::string)
+            {
+                cacheScriptDialogTranslation(state->context_key, state->message, text, false);
+                state->result["message"] = getScriptDialogTranslation(state->context_key, state->message);
+                finish_one();
+            }, fail_once);
+    }
+    for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
+    {
+        if (!cached["buttons"][i].asString().empty()) continue;
+        const std::string source = buttons[i].asString();
+        translateMessage(std::string(), target, source,
+            [state, finish_one, source, i](std::string text, std::string)
+            {
+                cacheScriptDialogTranslation(state->context_key, source, text, false);
+                state->result["buttons"][i] = getScriptDialogTranslation(state->context_key, source);
+                finish_one();
+            }, fail_once);
+    }
+}
+
+void LLTranslate::translateScriptDialogGPTCoro(std::string context_key, std::string message,
+                                               LLSD buttons, ScriptDialogTranslationSuccess_fn success,
+                                               TranslationFailure_fn failure)
+{
+    std::string url = gSavedSettings.getString("FSOutgoingGPTBaseURL");
+    const std::string key = gSavedSettings.getString("FSOutgoingGPTAPIKey");
+    const std::string model = gSavedSettings.getString("FSOutgoingGPTModel");
+    const std::string target = gSavedSettings.getString("FSScriptDialogTranslateLanguage");
+    LLStringUtil::trim(url);
+    while (!url.empty() && url.back() == '/') url.pop_back();
+    if (url.size() < 17 || url.substr(url.size() - 17) != "/chat/completions")
+    {
+        const std::string::size_type scheme = url.find("://");
+        if (scheme != std::string::npos && url.find('/', scheme + 3) == std::string::npos) url += "/v1";
+        url += "/chat/completions";
+    }
+    if (url.empty() || key.empty() || model.empty())
+    {
+        failure(0, "Script dialog GPT translation is not configured");
+        return;
+    }
+
+    std::string prompt = gSavedSettings.getString("FSScriptDialogGPTPrompt");
+    LLStringUtil::replaceString(prompt, "{target_language}", target);
+    std::string menu = "Message:\n" + message + "\nButtons:\n";
+    for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
+    {
+        menu += llformat("%d. %s\n", i + 1, buttons[i].asString().c_str());
+    }
+    LLSD body;
+    body["model"] = model;
+    body["temperature"] = 0.2;
+    body["messages"] = LLSD::emptyArray();
+    body["messages"].append(LLSD().with("role", "system").with("content", prompt));
+    body["messages"].append(LLSD().with("role", "user").with("content", menu));
+
+    LLCore::HttpRequest::policy_t policy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
+    auto adapter = std::make_shared<LLCoreHttpUtil::HttpCoroutineAdapter>("ScriptDialogGPTTranslation", policy);
+    auto request = std::make_shared<LLCore::HttpRequest>();
+    auto headers = std::make_shared<LLCore::HttpHeaders>();
+    headers->append("Accept", "application/json");
+    headers->append("Content-Type", "application/json");
+    headers->append("Authorization", "Bearer " + key);
+    LLSD response = adapter->postJsonAndSuspend(request, url, body, headers);
+    LLSD http_results = response[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(http_results);
+    if (!status)
+    {
+        failure(status.getType(), status.toString());
+        return;
+    }
+
+    try
+    {
+        std::string content = response["choices"][0]["message"]["content"].asString();
+        const size_t first = content.find('{');
+        const size_t last = content.rfind('}');
+        if (first == std::string::npos || last == std::string::npos) throw std::runtime_error("No JSON object");
+        boost::json::object parsed = boost::json::parse(content.substr(first, last - first + 1)).as_object();
+        const std::string translated_message = boost::json::value_to<std::string>(parsed.at("message"));
+        boost::json::array translated_buttons = parsed.at("buttons").as_array();
+        if (translated_buttons.size() != buttons.size()) throw std::runtime_error("Button count mismatch");
+        cacheScriptDialogTranslation(context_key, message, translated_message, false);
+        LLSD result;
+        result["message"] = getScriptDialogTranslation(context_key, message);
+        result["buttons"] = LLSD::emptyArray();
+        for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
+        {
+            const std::string translated = boost::json::value_to<std::string>(translated_buttons[i]);
+            cacheScriptDialogTranslation(context_key, buttons[i].asString(), translated, false);
+            result["buttons"].append(getScriptDialogTranslation(context_key, buttons[i].asString()));
+        }
+        success(result);
+    }
+    catch (const std::exception& e)
+    {
+        failure(status.getType(), std::string("Invalid AI menu translation: ") + e.what());
+    }
 }
 
 std::string LLTranslate::addNoTranslateTags(std::string mesg)
