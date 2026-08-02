@@ -63,6 +63,13 @@ public :
     typedef std::function<void(std::string, std::string)> TranslationSuccess_fn;
     typedef std::function<void(int, std::string)> TranslationFailure_fn;
 
+    enum EOutgoingMode
+    {
+        OUTGOING_DISABLED = 0,
+        OUTGOING_STANDARD = 1,
+        OUTGOING_GPT = 2
+    };
+
     /**
      * Translate given text.
      *
@@ -72,6 +79,12 @@ public :
      * @param mesg       Text to translate.
      */
     static void translateMessage(const std::string &from_lang, const std::string &to_lang, const std::string &mesg, TranslationSuccess_fn success, TranslationFailure_fn failure);
+
+    // Translate text immediately before it is sent. Context is an array of
+    // maps containing "name" and "text" and is used only by GPT mode.
+    static void translateOutgoingMessage(const std::string& mesg, const LLSD& context,
+                                         TranslationSuccess_fn success, TranslationFailure_fn failure);
+    static EOutgoingMode getOutgoingMode();
 
     /**
      * Verify given API key of a translation service.
@@ -100,6 +113,10 @@ public :
     void logFailure(S32 count);
     LLSD asLLSD() const;
 private:
+    static void translateOutgoingGPT(const std::string& mesg, const LLSD& context,
+                                     TranslationSuccess_fn success, TranslationFailure_fn failure);
+    static void translateOutgoingGPTCoro(std::string mesg, LLSD context,
+                                         TranslationSuccess_fn success, TranslationFailure_fn failure);
     static LLTranslationAPIHandler& getPreferredHandler();
     static LLTranslationAPIHandler& getHandler(EService service);
 
