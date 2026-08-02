@@ -15472,4 +15472,18 @@ Outgoing translation failed ([STATUS]): [ERROR]
 The original message has been restored to the chat box.
     <tag>fail</tag>
   </notification>
+  <notification
+   icon="alertmodal.tga"
+   name="FSEditScriptDialogTranslation"
+   type="alertmodal">
+Original text:
+[SOURCE]
+
+Edit the persistent local translation:
+    <form name="form">
+      <input name="translation" type="text" width="420">[TRANSLATION]</input>
+      <button default="true" index="0" name="Save" text="Save" />
+      <button index="1" name="Cancel" text="Cancel" />
+    </form>
+  </notification>
 </notifications>
