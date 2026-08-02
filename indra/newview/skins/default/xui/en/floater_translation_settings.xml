@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
  legacy_header_height="18"
- height="470"
+ height="650"
  layout="topleft"
  name="floater_translation_settings"
  help_topic="translation_settings"
@@ -393,7 +393,7 @@
  <panel
   border="true"
   follows="top|right|bottom"
-  height="405"
+  height="585"
   layout="topleft"
   left="490"
   name="outgoing_translation_panel"
@@ -493,6 +493,52 @@
     top_pad="5"
     width="370"
     wrap="true">The AI receives only the latest messages from the current nearby, group, or private conversation.</text>
+   <view_border
+    height="1"
+    left="12"
+    right="-12"
+    top_pad="8" />
+   <text
+    font="SansSerifBold"
+    height="20"
+    left="12"
+    top_pad="8"
+    width="370">Script object menu translation</text>
+   <radio_group
+    control_name="FSScriptDialogTranslateMode"
+    height="22"
+    left="12"
+    name="script_dialog_translate_mode"
+    top_pad="4"
+    width="370">
+     <radio_item label="Off" name="off" value="0" />
+     <radio_item label="Normal API" name="normal" value="1" left="75" />
+     <radio_item label="Context AI" name="gpt" value="2" left="195" />
+   </radio_group>
+   <text height="18" left="12" top_pad="8" width="105">Target language:</text>
+   <line_editor
+    control_name="FSScriptDialogTranslateLanguage"
+    height="22"
+    left="125"
+    name="script_dialog_target_language"
+    top_delta="-3"
+    width="250" />
+   <text height="18" left="12" top_pad="8" width="360">AI menu prompt ({target_language} is supported):</text>
+   <text_editor
+    control_name="FSScriptDialogGPTPrompt"
+    height="70"
+    left="12"
+    max_length="8000"
+    name="script_dialog_gpt_prompt"
+    right="-12"
+    top_pad="3"
+    wrap="true" />
+   <text
+    height="30"
+    left="12"
+    top_pad="4"
+    width="370"
+    wrap="true">AI mode reuses the GPT Base URL, API key and model above. Translations are saved locally.</text>
  </panel>
 
  <button
