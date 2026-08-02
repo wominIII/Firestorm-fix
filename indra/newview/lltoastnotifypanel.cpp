@@ -39,6 +39,8 @@
 #include "lluiconstants.h"
 #include "llrect.h"
 #include "lltrans.h"
+#include "lltranslate.h"
+#include "llnotificationsutil.h"
 #include "llnotificationsutil.h"
 #include "llviewermessage.h"
 #include "llavataractions.h"
@@ -107,6 +109,7 @@ LLButton* LLToastNotifyPanel::createButton(const LLSD& form_element, bool is_opt
     p.auto_resize = false;
     p.follows.flags(FOLLOWS_LEFT | FOLLOWS_BOTTOM);
     p.enabled = !form_element.has("enabled") || form_element["enabled"].asBoolean();
+    if (mIsScriptDialog && is_option && index >= 0) p.handle_right_mouse = true;
     if (mIsCaution)
     {
         p.image_color(LLUIColorTable::instance().getColor("ButtonCautionImageColor"));
@@ -126,6 +129,12 @@ LLButton* LLToastNotifyPanel::createButton(const LLSD& form_element, bool is_opt
         p.auto_resize = true;
     }
     LLButton* btn = LLUICtrlFactory::create<LLButton>(p);
+    if (mIsScriptDialog && is_option && index >= 0)
+    {
+        mScriptButtons.push_back(std::make_pair(name, btn));
+        btn->setRightMouseDownCallback(boost::bind(&LLToastNotifyPanel::onScriptButtonRightClick,
+                                                   this, name, _2, _3, _4));
+    }
     mNumButtons++;
     btn->autoResize();
     if (form_element["default"].asBoolean())
@@ -469,6 +478,7 @@ void LLToastNotifyPanel::init( LLRect rect, bool show_images )
         S32 rows = gSavedSettings.getS32("FSRowsPerScriptDialog");
         llclamp(rows, 2, LLToastPanel::MAX_TEXT_LENGTH);
         snapToMessageHeight(mTextBox, rows);
+        startScriptDialogTranslation();
     }
     else
     {
@@ -486,6 +496,90 @@ void LLToastNotifyPanel::init( LLRect rect, bool show_images )
     {
         reshape(current_rect.getWidth(), current_rect.getHeight());
     }
+}
+
+void LLToastNotifyPanel::startScriptDialogTranslation()
+{
+    if (gSavedSettings.getS32("FSScriptDialogTranslateMode") == 0) return;
+    const LLSD& payload = mNotification->getPayload();
+    mScriptTranslationContext = payload["owner_id"].asString() + "|" + payload["object_name"].asString();
+    mScriptOriginalMessage = mNotification->getMessage();
+    LLSD buttons = LLSD::emptyArray();
+    for (const auto& entry : mScriptButtons) buttons.append(entry.first);
+    weak_t weak = getWeak();
+    LLTranslate::translateScriptDialog(mScriptTranslationContext, mScriptOriginalMessage, buttons,
+        [weak](LLSD translations)
+        {
+            if (ptr_t panel = weak.lock()) panel->applyScriptDialogTranslations(translations);
+        },
+        [](int status, std::string error)
+        {
+            LL_WARNS("ScriptDialogTranslate") << status << ": " << error << LL_ENDL;
+        });
+    mTextBox->setRightMouseDownCallback(boost::bind(&LLToastNotifyPanel::onScriptTextRightClick,
+                                                    this, _2, _3, _4));
+}
+
+void LLToastNotifyPanel::applyScriptDialogTranslations(const LLSD& translations)
+{
+    const std::string message = translations["message"].asString();
+    if (!message.empty())
+    {
+        mTextBox->setValue(message);
+        mTextBox->setToolTip(mScriptOriginalMessage);
+    }
+    const LLSD& buttons = translations["buttons"];
+    for (S32 i = 0; i < static_cast<S32>(mScriptButtons.size()) && i < static_cast<S32>(buttons.size()); ++i)
+    {
+        const std::string translated = buttons[i].asString();
+        if (translated.empty()) continue;
+        mScriptButtons[i].second->setLabel(translated);
+        mScriptButtons[i].second->setToolTip(mScriptButtons[i].first);
+    }
+}
+
+bool LLToastNotifyPanel::onScriptButtonRightClick(const std::string& source, S32 x, S32 y, MASK mask)
+{
+    LLSD args;
+    args["SOURCE"] = source;
+    args["TRANSLATION"] = LLTranslate::getScriptDialogTranslation(mScriptTranslationContext, source);
+    LLNotificationsUtil::add("FSEditScriptDialogTranslation", args, LLSD(),
+        boost::bind(&LLToastNotifyPanel::onEditScriptTranslation, _1, _2, getWeak(), source));
+    return true;
+}
+
+bool LLToastNotifyPanel::onScriptTextRightClick(S32 x, S32 y, MASK mask)
+{
+    return onScriptButtonRightClick(mScriptOriginalMessage, x, y, mask);
+}
+
+bool LLToastNotifyPanel::onEditScriptTranslation(const LLSD& notification, const LLSD& response,
+                                                 weak_t weak, std::string source)
+{
+    if (LLNotificationsUtil::getSelectedOption(notification, response) != 0) return false;
+    ptr_t panel = weak.lock();
+    if (!panel) return false;
+    std::string translation = response["translation"].asString();
+    LLStringUtil::trim(translation);
+    if (translation.empty()) return false;
+    LLTranslate::setScriptDialogTranslation(panel->mScriptTranslationContext, source, translation);
+    if (source == panel->mScriptOriginalMessage)
+    {
+        panel->mTextBox->setValue(translation);
+        panel->mTextBox->setToolTip(source);
+    }
+    else
+    {
+        for (const auto& entry : panel->mScriptButtons)
+        {
+            if (entry.first == source)
+            {
+                entry.second->setLabel(translation);
+                entry.second->setToolTip(source);
+            }
+        }
+    }
+    return false;
 }
 
 void LLToastNotifyPanel::deleteAllChildren()
@@ -622,4 +716,3 @@ void LLIMToastNotifyPanel::init( LLRect rect, bool show_images )
 }
 
 // EOF
-
