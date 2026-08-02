@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="體驗" name="Experiences">
+<panel label="体验" name="Experiences">
 	<panel.string name="trusted_estate_text">
-		任何體驗都可以成為必要體驗。
-必要體驗可在此領地運行。
-此外，即使這個領地平常不開放進入，參與任何必要體驗的居民，只要維持處在「必要體驗」狀態，仍可進入領地停留。
+		任何体验都可以成为必要体验。
+必要体验可在此领地运行。
+此外，即使这个领地平常不开放进入，参与任何必要体验的居民，只要维持处在“必要体验”状态，仍可进入领地停留。
 	</panel.string>
 	<panel.string name="allowed_estate_text">
-		只允許「土地範圍」的體驗。
+		只允许“土地范围”的体验。
 
-獲準的體驗可在此領地運行。
+获准的体验可在此领地运行。
 	</panel.string>
 	<panel.string name="blocked_estate_text">
-		只封鎖「類比網路範圍」的體驗。
+		只封锁“模拟网络范围”的体验。
 
-遭封鎖的體驗不得在此領地運行。
+遭封锁的体验不得在此领地运行。
 	</panel.string>
 	<panel.string name="estate_caption">
-		變更此索引標籤中的設定會影響這個領地內的全部區域設定。
+		变更此选项卡中的设置会影响这个领地内的全部区域设置。
 	</panel.string>
 	<panel.string name="allowed_parcel_text">
-		只允許「土地範圍」的體驗。
+		只允许“土地范围”的体验。
 
-獲準的體驗若未被領地封鎖，就可在此地塊運行。
+获准的体验若未被领地封锁，就可在此地块运行。
 	</panel.string>
 	<panel.string name="blocked_parcel_text">
-		任何居民的體驗都可以加以封鎖。
+		任何居民的体验都可以加以封锁。
 
-遭封鎖的體驗不得在此地塊運行。
+遭封锁的体验不得在此地块运行。
 	</panel.string>
 </panel>

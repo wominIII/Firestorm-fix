@@ -1,193 +1,193 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater name="Animation Preview">
 	<floater.string name="failed_to_initialize">
-		動畫初始化失敗
+		动画初始化失败
 	</floater.string>
 	<floater.string name="anim_too_long">
-		動畫檔案長度為 [LENGTH] 秒。
+		动画文件长度为 [LENGTH] 秒。
 
-動畫檔案長度最多可為 [MAX_LENGTH] 秒。
+动画文件长度最多可为 [MAX_LENGTH] 秒。
 	</floater.string>
 	<floater.string name="failed_file_read">
-		無法讀取動畫檔案。
+		无法读取动画文件。
 
 [STATUS]
 	</floater.string>
 	<floater.string name="E_ST_OK">
-		確定
+		确定
 	</floater.string>
 	<floater.string name="E_ST_EOF">
-		檔案結尾不正常。
+		文件结尾不正常。
 	</floater.string>
 	<floater.string name="E_ST_NO_CONSTRAINT">
-		無法讀取約束定義。
+		无法读取约束定义。
 	</floater.string>
 	<floater.string name="E_ST_NO_FILE">
-		BVH 檔案無法打開。
+		BVH 文件无法打开。
 	</floater.string>
 	<floater.string name="E_ST_NO_HIER">
-		層級標題無效。
+		层级标题无效。
 	</floater.string>
 	<floater.string name="E_ST_NO_JOINT">
-		未找到根關節或關節。
+		未找到根关节或关节。
 	</floater.string>
 	<floater.string name="E_ST_NO_NAME">
-		關節名稱未指定。
+		关节名称未指定。
 	</floater.string>
 	<floater.string name="E_ST_NO_OFFSET">
 		未指定偏移量。
 	</floater.string>
 	<floater.string name="E_ST_NO_CHANNELS">
-		未找到通道資訊。
+		未找到通道信息。
 	</floater.string>
 	<floater.string name="E_ST_NO_ROTATION">
-		無法確定旋轉順序。
+		无法确定旋转顺序。
 	</floater.string>
 	<floater.string name="E_ST_NO_AXIS">
-		旋轉軸未指定。
+		旋转轴未指定。
 	</floater.string>
 	<floater.string name="E_ST_NO_MOTION">
-		找不到動畫。
+		找不到动画。
 	</floater.string>
 	<floater.string name="E_ST_NO_FRAMES">
-		無法取得影格數。
+		无法获取帧数。
 	</floater.string>
 	<floater.string name="E_ST_NO_FRAME_TIME">
-		無法取得影格時間。
+		无法获取帧时间。
 	</floater.string>
 	<floater.string name="E_ST_NO_POS">
-		無法取得位置值。
+		无法获取位置值。
 	</floater.string>
 	<floater.string name="E_ST_NO_ROT">
-		無法取得旋轉值。
+		无法获取旋转值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_FILE">
-		檔案無法打開。
+		文件无法打开。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_HEADER">
-		無法讀取變換檔頭。
+		无法读取变换标头。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_NAME">
-		無法載入變換名稱。
+		无法加载变换名称。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_IGNORE">
-		無法讀取變換忽略值。
+		无法读取变换忽略值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_RELATIVE">
-		無法讀取變換值。
+		无法读取变换值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_OUTNAME">
-		無法讀取輸出名稱值。
+		无法读取输出名称值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_MATRIX">
-		無法載入變換序列。
+		无法加载变换序列。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_MERGECHILD">
-		合併子項名稱未捕獲。
+		合并子项名称未捕获。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_MERGEPARENT">
-		合併父項名稱未捕獲。
+		合并父项名称未捕获。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_PRIORITY">
-		無法取得優先度值。
+		无法获取优先级值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_LOOP">
-		無法取得循環值。
+		无法获取循环值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_EASEIN">
-		無法取得緩入值。
+		无法获取缓入值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_EASEOUT">
-		無法取得緩出值。
+		无法获取缓出值。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_HAND">
-		手部形態值未捕獲。
+		手部形态值未捕获。
 	</floater.string>
 	<floater.string name="E_ST_NO_XLT_EMOTE">
-		無法讀取表情名稱。
+		无法读取表情名称。
 	</floater.string>
 	<floater.string name="E_ST_BAD_ROOT">
-		根關節名稱錯誤，請使用「hip」。
+		根关节名称错误，请使用“hip”。
 	</floater.string>
 	<floater.string name="FS_report_frames">
-		[F] 影格.  [S] 秒. [FPS] 影格率
+		[F] 帧.  [S] 秒. [FPS] 帧率
 	</floater.string>
 	<text name="name_label">
-		名稱：
+		名称：
 	</text>
 	<text name="description_label">
 		描述：
 	</text>
-	<spinner label="優先度" name="priority" tool_tip="其他動畫的控制可被此動畫強行替換" />
-	<check_box label="連續" name="loop_check" tool_tip="讓此動畫不斷重複演繹" />
+	<spinner label="优先度" name="priority" tool_tip="其他动画的控制可被此动画强行替换"/>
+	<check_box label="连续" name="loop_check" tool_tip="让此动画不断重复演绎"/>
 	<text name="frames_label">
-		300 影格. 30 秒. 10 影格率
+		300 帧. 30 秒. 10 帧率
 	</text>
-	<spinner label="入(%)" name="loop_in_point" tool_tip="設定動畫中重複演繹的起始點" />
-	<spinner label="出(%)" name="loop_out_point" tool_tip="設定動畫中重複演繹的結束點" />
-	<spinner label="入(影格)" name="loop_in_frames" tool_tip="設定動畫重複演繹的起始點（以影格為單位）" />
-	<spinner label="出(影格)" name="loop_out_frames" tool_tip="設定動畫重複演繹的結束點（以影格為單位）" />
+	<spinner label="入(%)" name="loop_in_point" tool_tip="设置动画中重复演绎的起始点"/>
+	<spinner label="出(%)" name="loop_out_point" tool_tip="设置动画中重复演绎的结束点"/>
+	<spinner label="入(帧)" name="loop_in_frames" tool_tip="设置动画重复演绎的起始点（以帧为单位）"/>
+	<spinner label="出(帧)" name="loop_out_frames" tool_tip="设置动画重复演绎的结束点（以帧为单位）"/>
 	<text name="hand_label">
-		手部姿勢
+		手部姿势
 	</text>
-	<combo_box name="hand_pose_combo" tool_tip="控制動畫演繹時雙手的姿勢">
-		<combo_box.item label="張開" name="Spread" />
-		<combo_box.item label="放鬆" name="Relaxed" />
-		<combo_box.item label="雙手伸出指頭" name="PointBoth" />
-		<combo_box.item label="拳頭" name="Fist" />
-		<combo_box.item label="左邊放鬆" name="RelaxedLeft" />
-		<combo_box.item label="左邊伸指" name="PointLeft" />
-		<combo_box.item label="左邊握拳" name="FistLeft" />
-		<combo_box.item label="右邊放鬆" name="RelaxedRight" />
-		<combo_box.item label="右邊伸指" name="PointRight" />
-		<combo_box.item label="右邊握拳" name="FistRight" />
-		<combo_box.item label="右手敬禮" name="SaluteRight" />
-		<combo_box.item label="打字" name="Typing" />
-		<combo_box.item label="右手比出和平手勢" name="PeaceRight" />
+	<combo_box name="hand_pose_combo" tool_tip="控制动画演绎时双手的姿势">
+		<combo_box.item label="张开" name="Spread"/>
+		<combo_box.item label="放松" name="Relaxed"/>
+		<combo_box.item label="双手伸出指头" name="PointBoth"/>
+		<combo_box.item label="拳头" name="Fist"/>
+		<combo_box.item label="左边放松" name="RelaxedLeft"/>
+		<combo_box.item label="左边伸指" name="PointLeft"/>
+		<combo_box.item label="左边握拳" name="FistLeft"/>
+		<combo_box.item label="右边放松" name="RelaxedRight"/>
+		<combo_box.item label="右边伸指" name="PointRight"/>
+		<combo_box.item label="右边握拳" name="FistRight"/>
+		<combo_box.item label="右手敬礼" name="SaluteRight"/>
+		<combo_box.item label="打字" name="Typing"/>
+		<combo_box.item label="右手比出和平手势" name="PeaceRight"/>
 	</combo_box>
 	<text name="emote_label">
 		表情
 	</text>
-	<combo_box name="emote_combo" tool_tip="控制動畫演繹時臉部的姿態">
-		<item label="（無）" name="[None]" />
-		<item label="張口呼喊" name="Aaaaah" />
-		<item label="害怕" name="Afraid" />
-		<item label="生氣" name="Angry" />
-		<item label="璨爛笑容" name="BigSmile" />
-		<item label="無聊" name="Bored" />
-		<item label="哭泣" name="Cry" />
-		<item label="鄙視" name="Disdain" />
-		<item label="尷尬" name="Embarrassed" />
-		<item label="皺眉" name="Frown" />
-		<item label="親吻" name="Kiss" />
-		<item label="笑" name="Laugh" />
-		<item label="嫌惡" name="Plllppt" />
-		<item label="作惡" name="Repulsed" />
-		<item label="傷心" name="Sad" />
-		<item label="聳聳肩" name="Shrug" />
-		<item label="微笑" name="Smile" />
-		<item label="驚喜" name="Surprise" />
-		<item label="眨眼" name="Wink" />
-		<item label="擔心" name="Worry" />
+	<combo_box name="emote_combo" tool_tip="控制动画演绎时脸部的姿态">
+		<item label="（无）" name="[None]"/>
+		<item label="张口呼喊" name="Aaaaah"/>
+		<item label="害怕" name="Afraid"/>
+		<item label="生气" name="Angry"/>
+		<item label="璨烂笑容" name="BigSmile"/>
+		<item label="无聊" name="Bored"/>
+		<item label="哭泣" name="Cry"/>
+		<item label="鄙视" name="Disdain"/>
+		<item label="尴尬" name="Embarrassed"/>
+		<item label="皱眉" name="Frown"/>
+		<item label="亲吻" name="Kiss"/>
+		<item label="笑" name="Laugh"/>
+		<item label="嫌恶" name="Plllppt"/>
+		<item label="作恶" name="Repulsed"/>
+		<item label="伤心" name="Sad"/>
+		<item label="耸耸肩" name="Shrug"/>
+		<item label="微笑" name="Smile"/>
+		<item label="惊喜" name="Surprise"/>
+		<item label="眨眼" name="Wink"/>
+		<item label="担心" name="Worry"/>
 	</combo_box>
 	<text name="preview_label">
-		預覽…
+		预览…
 	</text>
-	<combo_box name="preview_base_anim" tool_tip="用這個來測試你的化身從一般姿勢轉入動畫演繹時的情況。">
-		<item label="站立" name="Standing" />
-		<item label="步行中" name="Walking" />
-		<item label="坐著" name="Sitting" />
-		<item label="飛行" name="Flying" />
+	<combo_box name="preview_base_anim" tool_tip="用这个来测试你的化身从一般姿势转入动画演绎时的情况。">
+		<item label="站立" name="Standing"/>
+		<item label="步行中" name="Walking"/>
+		<item label="坐着" name="Sitting"/>
+		<item label="飞行" name="Flying"/>
 	</combo_box>
-	<spinner label="緩入（秒）" name="ease_in_time" tool_tip="動畫混合緩入的時間長度（秒）" />
-	<spinner label="緩出（秒）" name="ease_out_time" tool_tip="動畫混合緩出的時間長度（秒）" />
-	<button name="play_btn" tool_tip="播放你的動畫" />
-	<button name="pause_btn" tool_tip="暫停你的動做" />
-	<button name="stop_btn" tool_tip="停止播放動畫" />
+	<spinner label="缓入（秒）" name="ease_in_time" tool_tip="动画混合缓入的时间长度（秒）"/>
+	<spinner label="缓出（秒）" name="ease_out_time" tool_tip="动画混合缓出的时间长度（秒）"/>
+	<button name="play_btn" tool_tip="播放你的动画"/>
+	<button name="pause_btn" tool_tip="暂停你的动做"/>
+	<button name="stop_btn" tool_tip="停止播放动画"/>
 	<text name="bad_animation_text">
-		無法讀取動畫檔案。我們建議採用由 Poser 4 匯出的 BVH 檔案格式。
+		无法读取动画文件。我们建议采用由 Poser 4 导出的 BVH 文件格式。
 	</text>
-	<button label="重新載入檔案" name="reload_btn" />
-	<button label="上傳（[AMOUNT]L$）" name="ok_btn" />
-	<button label="取消" name="cancel_btn" />
+	<button label="重新加载文件" name="reload_btn"/>
+	<button label="上传（[AMOUNT]L$）" name="ok_btn"/>
+	<button label="取消" name="cancel_btn"/>
 </floater>

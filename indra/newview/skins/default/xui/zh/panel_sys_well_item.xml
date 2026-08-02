@@ -2,6 +2,6 @@
 <!-- All our XML is utf-8 encoded. -->
 <panel name="sys_well_item" title="sys_well_item">
 	<text name="title">
-		注意鱒魚！注意！那個！鱒魚！
+		注意鳟鱼！注意！那个！鳟鱼！
 	</text>
 </panel>

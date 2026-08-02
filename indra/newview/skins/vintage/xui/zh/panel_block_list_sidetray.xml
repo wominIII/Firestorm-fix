@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="block_list_panel">
-	<string name="no_blocked" value="沒有被封鎖的居民或物件。"/>
-	<string name="no_filtered_blocked" value="沒有符合搜尋條件的被封鎖居民或物件。"/>
-	<string name="loading_blocked" value="正在載入被封鎖的居民和物件..."/>
-	<string name="failed_blocked" value="目前無法取得封鎖清單。"/>
-	<block_list name="blocked" tool_tip="當前被封鎖的居民列表" />
+	<string name="no_blocked" value="没有被封锁的居民或物件。"/>
+	<string name="no_filtered_blocked" value="没有符合搜索条件的被封锁居民或物件。"/>
+	<string name="loading_blocked" value="正在加载被封锁的居民和物件..."/>
+	<string name="failed_blocked" value="当前无法获取封锁列表。"/>
+	<block_list name="blocked" tool_tip="当前被封锁的居民列表" />
 	<text name="block_limit">
-		[COUNT] 個條目在您的封鎖列表中，限制為 [LIMIT]。
+		[COUNT] 个项目在您的封锁列表中，限制为 [LIMIT]。
 	</text>
 	<layout_stack name="block_list_sidetray_main">
 		<layout_panel name="back_button_container">
-			<button tool_tip="傳回人群選單" name="back" />
+			<button tool_tip="返回人群菜单" name="back"/>
 		</layout_panel>
 		<layout_panel name="block_list_blocklaypanels">
 			<layout_stack name="block_list_blocklaystack">
 				<layout_panel name="block_panels_btnsort">
-					<menu_button label="排序" name="view_btn" tool_tip="排序選項" />
+					<menu_button label="排序" name="view_btn" tool_tip="排序选项" />
 				</layout_panel>
 				<layout_panel name="block_panels_btnpersonobject">
-					<menu_button label="封鎖" name="plus_btn" tool_tip="選擇要封鎖的居民或物件" />
+					<menu_button label="封锁" name="plus_btn" tool_tip="选择要封锁的居民或物件" />
 				</layout_panel>
 				<layout_panel name="block_panels_btnunblock">
-					<button label="解除封鎖" name="unblock_btn" tool_tip="停止封鎖某個居民或物件" />
+					<button label="解除封锁" name="unblock_btn" tool_tip="停止封锁某个居民或物件" />
 				</layout_panel>
 			</layout_stack>
 		</layout_panel>

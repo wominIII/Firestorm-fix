@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="contact_sets_panel">
 	<panel.string name="empty_list">
-		此聯絡人分組為空。
+		此联系人分组为空。
 	</panel.string>
 	<panel.string name="no_sets">
-		沒有聯絡人分組
+		没有联系人分组
 	</panel.string>
 	<panel.string name="all_sets">
-		所有聯絡人分組
+		所有联系人分组
 	</panel.string>
 	<panel.string name="pseudonyms">
-		別名
+		别名
 	</panel.string>
 	<panel.string name="non_friends">
 		非好友
 	</panel.string>
-	<button name="config_btn" tool_tip="設定所選聯絡人分組" />
-	<button name="add_set_btn" tool_tip="新增新的聯絡人分組" />
-	<button name="remove_set_btn" tool_tip="移除所選聯絡人分組" />
-	<filter_editor label="依人員篩選" name="contact_sets_filter_input"/>
-	<button label="新增..." name="add_btn" tool_tip="向當前聯絡人分組新增一個化身" />
-	<button label="移動..." name="move_btn" tool_tip="將此化身移動到另一個聯絡人分組" />
-	<button label="移除..." name="remove_btn" tool_tip="從當前聯絡人分組中移除化身" />
-	<button label="個人檔案..." name="profile_btn" tool_tip="打開化身的個人檔案" />
-	<button label="私聊..." name="start_im_btn" tool_tip="打開私聊視窗" />
-	<button label="傳送..." name="offer_teleport_btn" tool_tip="向此化身提供傳送到您當前位置的選項" />
-	<button label="設定別名" name="set_pseudonym_btn" tool_tip="為此化身設定一個別名" />
-	<button label="移除別名" name="remove_pseudonym_btn" tool_tip="移除化身的別名" />
-	<button label="移除顯示名" name="remove_displayname_btn" tool_tip="移除化身的顯示名" />
+	<button name="config_btn" tool_tip="配置所选联系人分组"/>
+	<button name="add_set_btn" tool_tip="添加新的联系人分组"/>
+	<button name="remove_set_btn" tool_tip="移除所选联系人分组"/>
+	<filter_editor label="按人员筛选" name="contact_sets_filter_input"/>
+	<button label="添加..." name="add_btn" tool_tip="向当前联系人分组添加一个化身"/>
+	<button label="移動..." name="move_btn" tool_tip="将此化身移动到另一个联系人分组"/>
+	<button label="移除..." name="remove_btn" tool_tip="从当前联系人分组中移除化身"/>
+	<button label="个人档案..." name="profile_btn" tool_tip="打开化身的个人档案"/>
+	<button label="私聊..." name="start_im_btn" tool_tip="打开私聊窗口"/>
+	<button label="传送..." name="offer_teleport_btn" tool_tip="向此化身提供传送到您当前位置的选项"/>
+	<button label="设置别名" name="set_pseudonym_btn" tool_tip="为此化身设置一个别名"/>
+	<button label="移除别名" name="remove_pseudonym_btn" tool_tip="移除化身的别名"/>
+	<button label="移除显示名" name="remove_displayname_btn" tool_tip="移除化身的显示名"/>
 	<text name="member_count">
-		成員: [COUNT]
+		成员: [COUNT]
 	</text>
 </panel>

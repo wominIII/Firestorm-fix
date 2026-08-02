@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="contents" title="購買物件副本">
+<floater name="contents" title="购买物件副本">
 	<floater.string name="title_buy_text">
-		購買
+		购买
 	</floater.string>
 	<floater.string name="title_buy_copy_text">
-		購買一個
+		购买一个
 	</floater.string>
 	<floater.string name="no_copy_text">
-		（禁止複製）
+		（禁止复制）
 	</floater.string>
 	<floater.string name="no_modify_text">
 		（禁止修改）
 	</floater.string>
 	<floater.string name="no_transfer_text">
-		（禁止轉讓）
+		（禁止转让）
 	</floater.string>
 	<floater.string name="multiple_selected">
-		多選
+		多选
 	</floater.string>
 	<text name="contents_text">
-		內含：
+		内含：
 	</text>
 	<text name="buy_text">
-		支付 [AMOUNT] L$ 給：
+		支付 [AMOUNT] L$ 给：
 	</text>
 	<text name="buy_name_text">
 		[NAME]？
 	</text>
-	<button label="購買" label_selected="購買" name="buy_btn" />
-	<button label="取消" label_selected="取消" name="cancel_btn" />
+	<button label="购买" label_selected="购买" name="buy_btn"/>
+	<button label="取消" label_selected="取消" name="cancel_btn"/>
 </floater>

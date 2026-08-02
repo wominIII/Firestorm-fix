@@ -2,13 +2,13 @@
 <panel name="edit_physics_panel">
 	<panel name="accordion_panel">
 		<accordion name="physics_accordion">
-			<accordion_tab name="physics_breasts_updown_tab" title="乳房彈性" />
-			<accordion_tab name="physics_breasts_inout_tab" title="乳溝深淺" />
-			<accordion_tab name="physics_breasts_leftright_tab" title="乳房搖擺" />
-			<accordion_tab name="physics_belly_tab" title="腹部彈性" />
-			<accordion_tab name="physics_butt_tab" title="臀部彈性" />
-			<accordion_tab name="physics_butt_leftright_tab" title="臀部搖擺" />
-			<accordion_tab name="physics_advanced_tab" title="進階參數" />
+			<accordion_tab name="physics_breasts_updown_tab" title="乳房弹性"/>
+			<accordion_tab name="physics_breasts_inout_tab" title="乳沟深浅"/>
+			<accordion_tab name="physics_breasts_leftright_tab" title="乳房摇摆"/>
+			<accordion_tab name="physics_belly_tab" title="腹部弹性"/>
+			<accordion_tab name="physics_butt_tab" title="臀部弹性"/>
+			<accordion_tab name="physics_butt_leftright_tab" title="臀部摇摆"/>
+			<accordion_tab name="physics_advanced_tab" title="进阶参数"/>
 		</accordion>
 	</panel>
 </panel>

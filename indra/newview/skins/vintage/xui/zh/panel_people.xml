@@ -1,82 +1,82 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="人群" name="people_panel">
-	<string name="no_recent_people" value="沒有最近的人。 想找人見面聊天？ 請試試[secondlife:///app/search/people 搜尋]或[secondlife:///app/worldmap 世界地圖]。" />
-	<string name="no_filtered_recent_people" value="找不到你要找的嗎？ 請試試[secondlife:///app/search/people/[SEARCH_TERM] 搜尋]。" />
-	<string name="no_one_near" value="附近無人。 想找人見面聊天？ 請試試[secondlife:///app/search/people 搜尋]或[secondlife:///app/worldmap 世界地圖]。" />
-	<string name="no_one_filtered_near" value="找不到你要找的嗎？ 請試試[secondlife:///app/search/people/[SEARCH_TERM] 搜尋]。" />
-	<string name="no_friends_online" value="無朋友上線" />
-	<string name="no_friends" value="無朋友" />
+	<string name="no_recent_people" value="没有最近的人。 想找人见面聊天？ 请试试[secondlife:///app/search/people 搜索]或[secondlife:///app/worldmap 世界地图]。"/>
+	<string name="no_filtered_recent_people" value="找不到你要找的吗？ 请试试[secondlife:///app/search/people/[SEARCH_TERM] 搜索]。"/>
+	<string name="no_one_near" value="附近无人。 想找人见面聊天？ 请试试[secondlife:///app/search/people 搜索]或[secondlife:///app/worldmap 世界地图]。"/>
+	<string name="no_one_filtered_near" value="找不到你要找的吗？ 请试试[secondlife:///app/search/people/[SEARCH_TERM] 搜索]。"/>
+	<string name="no_friends_online" value="无朋友上线"/>
+	<string name="no_friends" value="无朋友"/>
 	<string name="no_friends_msg">
-		通過 [secondlife:///app/search/people 朋友] 搜尋好友，或右鍵單擊居民並列送好友申請。
-想認識新朋友？請嘗試使用 [secondlife:///app/worldmap 世界地圖]。
+		通过 [secondlife:///app/search/people 朋友] 搜索好友，或右键单击居民并发送好友申请。
+想认识新朋友？请尝试使用 [secondlife:///app/worldmap 世界地图]。
 	</string>
 	<string name="no_filtered_friends_msg">
-		找不到你要找的嗎？ 請試試[secondlife:///app/search/people/[SEARCH_TERM] 搜尋]。
+		找不到你要找的吗？ 请试试[secondlife:///app/search/people/[SEARCH_TERM] 搜索]。
 	</string>
-	<string name="people_filter_label" value="過濾人員" />
-	<string name="groups_filter_label" value="過濾群組" />
-	<string name="no_filtered_groups_msg" value="沒有找到合適的內容？嘗試使用 [secondlife:///app/search/groups/[SEARCH_TERM] 搜尋]。" />
-	<string name="no_groups_msg" value="正在尋找群組？嘗試使用 [secondlife:///app/search/groups 搜尋]。" />
-	<string name="MiniMapToolTipMsg" value="[REGION]（雙擊打開地圖；按住Shift並拖動以平移）" />
-	<string name="AltMiniMapToolTipMsg" value="[REGION]（雙擊以傳送；按住Shift並拖動以平移）" />
-	<string name="GroupCountWithInfo" value="你已加入 [COUNT] 個群組，還可以加入 [REMAINING] 個。[secondlife:/// 想查看更多？]"/>
-	<string name="avatar_name_count" value="名稱 [[TOTAL] / [IN_REGION] / [IN_CHAT_RANGE]]" />
+	<string name="people_filter_label" value="过滤人员" />
+	<string name="groups_filter_label" value="过滤群组" />
+	<string name="no_filtered_groups_msg" value="没有找到合适的内容？尝试使用 [secondlife:///app/search/groups/[SEARCH_TERM] 搜索]。"/>
+	<string name="no_groups_msg" value="正在寻找群组？尝试使用 [secondlife:///app/search/groups 搜索]。"/>
+	<string name="MiniMapToolTipMsg" value="[REGION]（双击打开地图；按住Shift并拖动以平移）"/>
+	<string name="AltMiniMapToolTipMsg" value="[REGION]（双击以传送；按住Shift并拖动以平移）"/>
+	<string name="GroupCountWithInfo" value="你已加入 [COUNT] 个群组，还可以加入 [REMAINING] 个。[secondlife:/// 想查看更多？]"/>
+	<string name="avatar_name_count" value="名称 [[TOTAL] / [IN_REGION] / [IN_CHAT_RANGE]]" />
 	<string name="empty_list">
-		此聯絡人分組為空。
+		此联系人分组为空。
 	</string>
 	<string name="no_sets">
-		無聯絡人分組
+		无联系人分组
 	</string>
 	<string name="all_sets">
-		所有聯絡人分組
+		所有联系人分组
 	</string>
 	<string name="pseudonyms">
-		別名
+		别名
 	</string>
 	<tab_container name="tabs">
 		<panel label="附近的人" name="nearby_panel">
 			<tab_container name="tabcont_radarpeople_main">
-				<panel name="panel_radar" label="列表" />
-				<panel name="radarmap_options_panel" label="選項">
-					<scroll_container label="選項" name="radarmap_options_scroll_container">
-						<container_view name="radarmap_options_container_view" label="選項">
+				<panel name="panel_radar" label="列表"/>
+				<panel name="radarmap_options_panel" label="选项">
+					<scroll_container label="选项" name="radarmap_options_scroll_container">
+						<container_view name="radarmap_options_container_view" label="选项">
 							<panel name="radarmap_options_scrolled_panel">
-								<check_box label="在雷達上方顯示地圖" name="ShowRadarMinimap" />
-								<check_box label="顯示被忽略和被傳送的居民" name="FSRadarShowMutedAndDerendered" />
-								<check_box label="報告進入繪製距離" name="RadarReportDrawRangeEnter" />
-								<check_box label="報告離開繪製距離" name="RadarReportDrawRangeLeaving" />
-								<check_box label="報告進入聊天範圍" name="RadarReportChatRangeEnter" />
-								<check_box label="報告離開聊天範圍" name="RadarReportChatRangeLeave" />
-								<check_box label="報告進入區域" name="RadarReportSimRangeEnter" />
-								<check_box label="報告離開區域" name="RadarReportSimRangeLeave" />
-								<check_box label="將進入訊息傳送到指令碼" name="RadarEnterChannelAlert" />
-								<check_box label="將退出訊息傳送到指令碼" name="RadarLeaveChannelAlert" />
-								<check_box label="使用LSL橋" tool_tip="如果啟用，將使用LSL橋來支援確定超出繪製距離的頭貼位置，特別是當他們位於高空時" name="FSRadarEnhanceByBridge" />
-								<check_box label="根據距離著色姓名" name="FSRadarColorNamesByDistance" />
-								<check_box label="範圍：" tool_tip="限制範圍至定義的半徑" name="LimitRadarByRange" />
-								<text name="radarmap_range_label" value="雷達姓名格式：" />
+								<check_box label="在雷达上方显示地图" name="ShowRadarMinimap"/>
+								<check_box label="显示被忽略和被发送的居民" name="FSRadarShowMutedAndDerendered"/>
+								<check_box label="报告进入绘制距离" name="RadarReportDrawRangeEnter"/>
+								<check_box label="报告离开绘制距离" name="RadarReportDrawRangeLeaving"/>
+								<check_box label="报告进入聊天范围" name="RadarReportChatRangeEnter"/>
+								<check_box label="报告离开聊天范围" name="RadarReportChatRangeLeave"/>
+								<check_box label="报告进入区域" name="RadarReportSimRangeEnter"/>
+								<check_box label="报告离开区域" name="RadarReportSimRangeLeave"/>
+								<check_box label="将进入消息发送到脚本" name="RadarEnterChannelAlert"/>
+								<check_box label="将退出消息发送到脚本" name="RadarLeaveChannelAlert"/>
+								<check_box label="使用LSL桥" tool_tip="如果激活，将使用LSL桥来支持确定超出绘制距离的化身位置，特别是当他们位于高空时" name="FSRadarEnhanceByBridge"/>
+								<check_box label="根据距离着色姓名" name="FSRadarColorNamesByDistance"/>
+								<check_box label="范围：" tool_tip="限制范围至定义的半径" name="LimitRadarByRange" />
+								<text name="radarmap_range_label" value="雷达姓名格式：" />
 								<combo_box name="RadarNameFormat">
-									<combo_box.item name="RadarNameFormat_display" label="顯示名" />
-									<combo_box.item name="RadarNameFormat_user" label="使用者名稱" />
-									<combo_box.item name="RadarNameFormat_displayuser" label="顯示名（使用者名稱）" />
-									<combo_box.item name="RadarNameFormat_userdisplay" label="使用者名稱（顯示名）" />
+									<combo_box.item name="RadarNameFormat_display" label="显示名" />
+									<combo_box.item name="RadarNameFormat_user" label="用户名" />
+									<combo_box.item name="RadarNameFormat_displayuser" label="显示名（用户名）" />
+									<combo_box.item name="RadarNameFormat_userdisplay" label="用户名（显示名）" />
 								</combo_box>
-								<text name="columns_label" value="顯示列：" />
-								<check_box label="語音" name="column_voice" />
-								<check_box label="時間" name="column_seen" />
-								<check_box label="年齡" name="column_age" />
-								<check_box label="同一區域" name="column_region" />
-								<check_box label="打字狀態" name="column_typing_status" />
-								<check_box label="坐姿狀態" name="column_sitting_status" />
-								<check_box label="有支付資訊狀態" name="column_flags" />
-								<check_box label="有簡介" name="notes_flags" />
+								<text name="columns_label" value="显示列：" />
+								<check_box label="语音" name="column_voice"/>
+								<check_box label="时间" name="column_seen"/>
+								<check_box label="年龄" name="column_age"/>
+								<check_box label="同一区域" name="column_region"/>
+								<check_box label="打字状态" name="column_typing_status"/>
+								<check_box label="坐姿状态" name="column_sitting_status"/>
+								<check_box label="有支付信息状态" name="column_flags"/>
+								<check_box label="有简介" name="notes_flags"/>
 							</panel>
 						</container_view>
 					</scroll_container>
 				</panel>
 			</tab_container>
 		</panel>
-		<panel label="最近" name="recent_panel" />
-		<panel label="已封鎖的" name="blocked_panel" />
+		<panel label="最近" name="recent_panel"/>
+		<panel label="已封锁的" name="blocked_panel"/>
 	</tab_container>
 </panel>

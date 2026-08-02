@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="delete_pref_preset" title="刪除偏好預設">
+<floater name="delete_pref_preset" title="删除偏好预设">
 	<string name="title_graphic">
-		刪除預設顯示
+		删除默认显示
 	</string>
 	<string name="title_camera">
-		刪除預設相機
+		删除默认相机
 	</string>
 	<text name="Preset">
-		選擇一個預設
+		选择一个预设
 	</text>
-	<button label="刪除" name="delete" />
-	<button label="取消" name="cancel" />
+	<button label="删除" name="delete"/>
+	<button label="取消" name="cancel"/>
 </floater>

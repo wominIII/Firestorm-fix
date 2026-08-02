@@ -4,12 +4,12 @@
 		未穿戴任何附件。
 	</panel.string>
 	<accordion name="wearables_accordion">
-		<accordion_tab name="tab_wearables" title="已穿裝扮" />
-		<accordion_tab name="tab_temp_attachments" title="臨時附件" />
+		<accordion_tab name="tab_wearables" title="已穿装扮"/>
+		<accordion_tab name="tab_temp_attachments" title="临时附件"/>
 	</accordion>
 	<panel name="bottom_panel">
 		<text name="avatar_complexity_label">
-			複雜度: [WEIGHT]
+			复杂度: [WEIGHT]
 		</text>
 	</panel>
 </panel>

@@ -41,6 +41,7 @@
 #include "llfloatersidepanelcontainer.h"
 #include "llinspecttexture.h"
 #include "llinventorymodelbackgroundfetch.h"
+#include "llinventorybridge.h"
 #include "llinventoryfunctions.h"
 #include "llinventorymodel.h"
 #include "llmenubutton.h"
@@ -66,6 +67,12 @@ static bool is_tab_header_clicked(LLOutfitAccordionCtrlTab* tab, S32 y);
 
 static const LLOutfitTabNameComparator OUTFIT_TAB_NAME_COMPARATOR;
 static const LLOutfitTabFavComparator OUTFIT_TAB_FAV_COMPARATOR;
+
+static std::string get_outfit_display_name(const LLUUID& id, const std::string& original_name)
+{
+    const std::string local_label = FSInventoryLocalLabels::instance().get(id);
+    return local_label.empty() ? original_name : local_label + "  ·  " + original_name;
+}
 
 /*virtual*/
 bool LLOutfitTabNameComparator::compare(const LLAccordionCtrlTab* tab1, const LLAccordionCtrlTab* tab2) const
@@ -216,7 +223,7 @@ void LLOutfitsList::updateAddedCategory(LLUUID cat_id)
     tab->addChild(wearable_list);
 
     tab->setName(name);
-    tab->setTitle(name);
+    tab->setTitle(get_outfit_display_name(cat_id, name));
     tab->setFavorite(cat->getIsFavorite());
 
     // *TODO: LLUICtrlFactory::defaultBuilder does not use "display_children" from xml. Should be investigated.
@@ -574,7 +581,7 @@ void LLOutfitsList::updateChangedCategoryName(LLViewerInventoryCategory *cat, st
         if (tab)
         {
             tab->setName(name);
-            tab->setTitle(name);
+            tab->setTitle(get_outfit_display_name(cat->getUUID(), name));
             tab->setFavorite(cat->getIsFavorite());
         }
     }
@@ -1425,6 +1432,7 @@ LLContextMenu* LLOutfitContextMenu::createMenu()
         boost::bind(&LLAppearanceMgr::takeOffOutfit, &LLAppearanceMgr::instance(), selected_id));
     registrar.add("Outfit.Edit", boost::bind(editOutfit));
     registrar.add("Outfit.Rename", boost::bind(renameOutfit, selected_id));
+    registrar.add("Outfit.LocalLabel", boost::bind(&LLOutfitContextMenu::onLocalLabel, this, selected_id));
     registrar.add("Outfit.Delete", boost::bind(&LLOutfitListBase::removeSelected, mOutfitList));
     registrar.add("Outfit.Thumbnail", boost::bind(&LLOutfitContextMenu::onThumbnail, this, selected_id));
     registrar.add("Outfit.Favorite", boost::bind(&LLOutfitContextMenu::onFavorite, this, selected_id));
@@ -1501,6 +1509,11 @@ void LLOutfitContextMenu::editOutfit()
 void LLOutfitContextMenu::renameOutfit(const LLUUID& outfit_cat_id)
 {
     LLAppearanceMgr::instance().renameOutfit(outfit_cat_id);
+}
+
+void LLOutfitContextMenu::onLocalLabel(const LLUUID& outfit_cat_id)
+{
+    FSInventoryLocalLabels::instance().edit(outfit_cat_id);
 }
 
 void LLOutfitContextMenu::onThumbnail(const LLUUID &outfit_cat_id)

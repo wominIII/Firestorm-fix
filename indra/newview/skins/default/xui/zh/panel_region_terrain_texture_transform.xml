@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="地形" name="Terrain">
 	<text name="region_text_lbl">
-		區域：
+		区域：
 	</text>
 	<text name="region_text">
 		未知
 	</text>
 	<text name="detail_texture_text">
-		地形紋理
+		地形纹理
 	</text>
 	<text name="detail_material_text">
-		地形材質
+		地形材质
 	</text>
-	<check_box label="PBR金屬粗糙度" name="terrain_material_type" tool_tip="啟用後，將對地形使用PBR金屬粗糙度材質。否則將使用紋理。" />
+	<check_box label="PBR金属粗糙度" name="terrain_material_type" tool_tip="启用后，将对地形使用PBR金属粗糙度材质。否则将使用纹理。"/>
 	<text name="height_text_lbl">
 		1（低）
 	</text>
@@ -29,9 +29,9 @@
 		<layout_panel name="frame_settings_terrain">
 			<tab_container name="terrain_tabs">
 				<panel label="海拔" name="terrain_elevation_panel" />
-				<panel label="變換" name="terrain_transform_panel" />
+				<panel label="变换" name="terrain_transform_panel" />
 			</tab_container>
 		</layout_panel>
 	</layout_stack>
-	<button label="應用" name="apply_btn" />
+	<button label="应用" name="apply_btn"/>
 </panel>

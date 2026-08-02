@@ -1,66 +1,66 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="基本資料" name="general_tab">
+<panel label="基本数据" name="general_tab">
 	<panel.string name="help_text">
-		基本資料索引標籤包含關於群組的基本資訊、 成員名單、群組偏好設定和成員選項。
+		基本数据选项卡包含关于群组的基本信息、 成员名单、群组偏好设置和成员选项。
 
-將滑鼠懸停到選項上，可取得更多幫助。
+将鼠标悬停到选项上，可获取更多帮助。
 	</panel.string>
 	<panel.string name="group_info_unchanged">
-		基本群組資訊已經被變更
+		基本群组信息已经被变更
 	</panel.string>
 	<panel.string name="incomplete_member_data_str">
-		正在取得成員資料
+		正在获取成员数据
 	</panel.string>
 	<panel name="group_general_panel">
 		<text name="group_key_label">
-			群組 UUID：
+			群组 UUID：
 		</text>
-		<text_editor name="group_key" label="群組 UUID：" initial_value="(正在載入...)" />
-		<button name="copy_uri" label="複製 URI" />
+		<text_editor name="group_key" label="群组 UUID：" initial_value="(正在加载...)"/>
+		<button name="copy_uri" label="复制 URI"/>
 		<text name="prepend_founded_by">
-			創辦人：
+			创办人：
 		</text>
-		<text initial_value="(正在載入...)" name="founder_name" />
-		<button name="copy_name" label="複製名字" />
+		<text initial_value="(正在加载...)" name="founder_name"/>
+		<button name="copy_name" label="复制名字"/>
 		<text_editor name="charter">
-			群組章程
+			群组章程
 		</text_editor>
 		<text name="join_cost_text">
-			免費
+			免费
 		</text>
-		<button label="現在就加入!!" name="btn_join" />
+		<button label="现在就加入!!" name="btn_join"/>
 		<name_list name="visible_members">
-			<name_list.columns label="成員" name="name" />
-			<name_list.columns label="頭銜" name="title" />
-			<name_list.columns label="狀態" name="status" />
+			<name_list.columns label="成员" name="name"/>
+			<name_list.columns label="头衔" name="title"/>
+			<name_list.columns label="状态" name="status"/>
 		</name_list>
 		<layout_stack name="group_preferences_layout">
 			<layout_panel name="user_preferences_container">
 				<text name="my_group_settngs_label">
 					我自己
 				</text>
-				<check_box label="顯示在我的檔案中" name="list_groups_in_profile" tool_tip="設定你是否要在你個人檔案上顯示這個群組" />
-				<check_box label="接受群組通知" name="receive_notices" tool_tip="設定你是否要接收來自這群組的通知。  如果該群組對你傳送太多垃圾資訊，你可以不要勾選此選項。" />
-				<check_box label="接收群組討論" name="receive_chat" tool_tip="是否要接收群組聊天資訊。" />
+				<check_box label="显示在我的档案中" name="list_groups_in_profile" tool_tip="设置你是否要在你个人档案上显示这个群组"/>
+				<check_box label="接受群组通知" name="receive_notices" tool_tip="设置你是否要接收来自这群组的通知。  如果该群组对你发送太多垃圾信息，你可以不要勾选此项目。"/>
+				<check_box label="接收群组讨论" name="receive_chat" tool_tip="是否要接收群组聊天信息。"/>
 				<text name="active_title_label">
-					我的頭銜：
+					我的头衔：
 				</text>
-				<combo_box tool_tip="這將設定當群組有效時，顯示於你化身名稱標籤的頭銜。" name="active_title" />
+				<combo_box tool_tip="这将设置当群组有效时，显示于你化身名称标签的头衔。" name="active_title"/>
 			</layout_panel>
 			<layout_panel name="group_preferences_container">
 				<text name="group_settngs_label">
-					群組設定
+					群组设置
 				</text>
-				<check_box label="在搜尋結果中顯示" name="show_in_group_list" tool_tip="在搜尋結果中顯示此群組" />
-				<check_box label="任何人都可以加入" name="open_enrollement" tool_tip="設定這個群組是否允許新成員未受邀請自行加入。" />
-				<check_box label="加入費用" name="check_enrollment_fee" tool_tip="設定是否要徵收群組加入費" />
-				<spinner label="L$" name="spin_enrollment_fee" tool_tip="若勾選加入費，新成員必須支付這筆費用才能加入群組。" />
-				<combo_box name="group_mature_check" tool_tip="內容分級設定群組裡允許的內容類型和行為">
+				<check_box label="在搜索结果中显示" name="show_in_group_list" tool_tip="在搜索结果中显示此群组"/>
+				<check_box label="任何人都可以加入" name="open_enrollement" tool_tip="设置这个群组是否允许新成员未受邀请自行加入。"/>
+				<check_box label="加入费用" name="check_enrollment_fee" tool_tip="设置是否要征收群组加入费"/>
+				<spinner label="L$" name="spin_enrollment_fee" tool_tip="若勾选加入费，新成员必须支付这笔费用才能加入群组。"/>
+				<combo_box name="group_mature_check" tool_tip="内容分级设置群组里允许的内容类型和行为">
 					<combo_item name="select_mature">
-						- 選擇內容分級 -
+						- 选择内容分级 -
 					</combo_item>
-					<combo_box.item label="適度成人內容" name="mature" />
-					<combo_box.item label="一般普級內容" name="pg" />
+					<combo_box.item label="适度成人内容" name="mature"/>
+					<combo_box.item label="一般普级内容" name="pg"/>
 				</combo_box>
 			</layout_panel>
 		</layout_stack>

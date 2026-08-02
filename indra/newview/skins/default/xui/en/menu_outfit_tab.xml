@@ -90,6 +90,13 @@
          parameter="rename" />
     </menu_item_call>
     <menu_item_call
+     label="Edit Local Label..."
+     layout="topleft"
+     name="local_label">
+        <on_click
+         function="Outfit.LocalLabel" />
+    </menu_item_call>
+    <menu_item_call
      label="Save to this Outfit"
      layout="topleft"
      name="save">

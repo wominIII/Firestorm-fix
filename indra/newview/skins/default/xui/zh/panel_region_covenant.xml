@@ -1,80 +1,80 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="契約" name="Covenant">
+<panel label="契约" name="Covenant">
 	<text name="estate_section_lbl">
-		領地
+		领地
 	</text>
 	<text name="estate_name_lbl">
-		名稱：
+		名称：
 	</text>
 	<text name="estate_name_text">
-		大陸
+		大陆
 	</text>
 	<text name="estate_owner_lbl">
 		所有者：
 	</text>
 	<text name="estate_owner_text">
-		（無）
+		（无）
 	</text>
 	<text name="estate_cov_lbl">
-		契約：
+		契约：
 	</text>
 	<text name="covenant_timestamp_text">
-		上次修改於 Wed Dec 31 16:00:00 1969
+		上次修改于 Wed Dec 31 16:00:00 1969
 	</text>
-	<button label="?" name="covenant_help" />
+	<button label="?" name="covenant_help"/>
 	<text_editor bottom="-247" height="162" name="covenant_editor">
-		此領地沒有任何契約要求。
+		此领地没有任何契约要求。
 	</text_editor>
-	<button label="重設" name="reset_covenant" />
+	<button label="重置" name="reset_covenant"/>
 	<text name="covenant_help_text">
-		契約修訂內容將顯示於領地裡所有地塊。
+		契约修订内容将显示于领地里所有地块。
 	</text>
 	<text bottom_delta="-36" name="covenant_instructions">
-		拖放一張記事卡，即可修訂領地契約。
+		拖放一张记事卡，即可修订领地契约。
 	</text>
 	<text bottom_delta="-36" name="region_section_lbl">
-		區域
+		区域
 	</text>
 	<text name="region_name_lbl">
-		名稱：
+		名称：
 	</text>
 	<text name="region_name_text">
 		Erica
 	</text>
 	<text name="region_landtype_lbl">
-		類型：
+		类型：
 	</text>
 	<text name="region_landtype_text">
-		大陸 / 家園
+		大陆 / 家园
 	</text>
 	<text name="region_maturity_lbl">
-		分級：
+		分级：
 	</text>
 	<text name="region_maturity_text">
 		完全成人
 	</text>
 	<text name="resellable_lbl">
-		轉售：
+		转售：
 	</text>
 	<text name="resellable_clause">
-		這區域的土地不能轉售。
+		这区域的土地不能转售。
 	</text>
 	<text name="changeable_lbl">
 		分割：
 	</text>
 	<text name="changeable_clause">
-		這區域的土地不能合併或分割。
+		这区域的土地不能合并或分割。
 	</text>
 	<string name="can_resell">
-		購買這區域的土地允許轉售。
+		购买这区域的土地允许转售。
 	</string>
 	<string name="can_not_resell">
-		購買這區域的土地不允許轉售。
+		购买这区域的土地不允许转售。
 	</string>
 	<string name="can_change">
-		購買這區域的土地允許進行合併或分割。
+		购买这区域的土地允许进行合并或分割。
 	</string>
 	<string name="can_not_change">
-		購買這區域的土地不允許進行合併或分割。
+		购买这区域的土地不允许进行合并或分割。
 	</string>
 </panel>

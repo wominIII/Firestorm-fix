@@ -5,55 +5,55 @@
       <key>Name</key>
       <string>smileys and emotion</string>
       <key>Category</key>
-      <string>笑脸</string>
+      <string>笑脸和情绪</string>
     </map>
     <map>
       <key>Name</key>
       <string>people and body</string>
       <key>Category</key>
-      <string>人体</string>
+      <string>人和身体</string>
     </map>
     <map>
       <key>Name</key>
       <string>components</string>
       <key>Category</key>
-      <string>组件</string>
+      <string>元素</string>
     </map>
     <map>
       <key>Name</key>
       <string>animals and nature</string>
       <key>Category</key>
-      <string>野生动物</string>
+      <string>动物和自然</string>
     </map>
     <map>
       <key>Name</key>
       <string>food and drink</string>
       <key>Category</key>
-      <string>食物飲料</string>
+      <string>食物和饮料</string>
     </map>
     <map>
       <key>Name</key>
       <string>travel and places</string>
       <key>Category</key>
-      <string>旅遊地點</string>
+      <string>旅行和地点</string>
     </map>
     <map>
       <key>Name</key>
       <string>activities</string>
       <key>Category</key>
-      <string>个人活动</string>
+      <string>活动</string>
     </map>
     <map>
       <key>Name</key>
       <string>objects</string>
       <key>Category</key>
-      <string>物件</string>
+      <string>物品</string>
     </map>
     <map>
       <key>Name</key>
       <string>symbols</string>
       <key>Category</key>
-      <string>人的符号</string>
+      <string>符号</string>
     </map>
   </array>
 </llsd>

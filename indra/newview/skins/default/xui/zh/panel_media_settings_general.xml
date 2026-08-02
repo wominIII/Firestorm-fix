@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="基本設定" name="Media Settings General">
+<panel label="基本设置" name="Media Settings General">
 	<text name="home_label">
-		首頁：
+		首页：
 	</text>
 	<text name="home_fails_whitelist_label">
-		（這頁面未通過所指定的許可清單）
+		（这页面未通过所指定的许可清单）
 	</text>
-	<line_editor name="home_url" tool_tip="這個媒體來源的首頁" />
+	<line_editor name="home_url" tool_tip="这个媒体来源的首页"/>
 	<text name="preview_label">
-		預覽
+		预览
 	</text>
 	<text name="current_url_label">
-		當前頁面：
+		当前页面：
 	</text>
-	<text name="current_url" tool_tip="這個媒體來源當前的頁面" value="" />
-	<button label="重設" name="current_url_reset_btn" />
-	<check_box initial_value="false" label="自動連續播放" name="auto_loop" />
-	<check_box initial_value="false" label="第一次點擊將進行互動" name="first_click_interact" />
-	<check_box initial_value="false" label="自動縮放" name="auto_zoom" />
-	<check_box initial_value="false" label="自動播放媒體" name="auto_play" />
+	<text name="current_url" tool_tip="这个媒体来源当前的页面" value=""/>
+	<button label="重置" name="current_url_reset_btn"/>
+	<check_box initial_value="false" label="自动连续播放" name="auto_loop"/>
+	<check_box initial_value="false" label="第一次点击将进行交互" name="first_click_interact"/>
+	<check_box initial_value="false" label="自动缩放" name="auto_zoom"/>
+	<check_box initial_value="false" label="自动播放媒体" name="auto_play"/>
 	<text name="media_setting_note">
-		注意：居民可以否定這項設定
+		注意：居民可以否定这项设置
 	</text>
-	<check_box initial_value="false" label="物件面上的媒體自動調整比例" name="auto_scale" />
+	<check_box initial_value="false" label="物件面上的媒体自动调整比例" name="auto_scale"/>
 	<text name="size_label">
 		尺寸：
 	</text>

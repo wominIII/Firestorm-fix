@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater title="相片工具" name="phototools">
+<floater title="照片工具" name="phototools">
 	<tab_container name="tabs">
-		<panel name="EnvironmentTab" label="環境">
+		<panel name="EnvironmentTab" label="环境">
 			<panel name="PT_WL_Settings">
 				<text name="T_WL_Settings">
-					環境設定
+					环境设置
 				</text>
 			</panel>
 			<panel name="P_WL_Sky_Water">
-				<text name="WL Sky" tool_tip="選擇和管理天空預設以調整大氣光照。">
+				<text name="WL Sky" tool_tip="选择和管理天空预设以调整大气光照。">
 					天空
 				</text>
-				<text name="WL Water" tool_tip="選擇水面預設來修改反射和表面屬性。">
+				<text name="WL Water" tool_tip="选择水面预设以修改反射和表面属性。">
 					水
 				</text>
-				<text name="Day Cycle" tool_tip="管理晝夜循環預設來控制基於時間的環境變化。">
-					晝夜循環
+				<text name="Day Cycle" tool_tip="管理日循环预设以控制基于时间的环境变化。">
+					日循环
 				</text>
 			</panel>
 			<panel name="P_WL_Sky_Water_2">
-				<button name="btn_personal_lighting" label="個人光照" tool_tip="此操作將打開個人光照窗口。個人光照窗口用於對您所在環境進行臨時調整。這對於攝影或根據個人喜好進行更改非常有用。請注意，這不是用於創建您自己的環境設置資產，且更改無法保存。"/>
-				<button name="PauseClouds" label="暫停雲層" tool_tip="暫停動態雲移動以實現靜態天空構圖。"/>
+				<button name="btn_personal_lighting" label="个人光照" tool_tip="此操作将打开个人光照窗口。个人光照窗口用于对您所在环境进行临时调整。这对于摄影或根据个人喜好进行更改非常有用。请注意，这不是用于创建您自己的环境设置资产，且更改无法保存。"/>
+				<button name="PauseClouds" label="暂停云层" tool_tip="暂停动态云移动以实现静态天空构图。"/>
 			</panel>
 			<panel name="P_Q_Windlights">
 				<text name="T_Q_Windlights">
-					標準環境
+					标准环境
 				</text>
-				<button name="Sunrise" label="日出" tool_tip="將環境設置為日出光照條件。"/>
-				<button name="Noon" label="正午" tool_tip="調整光照以模擬正午的亮度。"/>
-				<button name="Sunset" label="日落" tool_tip="應用日落光照以呈現溫暖的金色色調。"/>
-				<button name="Midnight" label="午夜" tool_tip="切換到夜間設置以適應低光環境。"/>
-				<button name="Revert to Region Default" label="恢復到共享環境" tool_tip="恢復到區域的共享環境設置。"/>
+				<button name="Sunrise" label="日出" tool_tip="将环境设置为日出光照条件。"/>
+				<button name="Noon" label="正午" tool_tip="调整光照以模拟正午的亮度。"/>
+				<button name="Sunset" label="日落" tool_tip="应用日落光照以呈现温暖的金色色调。"/>
+				<button name="Midnight" label="午夜" tool_tip="切换到夜间设置以适应低光环境。"/>
+				<button name="Revert to Region Default" label="恢复到共享环境" tool_tip="恢复到区域的共享环境设置。"/>
 			</panel>
 			<panel name="P_WL_Presets">
 				<text name="T_WL_Presets">
-					環境預設
+					环境预设
 				</text>
-				<button name="new_sky_preset" label="新天空" tool_tip="基於當前加載的天空設置創建新的環境預設。"/>
-				<button name="new_water_preset" label="新水文" tool_tip="基於當前加載的水文設置創建新的環境預設。"/>
-				<button name="new_day_preset" label="新晝夜循環" tool_tip="基於當前加載的晝夜循環設置創建新的環境預設。"/>
+				<button name="new_sky_preset" label="新天空" tool_tip="基于当前加载的天空设置创建新的环境预设。"/>
+				<button name="new_water_preset" label="新水文" tool_tip="基于当前加载的水文设置创建新的环境预设。"/>
+				<button name="new_day_preset" label="新日循环" tool_tip="基于当前加载的日循环设置创建新的环境预设。"/>
 			</panel>
 			<panel name="P_W_Reflections">
 				<text name="T_W_Reflections">
-					反射設定
+					反射设置
 				</text>
 			</panel>
 			<panel name="P_R_Res">
-				<check_box label="启用透明水面" name="TransparentWater" tool_tip="将水面彩現为透明。禁用后，水面将以不透明的简单纹理彩現。"/>
+				<check_box label="启用透明水面" name="TransparentWater" tool_tip="将水面渲染为透明。禁用后，水面将以不透明的简单纹理渲染。"/>
 				<check_box label="启用屏幕空间反射" name="ScreenSpaceReflections" tool_tip="启用基于屏幕当前视图的反射。为相机视野内的物体提供逼真的反射效果，但可能会遗漏屏幕外的细节。根据场景复杂性，可能影响性能。"/>
-				<check_box label="启用镜面反射" name="Mirrors" tool_tip="启用实时镜面反射。准确反射环境，包括物件和化身，但由于额外的彩現负载，可能显著影响性能。"/>
-				<check_box label="启用反射探針选择" name="checkbox select probes" tool_tip="启用后可在场景中选择并检查反射探針。"/>
+				<check_box label="启用镜面反射" name="Mirrors" tool_tip="启用实时镜面反射。准确反射环境，包括物件和化身，但由于额外的渲染负载，可能显著影响性能。"/>
+				<check_box label="启用反射探针选择" name="checkbox select probes" tool_tip="启用后可在场景中选择并检查反射探针。"/>
 			</panel>
 			<panel name="P_R_Res_2">
-				<text name="ReflectionDetailText" tool_tip="决定反射细节级别。「仅静态」仅反射静止物件，更高设置包含动态物件和实时反射。">
+				<text name="ReflectionDetailText" tool_tip="决定反射细节级别。“仅静态”仅反射静止物件，更高设置包含动态物件和实时反射。">
 					反射细节
 				</text>
 				<combo_box name="ReflectionDetail">
@@ -60,7 +60,7 @@
 					<combo_box.item label="静态+动态" name="1"/>
 					<combo_box.item label="实时" name="2"/>
 				</combo_box>
-				<text name="ReflectionProbeText" tool_tip="控制场景反射覆盖范围。「仅手动」反射选定物件，「全场景」包含视野内所有内容。">
+				<text name="ReflectionProbeText" tool_tip="控制场景反射覆盖范围。“仅手动”反射选定物件，“全场景”包含视野内所有内容。">
 					反射覆盖
 				</text>
 				<combo_box name="ReflectionLevel">
@@ -69,8 +69,8 @@
 					<combo_box.item label="手动+地形" name="2"/>
 					<combo_box.item label="全场景" name="3"/>
 				</combo_box>
-				<text name="MirrorResolutionText" tool_tip="设置镜面反射解析度。数值越高反射越清晰，但会消耗更多计算资源。">
-					镜面解析度
+				<text name="MirrorResolutionText" tool_tip="设置镜面反射分辨率。数值越高反射越清晰，但会消耗更多计算资源。">
+					镜面分辨率
 				</text>
 				<text name="HeroProbeUpdateText" tool_tip="调整镜面反射更新频率。高设置提供更流畅的实时反射，但可能影响性能。">
 					镜面更新频率
@@ -81,8 +81,8 @@
 					<combo_box.item label="高" name="1"/>
 					<combo_box.item label="极致" name="0"/>
 				</combo_box>
-				<text name="Probe_Resolution" tool_tip="定义反射探針的解析度。高解析度提供更详细反射，但需重启生效。高于128的设置会显著增加显存占用。">
-					探針解析度（需重启）
+				<text name="Probe_Resolution" tool_tip="定义反射探针的分辨率。高分辨率提供更详细反射，但需重启生效。高于128的设置会显著增加显存占用。">
+					探针分辨率（需重启）
 				</text>
 			</panel>
 			<panel name="P_R_Res_3">
@@ -95,272 +95,272 @@
 		<panel name="P_Lighting" label="光照">
 			<panel name="PT_Light_Shadows">
 				<text name="T_Light_Shadows">
-					光與影設定
+					光与影设置
 				</text>
 			</panel>
 			<panel name="P_L_S_Settings">
-				<text name="T_Shadow_Types" tool_tip="控制光源生成的陰影類型。沒有投影功能的點光源會產生光照效果，但不會投射陰影。投影的光紋理無論此設定如何都將保持可見。">
-					陰影類型
+				<text name="T_Shadow_Types" tool_tip="控制光源生成的阴影类型。没有投影功能的点光源会产生光照效果，但不会投射阴影。投影的光纹理无论此设置如何都将保持可见。">
+					阴影类型
 				</text>
 				<combo_box name="ShadowDetail">
-					<combo_box.item label="無" name="0" />
-					<combo_box.item label="太陽/月亮" name="1" />
-					<combo_box.item label="太陽/月亮 + 投影" name="2" />
+					<combo_box.item label="无" name="0"/>
+					<combo_box.item label="太阳/月亮" name="1"/>
+					<combo_box.item label="太阳/月亮 + 投影" name="2"/>
 				</combo_box>
-				<text name="local lights_label" tool_tip="定義同時彩現的局部光源數量。將此設定為 0 會關閉所有局部光源。在複雜場景中，較高的數值可能會影響效能。">
-					點光源照明（需要重新啟動）
+				<text name="local lights_label" tool_tip="定义同时渲染的局部光源数量。将此设置为 0 会关闭所有局部光源。在复杂场景中，较高的值可能会影响性能。">
+					点光源照明（需要重启）
 				</text>
 				<combo_box name="LocalLightsDetail">
-					<combo_box.item label="完整（預設）" name="3"/>
-					<combo_box.item label="減少" name="2"/>
-					<combo_box.item label="僅太陽/月亮" name="1"/>
+					<combo_box.item label="完整（默认）" name="3"/>
+					<combo_box.item label="减少" name="2"/>
+					<combo_box.item label="仅太阳/月亮" name="1"/>
 				</combo_box>
-				<check_box label="啟用附著光源（面部光源）" tool_tip="啟用附著在物件上的光源，例如面部光源或角色的附著光源。必要時可關閉面部光源。" name="Render Attached Lights"/>
+				<check_box label="启用附着光源（面部光源）" tool_tip="启用附着在物件上的光源，例如面部光源或角色的附着光源。必要时可关闭面部光源。" name="Render Attached Lights"/>
 			</panel>
 			<panel name="P_Shadow_Res">
-				<text name="T_Local_Lights" tool_tip="設定同時渲染多少個局部光源。若設為 0，所有局部光源將關閉。在複雜場景中，較高的值可能會影響效能。">
+				<text name="T_Local_Lights" tool_tip="定义同时渲染多少个局部光源。将此设置为 0 会关闭所有局部光源。较高的值可能会在复杂场景中影响性能。">
 					局部光源
 				</text>
-				<button name="Reset_Local_Lights" tool_tip="重設為預設值。"/>
-				<text name="T_Shadow_Res" tool_tip="調整陰影的品質和清晰度。較高的數值會生成更精細的陰影，但在複雜場景中可能會顯著影響效能。一般情況下，為保持流暢效能，請將此設定保持在較低水平。在準備高品質截圖時，可將其設定為約 1.0，然後逐步增加，同時監控影格率。使用統計欄（在「介面輔助」下的「輔助工具」中找到）可以幫助您為系統找到最佳平衡。注意：過快增加此設定或將其設定得過高可能會導致檢視器不穩定或崩潰。">
-					陰影解析度
+				<button name="Reset_Local_Lights" tool_tip="重置为默认值。"/>
+				<text name="T_Shadow_Res" tool_tip="调整阴影的质量和清晰度。较高的值会生成更精细的阴影，但在复杂场景中可能会显著影响性能。一般情况下，为保持流畅性能，请将此设置保持在较低水平。在准备高质量截图时，可将其设置为约 1.0，然后逐步增加，同时监控帧率。使用统计栏（在“界面辅助”下的“辅助工具”中找到）可以帮助您为系统找到最佳平衡。注意：过快增加此设置或将其设置得过高可能会导致查看器不稳定或崩溃。">
+					阴影分辨率
 				</text>
-				<button name="Reset_Shadow_Res" tool_tip="重設為預設值。" />
-				<text name="T_Shd_Clarity" tool_tip="此設定控制太陽/月亮陰影的清晰度和定義程度。建議在將陰影解析度設定為約 1.0 後調整此設定以獲得最佳效果。逐步增加陰影清晰度值，直到陰影達到所需的清晰度。請注意，陰影清晰度會受到相機角度和太陽/月亮位置的影響，因此對光照或相機位置的任何更改可能需要重新調整。為便於微調，可暫時將「陰影模糊度」設定為 0.0，以清楚地觀察調整效果，然後在需要時重新應用模糊。">
-					陰影清晰度
+				<button name="Reset_Shadow_Res" tool_tip="重置为默认值。"/>
+				<text name="T_Shd_Clarity" tool_tip="此设置控制太阳/月亮阴影的清晰度和定义程度。建议在将阴影分辨率设置为约 1.0 后调整此设置以获得最佳效果。逐步增加阴影清晰度值，直到阴影达到所需的清晰度。请注意，阴影清晰度会受到相机角度和太阳/月亮位置的影响，因此对光照或相机位置的任何更改可能需要重新调整。为便于微调，可暂时将“阴影模糊度”设置为 0.0，以清楚地观察调整效果，然后在需要时重新应用模糊。">
+					阴影清晰度
 				</text>
-				<button name="Shd_Clarity_Reset" tool_tip="重設為預設值。" />
-				<text name="T_Blur_Size" tool_tip="此設定控制陰影邊緣的柔和度，使您可以創建清晰、定義明確的陰影或更柔和、漫射的陰影。增加該值會導致陰影邊緣更加模糊，而設定為 0 則會產生最清晰的陰影。陰影模糊與「陰影柔化」設定配合使用，尤其是在陰影模糊度設定為較高值（例如約 4.0）時，可以進一步微調陰影柔和度。為進行精確調整，可考慮暫時將陰影模糊度設定為 0.0，以觀察清晰度變化，然後在需要時重新應用模糊。注意：必須啟用環境光遮蔽才能使此設定正常工作，因為它依賴於基於深度的光照計算。">
-					陰影模糊度
+				<button name="Shd_Clarity_Reset" tool_tip="重置为默认值。"/>
+				<text name="T_Blur_Size" tool_tip="此设置控制阴影边缘的柔和度，使您可以创建清晰、定义明确的阴影或更柔和、漫射的阴影。增加该值会导致阴影边缘更加模糊，而设置为 0 则会产生最清晰的阴影。阴影模糊与“阴影柔化”设置配合使用，尤其是在阴影模糊度设置为较高值（例如约 4.0）时，可以进一步微调阴影柔和度。为进行精确调整，可考虑暂时将阴影模糊度设置为 0.0，以观察清晰度变化，然后在需要时重新应用模糊。注意：必须启用环境光遮蔽才能使此设置正常工作，因为它依赖于基于深度的光照计算。">
+					阴影模糊度
 				</text>
-				<button name="Blur_Reset" tool_tip="重設為預設值。" />
-				<text name="T_Shd_Soften" tool_tip="控制太陽/月亮陰影的柔化效果。一個簡單的方法是首先將上面的陰影模糊度設定為約 3.0，然後使用此滑塊來調整太陽/月亮陰影的柔化程度。請注意，值為 0.0 將有效關閉所有太陽/月亮陰影。此外，這對投影燈引起的陰影沒有影響。">
-					陰影柔化
+				<button name="Blur_Reset" tool_tip="重置为默认值。"/>
+				<text name="T_Shd_Soften" tool_tip="控制太阳/月亮阴影的柔化效果。一个简单的方法是首先将上面的阴影模糊度设置为约 3.0，然后使用此滑块来调整太阳/月亮阴影的柔化程度。请注意，值为 0.0 将有效关闭所有太阳/月亮阴影。此外，这对投影灯引起的阴影没有影响。">
+					阴影柔化
 				</text>
-				<button name="Shd_Soften_Reset" tool_tip="重設為預設值。" />
-				<text name="T_Blur_Dist" tool_tip="決定陰影開始模糊時與相機的距離。較低的值會在更靠近觀察者的位置應用模糊。需要啟用環境光遮蔽。">
-					模糊距離
+				<button name="Shd_Soften_Reset" tool_tip="重置为默认值。"/>
+				<text name="T_Blur_Dist" tool_tip="决定阴影开始模糊时与相机的距离。较低的值会在更靠近观察者的位置应用模糊。需要启用环境光遮蔽。">
+					模糊距离
 				</text>
-				<button name="Blur_Dist_Reset" tool_tip="重設為預設值。" />
-				<text name="T_FOV_Cutoff" tool_tip="設定視野（視場角）閾值，以便檢視器從透視陰影彩現切換到正交陰影彩現。調整以減少鋸齒狀陰影伪影。">
-					視場角截止
+				<button name="Blur_Dist_Reset" tool_tip="重置为默认值。"/>
+				<text name="T_FOV_Cutoff" tool_tip="设置视野（视场角）阈值，以便查看器从透视阴影渲染切换到正交阴影渲染。调整以减少锯齿状阴影伪影。">
+					视场角截止
 				</text>
-				<button name="FOV_Cutoff_Reset" tool_tip="重設為預設值。" />
-				<text name="T_Spot_Cutoff" tool_tip="調整投影燈投射陰影的偏移量，以最小化陰影失真或表面上不必要的線條等伪影。">
-					投影燈偏移
+				<button name="FOV_Cutoff_Reset" tool_tip="重置为默认值。"/>
+				<text name="T_Spot_Cutoff" tool_tip="调整投影灯投射阴影的偏移量，以最小化阴影失真或表面上不必要的线条等伪影。">
+					投影灯偏移
 				</text>
-				<button name="Spot_Cutoff_Reset" tool_tip="重設為預設值。"/>
-				<text name="T_Shd_Bias" tool_tip="控制應用於陰影的深度偏差，以防止自陰影伪影（陰影失真）。較低的值會產生更準確的陰影，而稍高的值可以幫助減少閃爍或重疊陰影問題。調整此設定還可以幫助修正看起來懸浮在表面上或未能正確觸及物件邊緣的陰影。逐步調整以平衡陰影準確性和伪影預防。">
-					陰影偏差
+				<button name="Spot_Cutoff_Reset" tool_tip="重置为默认值。"/>
+				<text name="T_Shd_Bias" tool_tip="控制应用于阴影的深度偏差，以防止自阴影伪影（阴影失真）。较低的值会产生更准确的阴影，而稍高的值可以帮助减少闪烁或重叠阴影问题。调整此设置还可以帮助修正看起来悬浮在表面上或未能正确触及物件边缘的阴影。逐步调整以平衡阴影准确性和伪影预防。">
+					阴影偏差
 				</text>
-				<button name="Shd_Bias_Reset" tool_tip="重設為預設值。" />
+				<button name="Shd_Bias_Reset" tool_tip="重置为默认值。"/>
 			</panel>
 			<panel name="P_Ambient_Occlusion">
 				<text name="T_Ambient_Occlusion">
-					環境光遮蔽設定
+					环境光遮蔽设置
 				</text>
 			</panel>
 			<panel name="P_Amb_Occ_Settings">
-				<check_box label="啟用環境光遮蔽（深度感）" name="UseSSAO" tool_tip="環境光遮蔽模擬在褶皺、角落和物件靠近時發生的柔和陰影，通過模仿環境光的自然遮蔽來增強深度和真實感。雖然環境光遮蔽本身效果很好，但「效果」和「柔化」設定有助於微調陰影的強度和平滑度。環境光遮蔽在任何解析度下都有助於更真實的圖像，但其細微細節在較高解析度（如 2048 像素及以上）時更為明顯。"/>
+				<check_box label="启用环境光遮蔽（深度感）" name="UseSSAO" tool_tip="环境光遮蔽模拟在褶皱、角落和物件靠近时发生的柔和阴影，通过模仿环境光的自然遮蔽来增强深度和真实感。虽然环境光遮蔽本身效果很好，但“效果”和“柔化”设置有助于微调阴影的强度和平滑度。环境光遮蔽在任何分辨率下都有助于更真实的图像，但其细微细节在较高分辨率（如 2048 像素及以上）时更为明显。"/>
 			</panel>
 			<panel name="P_Scale">
-				<text name="T_Scale" tool_tip="控制用於環境光遮蔽的採樣區域大小。較大的值會提高陰影的準確性和細節，但可能會影響性能。最好與陰影模糊度調整結合使用，以實現更柔和的陰影效果。">
-					範圍
+				<text name="T_Scale" tool_tip="控制用于环境光遮蔽的采样区域大小。较大的值会提高阴影的准确性和细节，但可能会影响性能。最好与阴影模糊度调整结合使用，以实现更柔和的阴影效果。">
+					范围
 				</text>
-				<button name="Reset_Scale" tool_tip="重設為預設值。" />
-				<text name="T_Max_Scale" tool_tip="定義環境光遮蔽採樣的最大距離。較高的值可以改善大場景中的深度陰影，但可能會降低性能。與「等级」一起調整以獲得最佳效果。">
-					最大範圍
+				<button name="Reset_Scale" tool_tip="重置为默认值。"/>
+				<text name="T_Max_Scale" tool_tip="定义环境光遮蔽采样的最大距离。较高的值可以改善大场景中的深度阴影，但可能会降低性能。与“等级”一起调整以获得最佳效果。">
+					最大范围
 				</text>
-				<button name="Reset_Max_Scale" tool_tip="重設為預設值。" />
-				<text name="T_Scaling_Factor" tool_tip="調整環境光遮蔽效果的整體強度。較高的值會在褶皺和角落中產生更深、更明顯的陰影。使用時要小心，以避免不自然的過度變暗。">
-					等級
+				<button name="Reset_Max_Scale" tool_tip="重置为默认值。"/>
+				<text name="T_Scaling_Factor" tool_tip="调整环境光遮蔽效果的整体强度。较高的值会在褶皱和角落中产生更深、更明显的阴影。使用时要小心，以避免不自然的过度变暗。">
+					等级
 				</text>
-				<button name="Reset_Scaling_Factor" tool_tip="重設為預設值。" />
-				<text name="T_I_Max" tool_tip="設定環境光遮蔽計算中輻照度的最大亮度限制。作為上限，防止過於明亮的區域主導環境光遮蔽效果。">
-					輻照度最大值
+				<button name="Reset_Scaling_Factor" tool_tip="重置为默认值。"/>
+				<text name="T_I_Max" tool_tip="设置环境光遮蔽计算中辐照度的最大亮度限制。作为上限，防止过于明亮的区域主导环境光遮蔽效果。">
+					辐照度最大值
 				</text>
-				<button name="Reset_I_Max" tool_tip="重設為預設值。"/>
-				<text name="T_I_Scaling" tool_tip="控制環境光遮蔽中光輻照度的等級，定義光強度如何影響陰影的黑暗程度。調整以在明亮場景中實現平衡的照明。">
-					輻照度等級
+				<button name="Reset_I_Max" tool_tip="重置为默认值."/>
+				<text name="T_I_Scaling" tool_tip="控制环境光遮蔽中光辐照度的等级，定义光强度如何影响阴影的黑暗程度。调整以在明亮场景中实现平衡的照明。">
+					辐照度等级
 				</text>
-				<button name="Reset_I_Scaling" tool_tip="重設為預設值。"/>
-				<text name="T_Effect" tool_tip="控制環境光遮蔽變暗效果的強度，該效果在褶皺、角落和物件接觸處添加細微陰影，以增強深度和真實感。較低的值會產生更柔和、更自然的陰影，與環境無縫融合，呈現出真實的外觀。較高的值會產生更強烈、更戲劇性的對比，這可能使環境光遮蔽效果顯得更加明顯，但在某些光照條件下可能看起來不自然。小心調整此設置，以避免過於黑暗或生硬的陰影，這可能會扭曲場景的自然光照。對於創意或實驗效果，可以使用負值來反轉陰影，創造出不尋常的光照效果。此設置在與「柔化」一起微調時效果最佳，以平衡陰影的銳度和平滑度。">
+				<button name="Reset_I_Scaling" tool_tip="重置为默认值."/>
+				<text name="T_Effect" tool_tip="控制环境光遮蔽变暗效果的强度，该效果在褶皱、角落和物件接触处添加细微阴影，以增强深度和真实感。较低的值会产生更柔和、更自然的阴影，与环境无缝融合，呈现出真实的外观。较高的值会产生更强烈、更戏剧性的对比，这可能使环境光遮蔽效果显得更加明显，但在某些光照条件下可能看起来不自然。小心调整此设置，以避免过于黑暗或生硬的阴影，这可能会扭曲场景的自然光照。对于创意或实验效果，可以使用负值来反转阴影，创造出不寻常的光照效果。此设置在与“柔化”一起微调时效果最佳，以平衡阴影的锐度和平滑度。">
 					效果
 				</text>
-				<button name="Reset_Effect" tool_tip="重設為預設值。" />
-				<text name="T_AO_Soften" tool_tip="調整環境光遮蔽效果的平滑度，減少生硬的邊緣和噪聲。與設置為 4.0 左右的陰影模糊度結合使用效果最佳，以實現平衡的柔和度。">
+				<button name="Reset_Effect" tool_tip="重置为默认值。"/>
+				<text name="T_AO_Soften" tool_tip="调整环境光遮蔽效果的平滑度，减少生硬的边缘和噪声。与设置为 4.0 左右的阴影模糊度结合使用效果最佳，以实现平衡的柔和度。">
 					柔化
 				</text>
-				<button name="Reset_AO_Soften" tool_tip="重設為預設值。" />
+				<button name="Reset_AO_Soften" tool_tip="重置为默认值。"/>
 			</panel>
 		</panel>
-		<panel name="P_DoF_Glow" label="視效">
+		<panel name="P_DoF_Glow" label="视效">
 			<panel name="PT_DoF_Glow">
 				<text name="T_DoF">
-					景深設定
+					景深设置 (DoF)
 				</text>
 			</panel>
 			<panel name="P_DoF_Settings">
-				<check_box label="啟用景深" name="UseDepthofField" tool_tip="啟用景深（DoF），模擬相機焦點，通過模糊焦平面外的物件，創造出真實的攝影效果。關閉此功能可以提升性能。"/>
-				<check_box label="景深焦點跟隨滑鼠" name="FSFocusPointFollowsPointer" tool_tip="允許景深焦點跟隨滑鼠光標，類似於三維控制器的行為。與景深焦點鎖定結合使用時，便於動態調整焦點。"/>
-				<button name="FocusPointRenderToggle" tool_tip="切換焦點十字準線顯示。十字準線在自由狀態下為黃色，鎖定狀態下為紅色。"/>
-				<check_box label="顯示當前相機視場 (FOV)" name="MIC_Show_FOV" tool_tip="顯示屏幕上的當前相機垂直視野（視場角）疊加，幫助您可視化不同視場角設置如何影響構圖和透視。較小的視場角模擬更長的焦距，類似於使用長焦鏡頭放大。例如，標準的 50mm 鏡頭對應約 27° 的垂直視場角，創造出更窄的視野和背景壓縮效果。較大的視場角模仿廣角鏡頭，捕捉更多場景，同時誇大空間關係。您可以使用下面的縮放滑塊調整視場角，以微調您的構圖。有關垂直視場角和焦距關係的更多詳細信息，請參閱：https://zh.wikipedia.org/zh-cn/%E8%A6%96%E8%A7%92"/>
+				<check_box label="启用景深" name="UseDepthofField" tool_tip="启用景深（DoF），模拟相机焦点，通过模糊焦平面外的物件，创造出真实的摄影效果。关闭此功能可以提升性能。"/>
+				<check_box label="景深焦点跟随鼠标" name="FSFocusPointFollowsPointer" tool_tip="允许景深焦点跟随鼠标光标，类似于三维控制器的行为。与景深焦点锁定结合使用时，便于动态调整焦点。"/>
+				<button name="FocusPointRenderToggle" tool_tip="切换焦点十字准线显示。十字准线在自由状态下为黄色，锁定状态下为红色。"/>
+				<check_box label="显示当前相机视场 (视场角)" name="MIC_Show_FOV" tool_tip="显示屏幕上的当前相机垂直视野（视场角）叠加，帮助您可视化不同视场角设置如何影响构图和透视。较小的视场角模拟更长的焦距，类似于使用长焦镜头放大。例如，标准的 50mm 镜头对应约 27° 的垂直视场角，创造出更窄的视野和背景压缩效果。较大的视场角模仿广角镜头，捕捉更多场景，同时夸大空间关系。您可以使用下面的缩放滑块调整视场角，以微调您的构图。有关垂直视场角和焦距关系的更多详细信息，请参阅：https://zh.wikipedia.org/zh-cn/%E8%A6%96%E8%A7%92 "/>
 			</panel>
 			<panel name="P_Zoom">
-				<text name="T_Zoom" tool_tip="調整相機的視角，有效地進行放大或縮小。功能類似於 Ctrl + 0（放大）和 Ctrl + 8（縮小）。當三維控制器處於活動狀態時，此設置將被禁用。">
-					視角
+				<text name="T_Zoom" tool_tip="调整相机的视角，有效地进行放大或缩小。功能类似于 Ctrl + 0（放大）和 Ctrl + 8（缩小）。当三维控制器处于活动状态时，此设置将被禁用。">
+					视角
 				</text>
-				<button name="Reset_Zoom" tool_tip="重設為預設值。" />
-				<text name="T_FOV" tool_tip="定義相機的視野（視場角），以模擬鏡頭的視角。調整以匹配當前視圖的視場角，以確保景深效果的一致性。">
-					視場
+				<button name="Reset_Zoom" tool_tip="重置为默认值。"/>
+				<text name="T_FOV" tool_tip="定义相机的视野（视场角），以模拟镜头的视角。调整以匹配当前视图的视场角，以确保景深效果的一致性。">
+					视场
 				</text>
-				<button name="Reset_FOV" tool_tip="重設為預設值。" />
-				<text name="T_F_Number" tool_tip="表示相機的光圈設置。較低的值會產生更淺的景深（更多模糊），而較高的值會增加景深，使更多場景看起來清晰。">
+				<button name="Reset_FOV" tool_tip="重置为默认值。"/>
+				<text name="T_F_Number" tool_tip="表示相机的光圈设置。较低的值会产生更浅的景深（更多模糊），而较高的值会增加景深，使更多场景看起来清晰。">
 					光圈
 				</text>
-				<button name="Reset_F_Number" tool_tip="重設為預設值。" />
-				<text name="T_Focal_Length" tool_tip="模擬相機鏡頭的焦距。較高的值會產生更窄的景深，並放大遠處的物件，模仿長焦鏡頭的效果。">
+				<button name="Reset_F_Number" tool_tip="重置为默认值。"/>
+				<text name="T_Focal_Length" tool_tip="模拟相机镜头的焦距。较高的值会产生更窄的景深，并放大远处的物件，模仿长焦镜头的效果。">
 					焦距
 				</text>
-				<button name="Reset_Focal_Length" tool_tip="重設為預設值。" />
-				<text name="T_Foc_Time" tool_tip="聚焦時間控制相機在物件之間切換焦點的速度。較高的值會導致較慢、較平滑的過渡，增強電影效果。">
-					聚焦時間
+				<button name="Reset_Focal_Length" tool_tip="重置为默认值。"/>
+				<text name="T_Foc_Time" tool_tip="聚焦时间控制相机在物件之间切换焦点的速度。较高的值会导致较慢、较平滑的过渡，增强电影效果。">
+					聚焦时间
 				</text>
-				<button name="Reset_Foc_Time" tool_tip="重設為預設值。" />
-				<text name="T_CoC" tool_tip="模糊圈（CoC）決定景深外模糊的強度。它不影響景深範圍本身，但控制失焦區域的模糊強度。旋鈕中的負值可以創造獨特的視覺效果。">
+				<button name="Reset_Foc_Time" tool_tip="重置为默认值。"/>
+				<text name="T_CoC" tool_tip="模糊圈（CoC）决定景深外模糊的强度。它不影响景深范围本身，但控制失焦区域的模糊强度。旋钮中的负值可以创造独特的视觉效果。">
 					模糊圈
 				</text>
-				<button name="Reset_CoC" tool_tip="重設為預設值。" />
-				<text name="T_Resolution" tool_tip="調整景深（DoF）效果的彩現解析度，影響其視覺質量和性能。較高的值（最高到 1.00）會產生更清晰、更詳細的模糊過渡，適合高質量快照。中等設置（0.50–0.70）在設置鏡頭時提供良好的平衡，而較低的值（約 0.25）會降低質量但提高性能，適合日常使用。注意：較高的設置會顯著影響影格率，尤其是在性能較弱的系統上。旋鈕允許負值以實現創意和實驗效果。">
-					品質
+				<button name="Reset_CoC" tool_tip="重置为默认值。"/>
+				<text name="T_Resolution" tool_tip="质量：定义景深效果的质量。非摄影用途时0.25的值就很好。准备拍摄时可以使用0.50或0.70的值。高质量图片最好使用1.00的值。更高的值会降低帧率！通过选择框可以选择负值以产生有趣的效果。">
+					质量
 				</text>
-				<button name="Reset_Resolution" tool_tip="重設為預設值。" />
+				<button name="Reset_Resolution" tool_tip="重置为默认值。"/>
 			</panel>
 			<panel name="P_Tone_Settings">
 				<text name="T_Tone_Settings">
-					HDR色調映射設置
+					HDR色调映射设置
 				</text>
 			</panel>
 			<panel name="P_Tone_Settings_2">
-				<check_box label="啟用HDR和自發光" name="Disable_Vintage_Mode" tool_tip="啟用高動態範圍（HDR）和自發光效果，增強色彩鮮豔度、動態照明和自發光材料的光暈效果。此設置提高場景中光照的整體真實感，特別是對於PBR紋理的物件。禁用此選項會恢復到‘復古’照明模式，減少對比度和光暈效果，並且去除 PBR 紋理物件的自發光，使它們看起來平坦或照明較少。"/>
+				<check_box label="启用HDR和自发光" name="Disable_Vintage_Mode" tool_tip="启用高动态范围（HDR）和自发光效果，增强色彩鲜艳度、动态照明和自发光材料的光晕效果。此设置提高场景中光照的整体真实感，特别是对于PBR纹理的物件。禁用此选项会恢复到‘复古’照明模式，减少对比度和光晕效果，并且去除 PBR 纹理物件的自发光，使它们看起来平坦或照明较少。"/>
 			</panel>
 			<panel name="P_Tone_Settings_3">
-				<text name="T_Tonemap_Type" tool_tip="控制用於高動態範圍（HDR）色調映射的算法，影響明亮和黑暗區域的平衡。Khronos中性提供自然、平衡的外觀，具有較少的對比度和最小的色彩處理，保持原始光照效果。ACES旨在模仿電影般的動態範圍，提供更豐富的色彩、更高的對比度和更具電影感的高光。更改此設置可能會根據場景改變整體亮度和色彩平衡。">
-					HDR色調映射類型
+				<text name="T_Tonemap_Type" tool_tip="控制用于高动态范围（HDR）色调映射的算法，影响明亮和黑暗区域的平衡。Khronos中性提供自然、平衡的外观，具有较少的对比度和最小的色彩处理，保持原始光照效果。ACES旨在模仿电影般的动态范围，提供更丰富的色彩、更高的对比度和更具电影感的高光。更改此设置可能会根据场景改变整体亮度和色彩平衡。">
+					HDR色调映射类型
 				</text>
 				<combo_box name="CB_Tonemap_Type">
 					<combo_box.item label="Khronos中性" name="0"/>
 					<combo_box.item label="ACES" name="1"/>
 				</combo_box>
-				<text name="T_Tonemap_Type" tool_tip="在所選的 HDR 色調映射風格和原始線性光照之間混合。值為 1.0 時，應用所選色調映射（Khronos中性或ACES）的全部效果。值為 0.0 時，禁用色調映射，顯示未經後期處理調整的原始線性光照。調整此滑塊以微調自然真實感和電影對比度之間的平衡。較高的值強調色調映射效果，而較低的值產生更平坦、未經處理的外觀。">
-					色調混合
+				<text name="T_Tonemap_Type" tool_tip="在所选的 HDR 色调映射风格和原始线性光照之间混合。值为 1.0 时，应用所选色调映射（Khronos中性或ACES）的全部效果。值为 0.0 时，禁用色调映射，显示未经后期处理调整的原始线性光照。调整此滑块以微调自然真实感和电影对比度之间的平衡。较高的值强调色调映射效果，而较低的值产生更平坦、未经处理的外观。">
+					色调混合
 				</text>
-				<button name="Reset_Tonemap_Type" tool_tip="重設為預設值。"/>
+				<button name="Reset_Tonemap_Type" tool_tip="重置为默认值。"/>
 			</panel>
 			<panel name="P_Glow_Settings">
 				<text name="T_Glow_Settings">
-					光暈設定
+					光晕设置
 				</text>
 			</panel>
 			<panel name="P_Glow_Quality">
-				<check_box label="啟用光暈效果" name="UseGlow" tool_tip="激活光暈效果，使明亮的物件和光源發出柔和的光，模擬輝光效果。這增強了自發光紋理、反射和光澤紋理的外觀，為照明區域增添了更動態和生動的外觀。禁用此選項可以提高性能，特別是在複雜照明場景中。"/>
-				<check_box label="為光暈啟用HDR" name="GlowHDR" tool_tip="為光暈效果啟用高動態範圍（HDR）處理，允許更強烈、生動的光暈和真實的亮度過渡。這提高了光暈質量，特別是在高對比度場景中，通過改善光從非常明亮區域的擴散效果。適用於處理自發光紋理和強光效果。"/>
+				<check_box label="启用光晕效果" name="UseGlow" tool_tip="激活光晕效果，使明亮的物件和光源发出柔和的光，模拟辉光效果。这增强了自发光纹理、反射和光泽纹理的外观，为照明区域增添了更动态和生动的外观。禁用此选项可以提高性能，特别是在复杂照明场景中。"/>
+				<check_box label="为光晕贴图启用HDR" name="GlowHDR" tool_tip="为光晕效果启用高动态范围（HDR）处理，允许更强烈、生动的光晕和真实的亮度过渡。这提高了光晕质量，特别是在高对比度场景中，通过改善光从非常明亮区域的扩散效果。适用于处理自发光纹理和强光效果。"/>
 			</panel>
 			<panel name="P_Glow_Iterations">
-				<text name="T_Glow_Quality" tool_tip="定義光暈效果的品質，數值越高代表品質越高。8和10之間幾乎沒有可見差異。">
-					品質
+				<text name="T_Glow_Quality" tool_tip="定义光晕效果的质量，数值越高代表质量越高。8和10之间几乎没有可见差异。">
+					质量
 				</text>
-				<button name="Reset_Glow_Quality" tool_tip="重設為預設值。" />
-				<text name="T_Glow_Iterations" tool_tip="確定光暈效果迭代的次數，以創建光暈的平滑度和擴散度。較低的值會產生更緊致、銳利的光暈，模糊度最小，而較高的值會產生更寬廣、柔和的光暈光環，外觀更為擴散。增加迭代次數可以提高光暈質量，但可能會降低性能。">
-					迭代次數
+				<button name="Reset_Glow_Quality" tool_tip="重置为默认值。"/>
+				<text name="T_Glow_Iterations" tool_tip="确定光晕效果迭代的次数，以创建光晕的平滑度和扩散度。较低的值会产生更紧致、锐利的光晕，模糊度最小，而较高的值会产生更宽广、柔和的光晕光环，外观更为扩散。增加迭代次数可以提高光晕质量，但可能会降低性能。">
+					迭代次数
 				</text>
-				<button name="Reset_Glow_Iterations" tool_tip="重設為預設值。" />
-				<text name="T_Glow_Strength" tool_tip="控制光暈效果的強度。較低的值（約0.01至0.05）提供微妙、自然的光暈。較高的值使物件看起來非常明亮，但過高的設置可能導致不現實的綻放效果或使場景過於耀眼。逐步調整此設置，因為小的變化會顯著影響最終效果。">
-					強度
+				<button name="Reset_Glow_Iterations" tool_tip="重置为默认值。"/>
+				<text name="T_Glow_Strength" tool_tip="控制光晕效果的强度。较低的值（约0.01至0.05）提供微妙、自然的光晕。较高的值使物件看起来非常明亮，但过高的设置可能导致不现实的绽放效果或使场景过于耀眼。逐步调整此设置，因为小的变化会显著影响最终效果。">
+					强度
 				</text>
-				<button name="Reset_Glow_Strength" tool_tip="重設為預設值。" />
-				<text name="T_Glow_Width" tool_tip="控制光暈效果的寬度，決定光暈從發光物件擴散的距離。較高的值會產生更寬廣、柔和的光暈，覆蓋更大區域，增強綻放效果。然而，增加寬度過多可能導致光暈出現像素化或失去細節。較低的值會在光源周圍產生更緊致、集中的光暈。逐步調整此設置，以在自然柔和的光暈和保持視覺清晰度之間找到平衡。">
-					廣度
+				<button name="Reset_Glow_Strength" tool_tip="重置为默认值。"/>
+				<text name="T_Glow_Width" tool_tip="控制光晕效果的广度，决定光晕从发光物件扩散的距离。较高的值会产生更宽广、柔和的光晕，覆盖更大区域，增强绽放效果。然而，增加广度过多可能导致光晕出现像素化或失去细节。较低的值会在光源周围产生更紧致、集中的光晕。逐步调整此设置，以在自然柔和的光晕和保持视觉清晰度之间找到平衡。">
+					广度
 				</text>
-				<button name="Reset_Glow_Width" tool_tip="重設為預設值。" />
+				<button name="Reset_Glow_Width" tool_tip="重置为默认值。"/>
 			</panel>
 		</panel>
 		<panel name="P_General" label="通用">
 			<panel name="PT_General">
 				<text name="T_General">
-					通用彩現設定
+					通用渲染设置
 				</text>
 			</panel>
 			<panel name="P_General_Settings">
-				<text name="T_Draw_Distance" tool_tip="設置場景中彩現物件的最大距離。增加此值可以讓您看到更遠的環境細節，增強大型景觀或遠處物件的細節。然而，更高的值會顯著影響效能，降低影格率，尤其是在複雜區域。為了獲得更好的效能，請在擁擠區域或使用舊硬體時使用較低的值。">
-					繪製距離
+				<text name="T_Draw_Distance" tool_tip="设置场景中渲染物件的最大距离。增加此值可以让您看到更远的环境细节，增强大型景观或远处物件的细节。然而，更高的值会显著影响性能，降低帧率，尤其是在复杂区域。为了获得更好的性能，请在拥挤区域或使用旧硬件时使用较低的值。">
+					绘制距离
 				</text>
-				<button name="Reset_Draw_Distance" tool_tip="重設為預設值。" />
-				<text name="T_Avi_Count" tool_tip="控制場景中彩現的最大化身數量。限制此數量可以提高效能，尤其是在擁擠的活動或繁忙的地點。較低的值減少視覺雜亂並提高影格率，而較高的值允許更多的化身可見，但可能會在大型聚會中降低效能。">
-					最大化身數
+				<button name="Reset_Draw_Distance" tool_tip="重置为默认值。"/>
+				<text name="T_Avi_Count" tool_tip="控制场景中渲染的最大化身数量。限制此数量可以提高性能，尤其是在拥挤的活动或繁忙的地点。较低的值减少视觉杂乱并提高FPS，而较高的值允许更多的化身可见，但可能会在大型聚会中降低性能。">
+					最大化身数
 				</text>
-				<button name="Reset_Avi_Count" tool_tip="重設為預設值。" />
-				<text name="T_Avi_Detail" tool_tip="調整化身的細節層次等級（LOD）。較高的值提高視覺質量，使舊版化身在較遠距離也顯得更為詳細。較低的值減少細節以提高效能，這在高密度區域或低端系統上非常有用。此設置主要影響舊版（系統）化身。網格化身受此設置的影響較小，因為它們的細節層次級別由其自身的細節層次設置控制，並進一步受「偏好設置」裡「顯示」 → 」化身複雜度」設置影響。">
-					化身細節
+				<button name="Reset_Avi_Count" tool_tip="重置为默认值。"/>
+				<text name="T_Avi_Detail" tool_tip="调整化身的细节层次等级（LOD）。较高的值提高视觉质量，使旧版化身在较远距离也显得更为详细。较低的值减少细节以提高性能，这在高密度区域或低端系统上非常有用。此设置主要影响旧版（系统）化身。网格化身受此设置的影响较小，因为它们的细节层次级别由其自身的细节层次设置控制，并进一步受“偏好设置”里“显示” → ”化身复杂度”设置影响。">
+					化身细节
 				</text>
-				<button name="Reset_Avi_Detail" tool_tip="重設為預設值。" />
-				<text name="T_Avi_Physics" tool_tip="控制化身物理效果的細節層次等級，如胸部物理和其他網格變形行為。較高的值提供更平滑、更逼真的運動，但以效能為代價。較低的值減少物理計算的複雜度，提高在擁擠區域的效能。">
+				<button name="Reset_Avi_Detail" tool_tip="重置为默认值。"/>
+				<text name="T_Avi_Physics" tool_tip="控制化身物理效果的细节层次等级，如胸部物理和其他网格变形行为。较高的值提供更平滑、更逼真的运动，但以性能为代价。较低的值减少物理计算的复杂度，提高在拥挤区域的性能。">
 					化身物理
 				</text>
-				<button name="Reset_Avi_Physics" tool_tip="重設為預設值。" />
-				<text name="T_Particle_Cnt" tool_tip="設置檢視器一次將彩現的最大粒子數。這會影響煙霧、火焰、魔法咒語、繩索、鏈條和基於粒子的動畫等效果。較高的值允許更多粒子用於詳細的視覺效果，但可能會在粒子密集的環境中降低效能。">
-					最大粒子數
+				<button name="Reset_Avi_Physics" tool_tip="重置为默认值。"/>
+				<text name="T_Particle_Cnt" tool_tip="设置查看器一次将渲染的最大粒子数。这会影响烟雾、火焰、魔法咒语、绳索、链条和基于粒子的动画等效果。较高的值允许更多粒子用于详细的视觉效果，但可能会在粒子密集的环境中降低性能。">
+					最大粒子数
 				</text>
-				<button name="Reset_Particle_Cnt" tool_tip="重設為預設值。" />
-				<text name="T_Terrain_Scale" tool_tip="確定預設地面（地形）紋理的彩現等級，影響地形的拉伸或細節程度。較高的值會產生更精細、更詳細的紋理，而較低的值會減少細節，但能提高效能。">
+				<button name="Reset_Particle_Cnt" tool_tip="重置为默认值。"/>
+				<text name="T_Terrain_Scale" tool_tip="确定默认地面（地形）纹理的渲染等级，影响地形的拉伸或细节程度。较高的值会产生更精细、更详细的纹理，而较低的值会减少细节，但能提高性能。">
 					地形比例
 				</text>
-				<button name="Reset_Terrain_Scale" tool_tip="重設為預設值。" />
-				<text name="T_Terrain_Quality" tool_tip="控制地形彩現的細節層次（LOD）等級。較高的值提供更詳細的地形，尤其是在較遠距離，增強現實感。較低的值簡化地形細節，以在大區域內獲得更好的效能。">
-					地形品質
+				<button name="Reset_Terrain_Scale" tool_tip="重置为默认值。"/>
+				<text name="T_Terrain_Quality" tool_tip="控制地形渲染的细节层次（LOD）等级。较高的值提供更详细的地形，尤其是在较远距离，增强现实感。较低的值简化地形细节，以在大区域内获得更好的性能。">
+					地形质量
 				</text>
-				<button name="Reset_Terrain_Quality" tool_tip="重設為預設值。" />
-				<text name="T_Object_Detail" tool_tip="調整世界內物件的細節層次（LOD）。較高的值在較遠距離也能保持高質量的物件細節，但可能會降低效能，尤其是在複雜環境中。較低的值會更早觸發簡化的物件模型，提高影格率，但可能會降低視覺保真度。">
-					物件細節
+				<button name="Reset_Terrain_Quality" tool_tip="重置为默认值。"/>
+				<text name="T_Object_Detail" tool_tip="调整世界内物件的细节层次（LOD）。较高的值在较远距离也能保持高质量的物件细节，但可能会降低性能，尤其是在复杂环境中。较低的值会更早触发简化的物件模型，提高帧率，但可能会降低视觉保真度。">
+					物件细节
 				</text>
-				<button name="Reset_Object_Detail" tool_tip="重設為預設值。" />
-				<text name="T_Flexi_Detail" tool_tip="控制柔性（flexi）物件的細節等級，如飄動的頭髮、旗幟和繩索。較高的值產生更平滑、更逼真的運動，但可能影響效能。較低的值簡化運動計算，以更快地彩現。">
+				<button name="Reset_Object_Detail" tool_tip="重置为默认值。"/>
+				<text name="T_Flexi_Detail" tool_tip="控制柔性（flexi）物件的细节等级，如飘动的头发、旗帜和绳索。较高的值产生更平滑、更逼真的运动，但可能影响性能。较低的值简化运动计算，以更快地渲染。">
 					柔性元素
 				</text>
-				<button name="Reset_Flexi_Detail" tool_tip="重設為預設值。" />
-				<text name="T_Tree_Detail" tool_tip="設置樹木和其他植被的細節層次（LOD）。較高的值會產生更複雜、詳細的植被，而較低的值簡化樹木幾何形狀，以提高效能，尤其是在植被密集的區域。此設置專門適用於系統（舊版）樹木，不影響非系統或基於網格的樹木，它們通過自己的細節層次設置管理細節。">
-					樹木細節
+				<button name="Reset_Flexi_Detail" tool_tip="重置为默认值。"/>
+				<text name="T_Tree_Detail" tool_tip="设置树木和其他植被的细节层次（LOD）。较高的值会产生更复杂、详细的植被，而较低的值简化树木几何形状，以提高性能，尤其是在植被密集的区域。此设置专门适用于系统（旧版）树木，不影响非系统或基于网格的树木，它们通过自己的细节层次设置管理细节。">
+					树木细节
 				</text>
-				<button name="Reset_Tree_Detail" tool_tip="重設為預設值。" />
-				<text name="T_Sky_Detail" tool_tip="控制環境天空的頂點細節，影響漸變的平滑度、雲的形狀和大氣效果。較高的值增強天空的現實感，但可能降低效能。較低的值提高影格率，但可能使天空顯得塊狀或細節較少。">
-					天空細節
+				<button name="Reset_Tree_Detail" tool_tip="重置为默认值。"/>
+				<text name="T_Sky_Detail" tool_tip="控制环境天空的顶点细节，影响渐变的平滑度、云的形状和大气效果。较高的值增强天空的现实感，但可能降低性能。较低的值提高帧率，但可能使天空显得块状或细节较少。">
+					天空细节
 				</text>
-				<button name="Reset_Sky_Detail" tool_tip="重設為預設值。" />
-			<text name="T_Sharpening" tool_tip="調整整體圖像的銳化程度，使用對比度自適應銳化（CAS）。較高的值通過增加邊緣對比度來增強圖像清晰度，改善視覺細節。過度銳化可能引入偽影或使圖像看起來過於生硬。">
-				銳化
-			</text>
-			<button name="Reset_Sharpening" tool_tip="重設為預設值。"/>
-			<text name="T_Exposure" tool_tip="控制場景的整體亮度，模擬相機曝光設置。較高的值使圖像更亮，適用於黑暗環境，而較低的值使場景變暗，增強亮區的對比度。請謹慎調整，以防止高光過曝或陰影過暗。">
-				曝光
-			</text>
-			<button name="Reset_Exposure" tool_tip="重設為預設值。"/>
+				<button name="Reset_Sky_Detail" tool_tip="重置为默认值。"/>
+				<text name="T_Sharpening" tool_tip="调整整体图像的锐化程度，使用对比度自适应锐化（CAS）。较高的值通过增加边缘对比度来增强图像清晰度，改善视觉细节。过度锐化可能引入伪影或使图像看起来过于生硬。">
+					锐化
+				</text>
+				<button name="Reset_Sharpening" tool_tip="重置为默认值。"/>
+				<text name="T_Exposure" tool_tip="控制场景的整体亮度，模拟相机曝光设置。较高的值使图像更亮，适用于黑暗环境，而较低的值使场景变暗，增强亮区的对比度。请谨慎调整，以防止高光过曝或阴影过暗。">
+					曝光
+				</text>
+				<button name="Reset_Exposure" tool_tip="重置为默认值。"/>
 			</panel>
 			<panel name="P_Render">
-				<check_box label="啟用繪製距離" name="UseFarClip" tool_tip="啟用繪製距離限制，根據設定的繪製距離限制檢視器彩現物件的距離。禁用此選項將導致檢視器彩現超出定義距離的物件，這在大型、詳細環境中會顯著降低效能。"/>
-				<check_box label="動態調整細節級別" name="RednerLod1" tool_tip="允許檢視器根據您與物件的距離自動調整物件的細節層次（LOD）。這通過減少遠處物件的細節來提高效能，同時保持近處物件的高細節。然而，在快速移動或大型場景中，這可能會導致物件顯示質量明顯下降。"/>
-				<check_box label="僅彩現相機視野內的物件" name="UssOcclusion1" tool_tip="啟用遮擋剔除，通過只彩現相機視野內的物件而非隱藏在其他物件後的物件來優化效能。這可以在複雜場景中提升效能，但在稀疏區域可能偶爾會降低效能。切換此設置以查看是否能在您的特定環境中提升效能。"/>
-				<check_box label="各向異性過濾" name="Anisotropic" tool_tip="提高在角度觀察時紋理的銳度和清晰度，使地面、道路和牆壁等表面看起來更加清晰。雖然增強了視覺質量，但啟用各向異性過濾可能會略微影響效能，尤其是在低端圖形硬體上。"/>
-				<check_box label="顯示其他化身的粒子" name="Render Attached Particle" tool_tip="啟用附著到其他化身或從其他化身發射的粒子效果的彩現，例如光暈效果、粒子軌跡或基於化身的視覺效果。這還包括附著到家具或化身坐著的物件上的粒子。禁用此選項可以在擁擠區域提高效能，但會隱藏這些粒子效果。"/>
+				<check_box label="启用绘制距离" name="UseFarClip" tool_tip="启用绘制距离限制，根据设定的绘制距离限制查看器渲染物件的距离。禁用此选项将导致查看器渲染超出定义距离的物件，这在大型、详细环境中会显著降低性能。"/>
+				<check_box label="动态调整细节级别" name="RednerLod1" tool_tip="允许查看器根据您与物件的距离自动调整物件的细节层次（LOD）。这通过减少远处物件的细节来提高性能，同时保持近处物件的高细节。然而，在快速移动或大型场景中，这可能会导致物件显示质量明显下降。"/>
+				<check_box label="仅渲染相机视野内的物件" name="UssOcclusion1" tool_tip="启用遮挡剔除，通过只渲染相机视野内的物件而非隐藏在其他物件后的物件来优化性能。这可以在复杂场景中提升性能，但在稀疏区域可能偶尔会降低性能。切换此设置以查看是否能在您的特定环境中提升性能。"/>
+				<check_box label="各向异性过滤" name="Anisotropic" tool_tip="提高在角度观察时纹理的锐度和清晰度，使地面、道路和墙壁等表面看起来更加清晰。虽然增强了视觉质量，但启用各向异性过滤可能会略微影响性能，尤其是在低端图形硬件上。"/>
+				<check_box label="显示其他化身的粒子" name="Render Attached Particle" tool_tip="启用附着到其他化身或从其他化身发射的粒子效果的渲染，例如光晕效果、粒子轨迹或基于化身的视觉效果。这还包括附着到家具或化身坐着的物件上的粒子。禁用此选项可以在拥挤区域提高性能，但会隐藏这些粒子效果。"/>
 			</panel>
 			<panel name="P_Anti-aliasing">
-				<text name="T_Antialiasing_Type" tool_tip="選擇用於平滑物件邊緣的反鋸齒類型。FXAA（快速近似反鋸齒）是一種速度快但質量中等的方法。SMAA（子像素形態反鋸齒）提供更好的邊緣平滑效果，但性能開銷略高。更改此設置可能需要重啟檢視器才能在某些硬體上生效。">
-					反鋸齒類型（需要重啟）
+				<text name="T_Antialiasing_Type" tool_tip="选择用于平滑物件边缘的抗锯齿类型。FXAA（快速近似抗锯齿）是一种速度快但质量中等的方法。SMAA（子像素形态抗锯齿）提供更好的边缘平滑效果，但性能开销略高。更改此设置可能需要重启查看器才能在某些硬件上生效。">
+					抗锯齿类型（需要重启）
 				</text>
 				<combo_box name="CB_Antialiasing_Type">
 					<combo_box.item label="禁用" name="FSAADisabled"/>
 				</combo_box>
-				<text name="T_Anti-aliasing" tool_tip="決定反鋸齒的質量，平滑物件的邊緣。較高的設置減少鋸齒，使畫面更乾淨。在高端顯卡上，較高的值對性能影響較小。在低端系統上，較高的設置可能會降低性能。">
-					反鋸齒質量
+				<text name="T_Anti-aliasing" tool_tip="决定抗锯齿的质量，平滑物件的边缘。较高的设置减少锯齿，使画面更干净。在高端显卡上，较高的值对性能影响较小。在低端系统上，较高的设置可能会降低性能。">
+					抗锯齿质量
 				</text>
 				<combo_box name="fsaa">
 					<combo_box.item label="低" name="Low"/>
@@ -368,173 +368,173 @@
 					<combo_box.item label="高" name="High"/>
 					<combo_box.item label="超高" name="Ultra"/>
 				</combo_box>
-				<text name="T_Texture_Bumpiness" tool_tip="控制法線和凹凸貼圖的強度與解析度，這些貼圖可在不增加多邊形數量的情況下為表面添加紋理細節。較高的設定能增強表面細節，而較低的設定則能透過減少視覺複雜度來提升效能。">
-					紋理凹凸度
+				<text name="T_Texture_Bumpiness" tool_tip="控制法线和凹凸贴图的强度和分辨率，这些贴图可以在不增加多边形数量的情况下为表面添加纹理细节。较高的设置增强表面细节，而较低的设置通过减少视觉复杂度来提高性能。">
+					纹理凹凸度
 				</text>
 				<combo_box name="BumpStrengthSelection">
-					<combo_box.item label="非常細緻" name="0"/>
-					<combo_box.item label="較細緻" name="1"/>
-					<combo_box.item label="細緻" name="2"/>
+					<combo_box.item label="非常细致" name="0"/>
+					<combo_box.item label="较细致" name="1"/>
+					<combo_box.item label="细致" name="2"/>
 					<combo_box.item label="普通" name="3"/>
 					<combo_box.item label="粗糙" name="4"/>
-					<combo_box.item label="較粗糙" name="5"/>
+					<combo_box.item label="较粗糙" name="5"/>
 				</combo_box>
-				<text name="T_RestrictMaxTexture" tool_tip="設置在世界中顯示的紋理的最大解析度。較高的解析度（如2048像素）提供更清晰、更詳細的圖像，但使用更多的視訊記憶體，可能會影響性能。較低的設置有助於節省視訊記憶體，減少因視訊記憶體限制而導致的紋理模糊的可能性。">
-					最大紋理解析度
+				<text name="T_RestrictMaxTexture" tool_tip="设置在世界中显示的纹理的最大分辨率。较高的分辨率（如2048像素）提供更清晰、更详细的图像，但会使用更多的视频内存，可能影响性能。较低的设置有助于节省内存，减少因内存限制而导致的纹理模糊的可能性。">
+					最大纹理分辨率
 				</text>
 				<combo_box name="MaxTextureResolutionSelection">
 					<combo_box.item label="512像素" name="512"/>
 					<combo_box.item label="1024像素" name="1024"/>
 					<combo_box.item label="2048像素" name="2048"/>
 				</combo_box>
-				<text name="T_AvatarDisplay" tool_tip="根據複雜度和好友狀態控制化身的顯示方式。「按複雜度限制」限制彩現超過一定複雜度的化身以提高性能。「始終顯示好友」確保好友無論多複雜都能完全彩現。「僅顯示好友」僅彩現您的好友，隱藏其他化身，以在擁擠區域優化性能。">
-					化身顯示
+				<text name="T_AvatarDisplay" tool_tip="根据复杂度和好友状态控制化身的显示方式。“按复杂度限制”会限制渲染超过一定复杂度的化身以提高性能。“始终显示好友”确保无论好友的复杂度如何都完全渲染。“仅显示好友”仅渲染你的好友，隐藏其他化身以在拥挤区域优化性能。">
+					化身显示
 				</text>
 				<combo_box name="AvatarComplexityModeSelection">
-					<combo_box.item label="按複雜度限制" name="0"/>
-					<combo_box.item label="始終顯示好友" name="1"/>
-					<combo_box.item label="僅顯示好友" name="2"/>
+					<combo_box.item label="按复杂度限制" name="0"/>
+					<combo_box.item label="始终显示好友" name="1"/>
+					<combo_box.item label="仅显示好友" name="2"/>
 				</combo_box>
 			</panel>
 		</panel>
-		<panel name="P_Aids" label="輔助">
+		<panel name="P_Aids" label="辅助">
 			<panel name="PT_Aids">
 				<text name="T_Aids">
-					使用者界面輔助
+					用户界面辅助
 				</text>
 			</panel>
 			<panel name="P_Aids_Settings">
-				<check_box tool_tip="顯示場景中所有光源周圍的線框邊界框，幫助可視化光源的位置和範圍，便於調試或場景設置。" label="顯示場景中所有光源的邊界框" name="Lights"/>
-				<check_box tool_tip="顯示選定光源的有效半徑，允許您查看光在場景中的照射範圍。對於精細調整照明設置非常有用。" label="顯示選定光源的光照半徑" name="Show Light Radius for Selection"/>
-				<check_box tool_tip="啟用場景中所有物件的線框邊界框。這有助於識別物件邊界，用於對齊、縮放或排除彩現問題。" label="顯示場景中物件的邊界框" name="Bounding Boxes"/>
-				<check_box tool_tip="顯示實時性能統計，包括影格率、網絡數據和彩現指標。用於監控檢視器性能和識別瓶頸。" label="顯示統計信息窗口" name="Statistics Bar"/>
-				<check_box tool_tip="顯示相機在場景中的位置、方向和移動的詳細信息。用於攝影、電影製作或建築中的精確攝像工作。" label="顯示詳細的相機位置數據" name="Camera"/>
-				<check_box tool_tip="打開紋理控制台，顯示紋理加載的實時信息，包括其大小、加載時間和記憶體使用情況。幫助診斷與紋理相關的性能問題。" label="顯示詳細的紋理加載信息" name="Texture Console"/>
-				<check_box tool_tip="顯示光標下像素的RGB（紅、綠、藍）和強度（I）顏色值。用於顏色匹配、設計工作或調試照明問題。" label="顯示光標下的RGB-I顏色值" name="Show Color Under Cursor"/>
-				<check_box tool_tip="將透明物件以紅色高亮顯示，使其更容易識別。這在構建或排除場景故障時特別有用，以定位不可見的物件或隱藏的物件。" label="以紅色高亮顯示透明物件" name="Highlight Transparent"/>
-				<check_box tool_tip="以線框模式彩現整個場景，顯示物件的基礎幾何結構，而不顯示紋理或陰影。用於分析物件結構、細節級別（LOD）和網格拓撲。" label="以線框模式顯示場景" name="Wireframe"/>
-				<check_box tool_tip="顯示當前附著到您化身的所有HUD附件。禁用此選項可以隱藏HUD，這對於減少屏幕雜亂或提高性能非常有用。" label="顯示附著到您化身的HUD" name="Show HUD Attachments"/>
-				<check_box label="慢動作動畫 - 僅在您的化身和檢視器" tool_tip="減慢檢視器中的化身動畫速度，允許您詳細觀察動作。此設置不會影響其他人看到的您的化身。" name="Slow Motion Animations"/>
-				<button name="Rebake Texture" tool_tip="強制檢視器重新烘焙或刷新您化身的外觀紋理。這可以解決諸如皮膚模糊、衣服加載不正確或其他與紋理相關的問題。" label="強制外觀更新（重新烘焙）"/>
-				<button name="Set Window Size..." label="設置檢視器窗口大小..." tool_tip="打開一個對話框，以設置檢視器窗口的精確尺寸。用於以特定解析度創建屏幕截圖或匹配電影製作中的窗口大小要求。"/>
-				<button name="Debug Settings" label="顯示調試設置" tool_tip="打開調試設置菜單，允許訪問標準首選項中不可用的高級檢視器設置。請謹慎使用，因為更改可能會影響性能和穩定性。"/>
+				<check_box tool_tip="显示场景中所有光源周围的线框边界框，帮助可视化光源的位置和范围，便于调试或场景设置。" label="显示场景中所有光源的边界框" name="Lights"/>
+				<check_box tool_tip="显示选定光源的有效半径，允许您查看光在场景中的照射范围。对于精细调整照明设置非常有用。" label="显示选定光源的光照半径" name="Show Light Radius for Selection"/>
+				<check_box tool_tip="启用场景中所有物件的线框边界框。这有助于识别物件边界，用于对齐、缩放或排除渲染问题。" label="显示场景中物件的边界框" name="Bounding Boxes"/>
+				<check_box tool_tip="显示实时性能统计，包括帧率、网络数据和渲染指标。用于监控查看器性能和识别瓶颈。" label="显示统计信息窗口" name="Statistics Bar"/>
+				<check_box tool_tip="显示相机在场景中的位置、方向和移动的详细信息。用于摄影、电影制作或建筑中的精确摄像工作。" label="显示详细的相机位置数据" name="Camera"/>
+				<check_box tool_tip="打开纹理控制台，显示纹理加载的实时信息，包括其大小、加载时间和内存使用情况。帮助诊断与纹理相关的性能问题。" label="显示详细的纹理加载信息" name="Texture Console"/>
+				<check_box tool_tip="显示光标下像素的RGB（红、绿、蓝）和强度（I）颜色值。用于颜色匹配、设计工作或调试照明问题。" label="显示光标下的RGB-I颜色值" name="Show Color Under Cursor"/>
+				<check_box tool_tip="将透明物件以红色高亮显示，使其更容易识别。这在构建或排除场景故障时特别有用，以定位不可见的物件或隐藏的物件。" label="以红色高亮显示透明物件" name="Highlight Transparent"/>
+				<check_box tool_tip="以线框模式渲染整个场景，显示物件的基础几何结构，而不显示纹理或阴影。用于分析物件结构、细节级别（LOD）和网格拓扑。" label="以线框模式显示场景" name="Wireframe"/>
+				<check_box tool_tip="显示当前附着到您化身的所有HUD附件。禁用此选项可以隐藏HUD，这对于减少屏幕杂乱或提高性能非常有用。" label="显示附着到您化身的HUD" name="Show HUD Attachments"/>
+				<check_box label="慢动作动画 - 仅在您的化身和查看器" tool_tip="减慢查看器中的化身动画速度，允许您详细观察动作。此设置不会影响其他人看到的您的化身。" name="Slow Motion Animations"/>
+				<button name="Rebake Texture" tool_tip="强制查看器重新烘焙或刷新您化身的外观纹理。这可以解决诸如皮肤模糊、衣服加载不正确或其他与纹理相关的问题。" label="强制外观更新（重新烘焙）"/>
+				<button name="Set Window Size..." label="设置查看器窗口大小..." tool_tip="打开一个弹窗，以设置查看器窗口的精确尺寸。用于以特定分辨率创建屏幕截图或匹配电影制作中的窗口大小要求。"/>
+				<button name="Debug Settings" label="显示调试设置" tool_tip="打开调试设置菜单，允许访问标准首选项中不可用的高级查看器设置。请谨慎使用，因为更改可能会影响性能和稳定性。"/>
 			</panel>
 			<panel name="P_Quick_Stats">
-				<text name="T_Quick_Stats" tool_tip="显示实时系统性能统计，帮助您评估檢視器的效率。您可以通过点击标签来展开或折叠各個指标。">
-					統計資訊
+				<text name="T_Quick_Stats" tool_tip="显示实时系统性能统计，帮助您评估查看器的效率。您可以通过点击标签来展开或收起各个指标。">
+					统计信息
 				</text>
 			</panel>
 			<scroll_container name="statistics_scroll">
 				<container_view name="statistics_view">
 					<stat_view name="basic">
-						<stat_bar name="fps" label="每秒影格數" tool_tip="顯示每秒屏幕刷新次數。更高的影格率表示更流暢的性能。基本動畫的典型速率為12-15影格，電影為24影格，電視為25-30影格。" />
-						<stat_bar name="bandwidth" label="頻寬" tool_tip="顯示您的計算機與虛擬世界之間的當前數據傳輸速率。較高的值表示活躍的數據流動。持續的0 Kbps可能表示部分斷開連接。"  />
-						<stat_bar name="ktrisframe" label="每影格繪製的千三角形" tool_tip="表示每影格繪製的三角形（基本的3D構建塊）數量。較高的數量表明渲染的3D模型更詳細。" />
-						<stat_bar name="ktrissec" label="每秒繪製的千三角形" tool_tip="表示每秒繪製的三角形總數。這有助於衡量正在渲染的場景的整體複雜性。" />
-						<stat_bar name="objs" label="物件數量" tool_tip="顯示當前場景中可見的物件總數，包括化身、元素、地形塊和其他實體。" />
-						<stat_bar name="newobjs" label="新物件" tool_tip="顯示每秒加載到場景中的新物件數量，反映資產流傳輸活動。"/>
-						<stat_bar name="numimagesstat" label="紋理數量" tool_tip="表示當前檢視器中加載的不同紋理總數，這會影響視訊記憶體的使用。" />
+						<stat_bar name="fps" label="每秒帧数" tool_tip="显示每秒屏幕刷新次数。更高的帧率表示更流畅的性能。基本动画的典型速率为12-15帧，电影为24帧，电视为25-30帧。"/>
+						<stat_bar name="bandwidth" label="带宽" tool_tip="显示您的计算机与虚拟世界之间的当前数据传输速率。较高的值表示活跃的数据流动。持续的0 Kbps可能表示部分断开连接。"/>
+						<stat_bar name="ktrisframe" label="每帧绘制的千三角形" tool_tip="表示每帧绘制的三角形（基本的3D构建块）数量。较高的数量表明渲染的3D模型更详细。"/>
+						<stat_bar name="ktrissec" label="每秒绘制的千三角形" tool_tip="表示每秒绘制的三角形总数。这有助于衡量正在渲染的场景的整体复杂性。"/>
+						<stat_bar name="objs" label="物件数量" tool_tip="显示当前场景中可见的物件总数，包括化身、元素、地形块和其他实体。"/>
+						<stat_bar name="newobjs" label="新物件" tool_tip="显示每秒加载到场景中的新物件数量，反映资产流传输活动。"/>
+						<stat_bar name="numimagesstat" label="纹理数量" tool_tip="表示当前查看器中加载的独特纹理总数，这会影响显存的使用。"/>
 					</stat_view>
 				</container_view>
 			</scroll_container>
 		</panel>
-		<panel name="P_Cam" label="相機">
+		<panel name="P_Cam" label="相机">
 			<panel name="PT_Cam">
 				<text name="T_Cam">
-					3D滑鼠（操縱桿）設定
+					3D鼠标（操纵杆）设置
 				</text>
 			</panel>
 			<panel name="P_Cam_Settings">
-				<text name="T_LR_Axis" tool_tip="調整相機左右移動的靈敏度。較低的值允許更精細的控制，而較高的值增加移動速度。">
+				<text name="T_LR_Axis" tool_tip="调整相机水平移动的灵敏度。较低的值允许更精细的控制，而较高的值增加移动速度。">
 					左/右
 				</text>
-				<button name="Reset_LR_Axis" tool_tip="重設為預設值。" />
-				<text name="T_UD_Axis" tool_tip="調整相機上下移動的靈敏度。降低此設置可提高小調整的精確度。">
+				<button name="Reset_LR_Axis" tool_tip="重置为默认值。"/>
+				<text name="T_UD_Axis" tool_tip="调整相机垂直移动的灵敏度。降低此设置可提高小调整的精确度。">
 					上/下
 				</text>
-				<button name="Reset_UD_Axis" tool_tip="重設為預設值。" />
-				<text name="T_IO_Axis" tool_tip="控制相機前後移動的靈敏度，類似於現實世界攝影中的推拉鏡頭。這會將整個相機向主體靠近或遠離，改變視角，而不是像變焦那樣調整視場。較低的值提供更精細的控制以實現平滑、漸進的推拉移動，而較高的值增加移動速度以便快速調整。">
-					前進/後退
+				<button name="Reset_UD_Axis" tool_tip="重置为默认值。"/>
+				<text name="T_IO_Axis" tool_tip="控制相机前后移动的灵敏度，类似于现实世界摄影中的推拉镜头。这会将整个相机向主体靠近或远离，改变视角，而不是像变焦那样调整视场。较低的值提供更精细的控制以实现平滑、渐进的推拉移动，而较高的值增加移动速度以便快速调整。">
+					前进/后退
 				</text>
-				<button name="Reset_IO_Axis" tool_tip="重設為預設值。" />
-				<text name="T_Tilt" tool_tip="調整相機上下俯仰的靈敏度。降低此設置使相機傾斜更加漸進。">
+				<button name="Reset_IO_Axis" tool_tip="重置为默认值。"/>
+				<text name="T_Tilt" tool_tip="调整相机上下俯仰移动的响应度。降低此设置使相机倾斜更加渐进。">
 					俯仰
 				</text>
-				<button name="Reset_Tilt" tool_tip="重設為預設值。" />
-				<text name="T_Spin" tool_tip="修改相機左右旋轉的靈敏度。較低的設置減慢旋轉速度，適用於精確構圖。">
-					旋轉
+				<button name="Reset_Tilt" tool_tip="重置为默认值。"/>
+				<text name="T_Spin" tool_tip="修改相机左右旋转的灵敏度。较低的设置减慢旋转速度，适用于精确构图。">
+					旋转
 				</text>
-				<button name="Reset_Spin" tool_tip="重設為預設值。" />
-				<text name="T_Roll" tool_tip="調整相機左右滾動的靈敏度，這會使相機側向傾斜，類似於將頭左右旋轉。較低的值提供更精細的控制以進行精確調整，而較高的值使滾動更為靈敏。注意：如果啟用了「自動水平校正」，此設置將不起作用，因為自動水平校正會保持相機水平，防止任何滾動移動。">
-					滾動
+				<button name="Reset_Spin" tool_tip="重置为默认值。"/>
+				<text name="T_Roll" tool_tip="调整相机左右滚动的灵敏度，这会使相机侧向倾斜，类似于将头左右旋转。较低的值提供更精细的控制以进行精确调整，而较高的值使滚动更为灵敏。注意：如果启用了“自动水平校正”，此设置将不起作用，因为自动水平校正会保持相机水平，防止任何滚动。">
+					滚动
 				</text>
-				<button name="Reset_Roll" tool_tip="重設為預設值。" />
-				<text name="T_Zoom_Speed" tool_tip="通過調整相機的焦距或垂直視場來控制變焦方式，類似於更換真實相機的鏡頭。這會影響場景的可見範圍以及視圖的「變焦」效果。要激活變焦功能，將變焦軸映射設置為「4」。此設置不影響變焦的平滑度，而是決定視場調整的範圍，從而對相機的變焦級別進行精確控制。">
-					縮放
+				<button name="Reset_Roll" tool_tip="重置为默认值。"/>
+				<text name="T_Zoom_Speed" tool_tip="通过调整相机的焦距或垂直视场来控制变焦方式，类似于更换真实相机的镜头。这会影响场景的可见范围以及视图的“变焦”效果。要激活变焦功能，将变焦轴映射设置为“4”。此设置不影响变焦的平滑度，而是决定视场调整的范围，从而对相机的变焦级别进行精确控制。">
+					缩放
 				</text>
-				<button name="Reset_Zoom_Speed" tool_tip="重設為預設值。" />
-				<text name="T_Feathering" tool_tip="控制相機移動的流暢度。將滑塊向右移動使相機剛性並對操縱桿輸入做出響應。向左移動使相機表現得更像具有慣性，適合電影般的飛越鏡頭。">
-					減速
+				<button name="Reset_Zoom_Speed" tool_tip="重置为默认值。"/>
+				<text name="T_Feathering" tool_tip="控制相机移动的流畅度。将滑块向右移动使相机刚性并对操纵杆输入做出响应。向左移动使相机表现得更像具有惯性，适合电影般的飞越镜头。">
+					减速
 				</text>
-				<button name="Reset_Feathering" tool_tip="重設為預設值。" />
+				<button name="Reset_Feathering" tool_tip="重置为默认值。"/>
 			</panel>
 			<panel name="P_Axis_Mapping">
-				<spinner label="縮放軸對映" name="JoystickAxis6" tool_tip="確定哪個操縱桿或滑鼠軸控制變焦功能。將其設置為「4」以通過操縱桿啟用變焦。"/>
-				<check_box label="啟用3D滑鼠" tool_tip="啟用或禁用用於控制相機的操縱桿/3D滑鼠支持。" name="enable_joystick" />
-				<check_box name="CB_ZoomDirect" label="啟用縮放控制（見工具提示！）" tool_tip="使用3D滑鼠激活變焦控制。確保「變焦軸對映」設置為「4」以確保正常功能。"/>
-				<check_box name="CB_AutoLeveling" label="自動校準（無相機捲動）" tool_tip="保持相機水平，防止意外的滾動。這對於在移動時保持穩定的地平線很有用。"/>
-				<check_box name="CB_Move_Avatar" label="使用3D滑鼠控制化身" tool_tip="允許3D滑鼠控制化身移動，而不僅是相機。"/>
-				<check_box name="CB_Move_Objects" label="使用3D滑鼠移動物件" tool_tip="啟用3D滑鼠在建造和編輯期間進行物件操作。"/>
-				<check_box label="顯示當前相機視場（FOV）" name="CAM_Show_FOV" tool_tip="顯示當前的垂直視場覆蓋。使用變焦滑塊調整視場。"/>
-				<check_box label="顯示詳細的相機位置資料" name="Camera" tool_tip="顯示有關相機位置、方向和移動的詳細信息。適用於攝影、動畫製作或精確編輯。"/>
+				<spinner label="变焦轴映射" name="JoystickAxis6" tool_tip="确定哪个操纵杆或鼠标轴控制变焦功能。将其设置为“4”以通过操纵杆启用变焦。"/>
+				<check_box label="启用3D鼠标" tool_tip="启用或禁用用于控制相机的操纵杆/3D鼠标支持。" name="enable_joystick"/>
+				<check_box name="CB_ZoomDirect" label="启用缩放控制（见工具提示！）" tool_tip="使用3D鼠标激活变焦控制。确保“变焦轴映射”设置为“4”以确保正常功能。"/>
+				<check_box name="CB_AutoLeveling" label="自动校准（无相机滚动）" tool_tip="保持相机水平，防止意外的滚动。这对于在移动时保持稳定的地平线很有用。"/>
+				<check_box name="CB_Move_Avatar" label="使用3D鼠标控制化身" tool_tip="允许3D鼠标控制化身移动，而不仅仅是相机。"/>
+				<check_box name="CB_Move_Objects" label="使用3D鼠标移动物件" tool_tip="启用3D鼠标在建造和编辑期间进行物件操作。"/>
+				<check_box label="显示当前相机视场（FOV）" name="CAM_Show_FOV" tool_tip="显示当前的垂直视场覆盖。使用变焦滑块调整视场。"/>
+				<check_box label="显示详细的相机位置数据" name="Camera" tool_tip="显示有关相机位置、方向和移动的详细信息。适用于摄影、动画制作或精确编辑。"/>
 			</panel>
 			<panel name="P_Viewer_Cam_Menu">
 				<text name="PT_Viewer_Cam_Menu">
-					檢視器相機選單設定
+					查看器相机菜单设置
 				</text>
 			</panel>
 			<panel name="P_Viewer_Cam_Menu_Settings">
 				<tab_container name="TC_Viewer_Cam_Menu_Settings">
-					<panel name="CamMov" label="相機移動">
+					<panel name="CamMov" label="相机移动">
 						<panel name="P_Cam2">
-							<text name="T_Zoom2" tool_tip="在現實世界中，這是一個變焦功能。它改變檢視器視窗內的視角。它的功能與按Ctrl-0或Ctrl-8相同。注意：如果飛行相機（3D SpaceNavigator）被啟用，此功能將不起作用。">
-								視角
+							<text name="T_Zoom2" tool_tip="在现实世界中，这是一个变焦功能。它改变查看器窗口内的视角。它的功能与按Ctrl-0或Ctrl-8相同。注意：如果飞行相机（3D SpaceNavigator）被启用，此功能将不起作用。">
+								视角
 							</text>
-							<button name="Reset_Zoom2" tool_tip="重設為預設值。" />
-							<text name="T_Zoom_Speed2" tool_tip="設定縮放的轉換速度。較高的值產生更慢、更平滑的縮放。">
-								縮放速度
+							<button name="Reset_Zoom2" tool_tip="重置为默认值。"/>
+							<text name="T_Zoom_Speed2" tool_tip="设置缩放的转换速度。较高的值产生更慢、更平滑的缩放。">
+								缩放速度
 							</text>
-							<button name="Reset_Zoom_Speed2" tool_tip="重設為預設值。" />
-							<text name="T_Camera_Lag" tool_tip="設定相機跟隨化身移動的延遲程度（0 = 無延遲，30 = 化身速度）。">
-								相機延遲
+							<button name="Reset_Zoom_Speed2" tool_tip="重置为默认值。"/>
+							<text name="T_Camera_Lag" tool_tip="设置相机跟随化身移动的延迟程度（0 = 无延迟，30 = 化身速度）。">
+								相机延迟
 							</text>
-							<button name="Reset_Camera_Lag" tool_tip="重設為預設值。" />
-							<text name="T_Camera_Offset" tool_tip="設定相機與預設位置的距離。">
-								相機偏移
+							<button name="Reset_Camera_Lag" tool_tip="重置为默认值。"/>
+							<text name="T_Camera_Offset" tool_tip="设置相机与默认位置的距离。">
+								相机偏移
 							</text>
-							<button name="Reset_Camera_Offset" tool_tip="重設為預設值。" />
-							<text name="T_Cam_Smoothing" tool_tip="設定相機啟動和停止移動的平滑度。較高的值意味著更平滑（因此更慢）的移動。">
-								相機平滑
+							<button name="Reset_Camera_Offset" tool_tip="重置为默认值。"/>
+							<text name="T_Cam_Smoothing" tool_tip="设置相机启动和停止移动的平滑度。较高的值意味着更平滑（因此更慢）的移动。">
+								相机平滑
 							</text>
-							<button name="Reset_Cam_Smoothing" tool_tip="重設為預設值。" />
+							<button name="Reset_Cam_Smoothing" tool_tip="重置为默认值。"/>
 						</panel>
 					</panel>
-					<panel name="P_Mouse" label="滑鼠">
+					<panel name="P_Mouse" label="鼠标">
 						<panel name="P_Mouse_Settings">
-							<text name="T_Mouse_Sens" tool_tip="設定在滑鼠觀察模式下的滑鼠靈敏度。">
-								滑鼠靈敏度
+							<text name="T_Mouse_Sens" tool_tip="设置在鼠标观察模式下的鼠标灵敏度。">
+								鼠标灵敏度
 							</text>
-							<button name="Reset_Mouse_Sens" tool_tip="重設為預設值。" />
-							<check_box label="在滑鼠觀察模式下顯示化身和附件" tool_tip="在滑鼠觀察模式下顯示化身和附件。預設值為關閉。" name="first_person_avatar_visible" />
-							<check_box label="平滑滑鼠觀察模式的移動" tool_tip="在滑鼠觀察模式下平滑滑鼠的移動。" name="MouseSmooth" />
+							<button name="Reset_Mouse_Sens" tool_tip="重置为默认值。"/>
+							<check_box label="在鼠标观察模式下显示化身和附件" tool_tip="在鼠标观察模式下显示化身和附件。默认值为关闭。" name="first_person_avatar_visible"/>
+							<check_box label="平滑鼠标观察模式的移动" tool_tip="在鼠标观察模式下平滑鼠标的移动。" name="MouseSmooth"/>
 						</panel>
 					</panel>
-					<panel name="P_Misc" label="雜項">
+					<panel name="P_Misc" label="杂项">
 						<panel name="P_Misc_Settings">
-							<check_box label="點擊化身保持相機位置" name="clickonavatarkeepscamera" tool_tip="通常情況下，點擊化身會重設相機位置。這個選項可以防止這種行為。" />
-							<check_box label="傳送後重設相機位置" name="FSResetCameraOnTP" tool_tip="通常情況下，傳送會重設相機位置。這個選項可以防止這種行為。" />
-							<check_box label="允許相機穿過元素移動" name="ignorecameraconstraints" tool_tip="忽略相機不能穿過元素移動的限制。需要重新啟動才能生效！" />
-							<check_box label="化身移動時重設相機位置" name="resetcamerapositiononmovement" tool_tip="化身移動時重設相機位置。" />
+							<check_box label="点击化身保持相机位置" name="clickonavatarkeepscamera" tool_tip="通常情况下，点击化身会重置相机位置。这个选项可以防止这种行为。"/>
+							<check_box label="传送后重置相机位置" name="FSResetCameraOnTP" tool_tip="通常情况下，传送会重置相机位置。这个选项可以防止这种行为。"/>
+							<check_box label="允许相机穿过元素移动" name="ignorecameraconstraints" tool_tip="忽略相机不能穿过元素移动的限制。需要重启才能生效！"/>
+							<check_box label="化身移动时重置相机位置" name="resetcamerapositiononmovement" tool_tip="化身移动时重置相机位置。"/>
 						</panel>
 					</panel>
 				</tab_container>

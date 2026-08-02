@@ -3,38 +3,38 @@
 	<layout_stack name="water_stack1">
 		<layout_panel name="lp_top">
 			<text name="water_fog_label">
-				水霧
+				水雾
 			</text>
 			<text name="color_label">
-				顏色：
+				颜色：
 			</text>
 			<text name="density_exponent_label">
 				密度：
 			</text>
 			<text name="underwater_modifier_label">
-				水下修飾：
+				水下修饰：
 			</text>
 			<text name="FresnelScaleText">
-				菲涅爾尺度：
+				菲涅尔尺度：
 			</text>
 			<text name="FresnelOffsetText">
-				菲涅爾偏移：
+				菲涅尔偏移：
 			</text>
 		</layout_panel>
 		<layout_panel name="lp_bottom">
 			<layout_stack name="water_stack2">
 				<layout_panel name="lp_left">
 					<text name="normal_map_label">
-						法線圖：
+						法线图：
 					</text>
 					<text name="large_wave_speed_label">
-						大波紋速度：
+						大波纹速度：
 					</text>
 					<text name="small_wave_speed_label">
-						小波紋速度：
+						小波纹速度：
 					</text>
 					<text name="reflection_wavelet_scale_label">
-						波紋反射尺度：
+						波纹反射尺度：
 					</text>
 				</layout_panel>
 				<layout_panel name="lp_right">
@@ -42,13 +42,13 @@
 						折射和模糊
 					</text>
 					<text name="refraction_scale_above_label">
-						光折射等級（上方）：
+						光折射等级（上方）：
 					</text>
 					<text name="refraction_scale_below_label">
-						光折射等級（下方）：
+						光折射等级（下方）：
 					</text>
 					<text name="blur_multiplier_label">
-						模糊倍數：
+						模糊倍数：
 					</text>
 				</layout_panel>
 			</layout_stack>

@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="avatarinfo" title="預覽">
+<floater name="avatarinfo" title="预览">
 	<panel name="panel_profile_view">
 		<tab_container name="panel_profile_tabs">
-			<panel label="第二人生" name="panel_profile_secondlife" />
-			<panel label="網頁" name="panel_profile_web" />
-			<panel label="精選地點" name="panel_profile_picks" />
-			<panel label="分類廣告" name="panel_profile_classifieds" />
-			<panel label="真實世界" name="panel_profile_firstlife" />
-			<panel label="筆記" name="panel_profile_notes" />
+			<panel label="第二人生" name="panel_profile_secondlife"/>
+			<panel label="网页" name="panel_profile_web"/>
+			<panel label="兴趣" name="panel_profile_interests"/>
+			<panel label="精选地点" name="panel_profile_picks"/>
+			<panel label="分类广告" name="panel_profile_classifieds"/>
+			<panel label="真实世界" name="panel_profile_firstlife"/>
+			<panel label="笔记" name="panel_profile_notes"/>
 		</tab_container>
+		<button label="确定" name="ok_btn" tool_tip="保存变更到个人档案后关闭"/>
+		<button label="取消" tool_tip="放弃未保存的更改并关闭窗口" label_selected="取消" name="cancel_btn"/>
 	</panel>
 </floater>

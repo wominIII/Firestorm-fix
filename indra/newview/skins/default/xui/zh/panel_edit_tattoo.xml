@@ -2,10 +2,10 @@
 <panel name="edit_tattoo_panel">
 	<scroll_container name="avatar_tattoo_scroll">
 		<panel name="avatar_tattoo_color_panel">
-			<texture_picker label="頭部刺青" name="Head Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="上半身刺青" name="Upper Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="下半身刺青" name="Lower Tattoo" tool_tip="點擊以挑選圖片" />
-			<color_swatch label="顏色/色調" name="Color/Tint" tool_tip="點擊以開啟顏色挑選器" />
+			<texture_picker label="头部纹身" name="Head Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="上半身纹身" name="Upper Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="下半身纹身" name="Lower Tattoo" tool_tip="点击以挑选图片"/>
+			<color_swatch label="颜色/色调" name="Color/Tint" tool_tip="点击以开启颜色挑选器"/>
 		</panel>
 	</scroll_container>
 </panel>

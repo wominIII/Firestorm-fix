@@ -1,19 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <toggleable_menu name="Avatar Profile Menu">
 	<menu_item_call label="私聊" name="im" />
-	<menu_item_call label="傳送瞬間傳送邀請" name="offer_teleport" />
-	<menu_item_call label="請求瞬間傳送" name="request_teleport" />
-	<menu_item_call label="語音通話" name="voice_call" />
-	<menu_item_call label="聊天歷史" name="chat_history" />
-	<menu_item_call label="加為朋友" name="add_friend" />
-	<menu_item_call label="移除朋友" name="remove_friend" />
-	<menu_item_call label="邀請加入群組" name="invite_to_group" />
-	<menu_item_call label="權限" name="agent_permissions" />
-	<menu_item_call label="地圖" name="map" />
-	<menu_item_call label="分享" name="share" />
-	<menu_item_call label="支付" name="pay" />
-	<menu_item_check label="封鎖/解除封鎖" name="block_unblock" />
-	<menu_item_call label="複製顯示名" name="copy_display_name" />
-	<menu_item_call label="複製使用者名稱" name="copy_name" />
-	<menu_item_call label="複製使用者ID" name="copy_id" />
+	<menu_item_call label="发送瞬间传送邀请" name="offer_teleport" />
+	<menu_item_call label="请求瞬间传送" name="request_teleport" />
+	<menu_item_call label="语音通话" name="voice_call" />
+	<menu_item_call label="聊天历史" name="chat_history"/>
+	<menu_item_call label="加为朋友" name="add_friend"/>
+	<menu_item_call label="移除朋友" name="remove_friend"/>
+	<menu_item_call label="邀请加入群组" name="invite_to_group"/>
+	<menu_item_call label="权限" name="agent_permissions" />
+	<menu_item_call label="地图" name="map"/>
+	<menu_item_call label="分享" name="share"/>
+	<menu_item_call label="支付" name="pay"/>
+	<menu_item_check label="封锁/解除封锁" name="block_unblock"/>
+	<menu_item_call label="复制显示名" name="copy_display_name" />
+	<menu_item_call label="复制用户名称" name="copy_name" />
+	<menu_item_call label="复制用户ID" name="copy_id" />
 </toggleable_menu>

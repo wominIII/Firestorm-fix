@@ -1,2 +1,3 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="rlvLocks" title="主動式RLV鎖"></floater>
+<floater name="rlvLocks" title="主动式RLV锁">
+</floater>

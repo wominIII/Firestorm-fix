@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="群組檔案" name="GroupInfo">
+<panel label="群组档案" name="GroupInfo">
 	<panel.string name="default_needs_apply_text">
-		變更未儲存
+		变更未保存
 	</panel.string>
 	<panel.string name="want_apply_text">
-		你要儲存這些變更嗎？
+		你要保存这些变更吗？
 	</panel.string>
 	<panel.string name="group_join_btn">
 		加入（[AMOUNT] L$）
 	</panel.string>
 	<panel.string name="group_join_free">
-		免費
+		免费
 	</panel.string>
 	<panel.string name="group_member">
-		成員
+		成员
 	</panel.string>
 	<panel.string name="join_txt">
 		加入
@@ -24,35 +24,35 @@
 	<layout_stack name="group_info_sidetray_main">
 		<layout_panel name="header_container">
 			<panel name="group_info_top">
-				<text_editor name="group_name" value="（載入中...）" />
-				<line_editor label="在此輸入你的新群組名稱" name="group_name_editor" />
+				<text_editor name="group_name" value="（加载中...）"/>
+				<line_editor label="在此输入你的新群组名称" name="group_name_editor"/>
 			</panel>
 		</layout_panel>
 		<layout_panel name="group_info_content">
 			<layout_stack name="layout">
 				<layout_panel name="group_accordions">
 					<accordion name="groups_accordion">
-						<accordion_tab name="group_general_tab" title="基本資料" />
-						<accordion_tab name="group_roles_tab" title="角色與成員" />
-						<accordion_tab name="group_notices_tab" title="通知" />
-						<accordion_tab name="group_land_tab" title="土地 / 地產" />
-						<accordion_tab name="group_experiences_tab" title="體驗" />
+						<accordion_tab name="group_general_tab" title="基本数据"/>
+						<accordion_tab name="group_roles_tab" title="角色与成员"/>
+						<accordion_tab name="group_notices_tab" title="通知"/>
+						<accordion_tab name="group_land_tab" title="土地 / 地产"/>
+						<accordion_tab name="group_experiences_tab" title="体验"/>
 					</accordion>
 				</layout_panel>
 			</layout_stack>
 			<layout_stack name="button_row_ls">
 				<layout_panel name="btn_activate_lp">
-					<button label="啟用" name="btn_activate" />
+					<button label="启用" name="btn_activate"/>
 				</layout_panel>
 				<layout_panel name="btn_chat_lp">
-					<button label="聊天" name="btn_chat" />
+					<button label="聊天" name="btn_chat"/>
 				</layout_panel>
 				<layout_panel name="call_btn_lp">
-					<button label="群組通話" name="btn_call" tool_tip="與此群組進行通話" />
+					<button label="群组通话" name="btn_call" tool_tip="与此群组进行通话"/>
 				</layout_panel>
 				<layout_panel name="btn_apply_lp">
-					<button label="儲存" label_selected="儲存" name="btn_apply" />
-					<button label="建立群組" name="btn_create" tool_tip="創造一個新群組" />
+					<button label="保存" label_selected="保存" name="btn_apply"/>
+					<button label="创建群组" name="btn_create" tool_tip="创造一个新群组"/>
 				</layout_panel>
 			</layout_stack>
 		</layout_panel>

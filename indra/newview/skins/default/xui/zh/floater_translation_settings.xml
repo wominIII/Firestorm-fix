@@ -1,118 +1,118 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="floater_translation_settings" title="聊天內容翻譯設定">
+<floater name="floater_translation_settings" title="聊天内容翻译设置">
 	<string name="azure_api_key_not_verified">
-		Azure 服務辨識碼未驗證。狀態：[STATUS]。請檢查您的設定並重試。
+		Azure 服务标识符未验证。状态：[STATUS]。请检查您的设置并重试。
 	</string>
 	<string name="google_api_key_not_verified">
-		Google-API 金鑰未驗證。狀態：[STATUS]。請檢查您的金鑰並重試。
+		Google-API 密钥未验证。状态：[STATUS]。请检查您的密钥并重试。
 	</string>
 	<string name="deepl_api_key_not_verified">
-		DeepL 授權金鑰未驗證。狀態：[STATUS]。請檢查您的金鑰並重試。
+		DeepL 授权密钥未验证。状态：[STATUS]。请检查您的密钥并重试。
 	</string>
 	<string name="azure_api_key_verified">
-		Azure 服務辨識碼已驗證。
+		Azure 服务标识符已验证。
 	</string>
 	<string name="google_api_key_verified">
-		Google-API 金鑰已驗證。
+		Google-API 密钥已验证。
 	</string>
 	<string name="deepl_api_key_verified">
-		DeepL API 金鑰已驗證。
+		DeepL API 密钥已验证。
 	</string>
-	<check_box label="聊天時啟用機器翻譯" name="translate_chat_checkbox" />
+	<check_box label="聊天时启用机器翻译" name="translate_chat_checkbox"/>
 	<text name="translate_language_label">
-		將聊天內容翻譯成：
+		将聊天内容翻译成：
 	</text>
 	<combo_box name="translate_language_combo">
-		<combo_box.item label="系統預設" name="System Default Language" />
-		<combo_box.item label="English（英語）" name="English" />
-		<combo_box.item label="Dansk（丹麥語）" name="Danish" />
-		<combo_box.item label="Deutsch（德語）" name="German" />
-		<combo_box.item label="Español（西班牙語）" name="Spanish" />
-		<combo_box.item label="Français（法語）" name="French" />
-		<combo_box.item label="Italiano（義大利語）" name="Italian" />
-		<combo_box.item label="Magyar（匈牙利語）" name="Hungarian" />
-		<combo_box.item label="Nederlands（荷蘭語）" name="Dutch" />
-		<combo_box.item label="Polski（波蘭語）" name="Polish" />
-		<combo_box.item label="Português（葡萄牙語）" name="Portugese" />
-		<combo_box.item label="Русский（俄羅斯語）" name="Russian" />
-		<combo_box.item label="Türkçe（土耳其語）" name="Turkish" />
-		<combo_box.item label="Українська（烏克蘭語）" name="Ukrainian" />
-		<combo_box.item label="中文(簡體)" name="Chinese" />
-		<combo_box.item label="日本語（日語）" name="Japanese" />
-		<combo_box.item label="한국어（韓語）" name="Korean" />
+		<combo_box.item label="系统默认" name="System Default Language"/>
+		<combo_box.item label="English（英语）" name="English"/>
+		<combo_box.item label="Dansk（丹麦语）" name="Danish"/>
+		<combo_box.item label="Deutsch（德语）" name="German"/>
+		<combo_box.item label="Español（西班牙语）" name="Spanish"/>
+		<combo_box.item label="Français（法语）" name="French"/>
+		<combo_box.item label="Italiano（义大利语）" name="Italian"/>
+		<combo_box.item label="Magyar（匈牙利语）" name="Hungarian"/>
+		<combo_box.item label="Nederlands（荷兰语）" name="Dutch"/>
+		<combo_box.item label="Polski（波兰语）" name="Polish"/>
+		<combo_box.item label="Português（葡萄牙语）" name="Portugese"/>
+		<combo_box.item label="Русский（俄罗斯语）" name="Russian"/>
+		<combo_box.item label="Türkçe（土耳其语）" name="Turkish"/>
+		<combo_box.item label="Українська（乌克兰语）" name="Ukrainian"/>
+		<combo_box.item label="中文(简体)" name="Chinese"/>
+		<combo_box.item label="日本语（日语）" name="Japanese"/>
+		<combo_box.item label="한국어（韩语）" name="Korean"/>
 	</combo_box>
 	<text name="tip">
-		選擇翻譯服務：
+		选择翻译服务：
 	</text>
 	<radio_group name="translation_service_rg">
-		<radio_item label="Azure 翻譯" name="azure" />
-		<radio_item label="Google 翻譯" name="google" />
-		<radio_item label="DeepL 翻譯" name="deepl" />
+		<radio_item label="Azure 翻译" name="bing"/>
+		<radio_item label="Google 翻译" name="google"/>
+		<radio_item label="DeepL 翻译" name="deepl"/>
 	</radio_group>
 	<text name="azure_links_text">
-		[https://learn.microsoft.com/en-us/azure/cognitive-services/translator/create-translator-resource 設定]
+		[https://learn.microsoft.com/en-us/azure/cognitive-services/translator/create-translator-resource 设置]
 	</text>
 	<text name="azure_api_endoint_label">
-		API端點：
+		API端点：
 	</text>
 	<text name="azure_api_key_label">
-		Azure 金鑰：
+		Azure 密钥：
 	</text>
-	<line_editor default_text="輸入 API 金鑰 &amp; 點選&quot;驗證&quot;" name="azure_api_key" />
+	<line_editor default_text="输入 API 密钥 &amp; 点击&quot;验证&quot;" name="azure_api_key"/>
 	<text name="azure_api_region_label">
-		區域：
+		区域：
 	</text>
-	<line_editor default_text="對全球服務可選" name="azure_api_region" />
-	<button label="驗證" name="verify_azure_api_key_btn" />
+	<line_editor default_text="对全球服务可选" name="azure_api_region"/>
+	<button label="验证" name="verify_azure_api_key_btn"/>
 	<text name="google_api_key_label">
-		Google-[http://code.google.com/apis/language/translate/v2/getting_started.html#auth API 金鑰]:
+		Google-[http://code.google.com/apis/language/translate/v2/getting_started.html#auth API 密钥]:
 	</text>
-	<line_editor default_text="輸入 API 金鑰 &amp; 點選&quot;驗證&quot;" name="google_api_key" />
-	<button label="驗證" name="verify_google_api_key_btn" />
+	<line_editor default_text="输入 API 密钥 &amp; 点击&quot;验证&quot;" name="google_api_key"/>
+	<button label="验证" name="verify_google_api_key_btn"/>
 	<text name="google_links_text">
-		[http://code.google.com/apis/language/translate/v2/pricing.html 價格] | [https://code.google.com/apis/console 統計]
+		[http://code.google.com/apis/language/translate/v2/pricing.html 价格] | [https://code.google.com/apis/console 统计]
 	</text>
 	<text name="deepl_api_domain_label">
-		API端點：
+		API端点：
 	</text>
 	<text name="deepl_api_key_label">
-		DeepL API 金鑰：
+		DeepL API 密钥：
 	</text>
-	<line_editor default_text="輸入 API 金鑰 &amp; 點選&quot;驗證&quot;" name="deepl_api_key" />
-	<button label="驗證" name="verify_deepl_api_key_btn" />
+	<line_editor default_text="输入 API 密钥 &amp; 点击&quot;验证&quot;" name="deepl_api_key"/>
+	<button label="验证" name="verify_deepl_api_key_btn"/>
 	<text name="deepl_links_text">
-		[https://www.deepl.com/pro/select-country?cta=header-prices 價格]
+		[https://www.deepl.com/pro/select-country?cta=header-prices 价格]
 	</text>
 	<panel name="outgoing_translation_panel">
-		<text name="outgoing_translation_title">傳送訊息翻譯</text>
+		<text name="outgoing_translation_title">发送消息翻译</text>
 		<radio_group name="outgoing_mode">
-			<radio_item label="關閉" name="off" />
-			<radio_item label="一般 API" name="normal" />
-			<radio_item label="AI 上下文" name="gpt" />
+			<radio_item label="关闭" name="off"/>
+			<radio_item label="普通 API" name="normal"/>
+			<radio_item label="AI 上下文" name="gpt"/>
 		</radio_group>
-		<text name="outgoing_target_language_label">目標語言：</text>
-		<text name="outgoing_send_format_label">傳送格式：</text>
+		<text name="outgoing_target_language_label">目标语言：</text>
+		<text name="outgoing_send_format_label">发送格式：</text>
 		<combo_box name="outgoing_send_format">
-			<combo_box.item label="僅翻譯" name="translated" />
-			<combo_box.item label="原文 + 翻譯" name="original_first" />
-			<combo_box.item label="翻譯 + 原文" name="translation_first" />
+			<combo_box.item label="仅发送译文" name="translated"/>
+			<combo_box.item label="原文 + 译文" name="original_first"/>
+			<combo_box.item label="译文 + 原文" name="translation_first"/>
 		</combo_box>
-		<text name="outgoing_gpt_url_label">GPT 基礎網址：</text>
-		<text name="outgoing_gpt_key_label">API 金鑰：</text>
+		<text name="outgoing_gpt_url_label">GPT 接口地址：</text>
+		<text name="outgoing_gpt_key_label">API 密钥：</text>
 		<text name="outgoing_gpt_model_label">模型：</text>
-		<text name="outgoing_gpt_context_label">上下文訊息數：</text>
-		<text name="outgoing_gpt_prompt_label">可編輯的系統提示詞（支援 {target_language}）：</text>
-		<text name="outgoing_gpt_context_note">AI 只會接收目前附近、群組或私人對話中最新的幾則訊息。</text>
-		<text name="script_dialog_translation_title">腳本物件選單翻譯</text>
+		<text name="outgoing_gpt_context_label">上下文消息数：</text>
+		<text name="outgoing_gpt_prompt_label">可编辑的系统提示词（支持 {target_language}）：</text>
+		<text name="outgoing_gpt_context_note">AI 只会读取当前附近聊天、群聊或私聊中最近的少量消息。</text>
+		<text name="script_dialog_translation_title">脚本物品菜单翻译</text>
 		<radio_group name="script_dialog_translate_mode">
-			<radio_item label="關閉" name="off" />
-			<radio_item label="一般 API" name="normal" />
-			<radio_item label="AI 上下文" name="gpt" />
+			<radio_item label="关闭" name="off"/>
+			<radio_item label="普通 API" name="normal"/>
+			<radio_item label="AI 上下文" name="gpt"/>
 		</radio_group>
-		<text name="script_dialog_target_language_label">目標語言：</text>
-		<text name="script_dialog_gpt_prompt_label">AI 選單提示詞（支援 {target_language}）：</text>
-		<text name="script_dialog_translation_note">AI 模式會共用上方的 GPT 基礎網址、API 金鑰與模型。翻譯結果會儲存在本機。</text>
+		<text name="script_dialog_target_language_label">目标语言：</text>
+		<text name="script_dialog_gpt_prompt_label">AI 菜单提示词（支持 {target_language}）：</text>
+		<text name="script_dialog_translation_note">AI 模式共用上方的 GPT 接口地址、API 密钥和模型；翻译结果会保存在本地。</text>
 	</panel>
-	<button label="確定" name="ok_btn" />
-	<button label="取消" name="cancel_btn" />
+	<button label="确定" name="ok_btn"/>
+	<button label="取消" name="cancel_btn"/>
 </floater>

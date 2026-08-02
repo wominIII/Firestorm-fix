@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="publish_classified" title="刊登個人廣告">
+<floater name="publish_classified" title="刊登个人广告">
 	<text name="explanation_text">
-		你的個人廣告將從刊登日起連續刊載一星期。
+		你的个人广告将从刊登日起连续刊载一星期。
 
-請注意，個人廣告刊登費恕不退還。
+请注意，个人广告刊登费恕不退还。
 	</text>
-	<spinner label="價格：L$" name="price_for_listing" tool_tip="刊登費。" />
-	<button label="發布" name="publish_btn" />
-	<button label="取消" name="cancel_btn" />
+	<spinner label="价格：L$" name="price_for_listing" tool_tip="刊登费。" value="50"/>
+	<text name="l$_text" value="L$"/>
+	<text name="more_info_text">
+		更多信息（帮助链接）
+	</text>
+	<button label="发布" name="publish_btn"/>
+	<button label="取消" name="cancel_btn"/>
 </floater>

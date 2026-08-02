@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="floater_export_collada" title="另存為 Collada 格式...">
+<floater name="floater_export_collada" title="另存为 Collada 格式...">
 	<floater.string name="texture_progress">
-		正在儲存 [OBJECT] 為 Collada 格式：正在儲存紋理（剩餘 [COUNT] 個）
+		正在保存 [OBJECT] 为 Collada 格式：正在保存纹理（剩余 [COUNT] 个）
 	</floater.string>
 	<floater.string name="floater_title">
-		正在儲存 [OBJECT] 為 Collada 格式...
+		正在保存 [OBJECT] 为 Collada 格式...
 	</floater.string>
 	<layout_stack name="resizing_stack">
 		<layout_panel name="control_panel">
 			<text name="ObjectInfoText">
-				物件屬性
+				物件属性
 			</text>
 			<text name="NameText">
-				名稱: [NAME]
+				名称: [NAME]
 			</text>
 			<text name="exportable_prims">
-				可匯出的元素: [COUNT]/[TOTAL]
+				可导出的元素: [COUNT]/[TOTAL]
 			</text>
 			<text name="exportable_textures">
-				可匯出的紋理: [COUNT]/[TOTAL]
+				可导出的纹理: [COUNT]/[TOTAL]
 			</text>
 			<text name="OptionsText">
-				選項:
+				选项:
 			</text>
-			<check_box label="儲存紋理" name="export_textures_check" />
-			<check_box label="合併紋理" name="consolidate_check" />
-			<check_box label="跳過透明紋理" name="skip_transparent_check" />
-			<check_box label="應用紋理參數" name="texture_params_check" />
-			<check_box label="獨立 UV 對映" name="single_uv_map_check" />
+			<check_box label="保存纹理" name="export_textures_check" />
+			<check_box label="合并纹理" name="consolidate_check" />
+			<check_box label="跳过透明纹理" name="skip_transparent_check" />
+			<check_box label="应用纹理参数" name="texture_params_check" />
+			<check_box label="独立 UV 映射" name="single_uv_map_check" />
 			<text name="TextureFormatText">
-				紋理格式：
+				纹理格式：
 			</text>
-			<button label="另存為..." name="export_btn" />
+			<button label="另存为..." name="export_btn" />
 		</layout_panel>
 	</layout_stack>
 </floater>

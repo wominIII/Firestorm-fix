@@ -5,16 +5,16 @@
 	</floater.string>
 	<layout_stack name="ls_control_panel">
 		<layout_panel name="lp_chat_history_btn">
-			<button name="chat_history_btn" tool_tip="打開附近聊天歷史記錄" />
+			<button name="chat_history_btn" tool_tip="打开附近聊天历史记录"/>
 		</layout_panel>
 		<layout_panel name="lp_chat_history_muted_btn">
-			<button name="chat_history_muted_btn" tool_tip="顯示被靜音的附近聊天" />
+			<button name="chat_history_muted_btn" tool_tip="显示被静音的附近聊天"/>
 		</layout_panel>
 		<layout_panel name="lp_options_btn">
-			<button name="chat_options_btn" tool_tip="聊天選項" />
+			<button name="chat_options_btn" tool_tip="聊天选项"/>
 		</layout_panel>
 		<layout_panel name="lp_chat_search_btn">
-			<button name="chat_search_btn" tool_tip="搜尋附近聊天" />
+			<button name="chat_search_btn" tool_tip="搜索附近聊天"/>
 		</layout_panel>
 	</layout_stack>
 	<layout_stack name="ls_chat">
@@ -22,31 +22,31 @@
 			<layout_stack name="im_panels">
 				<layout_panel name="unread_messages_holder">
 					<text name="unread_messages_text">
-						未讀訊息：[NUM]
+						未读消息：[NUM]
 					</text>
 				</layout_panel>
 				<layout_panel name="chat_layout_panel">
 					<layout_stack name="input_panels">
 						<layout_panel name="emoji_button_layout_panel">
-							<button name="emoji_picker_toggle_btn" tool_tip="顯示表情符號面板" />
-							<button name="emoji_recent_panel_toggle_btn" tool_tip="顯示/隱藏最近使用的表情符號" />
+							<button name="emoji_picker_toggle_btn" tool_tip="显示表情符号面板"/>
+							<button name="emoji_recent_panel_toggle_btn" tool_tip="显示/隐藏最近使用的表情符号"/>
 						</layout_panel>
 						<layout_panel name="input_button_layout_panel">
-							<spinner name="ChatChannel" tool_tip="要傳送聊天的頻道。可以在設定 -&gt; 聊天 -&gt; Firestorm -&gt; 在聊天欄中顯示頻道選擇。" />
+							<spinner name="ChatChannel" tool_tip="要发送聊天的频道。可以在设置 -> 聊天 -> Firestorm -> 在聊天栏中显示频道选择。"/>
 						</layout_panel>
 						<layout_panel name="chat_type_layout_panel">
-							<combo_box name="chat_type" tool_tip="竊竊私語 = 10公尺，正常說話 = 20公尺，大聲呼喊 = 100公尺">
-								<combo_box.item name="chat_type_whisper" label="竊竊私語" />
-								<combo_box.item name="chat_type_say" label="正常說話" />
-								<combo_box.item name="chat_type_shout" label="大聲呼喊" />
+							<combo_box name="chat_type" tool_tip="窃窃私语 = 10米，正常说话 = 20米，大声呼喊 = 100米">
+								<combo_box.item name="chat_type_whisper" label="窃窃私语"/>
+								<combo_box.item name="chat_type_say" label="正常说话"/>
+								<combo_box.item name="chat_type_shout" label="大声呼喊"/>
 							</combo_box>
-							<button label="傳送" name="send_chat" tool_tip="竊竊私語 = 10公尺，正常說話 = 20公尺，大聲呼喊 = 100公尺" />
+							<button label="发送" name="send_chat" tool_tip="窃窃私语 = 10米，正常说话 = 20米，大声呼喊 = 100米"/>
 						</layout_panel>
 					</layout_stack>
 				</layout_panel>
 				<layout_panel name="emoji_recent_layout_panel">
 					<text name="emoji_recent_empty_text">
-						最近使用過的表情符號將顯示在這裡
+						最近使用过的表情符号将显示在这里
 					</text>
 				</layout_panel>
 			</layout_stack>

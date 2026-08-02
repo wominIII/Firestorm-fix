@@ -1,307 +1,300 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="使用者界面偏好設定" name="Display panel">
-	<tab_container label="Firestorm偏好設定" name="tabs">
+<panel label="用户界面首选项" name="Display panel">
+	<tab_container label="Firestorm偏好设置" name="tabs">
 		<panel label="3D世界" name="UI Prefs Panel">
 			<text name="HoverTipText">
-				懸停提示：
+				悬停提示：
 			</text>
-			<check_box label="顯示懸停提示" name="ShowHoverTips" tool_tip="顯示用於化身和其他物件的懸停提示 - 需先啟用此選項" />
-			<check_box label="所有物件" tool_tip="顯示用於虛擬世界物件的懸停提示。" name="ShowAllHoverTips" />
-			<check_box label="土地" tool_tip="顯示用於土地的懸停提示。" name="ShowLandHoverTips" />
-			<check_box name="FSAdvancedTooltips" label="在懸停提示中顯示更多資訊" />
-			<check_box name="FSShowGroupTitleInTooltip" label="在懸停提示中顯示化身的群組頭銜" />
+			<check_box label="显示悬停提示" name="ShowHoverTips" tool_tip="显示用于化身和其他物件的悬停提示 - 需先启用此选项"/>
+			<check_box label="所有物件" tool_tip="显示用于虚拟世界物件的悬停提示。" name="ShowAllHoverTips"/>
+			<check_box label="土地" tool_tip="显示用于土地的悬停提示。" name="ShowLandHoverTips"/>
+			<check_box name="FSAdvancedTooltips" label="在悬停提示中显示更多信息"/>
+			<check_box name="FSShowGroupTitleInTooltip" label="在悬停提示中显示化身的群组头衔"/>
 			<text name="tooltip_textbox">
-				懸停提示延遲：
+				悬停提示延迟：
 			</text>
-			<slider label="工具提示：" name="ToolTipDelay_slider" tool_tip="控制使用者界面控制工具提示的顯示延遲。（預設值：0.7）" />
+			<slider label="工具提示：" name="ToolTipDelay_slider" tool_tip="控制用户界面控制工具提示的显示延迟。（默认值：0.7）"/>
 			<text name="ToolTipDelay_text">
 				秒
 			</text>
-			<slider label="化身：" name="AvatarInspectorTooltipDelay_slider" tool_tip="控制化身懸停提示的顯示延遲。（預設值：0.35）" />
+			<slider label="化身：" name="AvatarInspectorTooltipDelay_slider" tool_tip="控制化身悬停提示的显示延迟。（默认值：0.35）"/>
 			<text name="AvatarInspectorTooltipDelay_text">
 				秒
 			</text>
-			<slider label="物件：" name="ObjectInspectorTooltipDelay_slider" tool_tip="控制物件懸停提示的顯示延遲。（預設值：0.35）" />
+			<slider label="物件：" name="ObjectInspectorTooltipDelay_slider" tool_tip="控制物件悬停提示的显示延迟。（默认值：0.35）"/>
 			<text name="ObjectInspectorTooltipDelay_text">
 				秒
 			</text>
 			<text name="FSHudTextLabel">
-				懸停文字選項：
+				悬停文本选项：
 			</text>
-			<slider label_width="230" label="懸停文字淡出距離（單位：米）：" tool_tip="設定懸停文字淡出的距離。" name="FSHudTextFadeDistance" />
-			<slider label_width="230" label="懸停文字淡出範圍（單位：米）：" tool_tip="設定懸停文字從完全可見到完全不可見的淡出範圍。" name="FSHudTextFadeRange" />
-			<check_box name="FSHudTextUseHoverHighlight" label="突出顯示物件的懸停文字：" tool_tip="當滑鼠懸停於物件上時，物件的懸停文字（若存在）將被突出顯示，文字會置於前景，並停用懸停文字的透明度。"/>
+			<slider label_width="230" label="悬停文本淡出距离（单位：米）：" tool_tip="设置悬停文本淡出的距离。" name="FSHudTextFadeDistance"/>
+			<slider label_width="230" label="悬停文本淡出范围（单位：米）：" tool_tip="设置悬停文本从完全可见到完全不可见的淡出范围。" name="FSHudTextFadeRange"/>
+			<check_box name="FSHudTextUseHoverHighlight" label="突出显示物件的悬停文字：" tool_tip="当鼠标悬停在物件上时，物件的悬停文字（若存在）将被突出显示，文字会置于前景，并停用禁用文字的透明度。"/>
 			<text name="FSHudTextShowBackgroundLabel">
-				顯示懸停文字背景：
+				显示悬停文本背景：
 			</text>
-			<combo_box name="FSHudTextShowBackgroundDropdown" tool_tip="在懸停文字後顯示黑/白背景以提升可讀性。背景透明度可於顏色 > 其他進行調整。">
+			<combo_box name="FSHudTextShowBackgroundDropdown" tool_tip="在悬停文本后显示黑/白背景以提升可读性。背景透明度可于颜色 > 其他进行调整。">
 				<combo_box.item label="停用" name="ScriptDialogOption_0"/>
-				<combo_box.item label="僅限突出顯示的物件" name="ScriptDialogOption_1"/>
+				<combo_box.item label="仅限突出显示的物件" name="ScriptDialogOption_1"/>
 				<combo_box.item label="所有物件" name="ScriptDialogOption_2"/>
 			</combo_box>
 		</panel>
-		<panel label="2D覆蓋" name="ui-2d-overlay">
+		<panel label="2D覆盖" name="ui-2d-overlay">
 			<text name="UI Size:" width="95">
-				使用者界面大小：
+				用户界面大小：
 			</text>
 			<text name="HUD Size:" width="95">
 				HUD大小：
 			</text>
 			<text name="ScriptDialogsPerObjectLabel">
-				每個物件的指令碼彈窗：
+				每个物件的脚本弹窗：
 			</text>
 			<combo_box name="ScriptDialogPerObjectDropdown">
-				<combo_box.item label="每個物件一個" name="ScriptDialogOption_0" />
-				<combo_box.item label="每個頻道一個" name="ScriptDialogOption_1" />
-				<combo_box.item label="每個附件頻道一個" name="ScriptDialogOption_2" />
-				<combo_box.item label="每個HUD頻道一個" name="ScriptDialogOption_3" />
-				<combo_box.item label="HUD無限制" name="ScriptDialogOption_4" />
-				<combo_box.item label="無限制" name="ScriptDialogOption_5" />
+				<combo_box.item label="每个物件一个" name="ScriptDialogOption_0"/>
+				<combo_box.item label="每个频道一个" name="ScriptDialogOption_1"/>
+				<combo_box.item label="每个附件频道一个" name="ScriptDialogOption_2"/>
+				<combo_box.item label="每个HUD频道一个" name="ScriptDialogOption_3"/>
+				<combo_box.item label="HUD无限制" name="ScriptDialogOption_4"/>
+				<combo_box.item label="无限制" name="ScriptDialogOption_5"/>
 			</combo_box>
-			<check_box label="移除「封鎖」按鈕" name="FSRemoveScriptBlockButton" />
+			<check_box label="移除“封锁”按钮" name="FSRemoveScriptBlockButton"/>
 			<text name="ScriptDialogsPositionLabel">
-				指令碼彈窗位置：
+				脚本弹窗位置：
 			</text>
-			<combo_box name="ScriptDialogsPositionDropdown" tool_tip="選擇指令碼彈窗（選單）出現在螢幕上的位置。">
-				<combo_box.item label="靠近化身標籤" name="ScriptDialogPositionOption_1" />
-				<combo_box.item label="左上角" name="ScriptDialogPositionOption_2" />
-				<combo_box.item label="右上角" name="ScriptDialogPositionOption_3" />
-				<combo_box.item label="左下角" name="ScriptDialogPositionOption_4" />
-				<combo_box.item label="右下角" name="ScriptDialogPositionOption_5" />
+			<combo_box name="ScriptDialogsPositionDropdown" tool_tip="选择脚本弹窗（菜单）出现在屏幕上的位置。">
+				<combo_box.item label="靠近化身标签" name="ScriptDialogPositionOption_1"/>
+				<combo_box.item label="左上角" name="ScriptDialogPositionOption_2"/>
+				<combo_box.item label="右上角" name="ScriptDialogPositionOption_3"/>
+				<combo_box.item label="左下角" name="ScriptDialogPositionOption_4"/>
+				<combo_box.item label="右下角" name="ScriptDialogPositionOption_5"/>
 			</combo_box>
-			<check_box label="啟用指令碼彈窗動畫" name="FSAnimatedScriptDialogs" tool_tip="以動畫方式顯示指令碼彈窗（經典的 V1.x 行為）。" />
-			<slider label="每個指令碼彈窗可見行數：" name="FSRowsPerScriptDialog" tool_tip="每個指令碼彈窗中同時可見的最大行數。" />
-			<check_box label="啟用圓形選單" name="UsePieMenu" tool_tip="啟用經典V1上下文選單，以圓形選單形式顯示，而不是標準上下文選單。" />
-			<check_box label="啟用文字動畫效果" name="PieMenuPopupFontEffect" tool_tip="在打開經典V1上下文選單時，啟用選單內文字的動畫效果。" />
-			<check_box label="啟用外環陰影" name="PieMenuOuterRingShade" tool_tip="為經典V1上下文選單的外環啟用額外的陰影，以支援子選單的視覺化。" />
+			<check_box label="启用脚本弹窗动画" name="FSAnimatedScriptDialogs" tool_tip="以动画方式显示脚本弹窗（经典的 V1.x 行为）。"/>
+			<slider label="每个脚本弹窗可见行数：" name="FSRowsPerScriptDialog" tool_tip="每个脚本弹窗中同时可见的最大行数。"/>
+			<check_box label="启用圆形菜单" name="UsePieMenu" tool_tip="启用经典V1上下文菜单，以圆形菜单形式显示，而不是标准上下文菜单。"/>
+			<check_box label="启用文本动画效果" name="PieMenuPopupFontEffect" tool_tip="在打开经典V1上下文菜单时，启用菜单内文本的动画效果。"/>
+			<check_box label="启用外环阴影" name="PieMenuOuterRingShade" tool_tip="为经典V1上下文菜单的外环启用额外的阴影，以支持子菜单的可视化。"/>
 			<text name="ShowGroupNoticesTopRightLabel">
-				顯示群組通知和化身標籤位置：
+				显示群组通知和化身标签位置：
 			</text>
-			<radio_group name="ShowGroupNoticesTopRight" tool_tip="確定群組通知和化身標籤在螢幕上的顯示位置。">
-				<radio_item label="右下角" name="radio" />
-				<radio_item label="右上角" name="radio1" />
+			<radio_group name="ShowGroupNoticesTopRight" tool_tip="确定群组通知和化身标签在屏幕上的显示位置。">
+				<radio_item label="右下角" name="radio"/>
+				<radio_item label="右上角" name="radio1"/>
 			</radio_group>
 			<text name="GroupTopRightRequiresRestart" left_delta="280">
-				（需要重新啟動）
+				（需要重新启动）
 			</text>
-			<check_box label="禁用私聊和群組聊天的化身標籤" name="FSDisableIMChiclets" tool_tip="如果啟用，Firestorm將不會顯示私聊和群組聊天的化身標籤（群組通知圖示和未讀私聊數量圖示仍將顯示）。" />
-			<check_box label="使用舊的通知視窗列表顯示方式" name="FSLegacyNotificationWell" tool_tip="如果啟用，Firestorm將使用原始的列表顯示方式來顯示儲存的通知。" width="355" />
+			<check_box label="禁用私聊和群组聊天的化身标签" name="FSDisableIMChiclets" tool_tip="如果启用，Firestorm将不会显示私聊和群组聊天的化身标签（群组通知图标和未读私聊数量图标仍将显示）。"/>
+			<check_box label="使用旧的通知窗口列表显示方式" name="FSLegacyNotificationWell" tool_tip="如果启用，Firestorm将使用原始的列表显示方式来显示存储的通知。" width="355"/>
 			<text name="FSLegacyNotificationWellRequiresRestart">
-				（需要重新啟動）
+				（需要重新启动）
 			</text>
-			<check_box label="自動調整對話和舊通知視窗的大小" name="FSLegacyNotificationWellAutoResize" tool_tip="如果啟用，Firestorm將在新增或刪除訊息時自動調整對話和傳統通知視窗的大小。" />
-			<check_box label="自訂Linux使用的快速鍵（僅限Linux；需要重新啟動）" name="FSRemapLinuxShortcuts" tool_tip="啟用後，重新定義Linux作業系統已經使用的快速鍵，例如CTRL-ALT-Fx。" />
-			<check_box label="阻止統計視窗取得焦點" name="FSStatisticsNoFocus" tool_tip="如果啟用，當關閉其他視窗時，阻止統計視窗取得焦點（如更改佈局仍然可用）。" />
-			<check_box label="在工具提示中顯示庫存物件的縮圖" name="FSShowInventoryThumbnailTooltips" tool_tip="如果啟用，將在工具提示中顯示庫存物件的縮圖。" />
-			<slider label="縮圖工具提示延遲：" tool_tip="設定顯示庫存物件縮圖工具提示的延遲時間。" name="FSInventoryThumbnailTooltipsDelay" />
+			<check_box label="自动调整对话和旧通知窗口的大小" name="FSLegacyNotificationWellAutoResize" tool_tip="如果启用，Firestorm将在添加或删除消息时自动调整对话和传统通知窗口的大小。"/>
+			<check_box label="自定义Linux使用的快捷键（仅限Linux；需要重新启动）" name="FSRemapLinuxShortcuts" tool_tip="启用后，重新定义Linux操作系统已经使用的快捷键，例如CTRL-ALT-Fx。"/>
+			<check_box label="阻止统计窗口获取焦点" name="FSStatisticsNoFocus" tool_tip="如果启用，当关闭其他窗口时，阻止统计窗口获取焦点（如更改布局仍然可用）。"/>
+			<check_box label="在工具提示中显示库存物件的缩略图" name="FSShowInventoryThumbnailTooltips" tool_tip="如果启用，将在工具提示中显示库存物件的缩略图。"/>
+			<slider label="缩略图工具提示延迟：" tool_tip="设置显示库存物件缩略图工具提示的延迟时间。" name="FSInventoryThumbnailTooltipsDelay"/>
 			<text name="FSInventoryThumbnailTooltipsDelayText">
 				秒
 			</text>
-			<slider label_width="230" label="閃爍私聊索引標籤的次數：" name="ButtonsFlashCount" />
-			<slider label_width="230" label="私聊索引標籤的閃爍持續時間：" tool_tip="設定單個私聊索引標籤閃爍的持續時間，單位為秒 - 用於私聊通知。" name="ButtonFlashRate" />
+			<slider label_width="230" label="闪烁私聊选项卡的次数：" name="ButtonsFlashCount"/>
+			<slider label_width="230" label="私聊选项卡的闪烁持续时间：" tool_tip="设置单个私聊选项卡闪烁的持续时间，单位为秒 - 用于私聊通知。" name="ButtonFlashRate"/>
 			<text name="ButtonFlashRateText">
 				秒
 			</text>
 		</panel>
-		<panel label="頂部欄" name="UI-interface-top-bars">
+		<panel label="顶部栏" name="UI-interface-top-bars">
 			<text name="statusbar_textbox">
-				狀態列：
+				状态栏：
 			</text>
-			<check_box name="ShowNetStats" label="啟用資料傳輸指示器" tool_tip="在選單欄中啟用資料傳輸指示器" />
-			<check_box label="使用資料傳輸指示器的週期平均值" name="FSStatbarLegacyMeanPerSec" tool_tip="如果啟用，資料傳輸指示器將使用原始計算方法，顯示週期平均值而不是當前測量值。" />
-			<check_box name="FSUseStatsInsteadOfLagMeter" label="單擊資料傳輸指示器打開統計視窗而不是延遲儀" />
-			<check_box label="在選單欄中顯示媒體控制" name="FSEnableVolumeControls" tool_tip="如果啟用，將在螢幕右上角的選單欄中顯示媒體控制圖示。如果界面設計已包含自己的媒體控制圖示，則此選項很有用。" />
-			<check_box label="在選單欄中顯示位置" name="ShowMenuBarLocation" />
-			<check_box label="在選單欄中顯示類比主機版本" name="FSStatusbarShowSimulatorVersion" tool_tip="在當前區域運行的類比主機版本將顯示在選單欄中。" />
-			<check_box label="顯示選單搜尋" name="show_search_menu_check" />
-			<check_box label="顯示貨幣餘額" name="FSShowCurrencyBalanceInStatusbar" />
-			<check_box label="當滑鼠懸停在選單欄圖示上時彈出視窗" name="FSStatusBarMenuButtonPopupOnRollover" />
+			<check_box name="ShowNetStats" label="启用数据传输指示器" tool_tip="在菜单栏中启用数据传输指示器"/>
+			<check_box label="使用数据传输指示器的周期平均值" name="FSStatbarLegacyMeanPerSec" tool_tip="如果启用，数据传输指示器将使用原始计算方法，显示周期平均值而不是当前测量值。"/>
+			<check_box name="FSUseStatsInsteadOfLagMeter" label="单击数据传输指示器打开统计窗口而不是延迟仪"/>
+			<check_box label="在菜单栏中显示媒体控制" name="FSEnableVolumeControls" tool_tip="如果启用，将在屏幕右上角的菜单栏中显示媒体控制图标。如果界面设计已包含自己的媒体控制图标，则此选项很有用。"/>
+			<check_box label="在菜单栏中显示位置" name="ShowMenuBarLocation" />
+			<check_box label="在菜单栏中显示模拟主机版本" name="FSStatusbarShowSimulatorVersion" tool_tip="在当前区域运行的模拟主机版本将显示在菜单栏中。"/>
+			<check_box label="显示菜单搜索" name="show_search_menu_check"/>
+			<check_box label="显示货币余额" name="FSShowCurrencyBalanceInStatusbar"/>
+			<check_box label="当鼠标悬停在菜单栏图标上时弹出窗口" name="FSStatusBarMenuButtonPopupOnRollover"/>
 			<text name="statusbar_timeformat_textbox">
-				時鐘格式：
+				时间格式：
 			</text>
-			<combo_box name="FSStatusBarTimeFormat" tool_tip="確定選單欄中使用的時間格式。">
-				<combo_box.item label="預設語言選擇" name="Language" />
-				<combo_box.item label="12小時制" name="12_Hour" />
-				<combo_box.item label="12小時制（包括秒）" name="12_Hour_Seconds" />
-				<combo_box.item label="12小時制（包括時區）" name="12_Hour_TZ" />
-				<combo_box.item label="12小時制（包括秒和時區）" name="12_Hour_TZ_Seconds" />
-				<combo_box.item label="24小時制" name="24_Hour" />
-				<combo_box.item label="24小時制（包括秒）" name="24_Hour_Seconds" />
-				<combo_box.item label="24小時制（包括時區）" name="24_Hour_TZ" />
-				<combo_box.item label="24小時制（包括秒和時區）" name="24_Hour_TZ_Seconds" />
+			<combo_box name="FSStatusBarTimeFormat" tool_tip="确定菜单栏中使用的时间格式。">
+				<combo_box.item label="默认语言选择" name="Language"/>
+				<combo_box.item label="12小时制" name="12_Hour"/>
+				<combo_box.item label="12小时制（包括秒）" name="12_Hour_Seconds"/>
+				<combo_box.item label="12小时制（包括时区）" name="12_Hour_TZ"/>
+				<combo_box.item label="12小时制（包括秒和时区）" name="12_Hour_TZ_Seconds"/>
+				<combo_box.item label="24小时制" name="24_Hour"/>
+				<combo_box.item label="24小时制（包括秒）" name="24_Hour_Seconds"/>
+				<combo_box.item label="24小时制（包括时区）" name="24_Hour_TZ"/>
+				<combo_box.item label="24小时制（包括秒和时区）" name="24_Hour_TZ_Seconds"/>
 			</combo_box>
 			<text name="navfav_textbox">
-				導航和收藏夾：
+				导航和收藏夹：
 			</text>
-			<check_box label="顯示收藏夾" name="ShowNavbarFavoritesPanel" />
-			<check_box label="顯示導航和搜尋欄" name="ShowNavbarNavigationPanel" />
-			<check_box label="顯示搜尋欄" name="ShowSearchTopBar" />
+			<check_box label="显示收藏夹" name="ShowNavbarFavoritesPanel" />
+			<check_box label="显示导航和搜索栏" name="ShowNavbarNavigationPanel" />
+			<check_box label="显示搜索栏" name="ShowSearchTopBar" />
 		</panel>
-		<panel label="視窗" name="UI-interface-windows-tab">
-			<check_box label="點擊化身名稱直接打開個人檔案" name="FSInspectAvatarSlurlOpensProfile" tool_tip="如果啟用，單擊化身名稱連結將直接打開該化身的完整個人檔案。" />
-			<check_box label="禁用自動打開封鎖列表" name="FSDisableBlockListAutoOpen" tool_tip="禁用當封鎖了化身或物件時自動打開封鎖列表的功能。" />
-			<check_box label="在「聊天」選單中的「好友」和「群組」使用 [SHORT_VIEWER_GENERATION] 版本" name="FSUseV2Friends" tool_tip="如果啟用，將在「人物」視窗中打開好友和群組 - 否則在「聯絡人」視窗中打開。" />
-			<check_box label="使用原始版本的物件屬性視窗" name="FSUseLegacyObjectProperties" tool_tip="如果啟用，將使用原始的Viewer-1風格的物件屬性視窗。" />
-			<check_box label="使用較小的相機控制視窗" name="FSUseSmallCameraFloater" tool_tip="如果啟用，將使用不帶相機預設控制項的原始較小版本的相機控制視窗。" />
-			<check_box label="禁用相機控制台的重置按鈕" name="DisableCameraJoystickCenterReset" tool_tip="禁用相機旋轉與移動操縱桿中央的重置按鈕。"/>
+		<panel label="窗口" name="UI-interface-windows-tab">
+			<check_box label="点击化身名称直接打开个人档案" name="FSInspectAvatarSlurlOpensProfile" tool_tip="如果启用，单击化身名称链接将直接打开该化身的完整个人档案。"/>
+			<check_box label="禁用自动打开封锁列表" name="FSDisableBlockListAutoOpen" tool_tip="禁用当封锁了化身或物件时自动打开封锁列表的功能。"/>
+			<check_box label="在“聊天”菜单中的“好友”和“群组”使用 [SHORT_VIEWER_GENERATION] 版本" name="FSUseV2Friends" tool_tip="如果启用，将在“人物”窗口中打开好友和群组 - 否则在“联系人”窗口中打开。"/>
+			<check_box label="使用原始版本的物件属性窗口" name="FSUseLegacyObjectProperties" tool_tip="如果启用，将使用原始的Viewer-1风格的物件属性窗口。"/>
+			<check_box label="使用较小的相机控制窗口" name="FSUseSmallCameraFloater" tool_tip="如果启用，将使用不带相机预设控件的原始较小版本的相机控制窗口。"/>
+			<check_box label="禁用相机控制台的重置按钮" name="DisableCameraJoystickCenterReset" tool_tip="禁用相机旋转与移动操纵杆中央的重置按钮。"/>
 			<text name="standalone_textbox">
-				為以下內容使用單獨視窗：
+				为以下内容使用单独窗口：
 			</text>
-			<check_box name="FSUseStandaloneGroupFloater" label="群組資料" tool_tip="如果啟用，將在單獨視窗中打開群組資料。" />
-			<check_box name="FSUseStandaloneTeleportHistoryFloater" label="瞬間傳送歷史列表" tool_tip="如果啟用，使用瞬間傳送歷史列表快速鍵將在單獨視窗中打開傳送歷史列表。" />
-			<check_box name="FSUseStandaloneBlocklistFloater" label="被封鎖居民和物件列表" tool_tip="如果啟用，將在單獨視窗中打開被封鎖居民和物件列表。" />
-			<check_box name="FSUseStandalonePlaceDetailsFloater" label="地標、地點詳細資訊和瞬間傳送列表詳細資訊" tool_tip="如果啟用，將在單獨視窗中打開地標、地點詳細資訊和瞬間傳送列表詳細資訊。" />
+			<check_box name="FSUseStandaloneGroupFloater" label="群组资料" tool_tip="如果启用，将在单独窗口中打开群组资料。"/>
+			<check_box name="FSUseStandaloneTeleportHistoryFloater" label="瞬间传送历史列表" tool_tip="如果启用，使用瞬间传送历史列表快捷键将在单独窗口中打开传送历史列表。"/>
+			<check_box name="FSUseStandaloneBlocklistFloater" label="被封锁居民和物件列表" tool_tip="如果启用，将在单独窗口中打开被封锁居民和物件列表。"/>
+			<check_box name="FSUseStandalonePlaceDetailsFloater" label="地标、地点详细信息和瞬间传送列表详细信息" tool_tip="如果启用，将在单独窗口中打开地标、地点详细信息和瞬间传送列表详细信息。"/>
 			<text name="ExtendedTeleportHistoryLabel" width="155">
-				擴充瞬間傳送歷史：
+				扩展瞬间传送历史：
 			</text>
-			<check_box name="FSTeleportHistoryShowPosition" label="位置" tool_tip="如果啟用，將在瞬間傳送歷史中顯示傳送到的區域的具體位置。" />
-			<check_box name="FSTeleportHistoryShowDate" label="日期" tool_tip="如果啟用，將在傳送歷史列表中顯示傳送的日期和時間。" />
+			<check_box name="FSTeleportHistoryShowPosition" label="位置" tool_tip="如果启用，将在瞬间传送历史中显示传送到的区域的具体位置。"/>
+			<check_box name="FSTeleportHistoryShowDate" label="日期" tool_tip="如果启用，将在传送历史列表中显示传送的日期和时间。"/>
 			<text name="textFriendlistOptions">
-				聯絡人列表選項：
+				联系人列表选项：
 			</text>
 			<text name="textFriendlistColumns" width="145">
-				可見名稱欄：
+				可见名称栏：
 			</text>
-			<check_box label="使用者名稱" name="FSFriendListColumnShowUserName" tool_tip="聯絡人列表中多顯示一欄，其中包含好友的使用者名稱。" width="95" />
-			<check_box label="顯示名" name="FSFriendListColumnShowDisplayName" tool_tip="聯絡人列表中多顯示一欄，其中包含好友的顯示名稱。" />
-			<check_box label="全名" name="FSFriendListColumnShowFullName" tool_tip="聯絡人列表中多顯示一欄，其中包含好友的全名。" />
+			<check_box label="用户名" name="FSFriendListColumnShowUserName" tool_tip="联系人列表中多显示一栏，其中包含好友的用户名。" width="95"/>
+			<check_box label="显示名" name="FSFriendListColumnShowDisplayName" tool_tip="联系人列表中多显示一栏，其中包含好友的显示名称。"/>
+			<check_box label="全名" name="FSFriendListColumnShowFullName" tool_tip="联系人列表中多显示一栏，其中包含好友的全名。"/>
 			<text name="textFriendListSortOrder" width="85">
 				排序方式：
 			</text>
 			<radio_group name="FSFriendListSortOrder">
-				<radio_item label="使用者名稱" name="username" width="95" />
-				<radio_item label="顯示名" name="displayname" width="95" />
+				<radio_item label="用户名" name="username" width="95"/>
+				<radio_item label="显示名" name="displayname" width="95"/>
 			</radio_group>
 			<text name="textFriendListFullNameFormat" width="155">
 				全名格式：
 			</text>
 			<radio_group name="FSFriendListFullNameFormat">
-				<radio_item label="使用者名稱（顯示名）" name="username_displayname" width="140" />
-				<radio_item label="顯示名（使用者名稱）" name="displayname_username" width="140" />
+				<radio_item label="用户名（显示名）" name="username_displayname" width="140"/>
+				<radio_item label="显示名（用户名）" name="displayname_username" width="140"/>
 			</radio_group>
-			<check_box label="顯示權限欄" name="FSFriendListColumnShowPermissions" tool_tip="聯絡人列表中多顯示一欄，其中包含授予該化身的權限 - 反之亦然。" />
-			<check_box label="顯示搜尋過濾器" name="FSContactListShowSearch" tool_tip="在聯絡人列表中顯示一個文字方塊，用於篩選列表。" />
+			<check_box label="显示权限栏" name="FSFriendListColumnShowPermissions" tool_tip="联系人列表中多显示一栏，其中包含授予该化身的权限 - 反之亦然。"/>
+			<check_box label="显示搜索过滤器" name="FSContactListShowSearch" tool_tip="在联系人列表中显示一个文本框，用于筛选列表。"/>
 			<text name="textInventoryOptions">
-				庫存選項：
+				库存选项：
 			</text>
-			<check_box label="隱藏庫存中的空系統檔案夾" name="DebugHideEmptySystemFolders" tool_tip="隱藏庫存視窗中的空系統檔案夾，例如收藏夾或地標檔案夾等。" />
-			<check_box label="在庫存中顯示「收件箱」檔案夾" name="FSShowInboxFolder" tool_tip="如果啟用，將在庫存視窗中將「收件箱」檔案夾顯示為常規檔案夾。" />
-			<check_box label="始終在庫存視窗中顯示「收件箱」按鈕" name="FSAlwaysShowInboxButton" tool_tip="如果啟用，即使庫存中顯示檔案夾，也將始終在庫存視窗中顯示「收件箱」按鈕。" />
-			<check_box label="允許在每個索引標籤中使用不同的庫存搜尋術語" name="FSSplitInventorySearchOverTabs" tool_tip="如果啟用，可以在庫存視窗的每個索引標籤中輸入不同的搜尋術語。" />
-			<text name="FSInventoryLocalLabelShortcutLabel">本地標籤快速鍵：</text>
-			<line_editor name="FSInventoryLocalLabelShortcut" tool_tip="例如：X、Ctrl+L、Alt+X。留空即可停用。只有庫存清單取得焦點時才會生效。" />
+			<check_box label="隐藏库存中的空系统文件夹" name="DebugHideEmptySystemFolders" tool_tip="隐藏库存窗口中的空系统文件夹，例如收藏夹或地标文件夹等。"/>
+			<check_box label="在库存中显示“收件箱”文件夹" name="FSShowInboxFolder" tool_tip="如果启用，将在库存窗口中将“收件箱”文件夹显示为常规文件夹。"/>
+			<check_box label="始终在库存窗口中显示“收件箱”按钮" name="FSAlwaysShowInboxButton" tool_tip="如果启用，即使库存中显示文件夹，也将始终在库存窗口中显示“收件箱”按钮。"/>
+			<check_box label="允许在每个选项卡中使用不同的库存搜索术语" name="FSSplitInventorySearchOverTabs" tool_tip="如果启用，可以在库存窗口的每个选项卡中输入不同的搜索术语。"/>
+			<text name="FSInventoryLocalLabelShortcutLabel">本地标签快捷键：</text>
+			<line_editor name="FSInventoryLocalLabelShortcut" tool_tip="例如：X、Ctrl+L、Alt+X。留空可停用；仅在库存列表获得焦点时生效。"/>
 			<text name="FSInventoryLocalLabelShortcutHint">X / Ctrl+L / Alt+X</text>
 		</panel>
 		<panel label="提示框" name="UI-toasts-tab">
 			<text name="ToastSettings">
-				通知設定（彈出視窗，控制台，提示框）：
+				通知设置（弹出窗口，控制台，提示框）：
 			</text>
-			<slider label="提示框與UI底部的距離：" tool_tip="提示框底部與UI底部之間的畫素距離" name="ToastSpace" />
+			<slider label="提示框与UI底部的距离：" tool_tip="提示框底部与UI底部之间的像素距离" name="ToastSpace"/>
 			<text name="ToastSpaceText">
-				畫素
+				像素
 			</text>
-			<slider label="提示框通知顯示時間：" tool_tip="通知提示框顯示的秒數，然後消失。" name="ToastLifetime" />
+			<slider label="提示框通知显示时间：" tool_tip="通知提示框显示的秒数，然后消失。" name="ToastLifetime"/>
 			<text name="ToastLifetimeText">
 				秒
 			</text>
-			<slider label="提示框顯示時間：" tool_tip="提示框顯示的秒數，然後消失。" name="TipToastLifetime" />
+			<slider label="提示框显示时间：" tool_tip="提示框显示的秒数，然后消失。" name="TipToastLifetime"/>
 			<text name="TipToastLifetimeText">
 				秒
 			</text>
-			<slider label="附近聊天提示框顯示時間：" tool_tip="附近聊天提示框顯示的秒數，然後消失。" name="NearbyToastLifetime" />
+			<slider label="附近聊天提示框显示时间：" tool_tip="附近聊天提示框显示的秒数，然后消失。" name="NearbyToastLifetime"/>
 			<text name="NearbyToastLifetimeText">
 				秒
 			</text>
-			<slider label="附近聊天提示框垂直偏移：" tool_tip="附近聊天提示框的垂直偏移量。" name="FSNearbyChatToastsOffset" />
+			<slider label="附近聊天提示框垂直偏移：" tool_tip="附近聊天提示框的垂直偏移量。" name="FSNearbyChatToastsOffset"/>
 			<text name="FSNearbyChatToastsOffsetText">
-				畫素
+				像素
 			</text>
-			<slider label="附近聊天提示框消失時間：" tool_tip="附近聊天提示框完全消失所需的秒數。" name="NearbyToastFadingTime" />
+			<slider label="附近聊天提示框消失时间：" tool_tip="附近聊天提示框完全消失所需的秒数。" name="NearbyToastFadingTime"/>
 			<text name="NearbyToastFadingTimeText">
 				秒
 			</text>
-			<slider label="啟動提示框顯示時間：" tool_tip="啟動時提示框顯示的秒數，然後消失。" name="StartupToastLifetime" />
+			<slider label="启动提示框显示时间：" tool_tip="启动时提示框显示的秒数，然后消失。" name="StartupToastLifetime"/>
 			<text name="StartupToastLifetimeText">
 				秒
 			</text>
-			<slider label="普通提示框消失時間：" tool_tip="普通提示框完全消失所需的秒數。" name="ToastFadingTime" />
+			<slider label="普通提示框消失时间：" tool_tip="普通提示框完全消失所需的秒数。" name="ToastFadingTime"/>
 			<text name="ToastFadingTimeText">
 				秒
 			</text>
-			<slider label="提示框間距：" tool_tip="兩個提示框之間的畫素間距。" name="ToastGap" />
+			<slider label="提示框间距：" tool_tip="两个提示框之间的像素间距。" name="ToastGap"/>
 			<text name="ToastGapText">
-				畫素
+				像素
 			</text>
-			<slider label="超出提示框的高度：" tool_tip="超出提示框的高度，以畫素為單位。" name="OverflowToastHeight" />
+			<slider label="超出提示框的高度：" tool_tip="超出提示框的高度，以像素为单位。" name="OverflowToastHeight"/>
 			<text name="OverflowToastHeightText">
-				畫素
+				像素
 			</text>
-			<slider label="附近聊天提示框寬度：" tool_tip="附近聊天提示框的寬度，作為螢幕寬度的百分比。" name="NearbyToastWidth" />
+			<slider label="附近聊天提示框宽度：" tool_tip="附近聊天提示框的宽度，作为屏幕宽度的百分比。" name="NearbyToastWidth"/>
 			<text name="NearbyToastWidthText">
 				%
 			</text>
-			<check_box label="在前臺顯示提示框" name="FSShowToastsInFront" />
-			<check_box label="使用新的區域重新啟動通知" name="FSUseNewRegionRestartNotification" />
-			<check_box label="在區域重新啟動時不搖動螢幕" name="FSNoScreenShakeOnRegionRestart" />
-			<check_box label="向頻道傳送區域重新啟動通知：" width="265" name="FSReportRegionRestartToChat" />
+			<check_box label="在前台显示提示框" name="FSShowToastsInFront"/>
+			<check_box label="使用新的区域重启通知" name="FSUseNewRegionRestartNotification"/>
+			<check_box label="在区域重启时不摇动屏幕" name="FSNoScreenShakeOnRegionRestart"/>
+			<check_box label="向频道发送区域重启通知：" width="265" name="FSReportRegionRestartToChat" />
 		</panel>
-		<panel label="字型" name="UI-font-tab">
+		<panel label="字体" name="UI-font-tab">
 			<text name="tooltip_textbox1">
-				字型方案：
+				字体方案：
 			</text>
 			<text name="tooltip_textbox2">
-				（需要重新啟動）
+				（需要重新启动）
 			</text>
 			<text name="tooltip_textbox5">
-				大小調整：
+				大小调整：
 			</text>
 			<text name="tooltip_textbox6">
-				點（需要重新啟動）
-預設 0。較大的值可能無法正確工作。
-			</text>
-			<text name="tooltip_textbox8">
-				行間距：
-			</text>
-			<text name="tooltip_textbox9">
-				畫素（需重新啟動）
-預設值為 0。
+				点（需要重新启动）
+默认 0。较大的值可能无法正确工作。
 			</text>
 			<text name="tooltip_textbox3">
-				聊天行間距：
+				聊天行间距：
 			</text>
 			<text name="tooltip_textbox4">
-				畫素（需要重新啟動）
-[VIEWER_GENERATION] 預設 0。Viewer 1 預設 2。
+				像素（需要重新启动）
+[VIEWER_GENERATION] 默认 0。Viewer 1 默认 2。
 			</text>
 			<text name="Label_FolderItemViewHeight">
-				檔案夾項目視圖高度：
+				文件夹项目视图高度：
 			</text>
 			<text name="Label_FolderItemViewHeight_Scale">
-				畫素（需要重新啟動）
-[VIEWER_GENERATION] 預設 20。Viewer 1 預設 18。
+				像素（需要重新启动）
+[VIEWER_GENERATION] 默认 20。Viewer 1 默认 18。
 			</text>
 			<text name="text_box_notecard_font" width="125">
-				記事卡字型：
+				记事卡字体：
 			</text>
-			<combo_box name="FSNotecardFontName" tool_tip="用於記事卡編輯器的字型名稱">
-				<combo_item name="Sans Serif" label="無襯線" />
-				<combo_item name="Monospace" label="等寬" />
-				<combo_item name="Scripting" label="斜體" />
-				<combo_item name="Cascadia" label="新型等寬" />
+			<combo_box name="FSNotecardFontName" tool_tip="用于记事卡编辑器的字体名称">
+				<combo_item name="Sans Serif" label="无衬线"/>
+				<combo_item name="Monospace" label="等宽"/>
+				<combo_item name="Scripting" label="斜体"/>
+				<combo_item name="Cascadia" label="新型等宽"/>
 			</combo_box>
-			<combo_box name="FSNotecardFontSize" tool_tip="用於記事卡編輯器的字型大小">
-				<combo_item name="Monospace" label="等寬" />
-				<combo_item name="Scripting" label="斜體" />
-				<combo_item name="Cascadia" label="新型等寬" />
-				<combo_item name="Small" label="小" />
-				<combo_item name="Medium" label="中" />
-				<combo_item name="Large" label="大" />
+			<combo_box name="FSNotecardFontSize" tool_tip="用于记事卡编辑器的字体大小">
+				<combo_item name="Monospace" label="等宽"/>
+				<combo_item name="Scripting" label="斜体"/>
+				<combo_item name="Cascadia" label="新型等宽"/>
+				<combo_item name="Small" label="小"/>
+				<combo_item name="Medium" label="中"/>
+				<combo_item name="Large" label="大"/>
 			</combo_box>
 			<text name="emoji_font_settings_label">
-				Emoji 字型設定：（重新啟動後才能完全生效）
+				Emoji 字体设置：（重新启动后才能完全生效）
 			</text>
-			<check_box label="以單色顯示表情符號" name="FSUseBWEmojis" />
-			<check_box label="使用漂亮的表情符號按鈕" name="FSUsePrettyEmojiButton" />
+			<check_box label="以单色显示表情符号" name="FSUseBWEmojis"/>
+			<check_box label="使用漂亮的表情符号按钮" name="FSUsePrettyEmojiButton"/>
 		</panel>
 	</tab_container>
 </panel>

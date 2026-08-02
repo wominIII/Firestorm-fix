@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_outfit_snapshot_inventory">
 	<text name="title">
-		庫存
+		库存
 	</text>
 	<text name="hint_lbl">
-		將圖像上傳到您的庫存將花費[UPLOAD_COST] L$。
-費用取決於您的訂閱級別。 進階別享有較低的費用。
+		将图像上传到您的库存将花费[UPLOAD_COST] L$。
+费用取决于您的订阅级别。 高级别享有较低的费用。
 	</text>
-	<button label="取消" name="cancel_btn" />
-	<button label="儲存" name="save_btn" />
+	<button label="取消" name="cancel_btn"/>
+	<button label="保存" name="save_btn"/>
 </panel>

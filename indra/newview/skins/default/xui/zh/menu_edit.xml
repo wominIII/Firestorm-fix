@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<menu label="編輯" name="Edit">
-	<menu_item_call label="復原" name="Undo" />
-	<menu_item_call label="重做" name="Redo" />
-	<menu_item_call label="剪下" name="Cut" />
-	<menu_item_call label="複製" name="Copy" />
-	<menu_item_call label="黏貼" name="Paste" />
-	<menu_item_call label="刪除" name="Delete" />
-	<menu_item_call label="全選" name="Select All" />
-	<menu_item_call label="取消選擇" name="Deselect" />
+<menu label="编辑" name="Edit">
+	<menu_item_call label="撤销" name="Undo"/>
+	<menu_item_call label="重做" name="Redo"/>
+	<menu_item_call label="剪切" name="Cut"/>
+	<menu_item_call label="复制" name="Copy"/>
+	<menu_item_call label="粘贴" name="Paste"/>
+	<menu_item_call label="删除" name="Delete"/>
+	<menu_item_call label="全选" name="Select All"/>
+	<menu_item_call label="取消选择" name="Deselect"/>
 </menu>

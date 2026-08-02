@@ -1,41 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="floater_fs_export" title="物件備份">
+<floater name="floater_fs_export" title="物件备份">
 	<floater.string name="title_floater">
-		正在將 [OBJECT] 備份到磁碟...
+		正在将 [OBJECT] 备份到磁盘...
 	</floater.string>
 	<floater.string name="title_working">
-		正在將 [OBJECT] 備份 - 取得詳細資訊...
+		正在将 [OBJECT] 备份 - 获取详细信息...
 	</floater.string>
 	<floater.string name="title_inventory">
-		正在將 [OBJECT] 備份 - 載入庫存...
+		正在将 [OBJECT] 备份 - 加载库存...
 	</floater.string>
 	<floater.string name="title_assets">
-		正在將 [OBJECT] 備份 - 載入資源...
+		正在将 [OBJECT] 备份 - 加载资源...
 	</floater.string>
 	<floater.string name="title_textures">
-		正在將 [OBJECT] 備份 - 載入紋理...
+		正在将 [OBJECT] 备份 - 加载纹理...
 	</floater.string>
 	<layout_stack name="resizing_stack">
 		<layout_panel name="control_panel">
 			<text name="SelectionInfoText">
-				選擇資訊
+				选择信息
 			</text>
 			<text name="exportable_prims">
-				可匯出的元素：[COUNT]/[TOTAL]
+				可导出的元素：[COUNT]/[TOTAL]
 			</text>
 			<text name="exportable_textures">
-				可匯出的紋理：[COUNT]/[TOTAL]
+				可导出的纹理：[COUNT]/[TOTAL]
 			</text>
 			<text name="OptionsText">
-				選項：
+				选项：
 			</text>
-			<check_box name="contents_check" label="將物件內容儲存到磁碟" />
-			<button name="export_btn" label="另存為..." />
+			<check_box name="contents_check" label="将物件内容保存到磁盘"/>
+			<button name="export_btn" label="另存为..."/>
 		</layout_panel>
 		<layout_panel name="contents_panel">
 			<tab_container name="ls_tabs">
-				<panel name="prims_panel" label="元素" />
-				<panel name="texture_panel" label="紋理" />
+				<panel name="prims_panel" label="元素"/>
+				<panel name="texture_panel" label="纹理"/>
 			</tab_container>
 		</layout_panel>
 	</layout_stack>

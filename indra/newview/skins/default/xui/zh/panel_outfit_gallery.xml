@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="Outfit Gallery">
 	<string name="outfit_photo_string">
-		裝扮 "[OUTFIT_NAME]" 的圖片
+		装扮 "[OUTFIT_NAME]" 的图片
 	</string>
 	<string name="no_outfits_msg">
-		您還沒有任何裝扮。嘗試 [secondlife:///app/search/all/ 搜尋]。
+		您还没有任何装扮。尝试 [secondlife:///app/search/all/ 搜索]。
 	</string>
 	<string name="no_matched_outfits_msg">
-		沒找到合適的裝扮？嘗試 [secondlife:///app/search/all/[SEARCH_TERM] 搜尋]。
+		没找到合适的装扮？尝试 [secondlife:///app/search/all/[SEARCH_TERM] 搜索]。
 	</string>
 	<text name="no_outfits_txt">
-		搜尋中...
+		搜索中...
 	</text>
 	<panel name="bottom_panel">
 		<text name="OutfitcountText">
-			[COUNT] 件裝扮
+			[COUNT] 件装扮
 		</text>
 		<text name="avatar_complexity_label">
-			複雜度：[WEIGHT]
+			复杂度：[WEIGHT]
 		</text>
 	</panel>
 </panel>

@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_performance_nearby">
 	<text name="back_lbl">
-		傳回
+		返回
 	</text>
 	<text name="av_nearby_title">
 		附近的化身
 	</text>
 	<text name="av_nearby_desc">
-		隱藏複雜化身以提高速度
+		隐藏复杂化身以提高速度
 	</text>
-	<slider tool_tip="定義化身因太複雜而無法彩現的時間門檻值（單位：微秒）" label="最大彩現時間（微秒）" name="RenderAvatarMaxART" />
+	<slider tool_tip="定义化身因太复杂而无法渲染的时间阈值（单位：微秒）" label="最大渲染时间（微秒）" name="RenderAvatarMaxART" />
 	<text name="RenderAvatarMaxARTText">
-		無限制
+		无限制
 	</text>
 	<text name="av_nearby_desc2">
-		右鍵單擊化身也可以調整顯示方式。
+		右键单击化身也可以调整显示方式。
 	</text>
 	<text name="AvatarComplexityModeLabel">
-		化身顯示模式：
+		化身显示模式：
 	</text>
 	<combo_box name="AvatarComplexityMode">
-		<combo_box.item label="按複雜度限制" name="0" />
-		<combo_box.item label="始終顯示好友" name="1" />
-		<combo_box.item label="僅顯示好友" name="2" />
+		<combo_box.item label="按复杂度限制" name="0"/>
+		<combo_box.item label="始终显示好友" name="1"/>
+		<combo_box.item label="仅显示好友" name="2"/>
 	</combo_box>
 	<button label="例外..." name="exceptions_btn" />
-	<check_box label="隱藏所有化身（適用於景觀相片）" name="hide_avatars" />
+	<check_box label="隐藏所有化身（适用于景观照片）" name="hide_avatars" />
 	<text name="name_tags_textbox">
-		化身名稱：
+		化身名称：
 	</text>
 	<radio_group name="name_tag_mode">
-		<radio_item label="開啟" name="radio" />
-		<radio_item label="關閉" name="radio2" />
-		<radio_item label="精簡顯示" name="radio3" />
+		<radio_item label="开启" name="radio" />
+		<radio_item label="关闭" name="radio2" />
+		<radio_item label="精简显示" name="radio3" />
 	</radio_group>
 </panel>

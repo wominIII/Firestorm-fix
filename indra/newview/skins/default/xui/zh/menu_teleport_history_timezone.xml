@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <toggleable_menu name="menu_teleport_history_timezone">
-	<menu_item_check name="teleport_history_tz_utc" label="協調世界時" />
-	<menu_item_check name="teleport_history_tz_slt" label="SL時間" />
-	<menu_item_check name="teleport_history_tz_local" label="本地時區" />
+	<menu_item_check name="teleport_history_tz_utc" label="协调世界时"/>
+	<menu_item_check name="teleport_history_tz_slt" label="SL时间"/>
+	<menu_item_check name="teleport_history_tz_local" label="本地时区"/>
 </toggleable_menu>

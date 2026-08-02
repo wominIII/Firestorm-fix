@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater name="modal container">
-	<button label="繼續" label_selected="繼續" name="Continue" />
-	<text name="tos_heading">
-		請仔細閱讀下列的訊息。
+	<button label="继续" label_selected="继续" name="Continue"/>
+	<button label="取消" label_selected="取消" name="Cancel" />
+	<text name="tos_title">
+		关键信息
 	</text>
+	<text name="tos_heading">
+		请仔细阅读下列的消息。
+	</text>
+	<text_editor name="tos_text">
+		TOS_TEXT
+	</text_editor>
 </floater>

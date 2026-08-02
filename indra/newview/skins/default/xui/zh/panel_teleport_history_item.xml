@@ -6,5 +6,5 @@
 	<panel.string name="DateFmtAMPM">
 		[year,datetime,utc]/[mthnum,datetime,utc]/[day,datetime,utc], [ampm,datetime,utc] [hour12,datetime,utc]:[min,datetime,utc]
 	</panel.string>
-	<button name="profile_btn" tool_tip="顯示物件資訊" />
+	<button name="profile_btn" tool_tip="显示物件信息"/>
 </panel>

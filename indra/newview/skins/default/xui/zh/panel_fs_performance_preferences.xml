@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_performance_preferences">
 	<text name="back_lbl">
-		傳回
+		返回
 	</text>
 	<text name="settings_title">
-		圖形設定
+		图形设置
 	</text>
 	<text name="quality_lbl">
-		品質與速度
+		质量与速度
 	</text>
 	<text name="FasterText">
 		快速
 	</text>
 	<text name="BetterText">
-		品質
+		质量
 	</text>
 	<text name="ShadersPrefText">
 		低
@@ -25,61 +25,61 @@
 		高
 	</text>
 	<text name="ShadersPrefText4">
-		極高
+		极高
 	</text>
 	<text name="quality_desc">
-		選擇預設會重設所有手動調整。
+		选择预设会重置所有手动调整。
 	</text>
 	<text name="distance_lbl">
-		距離可見性
+		距离可见性
 	</text>
 	<text name="faster_lbl">
 		更快
 	</text>
 	<text name="farther_lbl">
-		更遠
+		更远
 	</text>
 	<text name="distance_desc1">
-		低水準以獲得更好的效能。高水準以看到更遠的地方。
+		低水平以获得更好的性能。高水平以看到更远的地方。
 	</text>
 	<text name="environment_lbl">
-		環境
+		环境
 	</text>
 	<text name="enhancements_desc">
-		減少/移除陰影可以顯著提高影格率，但會影響場景的氛圍和外觀。
+		减少/移除阴影可以显著提高帧率，但会影响场景的氛围和外观。
 	</text>
 	<text name="RenderShadowDetailText">
-		陰影來源：
+		阴影来源：
 	</text>
 	<combo_box name="ShadowDetail">
-		<combo_box.item label="無" name="0" />
-		<combo_box.item label="太陽/月亮" name="1" />
-		<combo_box.item label="太陽/月亮 + 投影機" name="2" />
+		<combo_box.item label="无" name="0" />
+		<combo_box.item label="太阳/月亮" name="1" />
+		<combo_box.item label="太阳/月亮 + 投影仪" name="2" />
 	</combo_box>
 	<text name="water_lbl">
 		水文
 	</text>
 	<text name="water_desc">
-		降低水文品質可以顯著提高影格率。
+		降低水文质量可以显著提高帧率。
 	</text>
 	<text name="ReflectionsText">
 		水反射：
 	</text>
 	<combo_box name="Reflections">
-		<combo_box.item label="無（不透明）" name="-2" />
-		<combo_box.item label="無（透明）" name="-1" />
+		<combo_box.item label="无（不透明）" name="-2" />
+		<combo_box.item label="无（透明）" name="-1" />
 		<combo_box.item label="最小" name="0" />
-		<combo_box.item label="地形和樹木" name="1" />
-		<combo_box.item label="所有靜態物件" name="2" />
+		<combo_box.item label="地形和树木" name="1" />
+		<combo_box.item label="所有静态物件" name="2" />
 		<combo_box.item label="所有化身和物件" name="3" />
 		<combo_box.item label="全部" name="4" />
 	</combo_box>
 	<text name="photo_lbl">
-		攝影
+		摄影
 	</text>
 	<text name="photo_desc">
-		攝影師需要高品質，但通常會犧牲效能。
-攝影工具可以幫助你找到正確的平衡。
+		摄影师需要高质量，但通常会牺牲性能。
+摄影工具可以帮助你找到正确的平衡。
 	</text>
-	<button name="open_phototools" label="攝影工具" tool_tip="打開專門的攝影工具進行進階設定。" />
+	<button name="open_phototools" label="摄影工具" tool_tip="打开专门的摄影工具进行高级设置。" />
 </panel>

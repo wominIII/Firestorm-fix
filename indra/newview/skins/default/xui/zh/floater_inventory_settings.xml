@@ -1,38 +1,38 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="inventory_settings" title="庫存設定">
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<floater name="inventory_settings" title="库存设置">
 	<text name="multi_folder_txt">
-		在多檔案夾視圖中雙擊一個檔案夾:
+		在多文件夹视图中双击一个文件夹:
 	</text>
 	<radio_group name="multi_double_click_setting">
-		<radio_item label="展開和收起檔案夾" name="0" />
-		<radio_item label="打開一個新視窗" name="1" />
-		<radio_item label="切換視圖" name="2" />
+		<radio_item label="展开和收起文件夹" name="0"/>
+		<radio_item label="打开一个新窗口" name="1"/>
+		<radio_item label="切换视图" name="2"/>
 	</radio_group>
 	<text name="single_folder_txt">
-		在單檔案夾視圖中雙擊一個檔案夾
+		在单文件夹视图中双击一个文件夹
 	</text>
 	<radio_group name="single_double_click_setting">
-		<radio_item label="保持在當前視窗" name="false" />
-		<radio_item label="打開一個新視窗" name="true" />
+		<radio_item label="保持在当前窗口" name="false"/>
+		<radio_item label="打开一个新窗口" name="true"/>
 	</radio_group>
 	<text name="find_original_txt">
-		點擊「顯示在庫存中」或「尋找原件」:
+		点击“显示在库存中”或“查找原件”:
 	</text>
 	<radio_group name="find_original_settings">
-		<radio_item label="在主庫存視窗中顯示" name="false" />
-		<radio_item label="打開一個新的單檔案夾視窗" name="true" />
+		<radio_item label="在主库存窗口中显示" name="false"/>
+		<radio_item label="打开一个新的单文件夹窗口" name="true"/>
 	</radio_group>
 	<text name="favorites_txt">
 		收藏
 	</text>
-	<check_box label="在收藏物件旁顯示星標" name="favorite_star" />
-	<check_box label="在收藏資料夾旁顯示空心星標" name="favorite_hollow_star" />
-	<check_box label="文字顏色" name="favorites_color" />
+	<check_box label="在收藏物件旁显示星标" name="favorite_star" />
+	<check_box label="在收藏文件夹旁显示空心星标" name="favorite_hollow_star" />
+	<check_box label="文本颜色" name="favorites_color" />
 	<text name="attachment_return_txt">
-		按下Enter鍵或雙擊化身附件
+		按下Enter键或双击化身附件
 	</text>
 	<combo_box name="attach_combo">
-		<combo_box.item label="添加附件（推薦）" name="1" />
-		<combo_box.item label="穿上（替換附著點上的物件）" name="0" />
+		<combo_box.item label="添加附件（推荐）" name="1" />
+		<combo_box.item label="穿上（替换附着点上的物件）" name="0" />
 	</combo_box>
 </floater>

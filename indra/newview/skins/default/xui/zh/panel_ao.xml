@@ -1,61 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <panel name="animation_overrider_outer_panel">
 	<panel name="animation_overrider_panel">
-		<combo_box name="ao_set_selection_combo" tool_tip="選擇要編輯的動畫集。" />
-		<button name="ao_activate" tool_tip="立即啟用此動畫集。" />
-		<check_box name="ao_default" label="預設" tool_tip="將此動畫集設為登入時預設播放的動畫集。如果沒有設定預設動畫集，則使用上次的登入會話中的動畫集。" />
-		<menu_button name="ao_add" tool_tip="建立一個新的動畫集。" />
-		<button name="ao_remove" tool_tip="刪除此動畫集。" />
-		<check_box name="ao_sit_override" label="替換坐姿動畫" tool_tip="啟用此選項，使動畫覆蓋器中的動畫優先於物件的動畫。" />
-		<check_box name="ao_smart" label="智慧" left_pad="20" tool_tip="智慧模式確定替換坐姿是否與物件動畫衝突，並暫時停止替換。" />
-		<check_box name="ao_disable_stands_in_mouselook" label="第一人稱視角下禁用站立動畫" tool_tip="如果您需要保留個人動畫以供第一人稱視角使用，請選中此框。" />
-		<combo_box name="ao_state_selection_combo" tool_tip="選擇要編輯的動畫狀態。" />
+		<combo_box name="ao_set_selection_combo" tool_tip="选择要编辑的动画文件。"/>
+		<button name="ao_activate" tool_tip="立即启用此动画集。"/>
+		<check_box name="ao_default" label="默认" tool_tip="将此动画集设置为登录时默认播放的动画集。如果没有设置默认动画集，则使用上一次会话中的动画集。"/>
+		<button name="ao_add" tool_tip="创建一个新的动画集。"/>
+		<button name="ao_remove" tool_tip="删除此动画集。"/>
+		<check_box name="ao_sit_override" label="替换坐姿动画" tool_tip="启用此选项，使动画覆盖器中的动画优先于物件的动画。"/>
+		<check_box name="ao_smart" label="智能" left_pad="20" tool_tip="智能模式确定替换坐姿是否与物件动画冲突，并暂时停止替换。"/>
+		<check_box name="ao_disable_stands_in_mouselook" label="第一人称视角下禁用站立动画" tool_tip="如果您需要保留个人动画以供第一人称视角使用，请选中此框。"/>
+		<combo_box name="ao_state_selection_combo" tool_tip="选择要编辑的动画状态。"/>
 		<panel name="ao_animation_move_trash_panel">
-			<button name="ao_move_up" tool_tip="將選中的動畫或動畫組在列表中上移。"/>
-			<button name="ao_move_down" tool_tip="將選中的動畫或動畫組在列表中下移。"/>
-			<button name="ao_rename" tool_tip="重新命名選中的動畫組。"/>
-			<button name="ao_trash" tool_tip="刪除選中的動畫。"/>
+			<button name="ao_move_up" tool_tip="在列表中将所选动画上移。"/>
+			<button name="ao_move_down" tool_tip="在列表中将所选动画下移。"/>
+			<button name="ao_trash" tool_tip="从列表中删除所选动画。"/>
 		</panel>
-		<combo_box name="ao_track_selection_combo" tool_tip="選擇此狀態顯示的軌道。主軌道會正常播放，附加軌道會在主軌道旁獨立播放並循環，例如在所有行走動畫中播放尾巴擺動。"/>
-		<button name="ao_track_add" tool_tip="為此狀態新增獨立軌道。"/>
-		<check_box name="ao_cycle" label="循環" tool_tip="每次呼叫動畫狀態時播放不同的動畫。" />
-		<check_box name="ao_randomize" label="隨機順序" left_pad="10" tool_tip="在循環模式下設定動畫的隨機順序。" />
-		<text name="ao_cycle_time_seconds_label" value="循環時間（秒）：" />
-		<spinner name="ao_cycle_time" tool_tip="切換到下一個動畫之前的延遲時間。設定為0以禁用自動循環動畫。" />
-		<button name="ao_reload" label="重新載入" tool_tip="重新載入動畫覆蓋設定。" />
+		<check_box name="ao_cycle" label="循环" tool_tip="每次调用动画状态时播放不同的动画。"/>
+		<check_box name="ao_randomize" label="随机顺序" left_pad="10" tool_tip="在循环模式下设定动画的随机顺序。"/>
+		<text name="ao_cycle_time_seconds_label" value="循环时间（秒）："/>
+		<spinner name="ao_cycle_time" tool_tip="切换到下一个动画之前的延迟时间。设置为0以禁用自动循环动画。"/>
+		<button name="ao_reload" label="重新加载" tool_tip="重新加载动画覆盖配置。"/>
 		<layout_stack name="next_previous_buttons_stack">
 			<layout_panel name="next_previous_buttons_stack_left">
-				<button name="ao_previous" tool_tip="切換到上一個動畫。" />
+				<button name="ao_previous" tool_tip="切换到上一个动画。"/>
 			</layout_panel>
 			<layout_panel name="next_previous_buttons_stack_right">
-				<button name="ao_next" tool_tip="切換到下一個動畫。" />
+				<button name="ao_next" tool_tip="切换到下一个动画。"/>
 			</layout_panel>
 		</layout_stack>
-		<button name="ao_less" tool_tip="顯示簡化的動畫集視窗。" />
-		<panel name="ao_drop_zone_panel">
-			<text name="ao_drop_zone_add_label">
-				拖放到此處以新增
-			</text>
-			<text name="ao_drop_zone_group_label">
-				拖放到現有項目上以建立分組
-			</text>
-		</panel>
+		<button name="ao_less" tool_tip="显示简化的动画集窗口。"/>
 	</panel>
 	<panel name="ao_reload_cover">
 		<panel name="ao_reload_text_panel">
 			<text name="reload_label">
-				更新
+				刷新
 			</text>
 			<text name="wait_label">
-				請稍候
+				请稍候
 			</text>
 		</panel>
 	</panel>
 	<panel name="animation_overrider_panel_small">
-		<combo_box name="ao_set_selection_combo_small" tool_tip="選擇要編輯的動畫集。" />
-		<button name="ao_more" tool_tip="顯示完整的設定界面。" />
-		<button name="ao_previous_small" tool_tip="切換到上一個動畫。" />
-		<button name="ao_next_small" tool_tip="切換到下一個動畫。" />
-		<check_box name="ao_sit_override_small" label="坐姿" tool_tip="啟用此選項，使動畫集優先於物件的動畫。" />
+		<combo_box name="ao_set_selection_combo_small" tool_tip="选择要编辑的动画集。"/>
+		<button name="ao_more" tool_tip="显示完整的配置界面。"/>
+		<button name="ao_previous_small" tool_tip="切换到上一个动画。"/>
+		<button name="ao_next_small" tool_tip="切换到下一个动画。"/>
+		<check_box name="ao_sit_override_small" label="坐姿" tool_tip="启用此选项，使动画集优先于物件的动画。"/>
 	</panel>
 </panel>

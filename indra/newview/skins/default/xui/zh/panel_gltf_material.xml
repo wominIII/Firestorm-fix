@@ -1,16 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <panel name="panel_gltf_material">
-	<check_box label="雙面" name="double sided" />
+	<check_box label="双面" name="double sided"/>
 	<panel name="base_color_texture_pnl">
 		<text name="base_color_lbl">
-			基礎顏色:
+			基础颜色:
 		</text>
-		<texture_picker name="base_color_texture" tool_tip="基礎顏色貼圖。 alpha通道可選，用於不透明度。" />
+		<texture_picker name="base_color_texture" tool_tip="基础颜色贴图。 alpha 通道可选，用于透明度。"/>
 		<text name="base_color_upload_fee">
-			無上傳費用
+			无上传费用
 		</text>
 		<text name="base_color_tint_lbl">
-			色調
+			色调
 		</text>
 		<text name="base_color_transparency_lbl">
 			不透明度
@@ -19,46 +19,46 @@
 			Alpha模式
 		</text>
 		<combo_box name="alpha mode">
-			<combo_box.item label="不透明" name="None" />
-			<combo_box.item label="混合" name="Alpha blending" />
-			<combo_box.item label="遮罩" name="Alpha masking" />
+			<combo_box.item label="不透明" name="None"/>
+			<combo_box.item label="混合" name="Alpha blending"/>
+			<combo_box.item label="遮罩" name="Alpha masking"/>
 		</combo_box>
 		<text name="alpha_cutoff_lbl">
-			Alpha臨界值
+			Alpha临界值
 		</text>
 	</panel>
 	<panel name="metallic_texture_pnl">
 		<text name="metallic_roughness_lbl">
-			金屬-粗糙度:
+			金属-粗糙度:
 		</text>
-		<texture_picker name="metallic_roughness_texture" tool_tip="GLTF 金屬粗糙度貼圖，可選環境光遮蔽。紅色通道為環境光遮蔽，綠色通道為粗糙度，藍色通道為金屬度。" />
+		<texture_picker name="metallic_roughness_texture" tool_tip="GLTF 金属粗糙度贴图，可选环境光遮蔽。红色通道为环境光遮蔽，绿色通道为粗糙度，蓝色通道为金属度。"/>
 		<text name="metallic_upload_fee">
-			無上傳費用
+			无上传费用
 		</text>
 		<text name="metallic_factor_lbl">
-			金屬度等級
+			金属度等级
 		</text>
 		<text name="roughness_factor_lbl">
-			粗糙度等級
+			粗糙度等级
 		</text>
 	</panel>
 	<panel name="emissive_texture_pnl">
 		<text name="emissive_lbl">
-			自發光:
+			自发光:
 		</text>
 		<text name="emissive_upload_fee">
-			無上傳費用
+			无上传费用
 		</text>
 		<text name="emissive_tint_lbl">
-			色調
+			色调
 		</text>
 	</panel>
 	<panel name="normal_texture_pnl">
 		<text name="normal_lbl">
-			法線:
+			法线:
 		</text>
 		<text name="normal_upload_fee">
-			無上傳費用
+			无上传费用
 		</text>
 	</panel>
 </panel>

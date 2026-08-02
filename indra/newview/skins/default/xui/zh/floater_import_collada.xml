@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="Import Collada" title="匯入場景">
+<floater name="Import Collada" title="导入场景">
 	<text name="mesh count">
-		網格模型：[COUNT]
+		网格模型：[COUNT]
 	</text>
 	<text name="texture count">
-		紋理： [COUNT]
+		纹理： [COUNT]
 	</text>
 	<text name="status">
-		狀態：[STATUS]
+		状态：[STATUS]
 	</text>
-	<button label="取消" name="cancel" />
-	<button label="確定" name="ok" />
+	<button label="取消" name="cancel"/>
+	<button label="确定" name="ok"/>
 	<string name="status_idle">
-		閒置中
+		闲置中
 	</string>
 	<string name="status_uploading">
-		正在上傳 [NAME]
+		正在上传 [NAME]
 	</string>
 	<string name="status_creating">
-		正在建立 [NAME] 物件
+		正在创建 [NAME] 物件
 	</string>
 </floater>

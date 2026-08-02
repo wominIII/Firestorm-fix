@@ -1,18 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
-<floater name="whitelist_floater" title="新增檔案夾和二進制檔案到排除列表">
+<floater name="whitelist_floater" title="添加文件夹和二进制文件到排除列表">
 	<text name="whitelist_intro">
-		防病毒軟體和反惡意軟體是安全上網的重要組成部分，但它們可能會引起許多問題。
-為了提高穩定性和效能，我們強烈建議所有使用者確保將瀏覽器使用的重要檔案夾和程式新增到排除列表（即白名單）。
+		防病毒软件和反恶意软件是安全上网的重要组成部分，但它们可能会引起许多问题。
+为了提高稳定性和性能，我们强烈建议所有用户确保将浏览器使用的重要文件夹和程序添加到排除列表（即白名单）。
 
-更多詳細資訊請存取
+更多详细信息请访问
 https://wiki.firestormviewer.org/antivirus_whitelisting
 	</text>
 	<text name="whitelist_folder_instruction">
-		為了簡化任務，下面的欄位中列出了瀏覽器使用的檔案夾。
-請按照上面wiki頁面的說明將它們新增到防病毒軟體的排除列表中。
+		为了简化任务，下面的字段中列出了浏览器使用的文件夹。
+请按照上面wiki页面的说明将它们添加到防病毒软件的排除列表中。
 	</text>
 	<text name="whitelist_exe_instruction">
-		下面的欄位包含瀏覽器可執行檔案的名稱和完整路徑。
-請按照上面wiki頁面的說明將它們的完整路徑新增到防病毒軟體的排除列表中。
+		下面的字段包含浏览器可执行文件的名称和完整路径。
+请按照上面wiki页面的说明将它们的完整路径添加到防病毒软件的排除列表中。
 	</text>
 </floater>

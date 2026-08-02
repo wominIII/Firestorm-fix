@@ -56,6 +56,7 @@ public:
     static FSInventoryLocalLabels& instance();
     std::string get(const LLUUID& id);
     void set(const LLUUID& id, const std::string& label);
+    void edit(const LLUUID& id);
 
 private:
     FSInventoryLocalLabels() = default;
@@ -158,7 +159,6 @@ public:
                              menuentry_vec_t &disabled_items, U32 flags);
     virtual void buildContextMenu(LLMenuGL& menu, U32 flags);
     void editLocalLabel();
-    bool onEditLocalLabel(const LLSD& notification, const LLSD& response);
     virtual LLToolDragAndDrop::ESource getDragSource() const;
     virtual bool startDrag(EDragAndDropType* type, LLUUID* id) const;
     virtual bool dragOrDrop(MASK mask, bool drop,

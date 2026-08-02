@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="上傳內容" name="uploads">
+<panel label="上传内容" name="uploads">
 	<text name="title">
-		當前的上傳目的檔案夾
+		当前的上传目的文件夹
 	</text>
 	<text name="title_models">
-		圖像
+		图像
 	</text>
 	<text name="title_sounds">
-		聲音
+		声音
 	</text>
 	<text name="title_animation">
-		動畫
+		动画
 	</text>
 	<text name="title_model">
 		模型
 	</text>
 	<text name="title_pbr">
-		PBR材質
+		PBR材质
 	</text>
 	<text name="upload_help">
-		要變更目的檔案夾，請在庫存用滑鼠右鍵按一下新的檔案夾並選擇
- 「用作預設值」
+		要变更目的文件夹，请在库存用鼠标右键按一下新的文件夹并选择
+ “用作默认值”
 	</text>
 </panel>

@@ -1,26 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="floater_voice_controls" title="語音控制">
+<floater name="floater_voice_controls" title="语音控制">
 	<string name="title_nearby">
-		語音設定
+		语音设置
 	</string>
 	<string name="title_group">
-		與 [GROUP] 進行群組通話
+		与 [GROUP] 进行群组通话
 	</string>
 	<string name="title_adhoc">
-		多方通話
+		多方通话
 	</string>
 	<string name="title_peer_2_peer">
-		和 [NAME] 通話
+		和 [NAME] 通话
 	</string>
 	<string name="no_one_near">
-		附近沒有人開啟語音
+		附近没有人开启语音
 	</string>
 	<layout_stack name="my_call_stack">
 		<layout_panel name="my_panel">
-			<text name="user_text" value="我的化身：" />
+			<text name="user_text" value="我的化身："/>
 		</layout_panel>
-		<layout_panel name="leave_call_btn_panel">
-			<button tool_tip="離開通話" name="leave_call_btn" />
+		<layout_panel name="leave_call_panel">
+			<layout_stack name="voice_effect_and_leave_call_stack">
+				<layout_panel name="leave_call_btn_panel">
+					<button label="离开通话" name="leave_call_btn"/>
+				</layout_panel>
+			</layout_stack>
 		</layout_panel>
 	</layout_stack>
 </floater>

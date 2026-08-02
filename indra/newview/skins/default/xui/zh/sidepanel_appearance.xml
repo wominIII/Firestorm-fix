@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="裝扮" name="appearance panel">
-	<string name="No Outfit" value="無裝扮" />
-	<string name="Unsaved Changes" value="變更未儲存" />
-	<string name="Now Wearing" value="現在穿上..." />
-	<string name="Changing outfits" value="變更裝扮" />
+<panel label="装扮" name="appearance panel">
+	<string name="No Outfit" value="无装扮"/>
+	<string name="Unsaved Changes" value="变更未保存"/>
+	<string name="Now Wearing" value="现在穿上..."/>
+	<string name="Changing outfits" value="变更装扮"/>
 	<panel name="panel_currentlook">
 		<text name="currentlook_status">
-			（狀態）
+			（状态）
 		</text>
 		<text name="currentlook_name">
-			(載入中)
+			(加载中)
 		</text>
-		<button name="edit_outfit_btn" tool_tip="編輯這套裝扮" />
+		<button name="edit_outfit_btn" tool_tip="编辑这套装扮"/>
 	</panel>
 	<layout_stack name="top_menu_panel">
 		<layout_panel name="filter_panel">
-			<filter_editor label="裝扮過濾器" name="Filter" />
+			<filter_editor label="装扮过滤器" name="Filter" />
 		</layout_panel>
 		<layout_panel name="options_gear_btn_panel">
-			<menu_button tool_tip="顯示更多選項" name="options_gear_btn" />
+			<menu_button tool_tip="显示更多选项" name="options_gear_btn" />
 		</layout_panel>
 		<layout_panel name="options_sort_btn_panel">
-			<menu_button tool_tip="顯示排序選項" name="sorting_menu_btn" />
+			<menu_button tool_tip="显示排序选项" name="sorting_menu_btn" />
 		</layout_panel>
 		<layout_panel name="trash_btn_panel">
-			<dnd_button name="trash_btn" tool_tip="刪除選中的裝扮" />
+			<dnd_button name="trash_btn" tool_tip="删除选中的装扮" />
 		</layout_panel>
 	</layout_stack>
 </panel>

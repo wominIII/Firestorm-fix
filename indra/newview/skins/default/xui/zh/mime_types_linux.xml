@@ -2,104 +2,104 @@
 <mimetypes name="default">
 	<widgetset name="web">
 		<label name="web_label">
-			網頁內容
+			网页内容
 		</label>
 		<tooltip name="web_tooltip">
-			這個位置有網頁內容
+			这个位置有网页内容
 		</tooltip>
 		<playtip name="web_playtip">
-			顯示網頁內容
+			显示网页内容
 		</playtip>
 	</widgetset>
 	<widgetset name="movie">
 		<label name="movie_label">
-			影片
+			视频
 		</label>
 		<tooltip name="movie_tooltip">
-			沒有影片可以播放
+			没有视频可以播放
 		</tooltip>
 		<playtip name="movie_playtip">
-			播放影片
+			播放视频
 		</playtip>
 	</widgetset>
 	<widgetset name="image">
 		<label name="image_label">
-			圖像
+			图像
 		</label>
 		<tooltip name="image_tooltip">
-			有一個圖像在此位置
+			有一个图像在此位置
 		</tooltip>
 		<playtip name="image_playtip">
-			檢視這個位置的圖像
+			查看这个位置的图像
 		</playtip>
 	</widgetset>
 	<widgetset name="audio">
 		<label name="audio_label">
-			音訊
+			音频
 		</label>
 		<tooltip name="audio_tooltip">
-			有一個音訊在此位置
+			有一个音频在此位置
 		</tooltip>
 		<playtip name="audio_playtip">
-			播放這個位置的音訊
+			播放这个位置的音频
 		</playtip>
 	</widgetset>
 	<widgetset name="none">
 		<label name="none_label">
-			無內容
+			无内容
 		</label>
 		<tooltip name="none_tooltip">
-			此處無媒體
+			此处无媒体
 		</tooltip>
 	</widgetset>
 	<scheme name="rtsp">
 		<label name="rtsp_label">
-			流式傳輸
+			流式传输
 		</label>
 	</scheme>
 	<mimetype name="blank">
 		<label name="blank_label">
-			- 無 -
+			- 无 -
 		</label>
 	</mimetype>
 	<mimetype name="none/none">
 		<label name="none/none_label">
-			- 無 -
+			- 无 -
 		</label>
 	</mimetype>
 	<mimetype name="audio/*">
 		<label name="audio2_label">
-			音訊
+			音频
 		</label>
 	</mimetype>
 	<mimetype name="video/*">
 		<label name="video2_label">
-			影片
+			视频
 		</label>
 	</mimetype>
 	<mimetype name="image/*">
 		<label name="image2_label">
-			圖像
+			图像
 		</label>
 	</mimetype>
 	<mimetype name="video/vnd.secondlife.qt.legacy">
 		<label name="vnd.secondlife.qt.legacy_label">
-			影片（QuickTime）
+			视频（QuickTime）
 		</label>
 	</mimetype>
 	<mimetype name="application/ogg">
 		<label name="application/ogg_label">
-			Ogg 音訊/影片
+			Ogg 音频/视频
 		</label>
 	</mimetype>
 	<mimetype name="application/pdf">
 		<label name="application/pdf_label">
-			PDF 檔案
+			PDF 文件
 		</label>
 	</mimetype>
 	<mimetype name="application/postscript">
 		<label name="application/postscript_label">
-			Postscript 檔案
+			Postscript 文件
 		</label>
 	</mimetype>
 	<mimetype name="application/rtf">
@@ -109,12 +109,12 @@
 	</mimetype>
 	<mimetype name="application/smil">
 		<label name="application/smil_label">
-			同步多媒體整合語言（SMIL）
+			同步多媒体整合语言（SMIL）
 		</label>
 	</mimetype>
 	<mimetype name="application/xhtml+xml">
 		<label name="application/xhtml+xml_label">
-			網頁（XHTML）
+			网页（XHTML）
 		</label>
 	</mimetype>
 	<mimetype name="application/x-director">
@@ -124,102 +124,102 @@
 	</mimetype>
 	<mimetype name="application/octet-stream">
 		<label name="application/octet-stream_label">
-			流式傳輸
+			流式传输
 		</label>
 	</mimetype>
 	<mimetype name="audio/mid">
 		<label name="audio/mid_label">
-			音訊（MIDI）
+			音频（MIDI）
 		</label>
 	</mimetype>
 	<mimetype name="audio/mpeg">
 		<label name="audio/mpeg_label">
-			音訊（MP3）
+			音频（MP3）
 		</label>
 	</mimetype>
 	<mimetype name="audio/x-aiff">
 		<label name="audio/x-aiff_label">
-			音訊（AIFF）
+			音频（AIFF）
 		</label>
 	</mimetype>
 	<mimetype name="audio/x-wav">
 		<label name="audio/x-wav_label">
-			音訊（WAV）
+			音频（WAV）
 		</label>
 	</mimetype>
 	<mimetype name="image/bmp">
 		<label name="image/bmp_label">
-			圖像（BMP）
+			图像（BMP）
 		</label>
 	</mimetype>
 	<mimetype name="image/gif">
 		<label name="image/gif_label">
-			圖像（GIF）
+			图像（GIF）
 		</label>
 	</mimetype>
 	<mimetype name="image/jpeg">
 		<label name="image/jpeg_label">
-			圖像（JPEG）
+			图像（JPEG）
 		</label>
 	</mimetype>
 	<mimetype name="image/png">
 		<label name="image/png_label">
-			圖像（PNG）
+			图像（PNG）
 		</label>
 	</mimetype>
 	<mimetype name="image/svg+xml">
 		<label name="image/svg+xml_label">
-			圖像（SVG）
+			图像（SVG）
 		</label>
 	</mimetype>
 	<mimetype name="image/tiff">
 		<label name="image/tiff_label">
-			圖像（TIFF）
+			图像（TIFF）
 		</label>
 	</mimetype>
 	<mimetype name="text/html">
 		<label name="text/html_label">
-			網頁
+			网页
 		</label>
 	</mimetype>
 	<mimetype name="text/plain">
 		<label name="text/plain_label">
-			文字
+			文本
 		</label>
 	</mimetype>
 	<mimetype name="video/mpeg">
 		<label name="video/mpeg_label">
-			影片（MPEG）
+			视频（MPEG）
 		</label>
 	</mimetype>
 	<mimetype name="video/mp4">
 		<label name="video/mp4_label">
-			影片（MP4）
+			视频（MP4）
 		</label>
 	</mimetype>
 	<mimetype name="video/x-flv">
 		<label name="video/x-flv_label">
-			影片 (flv)
+			视频 (flv)
 		</label>
 	</mimetype>
 	<mimetype name="video/quicktime">
 		<label name="video/quicktime_label">
-			影片（QuickTime）
+			视频（QuickTime）
 		</label>
 	</mimetype>
 	<mimetype name="video/x-ms-asf">
 		<label name="video/x-ms-asf_label">
-			影片（Windows Media ASF）
+			视频（Windows Media ASF）
 		</label>
 	</mimetype>
 	<mimetype name="video/x-ms-wmv">
 		<label name="video/x-ms-wmv_label">
-			影片（Windows Media WMV）
+			视频（Windows Media WMV）
 		</label>
 	</mimetype>
 	<mimetype name="video/x-msvideo">
 		<label name="video/x-msvideo_label">
-			影片（AVI）
+			视频（AVI）
 		</label>
 	</mimetype>
 </mimetypes>

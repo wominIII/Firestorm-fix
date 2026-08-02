@@ -1,79 +1,79 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <role_actions>
-	<action_set description="這些許可權包括新增或移除群組成員和允許新成員不受邀即可加入群組的等權力。" name="Membership">
-		<action description="邀請他人加入這個群組" longdescription="欲邀請他人加入這個群組，請按下「角色及成員」欄目下「成員」選項卡的「邀請」按鈕。" name="member invite" value="1" />
-		<action description="把屬於「任何人」角色的成員踢出這個群組" longdescription="欲將成員從群組踢出，請按「角色及成員」欄下「成員」選項卡的「踢出」按鈕。 所有者可踢出任何不具所有者角色的人。 如果你不是所有者，一位成員只在他僅屬於「任何人」角色且沒有其他角色的情況下被踢出群組。 欲去除成員的角色，你必須有「去除成員角色」的許可權。" name="member eject" value="2" />
-		<action description="管理禁入清單" longdescription="允許群組成員控制是否禁止或重新允許居民加入這個群組。" name="allow ban" value="51" />
-		<action description="切換「免費自由加入」設定，更改「加入費」。" longdescription="切換「免費自由加入」設定，讓成員不受邀也可加入，並在基本設定欄更改「加入費」。" name="member options" value="3" />
+	<action_set description="这些权限包括添加或移除群组成员和允许新成员不受邀即可加入群组的等权力。" name="Membership">
+		<action description="邀请他人加入这个群组" longdescription="欲邀请他人加入这个群组，请按下“角色及成员”栏目下“成员”选项卡的“邀请”按钮。" name="member invite" value="1"/>
+		<action description="把属于“任何人”角色的成员踢出这个群组" longdescription="欲将成员从群组踢出，请按“角色及成员”栏下“成员”选项卡的“踢出”按钮。 所有者可踢出任何不具所有者角色的人。 如果你不是所有者，一位成员只在他仅属于“任何人”角色且没有其他角色的情况下被踢出群组。 欲去除成员的角色，你必须有“去除成员角色”的权限。" name="member eject" value="2"/>
+		<action description="管理禁入清单" longdescription="允许群组成员控制是否禁止或重新允许居民加入这个群组。" name="allow ban" value="51"/>
+		<action description="切换“免费自由加入”设置，更改“加入费”。" longdescription="切换“免费自由加入”设置，让成员不受邀也可加入，并在基本设置栏更改“加入费”。" name="member options" value="3"/>
 	</action_set>
-	<action_set description="這些許可權包括新增、移除、更改群組角色，新增或移除成員的角色，和為角色設定許可權等權力。" name="Roles">
-		<action description="創立一個新角色" longdescription="到「角色及成員」欄的「角色」選項卡，可以建立新角色。" name="role create" value="4" />
-		<action description="刪除角色" longdescription="到「角色及成員」欄的「角色」選項卡，可以刪除角色。" name="role delete" value="5" />
-		<action description="變更角色名稱、頭銜、描述，設定角色的成員名單是否公開" longdescription="變更角色名稱、頭銜、描述，設定角色的成員名單是否公開。 選擇一個角色后，可到「角色及成員」欄底下的「角色」選項卡完成這操作。" name="role properties" value="6" />
-		<action description="賦予成員「指派者」角色" longdescription="從已知的指派角色中選擇若干，賦予給成員（「角色及成員」欄 &gt; 「成員」選項卡）。 有這許可權的成員，只能把他自己已身負的角色賦予給別的成員。" name="role assign member limited" value="7" />
-		<action description="賦予成員「任何人」角色" longdescription="從已知的指派角色中，賦予給成員「任何人」角色（「角色及成員」欄 &gt; 「成員」選項卡）。 *警告* 任何身負具這許可權的角色的成員，都可以把某些角色賦予自己或任何不是所有者的成員，因此使自己或別人得到比現在更多的權力，最終可能擁有近似「所有者」的權力。 賦予這項許可權之前，敬請慎重考慮。" name="role assign member" value="8" />
-		<action description="從角色中移除成員" longdescription="從已知的指派角色中選擇，將成員去除該角色（「角色及成員」欄 &gt; 「成員」選項卡）。 所有者不得被去除。" name="role remove member" value="9" />
-		<action description="設定或去除角色許可權" longdescription="從允許的許可權清單中選擇，為每一角色設定或去除該許可權（「角色及成員」欄 &gt; 「角色」選項卡）。 *警告* 任何身負具有這許可權的角色的成員，都可以將所有許可權賦予自己和任何其他不是所有者的人，因此讓自己或他人提升爲近似「所有者」權力的層級。 賦予這項許可權之前，敬請慎重考慮。" name="role change actions" value="10" />
+	<action_set description="这些权限包括添加、移除、更改群组角色，添加或移除成员的角色，和为角色设置权限等权力。" name="Roles">
+		<action description="创立一个新角色" longdescription="到“角色及成员”栏的“角色”选项卡，可以创建新角色。" name="role create" value="4"/>
+		<action description="删除角色" longdescription="到“角色及成员”栏的“角色”选项卡，可以删除角色。" name="role delete" value="5"/>
+		<action description="变更角色名称、头衔、描述，设置角色的成员名单是否公开" longdescription="变更角色名称、头衔、描述，设置角色的成员名单是否公开。 选择一个角色后，可到“角色及成员”栏底下的“角色”选项卡完成这操作。" name="role properties" value="6"/>
+		<action description="赋予成员“指派者”角色" longdescription="从已知的指派角色中选择若干，赋予给成员（“角色及成员”栏 &gt; “成员”选项卡）。 有这权限的成员，只能把他自己已身负的角色赋予给别的成员。" name="role assign member limited" value="7"/>
+		<action description="赋予成员“任何人”角色" longdescription="从已知的指派角色中，赋予给成员“任何人”角色（“角色及成员”栏 &gt; “成员”选项卡）。 *警告* 任何身负具这权限的角色的成员，都可以把某些角色赋予自己或任何不是所有者的成员，因此使自己或别人得到比现在更多的权力，最终可能拥有近似“所有者”的权力。 赋予这项权限之前，敬请慎重考虑。" name="role assign member" value="8"/>
+		<action description="从角色中移除成员" longdescription="从已知的指派角色中选择，将成员去除该角色（“角色及成员”栏 &gt; “成员”选项卡）。 所有者不得被去除。" name="role remove member" value="9"/>
+		<action description="设置或去除角色权限" longdescription="从允许的权限清单中选择，为每一角色设置或去除该权限（“角色及成员”栏 &gt; “角色”选项卡）。 *警告* 任何身负具有这权限的角色的成员，都可以将所有权限赋予自己和任何其他不是所有者的人，因此让自己或他人提升为近似“所有者”权力的层级。 赋予这项权限之前，敬请慎重考虑。" name="role change actions" value="10"/>
 	</action_set>
-	<action_set description="這些許可權包括有權修改群組身份，例如更改公開程度、章程和徽章。" name="Group Identity">
-		<action description="更改章程、徽章，設定是否「顯示於搜索結果」。" longdescription="更改章程、徽章，設定是否「顯示於搜索結果」。 這可在「基本數據」欄設定。" name="group change identity" value="11" />
+	<action_set description="这些权限包括有权修改群组身份，例如更改公开程度、章程和徽章。" name="Group Identity">
+		<action description="更改章程、徽章，设置是否“显示于搜索结果”。" longdescription="更改章程、徽章，设置是否“显示于搜索结果”。 这可在“基本数据”栏设置。" name="group change identity" value="11"/>
 	</action_set>
-	<action_set description="這些許可權包括有權轉讓、修改或出售本群組擁有的土地。 欲前往「土地資訊」視窗，請在地面任一處點選右鍵，選擇「土地資訊」，或點選導覽欄的「i」圖示。" name="Parcel Management">
-		<action description="轉讓土地或購買土地給群組" longdescription="轉讓土地或為群組購地。 這可在「土地資訊」&gt; 基本選項卡完成。" name="land deed" value="12" />
-		<action description="放棄土地，將所有權轉給 Governor Linden（林登總長）" longdescription="放棄土地，將所有權轉給 Governor Linden（林登總長）。 *警告* 任何身負具有這許可權的角色的成員，都可以到「土地資訊」&gt; 基本選項卡放棄任何群組所有的土地，不經出售就將所有權轉給 Linden！ 賦予這項許可權之前，敬請慎重考慮。" name="land release" value="13" />
-		<action description="設定待售土地資訊" longdescription="設定待售土地資訊。 *警告* 任何身負具有這許可權的角色的成員，都可以到「土地資訊」&gt; 基本選項卡任意出售群組所有的土地！ 賦予這項許可權之前，敬請慎重考慮。" name="land set sale info" value="14" />
-		<action description="分割或合併地塊" longdescription="分割或合併地塊。 欲進行此操作，請在地面任一處點選右鍵，選擇「編輯地形」，並在土地上拖拽滑鼠選擇一個範圍。 要進行分割，做好選擇後點擊「分割」。 要合併，選擇至少兩塊相鄰地塊，再點選「合併」。" name="land divide join" value="15" />
+	<action_set description="这些权限包括有权转让、修改或出售本群组拥有的土地。 欲前往“土地信息”窗口，请在地面任一处点击右键，选择“土地信息”，或点击导览栏的“i”图标。" name="Parcel Management">
+		<action description="转让土地或购买土地给群组" longdescription="转让土地或为群组购地。 这可在“土地信息”&gt; 基本选项卡完成。" name="land deed" value="12"/>
+		<action description="放弃土地，将所有权转给 Governor Linden（林登总长）" longdescription="放弃土地，将所有权转给 Governor Linden（林登总长）。 *警告* 任何身负具有这权限的角色的成员，都可以到“土地信息”&gt; 基本选项卡放弃任何群组所有的土地，不经出售就将所有权转给 Linden！ 赋予这项权限之前，敬请慎重考虑。" name="land release" value="13"/>
+		<action description="设置待售土地信息" longdescription="设置待售土地信息。 *警告* 任何身负具有这权限的角色的成员，都可以到“土地信息”&gt; 基本选项卡任意出售群组所有的土地！ 赋予这项权限之前，敬请慎重考虑。" name="land set sale info" value="14"/>
+		<action description="分割或合并地块" longdescription="分割或合并地块。 欲进行此操作，请在地面任一处点击右键，选择“编辑地形”，并在土地上拖拽鼠标选择一个范围。 要进行分割，做好选择后点击“分割”。 要合并，选择至少两块相邻地块，再点击“合并”。" name="land divide join" value="15"/>
 	</action_set>
-	<action_set description="這些許可權包括可更改地塊名稱和發佈設定、設定是否公開到搜索結果、設定登陸地點和瞬間傳送繞路選項。" name="Parcel Identity">
-		<action description="切換「將地點顯示在搜索結果」設定，並選定類別" longdescription="切換「將地點顯示在搜索結果」設定，並在「土地資訊」&gt; 選項選項卡設定地塊類別。" name="land find places" value="17" />
-		<action description="更改地塊名稱、描述、「適度成人內容」設定" longdescription="更改地塊名稱、描述、「適度成人內容」設定。 這可在「土地資訊」&gt; 選項選項卡完成。" name="land change identity" value="18" />
-		<action description="設定登陸地點和瞬間傳送繞路設定。" longdescription="在群組所有的地塊上，身負具此許可權的成員，可以設定人們瞬間傳送進來時的登陸地點，和瞬間傳送的繞路選項。 這可在「土地資訊」&gt; 選項選項卡完成。" name="land set landing point" value="19" />
+	<action_set description="这些权限包括可更改地块名称和发布设置、设置是否公开到搜索结果、设置登陆地点和瞬间传送绕路选项。" name="Parcel Identity">
+		<action description="切换“将地点显示在搜索结果”设置，并选定类别" longdescription="切换“将地点显示在搜索结果”设置，并在“土地信息”&gt; 选项选项卡设置地块类别。" name="land find places" value="17"/>
+		<action description="更改地块名称、描述、“适度成人内容”设置" longdescription="更改地块名称、描述、“适度成人内容”设置。 这可在“土地信息”&gt; 选项选项卡完成。" name="land change identity" value="18"/>
+		<action description="设置登陆地点和瞬间传送绕路设置。" longdescription="在群组所有的地块上，身负具此权限的成员，可以设置人们瞬间传送进来时的登陆地点，和瞬间传送的绕路选项。 这可在“土地信息”&gt; 选项选项卡完成。" name="land set landing point" value="19"/>
 	</action_set>
-	<action_set description="這些許可權包括有權更改地塊選項，例如「新建物件」、「編輯地形」，和音樂、媒體設定等。" name="Parcel Settings">
-		<action description="更改音樂和媒體設定" longdescription="在「土地資訊」&gt; 媒體選項卡更改串流音樂和視訊設定。" name="land change media" value="20" />
-		<action description="切換「編輯地形」設定" longdescription="切換「編輯地形」設定。 *警告* 「土地資訊」&gt; 「選項」選項卡 &gt;「編輯地形」可允許任何人變更你的土地形狀，放置或移動林登植物。 賦予這項許可權之前，敬請慎重考慮。 編輯地形可在「土地資訊」&gt; 選項選項卡做切換。" name="land edit" value="21" />
-		<action description="切換各項「土地資訊」&gt; 選項設定" longdescription="在「土地資訊」&gt; 選項選項卡切換「安全（無傷害）」設定，並允許其他居民在群組所有土地上「編輯地形」、「建造」、「建立地標」、「執行指令碼」。" name="land options" value="22" />
-		<action description="修改環境設定和日循環。" longdescription="從「土地資訊」&gt;「環境選項卡」變更環境設定和日循環。" name="land change environment" value="46" />
+	<action_set description="这些权限包括有权更改地块选项，例如“新建物件”、“编辑地形”，和音乐、媒体设置等。" name="Parcel Settings">
+		<action description="更改音乐和媒体设置" longdescription="在“土地信息”&gt; 媒体选项卡更改串流音乐和视频设置。" name="land change media" value="20"/>
+		<action description="切换“编辑地形”设置" longdescription="切换“编辑地形”设置。 *警告* “土地信息”&gt; “选项”选项卡 &gt;“编辑地形”可允许任何人变更你的土地形状，放置或移动林登植物。 赋予这项权限之前，敬请慎重考虑。 编辑地形可在“土地信息”&gt; 选项选项卡做切换。" name="land edit" value="21"/>
+		<action description="切换各项“土地信息”&gt; 选项设置" longdescription="在“土地信息”&gt; 选项选项卡切换“安全（无伤害）”设置，并允许其他居民在群组所有土地上“编辑地形”、“建造”、“创建地标”、“运行脚本”。" name="land options" value="22"/>
+		<action description="修改环境设置和日循环。" longdescription="从“土地信息”&gt;“环境选项卡”变更环境设置和日循环。" name="land change environment" value="46"/>
 	</action_set>
-	<action_set description="這些許可權包括可允許成員在群組所有地塊上規避限制。" name="Parcel Powers">
-		<action description="固定允許「編輯地形」" longdescription="身負具此許可權的角色的成員可以在群組所有地塊上編輯地形，無論這功能在「土地資訊」&gt; 選項選項卡里是否被禁止。" name="land allow edit land" value="23" />
-		<action description="固定允許「飛行」" longdescription="身負具此許可權的角色的成員可以在群組所有地塊上飛行，無論這許可權是否在「土地資訊」&gt; 選項選項卡里被禁止。" name="land allow fly" value="24" />
-		<action description="固定允許「新建物件」" longdescription="身負具此許可權的角色的成員可以在群組所有地塊上新建物件，無論這許可權是否在「土地資訊」&gt; 選項選項卡里被禁止。" name="land allow create" value="25" />
-		<action description="忽略降落點" longdescription="身負具此許可權的角色的成員可以直接瞬間傳送到一個群組所有的地塊，即使「土地資訊」&gt;「選項」選項卡里已設定了某個降落點。" name="land allow direct teleport" value="26" />
-		<action description="允許在群組所有土地上「將這裡設為我的家」" longdescription="身負具此許可權的角色的成員，可以在轉讓給這群組的地塊上使用「世界」選項 &gt; 地標 &gt; 「將這裡設為我的家」。" name="land allow set home" value="28" />
-		<action description="允許在群組所有土地上「開辦活動」" longdescription="身負具這許可權的角色的成員，可以選擇群組所有的地塊作為開辦活動的場地。" name="land allow host event" value="41" />
+	<action_set description="这些权限包括可允许成员在群组所有地块上规避限制。" name="Parcel Powers">
+		<action description="固定允许“编辑地形”" longdescription="身负具此权限的角色的成员可以在群组所有地块上编辑地形，无论这功能在“土地信息”&gt; 选项选项卡里是否被禁止。" name="land allow edit land" value="23"/>
+		<action description="固定允许“飞行”" longdescription="身负具此权限的角色的成员可以在群组所有地块上飞行，无论这权限是否在“土地信息”&gt; 选项选项卡里被禁止。" name="land allow fly" value="24"/>
+		<action description="固定允许“新建物件”" longdescription="身负具此权限的角色的成员可以在群组所有地块上新建物件，无论这权限是否在“土地信息”&gt; 选项选项卡里被禁止。" name="land allow create" value="25"/>
+		<action description="忽略降落点" longdescription="身负具此权限的角色的成员可以直接瞬间传送到一个群组所有的地块，即使“土地信息”&gt;“选项”选项卡里已设置了某个降落点。" name="land allow direct teleport" value="26"/>
+		<action description="允许在群组所有土地上“将这里设为我的家”" longdescription="身负具此权限的角色的成员，可以在转让给这群组的地块上使用“世界”选项 &gt; 地标 &gt; “将这里设为我的家”。" name="land allow set home" value="28"/>
+		<action description="允许在群组所有土地上“开办活动”" longdescription="身负具这权限的角色的成员，可以选择群组所有的地块作为开办活动的场地。" name="land allow host event" value="41"/>
 	</action_set>
-	<action_set description="這些許可權包括可允許或限制人們出入群組所有的地塊，包括把居民凍結或踢出。" name="Parcel Access">
-		<action description="管理地塊出入許可名單" longdescription="在「土地資訊」&gt; 出入許可選項卡管理地塊的出入許可名單。" name="land manage allowed" value="29" />
-		<action description="管理地塊禁入名單" longdescription="在「土地資訊」&gt; 出入許可選項卡管理地塊的禁入名單。" name="land manage banned" value="30" />
-		<action description="變更地塊的「通行證出售物件」設定" longdescription="在「土地資訊」&gt; 出入許可選項卡變更地塊的「通行證出售物件」設定。" name="land manage passes" value="31" />
-		<action description="將地塊內的居民踢出及凍結" longdescription="身負具此許可權的角色的成員，可以在群組所有地塊上處置不受歡迎的居民，按右鍵加以「踢出」或「凍結」。" name="land admin" value="32" />
+	<action_set description="这些权限包括可允许或限制人们出入群组所有的地块，包括把居民冻结或踢出。" name="Parcel Access">
+		<action description="管理地块出入许可名单" longdescription="在“土地信息”&gt; 出入许可选项卡管理地块的出入许可名单。" name="land manage allowed" value="29"/>
+		<action description="管理地块禁入名单" longdescription="在“土地信息”&gt; 出入许可选项卡管理地块的禁入名单。" name="land manage banned" value="30"/>
+		<action description="变更地块的“通行证出售物件”设置" longdescription="在“土地信息”&gt; 出入许可选项卡变更地块的“通行证出售物件”设置。" name="land manage passes" value="31"/>
+		<action description="将地块内的居民踢出及冻结" longdescription="身负具此权限的角色的成员，可以在群组所有地块上处置不受欢迎的居民，按右键加以“踢出”或“冻结”。" name="land admin" value="32"/>
 	</action_set>
-	<action_set description="這些許可權包括有權允許成員送返物件，或放置或移動林登植物。 這許可權的用處是讓成員清理一下土地，做一做景觀佈置，但必須小心使用，因為物件一旦被送返后即無法撤銷。" name="Parcel Content">
-		<action description="退回群組擁有的物件" longdescription="在「土地資訊」&gt; 物件選項卡送返位於群組所擁有地塊上的群組所擁有物件。" name="land return group owned" value="48" />
-		<action description="退回設給群組的物件" longdescription="在「土地資訊」&gt; 物件選項卡送返位於群組所擁有地塊的設給群組的物件。" name="land return group set" value="33" />
-		<action description="退回非群組物件" longdescription="在「土地資訊」&gt; 物件選項卡送返位於群組所擁有地塊的非群組物件。" name="land return non group" value="34" />
-		<action description="用林登植物佈置景觀。" longdescription="允許放置或移動林登樹種、草地和其他植物的景觀佈置許可權。 這些物件在你庫存的資源庫 &gt; 物件資料夾可找到，你也可以通過「建造」選項加以新建。" name="land gardening" value="35" />
+	<action_set description="这些权限包括有权允许成员送返物件，或放置或移动林登植物。 这权限的用处是让成员清理一下土地，做一做景观布置，但必须小心使用，因为物件一旦被送返后即无法撤销。" name="Parcel Content">
+		<action description="退回群组拥有的物件" longdescription="在“土地信息”&gt; 物件选项卡送返位于群组所拥有地块上的群组所拥有物件。" name="land return group owned" value="48"/>
+		<action description="退回设给群组的物件" longdescription="在“土地信息”&gt; 物件选项卡送返位于群组所拥有地块的设给群组的物件。" name="land return group set" value="33"/>
+		<action description="退回非群组物件" longdescription="在“土地信息”&gt; 物件选项卡送返位于群组所拥有地块的非群组物件。" name="land return non group" value="34"/>
+		<action description="用林登植物布置景观。" longdescription="允许放置或移动林登树种、草地和其他植物的景观布置权限。 这些物件在你库存的资源库 &gt; 物件文件夹可找到，你也可以通过“建造”选项加以新建。" name="land gardening" value="35"/>
 	</action_set>
-	<action_set description="這些許可權包括有權轉讓、修改或出售本群組擁有的物件。 這些變更可在「建造工具」&gt; 基本選項卡完成。 對一個物件點選右鍵，選擇「編輯」即可檢視其設定。" name="Object Management">
-		<action description="轉讓物件給群組" longdescription="在「建造工具」&gt; 基本選項卡將物件轉讓給群組。" name="object deed" value="36" />
-		<action description="操縱（移動、複製、修改）群組所擁有物件" longdescription="在「建造工具」&gt; 基本選項卡操縱（移動、複製、修改）群組所擁有物件。" name="object manipulate" value="38" />
-		<action description="設定出售群組所擁有物件" longdescription="在「建造工具」&gt; 基本選項卡設定出售群組所擁有物件。" name="object set sale" value="39" />
+	<action_set description="这些权限包括有权转让、修改或出售本群组拥有的物件。 这些变更可在“建造工具”&gt; 基本选项卡完成。 对一个物件点击右键，选择“编辑”即可查看其设置。" name="Object Management">
+		<action description="转让物件给群组" longdescription="在“建造工具”&gt; 基本选项卡将物件转让给群组。" name="object deed" value="36"/>
+		<action description="操纵（移动、复制、修改）群组所拥有物件" longdescription="在“建造工具”&gt; 基本选项卡操纵（移动、复制、修改）群组所拥有物件。" name="object manipulate" value="38"/>
+		<action description="设置出售群组所拥有物件" longdescription="在“建造工具”&gt; 基本选项卡设置出售群组所拥有物件。" name="object set sale" value="39"/>
 	</action_set>
-	<action_set description="這些許可權包括有權要求成員支付群組開銷、收取群組利息，限制群組帳號歷史開放物件。" name="Accounting">
-		<action description="支付群組開銷，收取群組利息" longdescription="身負具這許可權的角色的成員，將自動支付群組開銷並收取群組利息。 這表示他們將取得群組所擁有土地出售后的部分收入，每日結算，同時並分攤地塊刊登費等開銷。" name="accounting accountable" value="40" />
+	<action_set description="这些权限包括有权要求成员支付群组开销、收取群组利息，限制群组帐号历史开放物件。" name="Accounting">
+		<action description="支付群组开销，收取群组利息" longdescription="身负具这权限的角色的成员，将自动支付群组开销并收取群组利息。 这表示他们将获取群组所拥有土地出售后的部分收入，每日结算，同时并分摊地块刊登费等开销。" name="accounting accountable" value="40"/>
 	</action_set>
-	<action_set description="這些許可權包括可允許成員發送、接收並檢視群組通知。" name="Notices">
-		<action description="發送通知" longdescription="身負具這許可權的角色的成員，可以到「群組」&gt; 通知欄發送通知。" name="notices send" value="42" />
-		<action description="接收通知與檢視過去通知" longdescription="身負具這許可權的角色的成員，可以到「群組」&gt; 通知欄接收通知並檢視過去的通知。" name="notices receive" value="43" />
+	<action_set description="这些权限包括可允许成员发送、接收并查看群组通知。" name="Notices">
+		<action description="发送通知" longdescription="身负具这权限的角色的成员，可以到“群组”&gt; 通知栏发送通知。" name="notices send" value="42"/>
+		<action description="接收通知与查看过去通知" longdescription="身负具这权限的角色的成员，可以到“群组”&gt; 通知栏接收通知并查看过去的通知。" name="notices receive" value="43"/>
 	</action_set>
-	<action_set description="這些許可權包括可允許或限制人們加入群組聊天會話和群組語音聊天。" name="Chat">
-		<action description="加入群組聊天" longdescription="身負具這許可權的角色的成員，可以加入群組的文字或語音聊天會話。" name="join group chat" value="16" />
-		<action description="加入群組語音聊天" longdescription="身負具這許可權的角色的成員，可以加入群組的語音聊天會話。  注意：欲加入語音聊天會話，需有「加入群組聊天」許可權。" name="join voice chat" value="27" />
-		<action description="適度成人內容的群組聊天" longdescription="身負具這許可權的角色的成員，可以控制誰可加入群組語音和文字聊天會話。" name="moderate group chat" value="37" />
+	<action_set description="这些权限包括可允许或限制人们加入群组聊天会话和群组语音聊天。" name="Chat">
+		<action description="加入群组聊天" longdescription="身负具这权限的角色的成员，可以加入群组的文本或语音聊天会话。" name="join group chat" value="16"/>
+		<action description="加入群组语音聊天" longdescription="身负具这权限的角色的成员，可以加入群组的语音聊天会话。  注意：欲加入语音聊天会话，需有“加入群组聊天”权限。" name="join voice chat" value="27"/>
+		<action description="适度成人内容的群组聊天" longdescription="身负具这权限的角色的成员，可以控制谁可加入群组语音和文本聊天会话。" name="moderate group chat" value="37"/>
 	</action_set>
-	<action_set description="這些許可權包括修改本群組所擁有的體驗的許可權" name="experience_tools_experience">
-		<action description="體驗管理" longdescription="擔任有此許可權角色的成員，可以編輯一個體驗的後設資料。" name="experience admin" value="49" />
-		<action description="體驗貢獻者" longdescription="擔任有此許可權角色的成員，可以為一個體驗貢獻指令碼。" name="experience contributor" value="50" />
+	<action_set description="这些权限包括修改本群组所拥有的体验的权限" name="experience_tools_experience">
+		<action description="体验管理" longdescription="担任有此权限角色的成员，可以编辑一个体验的元数据。" name="experience admin" value="49"/>
+		<action description="体验贡献者" longdescription="担任有此权限角色的成员，可以为一个体验贡献脚本。" name="experience contributor" value="50"/>
 	</action_set>
 </role_actions>

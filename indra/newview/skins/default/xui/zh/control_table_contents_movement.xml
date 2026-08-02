@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <contents>
 	<rows name="move_actions">
-		<columns label="移動操作" name="lst_action" />
+		<columns label="移动操作" name="lst_action"/>
 	</rows>
 	<rows name="walk_to">
-		<columns name="lst_action" tool_tip="走向滑鼠指向的當前位置" value="走向" />
+		<columns name="lst_action" tool_tip="走向鼠标指向的当前位置" value="走向" />
 	</rows>
 	<rows name="teleport_to">
-		<columns name="lst_action" tool_tip="傳送到滑鼠指向的當前位置。但並非所有目的地都允許直接傳送，因此可能會傳送到目標附近。" value="傳送到" />
+		<columns name="lst_action" tool_tip="传送到鼠标指向的当前位置。但并非所有目的地都允许直接传送，因此可能会传送到目标附近。" value="传送到" />
 	</rows>
 	<rows name="push_forward">
 		<columns name="lst_action" value="向前走" />
 	</rows>
 	<rows name="push_backward">
-		<columns name="lst_action" value="向後走" />
+		<columns name="lst_action" value="向后走" />
 	</rows>
 	<rows name="turn_left">
-		<columns name="lst_action" value="左轉" />
+		<columns name="lst_action" value="左转" />
 	</rows>
 	<rows name="turn_right">
-		<columns name="lst_action" value="右轉" />
+		<columns name="lst_action" value="右转" />
 	</rows>
 	<rows name="slide_left">
 		<columns name="lst_action" value="向左平移" />
@@ -37,7 +37,7 @@
 		<columns name="lst_action" value="向前跑" />
 	</rows>
 	<rows name="run_backward">
-		<columns name="lst_action" value="向後跑" />
+		<columns name="lst_action" value="向后跑" />
 	</rows>
 	<rows name="run_left">
 		<columns name="lst_action" value="向左跑" />
@@ -46,15 +46,15 @@
 		<columns name="lst_action" value="向右跑" />
 	</rows>
 	<rows name="toggle_run">
-		<columns name="lst_action" value="切換跑/走" />
+		<columns name="lst_action" value="切换跑/走" />
 	</rows>
 	<rows name="toggle_fly">
-		<columns name="lst_action" value="開始/停止飛行" />
+		<columns name="lst_action" value="开始/停止飞行" />
 	</rows>
 	<rows name="toggle_sit">
 		<columns name="lst_action" value="坐下/站起" />
 	</rows>
 	<rows name="stop_moving">
-		<columns name="lst_action" value="停止移動" />
+		<columns name="lst_action" value="停止移动" />
 	</rows>
 </contents>

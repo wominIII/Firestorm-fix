@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="Toybox" title="工具列按鈕">
+<floater name="Toybox" title="工具栏按钮">
 	<text name="toybox label 1">
-		將按鈕拖入或拖離工具列，即可新增或移除該按鈕。
+		将按钮拖入或拖离工具栏，即可添加或移除该按钮。
 	</text>
 	<text name="toybox label 2">
-		按鈕將根據每一個工具列的設定，僅顯示圖示或一併顯示文字標籤。
+		按钮将根据每一个工具栏的设置，仅显示图标或一并显示文本标签。
 	</text>
-	<button label="清除所有工具列" label_selected="清除所有工具欄" name="btn_clear_all" />
-	<button label="還原預設值" label_selected="還原預設值" name="btn_restore_defaults" />
-	<check_box label="鎖定" name="check_toolbars_locked" tool_tip="如果選中，工具列將被鎖定，按鈕將無法移動或移除。" />
+	<button label="清除所有工具栏" label_selected="清除所有工具栏" name="btn_clear_all"/>
+	<button label="还原默认值" label_selected="还原默认值" name="btn_restore_defaults"/>
+	<check_box label="锁定" name="check_toolbars_locked" tool_tip="如果选中，工具栏将被锁定，按钮将无法移动或移除。"/>
 </floater>

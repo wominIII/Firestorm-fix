@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater label="地点" name="voice_effects" title="语音变声试听">
+	<string name="no_voice_effect">
+		（无变声效果）
+	</string>
+	<string name="active_voice_effect">
+		（使用中）
+	</string>
+	<string name="unsubscribed_voice_effect">
+		（已停止订阅）
+	</string>
+	<string name="new_voice_effect">
+		（新的！）
+	</string>
+	<string name="effect_Arena">
+		竞技场
+	</string>
+	<string name="effect_Beast">
+		野兽
+	</string>
+	<string name="effect_Buff">
+		Buff
+	</string>
+	<string name="effect_Buzz">
+		Buzz
+	</string>
+	<string name="effect_Camille">
+		卡蜜儿
+	</string>
+	<string name="effect_Creepy">
+		怪异
+	</string>
+	<string name="effect_CreepyBot">
+		怪异机器人
+	</string>
+	<string name="effect_Cyber">
+		科幻
+	</string>
+	<string name="effect_DeepBot">
+		深沉机器人
+	</string>
+	<string name="effect_Demon">
+		魔鬼
+	</string>
+	<string name="effect_Female Elf">
+		女性 - 小精灵
+	</string>
+	<string name="effect_Flirty">
+		调情
+	</string>
+	<string name="effect_Foxy">
+		香艳
+	</string>
+	<string name="effect_Halloween 2010 Bonus">
+		2010万圣节加赠
+	</string>
+	<string name="effect_Helium">
+		氦气
+	</string>
+	<string name="effect_Husky">
+		沙哑
+	</string>
+	<string name="effect_Husky Whisper">
+		沙哑耳语
+	</string>
+	<string name="effect_Intercom">
+		对讲机
+	</string>
+	<string name="effect_Julia">
+		茱莉亚
+	</string>
+	<string name="effect_Lo Lilt">
+		轻微抑扬顿挫
+	</string>
+	<string name="effect_Macho">
+		阳刚
+	</string>
+	<string name="effect_Micro">
+		Micro
+	</string>
+	<string name="effect_Mini">
+		迷你
+	</string>
+	<string name="effect_Model">
+		模型
+	</string>
+	<string name="effect_Nano">
+		Nano
+	</string>
+	<string name="effect_Nightmare">
+		恶梦
+	</string>
+	<string name="effect_PopBot">
+		PopBot
+	</string>
+	<string name="effect_Rachel">
+		瑞秋
+	</string>
+	<string name="effect_Radio">
+		收音机
+	</string>
+	<string name="effect_Robot">
+		机器人
+	</string>
+	<string name="effect_Roxanne">
+		萝姗
+	</string>
+	<string name="effect_Rumble">
+		低沉隆隆声
+	</string>
+	<string name="effect_Sabrina">
+		萨宾娜
+	</string>
+	<string name="effect_Samantha">
+		姗曼莎
+	</string>
+	<string name="effect_Sexy">
+		性感
+	</string>
+	<string name="effect_Shorty">
+		矮个儿
+	</string>
+	<string name="effect_Smaller">
+		较小
+	</string>
+	<string name="effect_Sneaky">
+		鬼祟
+	</string>
+	<string name="effect_Stallion">
+		种马
+	</string>
+	<string name="effect_Sultry">
+		勾魂
+	</string>
+	<string name="effect_Thunder">
+		雷声
+	</string>
+	<string name="effect_Vixen">
+		泼妇
+	</string>
+	<string name="effect_WhinyBot">
+		哭闹机器人
+	</string>
+	<text name="preview_text">
+		预览
+	</text>
+	<text name="status_text">
+		录下一段样本，再点击声音检查结果。
+	</text>
+	<button label="录音" name="record_btn" tool_tip="录下一段你的声音。"/>
+	<button label="停止" name="record_stop_btn"/>
+	<text name="voice_morphing_link">
+		[[URL] 现在订阅]
+	</text>
+	<scroll_list name="voice_effect_list" tool_tip="录下一段你的声音，再点击一个效果试听。">
+		<scroll_list.columns label="语音名称" name="name"/>
+		<scroll_list.columns label="过期时间" name="expires"/>
+	</scroll_list>
+</floater>

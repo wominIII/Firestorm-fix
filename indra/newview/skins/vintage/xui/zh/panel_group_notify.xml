@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_group_notify">
-	<text name="attachment_label" value="已新增：" />
-	<text name="group_notice" value="群組通知" />
-	<text name="title" value="傳送人姓名、群組名稱" />
+	<text name="attachment_label" value="已添加：" />
+	<text name="group_notice" value="群组通知"/>
+	<text name="title" value="发送人姓名、群组名称"/>
 	<panel name="attachment_container">
 		<text name="attachment" value="附件" />
 	</panel>

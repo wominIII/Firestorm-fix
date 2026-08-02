@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="注釋 &amp; 隱私" name="panel_notes">
+<panel label="注释 &amp; 隐私" name="panel_notes">
 	<string name="header_symbol_limit">
-		注意：您的注釋包含超過1000個字元。
+		注意：您的注释包含超过1000个字符。
 	</string>
 	<string name="body_symbol_limit">
-		這裡只會顯示前1000個字元。如果您編輯您的注釋並點擊確定，超出的字元將會遺失。要保留這些字元，您需要在網頁上[[PROFILE_URL]編輯]。
+		这里只会显示前1000个字符。如果您编辑您的注释并点击确定，超出的字符将会丢失。要保留这些字符，您需要在网页上[[PROFILE_URL]编辑]。
 	</string>
-	<text name="status_message" value="關於此化身的私人注釋：" />
-	<button name="notes_save_changes" label="儲存" />
-	<button name="notes_discard_changes" label="放棄" />
+	<text name="status_message" value="关于此化身的私人注释："/>
+	<button name="notes_save_changes" label="保存"/>
+	<button name="notes_discard_changes" label="放弃"/>
 </panel>

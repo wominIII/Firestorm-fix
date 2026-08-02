@@ -1,163 +1,163 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="紋理" name="Texture">
+<panel label="纹理" name="Texture">
 	<panel.string name="string repeats per meter">
-		每米重複次數
+		每米重复次数
 	</panel.string>
 	<panel.string name="string repeats per face">
-		每個面的重複次數
+		每个面的重复次数
 	</panel.string>
 	<panel.string name="paste_error_face_selection_mismatch">
-		如果複製了多個面，則目標物件上必須選擇相同數量的麵。
+		如果复制了多个面，则目标物件上必须选择相同数量的面。
 	</panel.string>
 	<panel.string name="paste_error_object_face_count_mismatch">
-		如果複製了一個物件的所有面，則目標物件必須具有相同數量的麵。
+		如果复制了一个物件的所有面，则目标物件必须具有相同数量的面。
 	</panel.string>
 	<panel.string name="paste_error_inventory_not_found">
-		一個或多個紋理在庫存中未找到。
+		一个或多个纹理在库存中未找到。
 	</panel.string>
 	<panel.string name="paste_options">
-		將紋理參數複製到剪貼簿
+		将纹理参数复制到剪贴板
 	</panel.string>
 	<text name="color label">
-		顏色
+		颜色
 	</text>
-	<color_swatch label="" name="colorswatch" tool_tip="點擊以開啟顏色挑選器" />
+	<color_swatch label="" name="colorswatch" tool_tip="点击以开启颜色挑选器"/>
 	<text name="color trans">
 		透明度 %
 	</text>
 	<text name="glow label">
-		光暈
+		光晕
 	</text>
-	<check_box label="全亮" name="checkbox fullbright" />
-	<check_box label="隱藏水" name="checkbox_hide_water" />
-	<button name="copy_face_btn" tool_tip="將紋理參數複製到剪貼簿" />
-	<button name="paste_face_btn" tool_tip="從剪貼簿黏貼紋理參數" />
-	<!-- <text name="label_matmedia">
-		材質
-	</text> -->
+	<check_box label="全亮" name="checkbox fullbright"/>
+	<check_box label="隐藏水" name="checkbox_hide_water" />
+	<button name="copy_face_btn" tool_tip="将纹理参数复制到剪贴板"/>
+	<button name="paste_face_btn" tool_tip="从剪贴板粘贴纹理参数"/>
+	<text name="label_matmedia">
+		材质
+	</text>
 	<combo_box name="combobox matmedia">
-		<combo_box.item label="紋理" name="Materials" />
-		<combo_box.item label="PBR金屬粗糙度" name="PBR" />
-		<combo_box.item label="媒體" name="Media" />
+		<combo_box.item label="纹理" name="Materials"/>
+		<combo_box.item label="PBR金属粗糙度" name="PBR"/>
+		<combo_box.item label="媒体" name="Media"/>
 	</combo_box>
 	<radio_group name="radio_material_type">
-		<radio_item label="紋理（漫反射）" name="Texture (diffuse)" />
-		<radio_item label="凹凸度（法線）" name="Bumpiness (normal)" />
-		<radio_item label="閃亮度（鏡反射）" name="Shininess (specular)" />
+		<radio_item label="纹理（漫反射）" name="Texture (diffuse)"/>
+		<radio_item label="凹凸度（法线）" name="Bumpiness (normal)"/>
+		<radio_item label="闪亮度（镜面反射）" name="Shininess (specular)"/>
 	</radio_group>
 	<radio_group name="radio_pbr_type">
-		<radio_item label="完整材質" name="Complete material" />
-		<radio_item label="基礎顏色" name="Base color" />
-		<radio_item label="金屬度/粗糙度" name="Metallic/roughness" />
-		<radio_item label="自發光" name="Emissive" />
-		<radio_item label="法線" name="Normal" />
+		<radio_item label="完整材质" name="Complete material"/>
+		<radio_item label="基础颜色" name="Base color"/>
+		<radio_item label="金属度/粗糙度" name="Metallic/roughness"/>
+		<radio_item label="自发光" name="Emissive"/>
+		<radio_item label="法线" name="Normal"/>
 	</radio_group>
-	<texture_picker label="材質" name="pbr_control" tool_tip="點擊選擇一個PBR材質" />
+	<texture_picker label="材质" name="pbr_control" tool_tip="点击选择一个PBR材质"/>
 	<text name="material_permissions_loading_label">
-		正在載入內容...
+		正在加载内容...
 	</text>
-	<button name="edit_selected_pbr" label="編輯" />
-	<button name="save_selected_pbr" label="儲存" />
-	<texture_picker label="紋理     " name="texture control" tool_tip="點擊以挑選圖片" />
+	<button name="edit_selected_pbr" label="编辑"/>
+	<button name="save_selected_pbr" label="保存"/>
+	<texture_picker label="纹理     " name="texture control" tool_tip="点击以挑选图片"/>
 	<text name="label alphamode">
 		Alpha模式
 	</text>
 	<combo_box name="combobox alphamode">
-		<combo_box.item label="無" name="None" />
-		<combo_box.item label="Alpha混合" name="Alpha blending" />
-		<combo_box.item label="Alpha遮罩" name="Alpha masking" />
-		<combo_box.item label="自發光遮罩" name="Emissive mask" />
+		<combo_box.item label="无" name="None"/>
+		<combo_box.item label="Alpha混合" name="Alpha blending"/>
+		<combo_box.item label="Alpha遮罩" name="Alpha masking"/>
+		<combo_box.item label="自发光遮罩" name="Emissive mask"/>
 	</combo_box>
 	<text name="label maskcutoff">
-		遮罩截斷值
+		遮罩截断值
 	</text>
-	<texture_picker label="紋理" name="bumpytexture control" tool_tip="點擊以挑選圖片" />
+	<texture_picker label="纹理" name="bumpytexture control" tool_tip="点击以挑选图片"/>
 	<text name="label bumpiness">
 		凹凸度
 	</text>
 	<combo_box name="combobox bumpiness">
-		<combo_box.item label="無" name="None" />
-		<combo_box.item label="亮度" name="Brightness" />
-		<combo_box.item label="暗度" name="Darkness" />
-		<combo_box.item label="木紋" name="woodgrain" />
-		<combo_box.item label="樹皮" name="bark" />
-		<combo_box.item label="磚" name="bricks" />
-		<combo_box.item label="方格" name="checker" />
-		<combo_box.item label="混凝土" name="concrete" />
-		<combo_box.item label="粗花磚" name="crustytile" />
-		<combo_box.item label="石磚" name="cutstone" />
-		<combo_box.item label="圓盤" name="discs" />
-		<combo_box.item label="碎石" name="gravel" />
-		<combo_box.item label="培養皿" name="petridish" />
-		<combo_box.item label="壁板" name="siding" />
-		<combo_box.item label="瓷磚" name="stonetile" />
-		<combo_box.item label="彩色沙巖" name="stucco" />
-		<combo_box.item label="吸附" name="suction" />
-		<combo_box.item label="編織" name="weave" />
-		<combo_box.item label="使用紋理" name="Use texture" />
+		<combo_box.item label="无" name="None"/>
+		<combo_box.item label="亮度" name="Brightness"/>
+		<combo_box.item label="暗度" name="Darkness"/>
+		<combo_box.item label="木纹" name="woodgrain"/>
+		<combo_box.item label="树皮" name="bark"/>
+		<combo_box.item label="砖" name="bricks"/>
+		<combo_box.item label="方格" name="checker"/>
+		<combo_box.item label="混凝土" name="concrete"/>
+		<combo_box.item label="粗花砖" name="crustytile"/>
+		<combo_box.item label="石砖" name="cutstone"/>
+		<combo_box.item label="圆盘" name="discs"/>
+		<combo_box.item label="碎石" name="gravel"/>
+		<combo_box.item label="培养皿" name="petridish"/>
+		<combo_box.item label="壁板" name="siding"/>
+		<combo_box.item label="瓷砖" name="stonetile"/>
+		<combo_box.item label="彩色沙岩" name="stucco"/>
+		<combo_box.item label="吸附" name="suction"/>
+		<combo_box.item label="编织" name="weave"/>
+		<combo_box.item label="使用纹理" name="Use texture"/>
 	</combo_box>
-	<texture_picker label="紋理" name="shinytexture control" tool_tip="點擊以挑選圖片" />
+	<texture_picker label="纹理" name="shinytexture control" tool_tip="点击以挑选图片"/>
 	<text name="label shininess">
-		閃亮度
+		闪亮度
 	</text>
 	<combo_box name="combobox shininess">
-		<combo_box.item label="無" name="None" />
-		<combo_box.item label="低" name="Low" />
-		<combo_box.item label="中" name="Medium" />
-		<combo_box.item label="高" name="High" />
-		<combo_box.item label="使用紋理" name="Use texture" />
+		<combo_box.item label="无" name="None"/>
+		<combo_box.item label="低" name="Low"/>
+		<combo_box.item label="中" name="Medium"/>
+		<combo_box.item label="高" name="High"/>
+		<combo_box.item label="使用纹理" name="Use texture"/>
 	</combo_box>
 	<text name="label glossiness">
 		光滑度
 	</text>
 	<text name="label environment">
-		環境
+		环境
 	</text>
 	<text name="label shinycolor">
-		顏色
+		颜色
 	</text>
-	<color_swatch label="" name="shinycolorswatch" tool_tip="點擊以開啟顏色挑選器" />
+	<color_swatch label="" name="shinycolorswatch" tool_tip="点击以开启颜色挑选器"/>
 	<text name="media_info">
-		所選媒體如有 URL，請放到這裡
+		所选媒体如有 URL，请放到这里
 	</text>
-	<button name="add_media" tool_tip="新增媒體" label="選擇…" />
-	<button name="delete_media" tool_tip="刪除這個媒體紋理" label="刪除" />
-	<button label="對齊" label_selected="對齊媒體" name="button align" tool_tip="對齊媒體紋理（須先載入）" />
+	<button name="add_media" tool_tip="添加媒体" label="选择…"/>
+	<button name="delete_media" tool_tip="删除这个媒体纹理" label="删除"/>
+	<button label="对齐" label_selected="对齐媒体" name="button align" tool_tip="对齐媒体纹理（须先加载）"/>
 	<text name="tex gen">
-		對映方式
+		映射方式
 	</text>
 	<combo_box name="combobox texgen">
-		<combo_box.item label="預設" name="Default" />
-		<combo_box.item label="平面" name="Planar" />
+		<combo_box.item label="默认" name="Default"/>
+		<combo_box.item label="平面" name="Planar"/>
 	</combo_box>
-	<spinner label="水平刻度" name="TexScaleU" />
-	<button name="flipTextureScaleU" tool_tip="反轉" />
-	<spinner label="垂直刻度" name="TexScaleV" />
-	<button name="flipTextureScaleV" tool_tip="反轉" />
-	<spinner label="每米重複次數" name="rptctrl" />
-	<spinner label="旋轉角度" name="TexRot" />
-	<spinner label="水平偏距" name="TexOffsetU" />
-	<spinner label="垂直偏距" name="TexOffsetV" />
-	<spinner label="水平刻度" name="bumpyScaleU" />
-	<spinner label="垂直刻度" name="bumpyScaleV" />
-	<spinner label="旋轉角度" name="bumpyRot" />
-	<spinner label="水平偏距" name="bumpyOffsetU" />
-	<spinner label="垂直偏距" name="bumpyOffsetV" />
-	<spinner label="水平刻度" name="shinyScaleU" />
-	<spinner label="垂直刻度" name="shinyScaleV" />
-	<spinner label="旋轉角度" name="shinyRot" />
-	<spinner label="水平偏距" name="shinyOffsetU" />
-	<spinner label="垂直偏距" name="shinyOffsetV" />
-	<spinner label="水平刻度" name="gltfTextureScaleU" />
-	<spinner label="垂直刻度" name="gltfTextureScaleV" />
-	<spinner label="每米重複次數" name="gltfRptctrl" />
-	<spinner label="旋轉角度" name="gltfTextureRotation" />
-	<spinner label="水平偏距" name="gltfTextureOffsetU" />
-	<spinner label="垂直偏距" name="gltfTextureOffsetV" />
-	<check_box label="對齊平面" name="checkbox planar align" tool_tip="以最後所選擇的麵為基準，對齊全部所選擇的面上的紋理。 這必須使用平面紋理對映方式。" />
-	<check_box label="紋理同步" name="checkbox_sync_settings" tool_tip="同步紋理對映參數" />
-	<button name="button align textures" label="對齊" tool_tip="對齊當前的紋理層次" />
-	<button label="選擇所有" name="btn_select_same_diff" tool_tip="選擇所有與當前平面有相同紋理（漫反射）的麵" />
-	<button label="選擇所有" name="btn_select_same_norm" tool_tip="選擇所有與當前平面有相同粗糙度（法線）的麵" />
-	<button label="選擇所有" name="btn_select_same_spec" tool_tip="選擇所有與當前平面有相同光澤（高光）的麵" />
+	<spinner label="水平刻度" name="TexScaleU"/>
+	<button name="flipTextureScaleU" tool_tip="反转"/>
+	<spinner label="垂直刻度" name="TexScaleV"/>
+	<button name="flipTextureScaleV" tool_tip="反转"/>
+	<spinner label="每米重复次数" name="rptctrl"/>
+	<spinner label="旋转角度" name="TexRot"/>
+	<spinner label="水平偏距" name="TexOffsetU"/>
+	<spinner label="垂直偏距" name="TexOffsetV"/>
+	<spinner label="水平刻度" name="bumpyScaleU"/>
+	<spinner label="垂直刻度" name="bumpyScaleV"/>
+	<spinner label="旋转角度" name="bumpyRot"/>
+	<spinner label="水平偏距" name="bumpyOffsetU"/>
+	<spinner label="垂直偏距" name="bumpyOffsetV"/>
+	<spinner label="水平刻度" name="shinyScaleU"/>
+	<spinner label="垂直刻度" name="shinyScaleV"/>
+	<spinner label="旋转角度" name="shinyRot"/>
+	<spinner label="水平偏距" name="shinyOffsetU"/>
+	<spinner label="垂直偏距" name="shinyOffsetV"/>
+	<spinner label="水平刻度" name="gltfTextureScaleU"/>
+	<spinner label="垂直刻度" name="gltfTextureScaleV"/>
+	<spinner label="每米重复次数" name="gltfRptctrl" />
+	<spinner label="旋转角度" name="gltfTextureRotation"/>
+	<spinner label="水平偏距" name="gltfTextureOffsetU"/>
+	<spinner label="垂直偏距" name="gltfTextureOffsetV"/>
+	<check_box label="对齐平面" name="checkbox planar align" tool_tip="以最后所选择的面为基准，对齐全部所选择的面上的纹理。 这必须使用平面纹理映射方式。"/>
+	<check_box label="纹理同步" name="checkbox_sync_settings" tool_tip="同步纹理映射参数"/>
+	<button name="button align textures" label="对齐" tool_tip="对齐当前的纹理层次"/>
+	<button label="选择所有" name="btn_select_same_diff" tool_tip="选择所有与当前平面有相同纹理（漫反射）的面"/>
+	<button label="选择所有" name="btn_select_same_norm" tool_tip="选择所有与当前平面有相同粗糙度（法线）的面"/>
+	<button label="选择所有" name="btn_select_same_spec" tool_tip="选择所有与当前平面有相同光泽（高光）的面"/>
 </panel>

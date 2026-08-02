@@ -1,68 +1,68 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="env_adjust_snapshot" title="個人光照">
+<floater name="env_adjust_snapshot" title="个人光照">
 	<string name="hdr_string">HDR 比例:</string>
 	<string name="brightness_string">亮度:</string>
-	<string name="hdr_tooltip">照明效果的強度，如逼真明亮天空和動態曝光等。1.0 為預設值，0 為關閉，0 和 1 之間的值為環境光與 HDR 的混合。</string>
+	<string name="hdr_tooltip">照明效果的强度，如逼真明亮天空和动态曝光等。1.0 为默认值，0 为关闭，0 和 1 之间的值为环境光与 HDR 的混合。</string>
 	<layout_stack name="outer_stack">
 		<layout_panel name="env_controls">
 			<layout_stack name="settings_stack">
 				<layout_panel name="lp_1">
 					<text name="ambient_lbl">
-						周圍環境：
+						周围环境：
 					</text>
 					<text name="blue_horizon_lbl">
 						天空色彩:
 					</text>
 					<text name="blue_density_lbl">
-						天空飽和度:
+						天空饱和度:
 					</text>
-					<button label="重設" name="btn_reset" tool_tip="關閉並重設為共享環境" />
+					<button label="重置" name="btn_reset" tool_tip="关闭并重置为共享环境"/>
 					<text name="sun_color_lbl">
-						太陽色彩:
+						太阳色彩:
 					</text>
 					<text name="cloud_color_lbl">
-						雲層色彩：
+						云层色彩：
 					</text>
 					<text name="cloud_map_label">
-						雲層圖像：
+						云层图像：
 					</text>
 					<text name="water_map_label">
-						水圖像:
+						水图像:
 					</text>
 				</layout_panel>
 				<layout_panel name="lp_2">
 					<text name="haze_horizon_label">
-						地平線霧高度:
+						地平线雾高度:
 					</text>
 					<text name="haze_density_label">
-						霧密度:
+						雾密度:
 					</text>
 					<text name="cloud_coverage_label">
-						雲層覆蓋範圍:
+						云层覆盖范围:
 					</text>
 					<text name="cloud_scale_label">
-						雲層尺寸:
+						云层尺寸:
 					</text>
 					<text name="reflection_probe_ambiance_label">
-						反射探測環境光: 
+						反射探测环境光:
 					</text>
-					<slider name="probe_ambiance" tool_tip="基於環境的間接照明強度。數值為0時，HDR 等級比例變為亮度" />
+					<slider name="probe_ambiance" tool_tip="基于环境的间接照明强度。数值为0时，HDR 等级比例变为亮度"/>
 					<text name="scene_gamma_label">
 						亮度:
 					</text>
 				</layout_panel>
 				<layout_panel name="lp_3">
 					<text name="label">
-						太陽：
+						太阳：
 					</text>
 					<text name="scale_label">
-						縮放:
+						缩放:
 					</text>
 					<text name="glow_focus_label">
-						光暈強度:
+						光晕强度:
 					</text>
 					<text name="glow_size_label">
-						光暈焦點:
+						光晕焦点:
 					</text>
 					<text name="star_brightness_label">
 						星星亮度:
@@ -73,7 +73,7 @@
 					<text name="sun_elevation_label">
 						仰角:
 					</text>
-					<check_box label="顯示太陽信標" name="sunbeacon" />
+					<check_box label="显示太阳信标" name="sunbeacon"/>
 				</layout_panel>
 				<layout_panel name="lp_4">
 					<text name="label">
@@ -85,7 +85,7 @@
 					<text name="moon_elevation_label">
 						仰角:
 					</text>
-					<check_box label="顯示月信標" name="moonbeacon" />
+					<check_box label="显示月信标" name="moonbeacon"/>
 				</layout_panel>
 			</layout_stack>
 		</layout_panel>

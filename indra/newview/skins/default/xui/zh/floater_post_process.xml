@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater name="Post-Process Floater" title="后期处理设置">
+	<tab_container name="Post-Process Tabs">
+		<panel label="色彩过滤" name="wmiColorFilterPanel">
+			<check_box label="开启" name="wmiColorFilterToggle" />
+			<text name="wmiColorFilterBrightnessText">
+				亮度
+			</text>
+			<text name="wmiColorFilterSaturationText">
+				饱和度
+			</text>
+			<text name="wmiColorFilterContrastText">
+				对比度
+			</text>
+			<text name="wmiColorFilterBaseText">
+				对比度基色
+			</text>
+		</panel>
+		<panel label="夜视" name="wmiNightVisionPanel">
+			<check_box label="开启" name="wmiNightVisionToggle" />
+			<text name="wmiNightVisionBrightMultText">
+				亮度增强倍数
+			</text>
+			<text name="wmiNightVisionNoiseSizeText">
+				噪点大小
+			</text>
+			<text name="wmiNightVisionNoiseStrengthText">
+				噪点强度
+			</text>
+		</panel>
+		<panel label="泛光" name="wmiBloomPanel">
+			<check_box label="开启" name="wmiBloomToggle" />
+			<text name="wmiBloomExtractText">
+				亮度提取
+			</text>
+			<text name="wmiBloomSizeText">
+				泛光大小
+			</text>
+			<text name="wmiBloomStrengthText">
+				泛光强度
+			</text>
+		</panel>
+		<panel label="扩展" name="Extras">
+			<button label="加载效果" label_selected="加载效果" name="PPLoadEffect" />
+			<button label="保存效果" label_selected="保存效果" name="PPSaveEffect" />
+			<line_editor label="效果名称" name="PPEffectNameEditor" />
+		</panel>
+	</tab_container>
+</floater>

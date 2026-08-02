@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<floater name="directory" title="搜尋">
+<floater name="directory" title="搜索">
 	<tab_container name="Directory Tabs">
 		<panel label="人物" name="panel_dir_people"/>
-		<panel label="群組" name="panel_dir_groups"/>
-		<panel label="地點" name="panel_dir_places"/>
+		<panel label="群组" name="panel_dir_groups"/>
+		<panel label="地点" name="panel_dir_places"/>
 		<panel label="土地出售" name="panel_dir_land"/>
-		<panel label="活動" name="panel_dir_events"/>
-		<panel label="分類廣告" name="panel_dir_classified"/>
-		<panel label="網頁搜尋" name="panel_dir_web"/>
+		<panel label="活动" name="panel_dir_events"/>
+		<panel label="分类广告" name="panel_dir_classified"/>
+		<panel label="网页搜索" name="panel_dir_web"/>
 	</tab_container>
-	<button label="開啟個人檔案" name="open_profile_btn"/>
+	<button label="打开个人档案" name="open_profile_btn"/>
 </floater>

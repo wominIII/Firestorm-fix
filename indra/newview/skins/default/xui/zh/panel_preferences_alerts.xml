@@ -1,61 +1,71 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="彈出視窗" name="popups" title="彈出視窗">
-	<tab_container name="tabs">
-		<!-- World -->
-		<panel label="世界" name="tab-world">
-			<check_box label="當我花費或收到L$時通知我" name="notify_money_change_checkbox" />
-			<check_box name="FSPaymentInfoInChat" label="在本地聊天中報告L$交易而不是在彈出視窗中" />
-			<check_box label="更改區域時，如果類比主機(sim)發生變化，就通知我" name="FSShowServerVersionChangeNotice" tool_tip="在傳送或進入地點時顯示檢視器版本變化通知" />
-			<check_box label="登入時查詢status.secondlifegrid.net取得最新訊息" name="AutoQueryGridStatus" />
-			<check_box label="啟用Growl通知" name="notify_growl_checkbox" />
-			<check_box name="notify_growl_always_checkbox" label="即使Firestorm處於活躍狀態也顯示Growl通知" />
-			<check_box name="FSFilterGrowlKeywordDuplicateIMs" label="如果關鍵字警報已顯示，過濾重複的聊天" />
-		</panel>
-		<!-- People -->
-		<panel label="人物" name="tab-people">
-			<check_box label="當[APP_NAME]處於後臺時，收到訊息時閃爍應用圖示" name="FSFlashOnMessage" />
-			<check_box label="收到物件的私聊時，也閃爍應用圖示" name="FSFlashOnObjectIM" />
-			<check_box label="當有人更改顯示名時通知我" name="FSShowDisplayNameUpdateNotification" />
-			<check_box label="當我封鎖或解除封鎖某人時通知我" name="FSReportBlockToNearbyChat" />
-			<text name="friends_logon_label">當我的朋友登入和退出時以這種方式通知我：</text>
-			<check_box label="彈出提示" name="friends_online_notify_checkbox" />
-			<check_box name="OnlineOfflinetoNearbyChat" label="本地聊天和控制台" />
-			<check_box label="僅本地聊天" name="OnlineOfflinetoNearbyChatHistory" />
-		</panel>
-		<!-- Objects & Scripts -->
-		<panel label="物件&amp;指令碼" name="tab-objects">
-			<check_box label="當在後臺打開指令碼彈窗時，閃爍應用圖示" name="FSFlashOnScriptDialog" />
-			<check_box label="在本地聊天中報告碰撞通知" name="FSCollisionMessagesInChat" />
-			<check_box label="在以下情況下報告指令碼錯誤：" name="show_script_errors" />
-			<radio_group name="show_script_errors_location">
-				<radio_item label="本地聊天" name="script_0" />
-				<radio_item label="單獨視窗" name="script_1" />
-			</radio_group>
-			<check_box label="報告區域指令碼總數更改：" name="FSReportTotalScriptCountChanges" />
-			<spinner name="FSReportTotalScriptCountChangesThreshold" tool_tip="更改多少數量的指令碼就會報告（預設為100）" />
-			<check_box label="將碰撞通知傳送到指令碼頻道：" name="FSReportCollisionMessages" />
-			<spinner name="FSReportCollisionMessagesChannel" tool_tip="用於報告指令碼碰撞訊息的頻道號（預設為-25000）" />
-		</panel>
-		<!-- Inventory -->
-		<panel label="庫存" name="tab-inventory">
-			<check_box name="FSShowUploadPaymentToast" label="上傳物件時通知我已扣除費用" />
-			<check_box label="建立地標時通知我" name="landmark_created_checkbox" />
-			<check_box label="禁用'物件已退回您的庫存'通知" name="FSDisableReturnObjectNotification" />
-			<check_box label="在本地聊天中記錄快照名稱" name="FSLogSnapshotsToLocal" />
-			<check_box label="當物件傳送過快時通知我" name="FSNotifyIncomingObjectSpam" />
-			<check_box label="當其他居民的物件傳送過快時通知我" name="FSNotifyIncomingObjectSpamFrom" />
-			<slider name="FSOfferThrottleMaxCount" label="短時間內接收到多少物件就會被忽略：" tool_tip="在10秒內接收到幾個物件就會被忽略。預設為5" />
-		</panel>
-		<!-- Alerts -->
-		<panel label="提示" name="tab-alerts">
-			<text name="show_label" tool_tip="可以始終顯示或永不顯示的所有提示列表。選擇複選框可以始終顯示提示，取消複選框可以永不顯示。">
-			可以始終顯示或永不顯示的提示：
+<panel label="弹窗" name="popups" title="弹窗">
+<tab_container name="tabs">
+
+	<!-- World -->
+
+	<panel label="世界" name="tab-world">
+		<check_box label="当我花费或收到L$时通知我" name="notify_money_change_checkbox"/>
+		<check_box name="FSPaymentInfoInChat" label="在本地聊天中报告L$交易而不是在弹窗中"/>
+		<check_box label="更改区域时，如果模拟主机(sim)发生变化，就通知我" name="FSShowServerVersionChangeNotice" tool_tip="在传送或进入地点时显示查看器版本变化通知"/>
+		<check_box label="登录时查询status.secondlifegrid.net获取最新消息" name="AutoQueryGridStatus"/>
+		<check_box label="启用Growl通知" name="notify_growl_checkbox"/>
+		<check_box name="notify_growl_always_checkbox" label="即使Firestorm处于活跃状态也显示Growl通知"/>
+		<check_box name="FSFilterGrowlKeywordDuplicateIMs" label="如果关键词警报已显示，过滤重复的聊天"/>
+	</panel>
+
+	<!-- People -->
+
+	<panel label="人物" name="tab-people">
+		<check_box label="当[APP_NAME]处于后台时，收到消息时闪烁应用图标" name="FSFlashOnMessage"/>
+		<check_box label="收到物件的私聊时，也闪烁应用图标" name="FSFlashOnObjectIM"/>
+		<check_box label="当有人更改显示名时通知我" name="FSShowDisplayNameUpdateNotification"/>
+		<check_box label="当我封锁或解除封锁某人时通知我" name="FSReportBlockToNearbyChat"/>
+		<text name="friends_logon_label">当我的朋友登录和退出时以这种方式通知我：</text>
+		<check_box label="弹出提示" name="friends_online_notify_checkbox" />
+		<check_box name="OnlineOfflinetoNearbyChat" label="本地聊天和控制台"/>
+		<check_box label="仅本地聊天" name="OnlineOfflinetoNearbyChatHistory"/>
+	</panel>
+
+	<!-- Objects & Scripts -->
+
+	<panel label="物件&amp;脚本" name="tab-objects">
+		<check_box label="当在后台打开脚本弹窗时，闪烁应用图标" name="FSFlashOnScriptDialog"/>
+		<check_box label="在本地聊天中报告碰撞通知" name="FSCollisionMessagesInChat"/>
+		<check_box label="在以下情况下报告脚本错误：" name="show_script_errors"/>
+		<radio_group name="show_script_errors_location">
+			<radio_item label="本地聊天" name="script_0"/>
+			<radio_item label="单独窗口" name="script_1"/>
+		</radio_group>
+		<check_box label="报告区域脚本总数更改：" name="FSReportTotalScriptCountChanges"/>
+		<spinner name="FSReportTotalScriptCountChangesThreshold" tool_tip="更改多少数量的脚本就会报告（默认为100）"/>
+		<check_box label="将碰撞通知发送到脚本频道：" name="FSReportCollisionMessages"/>
+		<spinner name="FSReportCollisionMessagesChannel" tool_tip="用于报告脚本碰撞消息的频道号（默认为-25000）"/>
+	</panel>
+
+	<!-- Inventory -->
+
+	<panel label="库存" name="tab-inventory">
+		<check_box name="FSShowUploadPaymentToast" label="上传物件时通知我已扣除费用"/>
+		<check_box label="创建地标时通知我" name="landmark_created_checkbox"/>
+		<check_box label="禁用'物件已退回您的库存'通知" name="FSDisableReturnObjectNotification"/>
+		<check_box label="在本地聊天中记录快照名称" name="FSLogSnapshotsToLocal"/>
+		<check_box label="当物件发送过快时通知我" name="FSNotifyIncomingObjectSpam"/>
+		<check_box label="当其他居民的物件发送过快时通知我" name="FSNotifyIncomingObjectSpamFrom"/>
+		<slider name="FSOfferThrottleMaxCount" label="短时间内接收到多少物件就会被忽略：" tool_tip="在10秒内接收到几个物件就会被忽略。默认为5"/>
+	</panel>
+
+	<!-- Alerts -->
+
+	<panel label="提示" name="tab-alerts">
+		<text name="show_label" tool_tip="可以始终显示或永不显示的所有提示列表。选择复选框可以始终显示提示，取消复选框可以永不显示。">
+			可以始终显示或永不显示的提示：
 		</text>
-			<filter_editor label="過濾提示" name="popup_filter" tool_tip="在此輸入提示列表的過濾詞。" />
-			<scroll_list name="all_popups">
-				<column label="顯示" name="alert_enabled_check" />
-				<column label="提示" name="alert_label" />
-			</scroll_list>
-		</panel>
-	</tab_container>
+		<filter_editor label="过滤提示" name="popup_filter" tool_tip="在此输入提示列表的过滤词。" />
+		<scroll_list name="all_popups">
+			<column label="显示" name="alert_enabled_check"/>
+			<column label="提示" name="alert_label"/>
+		</scroll_list>
+	</panel>
+</tab_container>
 </panel>

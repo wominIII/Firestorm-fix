@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="隱私" name="im">
-	<string name="AutoresponseItemNotSet">未設定項目</string>
-	<string name="AutoresponseItemNotAvailable">項目不可用</string>
-	<string name="AutoresponseItemNotLoggedIn">未登入</string>
-	<tab_container label="隱私" name="tabs">
-		<panel label="常規" name="tab-general">
-			<panel.string name="log_in_to_change">登入以修改</panel.string>
-			<button label="清除歷史記錄" tool_tip="清除搜尋和傳送歷史記錄，以及網頁和紋理快取" name="clear_webcache" />
-			<text name="cache_size_label">(地點、圖片、網頁、搜尋)</text>
-			<check_box label="在搜尋結果中顯示我的個人檔案資訊" name="online_searchresults" />
-			<check_box label="只有我的朋友和群組知道我在線" name="online_visibility" />
-			<check_box label="只有我的朋友和群組可以呼叫我或傳送私聊" name="voice_call_friends_only_check" />
-			<check_box label="顯示已加入的群組邀請" name="FSShowJoinedGroupInvitations" />
-			<check_box label="語音通話結束後自動關閉麥克風" name="auto_disengage_mic_check" />
-			<check_box label="允許指令碼檔案知道我的界面語言" name="LanguageIsPublic" />
-			<check_box label="登入時自動顯示我的收藏夾項目（在「開始」下拉式選單中）" name="favorites_on_login_check" />
-			<check_box label="自動接受新物件" name="Auto_Accept_New_Inventory" />
-			<check_box label="自動將接受的物件記錄到本地聊天中" name="FSLogAutoAcceptInventoryToChat" />
-			<check_box label="即使已啟用自動接受，仍會顯示新庫存通知" name="FSShowAutoAcceptInventoryInNotifications" />
-			<check_box label="使用原始的物件接受和拒絕訊息" name="FSUseLegacyInventoryAcceptMessages" tool_tip="如果啟用，檢視器將在按下相應按鈕後才接受或拒絕訊息。 如果禁用，一旦收到轉讓提議，接受訊息將自動傳送。這個選項對自動接受轉讓提議無效。" />
-			<check_box label="自動在庫存中顯示接受的新物件" name="Show_In_Inventory" />
-			<check_box label="自動在接受後在庫存中顯示備註、紋理、地點" name="Show_New_Inventory" />
-			<check_box label="拍照後自動打開庫存" name="FSOpenInventoryAfterSnapshot" />
-			<check_box label="在庫存中的物件轉讓給其他化身時建立粒子效果" name="FSCreateGiveInventoryParticleEffect" />
-			<button label="管理已封鎖/靜音的內容" name="block_list" />
+<panel label="隐私" name="im">
+	<string name="AutoresponseItemNotSet">未设置项目</string>
+	<string name="AutoresponseItemNotAvailable">项目不可用</string>
+	<string name="AutoresponseItemNotLoggedIn">未登录</string>
+	<tab_container label="隐私" name="tabs">
+		<panel label="常规" name="tab-general">
+			<panel.string name="log_in_to_change">登录以修改</panel.string>
+			<button label="清除历史记录" tool_tip="清除搜索和传送历史记录，以及网页和纹理缓存" name="clear_webcache"/>
+			<text name="cache_size_label">(地点、图片、网页、搜索)</text>
+			<check_box label="在搜索结果中显示我的个人档案信息" name="online_searchresults"/>
+			<check_box label="只有我的朋友和群组知道我在线" name="online_visibility"/>
+			<check_box label="只有我的朋友和群组可以呼叫我或发送私聊" name="voice_call_friends_only_check"/>
+			<check_box label="显示已加入的群组邀请" name="FSShowJoinedGroupInvitations"/>
+			<check_box label="语音通话结束后自动关闭麦克风" name="auto_disengage_mic_check"/>
+			<check_box label="允许脚本文件知道我的界面语言" name="LanguageIsPublic"/>
+			<check_box label="登录时自动显示我的收藏夹项目（在“开始”下拉菜单中）" name="favorites_on_login_check"/>
+			<check_box label="自动接受新物件" name="Auto_Accept_New_Inventory"/>
+			<check_box label="自动将接受的物件记录到本地聊天中" name="FSLogAutoAcceptInventoryToChat"/>
+			<check_box label="即使已启用自动接受，仍会显示新库存通知" name="FSShowAutoAcceptInventoryInNotifications" />
+			<check_box label="使用原始的物件接受和拒绝消息" name="FSUseLegacyInventoryAcceptMessages" tool_tip="如果启用，查看器将在按下相应按钮后才接受或拒绝消息。 如果禁用，一旦收到转让提议，接受消息将自动发送。这个选项对自动接受转让提议无效。"/>
+			<check_box label="自动在库存中显示接受的新物件" name="Show_In_Inventory"/>
+			<check_box label="自动在接受后在库存中显示备注、纹理、地点" name="Show_New_Inventory"/>
+			<check_box label="拍照后自动打开库存" name="FSOpenInventoryAfterSnapshot"/>
+			<check_box label="在库存中的物件转让给其他化身时创建粒子效果" name="FSCreateGiveInventoryParticleEffect"/>
+			<button label="管理已封锁/静音的内容" name="block_list"/>
 		</panel>
-		<panel label="記錄與聊天內容" name="tab-logging">
-			<text name="logging_label">儲存：</text>
-			<combo_box tool_tip="記錄（聊天歷史記錄）：您和另一個人之間的所有聊天歷史。聊天內容：當前螢幕上顯示的文字。" name="conversation_log_combo">
-				<item name="log_and_transcripts" label="記錄和聊天內容" />
-				<item name="log_only" label="僅記錄" />
-				<item name="no_log_or_transcript" label="無記錄或聊天內容" />
+		<panel label="记录与聊天内容" name="tab-logging">
+			<text name="logging_label">保存：</text>
+			<combo_box tool_tip="记录（聊天历史记录）：您和另一个人之间的所有聊天历史。聊天内容：当前屏幕上显示的文本。" name="conversation_log_combo">
+				<item name="log_and_transcripts" label="记录和聊天内容"/>
+				<item name="log_only" label="仅记录"/>
+				<item name="no_log_or_transcript" label="无记录或聊天内容"/>
 			</combo_box>
-			<button label="清除記錄" width="140" name="clear_log" />
-			<button label="清除聊天內容" width="170" name="delete_transcripts" />
-			<check_box name="LogNearbyChat" label="儲存本地聊天記錄" tool_tip="將本地聊天記錄儲存到您的硬碟上" />
-			<check_box label="使用原始的紀錄檔案名格式" name="UseLegacyIMLogNames" tool_tip="如果啟用，將使用原始的紀錄檔案名格式（使用者名稱）而不是新的格式（user_name）。" />
-			<check_box label="在記錄檔案名中新增日期" name="LogFileNamewithDate" tool_tip="在聊天和訊息記錄中新增日期，格式為聊天-YYYY-MM-DD和'私聊檔案名'-YYYY-MM。" />
-			<check_box label="使用內建的紀錄檢視器" name="FSUseBuiltInHistory" tool_tip="使用內建的紀錄檢視器檢視記錄。如果禁用，記錄將在作業系統中定義的文字編輯器中打開。" />
+			<button label="清除记录" width="140" name="clear_log"/>
+			<button label="清除聊天内容" width="170" name="delete_transcripts"/>
+			<check_box name="LogNearbyChat" label="保存本地聊天记录" tool_tip="将本地聊天记录保存到您的硬盘上"/>
+			<check_box label="使用原始的记录文件名格式" name="UseLegacyIMLogNames" tool_tip="如果启用，将使用原始的记录文件名格式（用户名）而不是新的格式（user_name）。"/>
+			<check_box label="在记录文件名中添加日期" name="LogFileNamewithDate" tool_tip="在聊天和消息记录中添加日期，格式为聊天-YYYY-MM-DD和'私聊文件名'-YYYY-MM。"/>
+			<check_box label="使用内置的记录查看器" name="FSUseBuiltInHistory" tool_tip="使用内置的记录查看器查看记录。如果禁用，记录将在操作系统中定义的文本编辑器中打开。"/>
 		</panel>
-		<panel label="注視目標" name="tab-lookat">
-			<check_box label="顯示誰在看誰：" name="showlookat" tool_tip="注視目標允許您的檢視器知道您的眼睛、頭部和化身的朝向。它也可以用來確定化身的相機焦點。" />
-			<text name="lookatshownames" tool_tip="顯示凝視時顯示的名稱格式">顯示名稱：</text>
+		<panel label="注视目标" name="tab-lookat">
+			<check_box label="显示谁在看谁：" name="showlookat" tool_tip="注视目标允许您的查看器知道您的眼睛、头部和化身的朝向。它也可以用来确定化身的相机焦点。"/>
+			<text name="lookatshownames" tool_tip="显示凝视时显示的名称格式">显示名称：</text>
 			<combo_box name="lookatshownames_combobox">
-				<combo_box.item label="無" name="None" />
-				<combo_box.item label="全名" name="Complete_Name" />
-				<combo_box.item label="顯示名" name="Display_Name" />
-				<combo_box.item label="繼承名稱" name="Legacy_Name" />
-				<combo_box.item label="使用者名稱" name="User_Name" />
+				<combo_box.item label="无" name="None"/>
+				<combo_box.item label="全名" name="Complete_Name"/>
+				<combo_box.item label="显示名" name="Display_Name"/>
+				<combo_box.item label="继承名称" name="Legacy_Name"/>
+				<combo_box.item label="用户名" name="User_Name"/>
 			</combo_box>
-			<check_box label="不顯示自己的注視目標" name="LookAtHideOwn" tool_tip="不顯示自己的注視目標" />
-			<check_box label="從化身到注視目標繪製一條直線" name="ExodusLookAtLines" tool_tip="從化身到注視目標繪製一條直線" />
-			<text name="mylookat">我的注視目標：</text>
-			<check_box label="不向其他人公開我的注視目標" name="privatelookat" tool_tip="不向其他人公開您的注視目標" />
-			<check_box label="不共享注視目標，包括自己" name="privateLocalLookat" tool_tip="防止您化身的頭部看向到您的相機對準的點。無論是否啟用此選項，其他人都不一定能看到頭部的移動" />
-			<check_box label="不共享我的目標選擇指示" name="privatepointat" tool_tip="不向其他人顯示選擇指示" />
-			<check_box label="限制與頭部的距離限制：" name="LimitLookAt" tool_tip="將你的注視目標鎖定在目標的頭部周圍。" />
+			<check_box label="不显示自己的注视目标" name="LookAtHideOwn" tool_tip="不显示自己的注视目标"/>
+			<check_box label="从化身到注视目标绘制一条直线" name="ExodusLookAtLines" tool_tip="从化身到注视目标绘制一条直线"/>
+			<text name="mylookat">我的注视目标：</text>
+			<check_box label="不向其他人公开我的注视目标" name="privatelookat" tool_tip="不向其他人公开您的注视目标"/>
+			<check_box label="不共享注视目标，包括自己" name="privateLocalLookat" tool_tip="防止您化身的头部看向到您的相机对准的点。无论是否启用此选项，其他人都不一定能看到头部的移动"/>
+			<check_box label="不共享我的目标选择指示" name="privatepointat" tool_tip="不向其他人显示选择指示"/>
+			<check_box label="限制与头部的距离限制：" name="LimitLookAt" tool_tip="将你的注视目标锁定在目标的头部周围。"/>
 		</panel>
-		<panel label="自動回復 1" name="tab-autoresponse-1">
-			<text name="autorespond_toggle_location_tip">注意：要啟用自動回覆訊息，請在「通訊」選單中設定您的在線狀態</text>
-			<text name="text_box3">「請勿打擾」模式下的自動回覆：</text>
-			<text name="autorespond_response_label">當我處於「自動回復」模式時對所有居民的自動回覆：</text>
-			<text name="autorespond_nf_response_label">當我處於「自動回復陌生人」模式時的自動回覆：</text>
-			<check_box label="當我離開時自動回覆訊息：" name="send_away_av_response" tool_tip="當您離開時，當有人與你私聊時傳送以下文字。" />
-			<check_box label="對被封鎖的人自動回覆訊息：" name="send_muted_av_response" tool_tip="當您封鎖的人傳送私聊給您時，傳送以下文字。" />
+		<panel label="自动回复 1" name="tab-autoresponse-1">
+			<text name="autorespond_toggle_location_tip">注意：要启用自动回复消息，请在“通信”菜单中设置您的在线状态</text>
+			<text name="text_box3">“请勿打扰”模式下的自动回复：</text>
+			<text name="autorespond_response_label">当我处于“自动回复”模式时对所有居民的自动回复：</text>
+			<text name="autorespond_nf_response_label">当我处于“自动回复陌生人”模式时的自动回复：</text>
+			<check_box label="当我离开时自动回复消息：" name="send_away_av_response" tool_tip="当您离开时，当有人与你私聊时发送以下文本。"/>
+			<check_box label="对被封锁的人自动回复消息：" name="send_muted_av_response" tool_tip="当您封锁的人发送私聊给您时，发送以下文本。"/>
 		</panel>
-		<panel label="自動回復 2" name="tab-autoresponse-2">
-			<text name="autorespond_rto_response_label">當我處於「拒絕所有傳送」模式時對所有居民的自動回覆：</text>
-			<check_box label="不要拒絕好友的傳送邀請或傳送自動回覆訊息" name="FSDontRejectTeleportOffersFromFriends" />
-			<text name="autorespond_rfr_response_label" width="520">當我處於「拒絕所有好友請求」模式時對所有居民的自動回覆：</text>
-			<text name="autoresponse_item_label" width="295">自動回覆訊息附帶的物件：</text>
-			<fs_copytrans_inventory_drop_target name="autoresponse_item" tool_tip="將庫存中的物件拖放到此處。" />
-			<button label="清除" name="clear_autoresponse_item" />
+		<panel label="自动回复 2" name="tab-autoresponse-2">
+			<text name="autorespond_rto_response_label">当我处于“拒绝所有传送”模式时对所有居民的自动回复：</text>
+			<check_box label="不要拒绝好友的传送邀请或发送自动回复消息" name="FSDontRejectTeleportOffersFromFriends"/>
+			<text name="autorespond_rfr_response_label" width="520">当我处于“拒绝所有好友请求”模式时对所有居民的自动回复：</text>
+			<text name="autoresponse_item_label" width="295">自动回复消息附带的物件：</text>
+			<fs_copytrans_inventory_drop_target name="autoresponse_item" tool_tip="将库存中的物件拖放到此处。"/>
+			<button label="清除" name="clear_autoresponse_item"/>
 		</panel>
 	</tab_container>
 </panel>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="preview lsl text" title="指令碼：旋轉指令碼">
+<floater name="preview lsl text" title="脚本：旋转脚本">
 	<floater.string name="Title">
-		指令碼：[NAME]
+		脚本：[NAME]
 	</floater.string>
-	<text name="path_txt" tool_tip="庫存位置: [PATH]">
-		庫存位置: [PATH]
+	<text name="path_txt" tool_tip="库存位置: [PATH]">
+		库存位置: [PATH]
 	</text>
 	<text name="desc txt">
 		描述：

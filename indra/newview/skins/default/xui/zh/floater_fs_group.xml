@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater name="group_info">
 	<floater.string name="title_create_group">
-		建立新群組...
+		创建新群组...
 	</floater.string>
 	<floater.string name="title_loading">
-		群組資訊 - 正在載入...
+		群组信息 - 正在加载...
 	</floater.string>
 	<floater.string name="title">
-		群組資訊 - [NAME]
+		群组信息 - [NAME]
 	</floater.string>
 </floater>

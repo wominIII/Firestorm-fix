@@ -134,6 +134,9 @@ private:
     static void translateScriptDialogGPTCoro(std::string context_key, std::string message,
                                              LLSD buttons, ScriptDialogTranslationSuccess_fn success,
                                              TranslationFailure_fn failure);
+    static void translateScriptDialogGPTIndividually(std::string context_key, std::string message,
+                                                      LLSD buttons, ScriptDialogTranslationSuccess_fn success,
+                                                      TranslationFailure_fn failure);
     static LLTranslationAPIHandler& getPreferredHandler();
     static LLTranslationAPIHandler& getHandler(EService service);
 

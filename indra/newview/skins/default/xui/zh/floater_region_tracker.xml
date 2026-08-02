@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="region_tracker" title="區域追蹤器">
-	<text name="region_label_text" value="向地圖新增區域" />
-	<button name="refresh" tool_tip="更新" />
-	<button name="remove" tool_tip="移除區域" />
-	<button name="open_map" tool_tip="顯示地圖" />
-	<scroll_list name="region_list" tool_tip="雙擊條目以在地圖上顯示區域。">
-		<scroll_list.columns name="region_label" label="標籤" />
-		<scroll_list.columns name="region_name" label="區域" />
-		<scroll_list.columns name="region_agent_count" label="#" />
+<floater name="region_tracker" title="区域追踪器">
+	<text name="region_label_text" value="向地图添加区域"/>
+	<button name="refresh" tool_tip="刷新"/>
+	<button name="remove" tool_tip="移除区域"/>
+	<button name="open_map" tool_tip="显示地图"/>
+	<scroll_list name="region_list" tool_tip="双击项目以在地图上显示区域。">
+		<scroll_list.columns name="region_label" label="标签"/>
+		<scroll_list.columns name="region_name" label="区域"/>
+		<scroll_list.columns name="region_agent_count" label="#"/>
 	</scroll_list>
 </floater>

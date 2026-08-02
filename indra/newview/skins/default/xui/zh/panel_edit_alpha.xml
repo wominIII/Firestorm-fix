@@ -2,11 +2,11 @@
 <panel name="edit_alpha_panel">
 	<scroll_container name="avatar_alpha_color_panel_scroll">
 		<panel name="avatar_alpha_color_panel">
-			<texture_picker label="下半身Alpha" name="Lower Alpha" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="上半身Alpha" name="Upper Alpha" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="頭部Alpha" name="Head Alpha" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="眼睛Alpha" name="Eye Alpha" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="頭髮Alpha" name="Hair Alpha" tool_tip="點擊以挑選圖片" />
+			<texture_picker label="下半身Alpha" name="Lower Alpha" tool_tip="点击以挑选图片"/>
+			<texture_picker label="上半身Alpha" name="Upper Alpha" tool_tip="点击以挑选图片"/>
+			<texture_picker label="头部Alpha" name="Head Alpha" tool_tip="点击以挑选图片"/>
+			<texture_picker label="眼睛Alpha" name="Eye Alpha" tool_tip="点击以挑选图片"/>
+			<texture_picker label="头发Alpha" name="Hair Alpha" tool_tip="点击以挑选图片"/>
 		</panel>
 	</scroll_container>
 </panel>

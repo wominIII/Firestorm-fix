@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="環境" name="panel_env_info">
+<panel label="环境" name="panel_env_info">
 	<string name="str_label_use_default">
-		使用預設設定
+		使用默认设置
 	</string>
 	<string name="str_label_use_region">
-		使用區域設定
+		使用区域设置
 	</string>
 	<string name="str_altitude_desription">
 		天空 [INDEX]([ALTITUDE]m)
 	</string>
 	<string name="str_no_parcel">
-		未選擇地塊。環境設定已停用。
+		未选择地块。 环境设置已停用。
 	</string>
 	<string name="str_cross_region">
-		跨越區域不提供環境設定。
+		跨越区域不提供环境设置。
 	</string>
 	<string name="str_legacy">
-		這區域不提供環境設定。
+		这区域不提供环境设置。
 	</string>
 	<string name="str_disallowed">
-		領地管理人不允許改變此區域的地塊環境。
+		领地管理人不允许改变此区域的地块环境。
 	</string>
 	<string name="str_too_small">
-		地塊必須至少128平方公尺才可支撐環境。
+		地块必须至少128平方米才可支撑环境。
 	</string>
 	<string name="str_empty">
 		（空白）
 	</string>
 	<string name="str_region_env">
-		（區域環境）
+		（区域环境）
 	</string>
 	<layout_stack name="ls_main">
 		<layout_panel name="pnl_environment_region_msg">
 			<text name="region_text_lbl">
-				區域：
+				区域：
 			</text>
 			<text name="region_text">
 				未知
@@ -50,25 +50,25 @@
 					<layout_stack name="ls_environment_config2">
 						<layout_panel name="pnl_environment_current">
 							<text name="select_environment_label">
-								選擇環境
+								选择环境
 							</text>
-							<button label="[USEDEFAULT]" name="btn_usedefault" />
-							<button label="使用庫存" name="btn_select_inventory" />
-							<button label="自訂" name="btn_edit" />
-							<check_box label="地塊所有者可強制設定環境" name="chk_allow_override" />
+							<button label="[USEDEFAULT]" name="btn_usedefault"/>
+							<button label="使用库存" name="btn_select_inventory"/>
+							<button label="自定义" name="btn_edit"/>
+							<check_box label="地块所有者可强制设置环境" name="chk_allow_override"/>
 						</layout_panel>
 						<layout_panel name="pnl_environment_length">
 							<text name="day_settings_label">
-								日間設定
+								日间设置
 							</text>
 							<text name="day_length_label">
-								日長（小時）
+								日长（小时）
 							</text>
 							<text name="day_offset_label">
-								時差（小時）
+								时差（小时）
 							</text>
 							<text name="apparent_time_of_day_label">
-								可見的一天時間：
+								可见的一天时间：
 							</text>
 							<text name="lbl_apparent_time">
 								[HH]:[MM][AP] ([PRC]%)
@@ -84,7 +84,7 @@
 						<line_editor name="edt_invname_alt1">
 							未知
 						</line_editor>
-						<settings_drop_target name="sdt_alt1" tool_tip="將一個設定從庫存拖拽到這個目標箱框，便可把它選定為當前的天空。" />
+						<settings_drop_target name="sdt_alt1" tool_tip="将一个设置从库存拖拽到这个目标箱框，便可把它选定为当前的天空。"/>
 					</panel>
 					<panel name="pnl_alt2">
 						<text name="txt_alt2">
@@ -93,7 +93,7 @@
 						<line_editor name="edt_invname_alt2">
 							未知
 						</line_editor>
-						<settings_drop_target name="sdt_alt2" tool_tip="將一個設定從庫存拖拽到這個目標箱框，便可把它選定為當前的天空。" />
+						<settings_drop_target name="sdt_alt2" tool_tip="将一个设置从库存拖拽到这个目标箱框，便可把它选定为当前的天空。"/>
 					</panel>
 					<panel name="pnl_alt3">
 						<text name="txt_alt3">
@@ -102,7 +102,7 @@
 						<line_editor name="edt_invname_alt3">
 							未知
 						</line_editor>
-						<settings_drop_target name="sdt_alt3" tool_tip="將一個設定從庫存拖拽到這個目標箱框，便可把它選定為當前的天空。" />
+						<settings_drop_target name="sdt_alt3" tool_tip="将一个设置从库存拖拽到这个目标箱框，便可把它选定为当前的天空。"/>
 					</panel>
 					<text name="sky_altitudes_label">
 						天空高度
@@ -114,7 +114,7 @@
 						<line_editor name="edt_invname_ground">
 							未知
 						</line_editor>
-						<settings_drop_target name="sdt_ground" tool_tip="將一個設定從庫存拖拽到這個目標箱框，便可把它選定為地面水平的天空。" />
+						<settings_drop_target name="sdt_ground" tool_tip="将一个设置从库存拖拽到这个目标箱框，便可把它选定为地面水平的天空。"/>
 					</panel>
 					<panel name="pnl_water">
 						<text name="txt_water">
@@ -123,9 +123,9 @@
 						<line_editor name="edt_invname_water">
 							未知
 						</line_editor>
-						<settings_drop_target name="sdt_water" tool_tip="將一個設定從庫存拖拽到這個目標箱框，便可把它選定為當前的水文。" />
+						<settings_drop_target name="sdt_water" tool_tip="将一个设置从库存拖拽到这个目标箱框，便可把它选定为当前的水文。"/>
 					</panel>
-					<button label="重設" name="btn_rst_altitudes" tool_tip="重設為預設高度" />
+					<button label="重置" name="btn_rst_altitudes" tool_tip="重置为默认高度"/>
 				</layout_panel>
 			</layout_stack>
 		</layout_panel>

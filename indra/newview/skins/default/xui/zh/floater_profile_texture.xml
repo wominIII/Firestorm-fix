@@ -4,7 +4,7 @@
 		<layout_panel name="buttons_panel">
 			<layout_stack name="buttons_stack">
 				<layout_panel name="close_panel">
-					<button label="關閉" name="close_btn" />
+					<button label="关闭" name="close_btn"/>
 				</layout_panel>
 			</layout_stack>
 		</layout_panel>

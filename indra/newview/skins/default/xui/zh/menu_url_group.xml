@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <context_menu name="Url Popup">
-	<menu_item_call label="顯示群組資訊" name="show_group" />
-	<menu_item_call label="正在取得群組資料，請重試！" name="waiting_for_group_data" />
-	<menu_item_call label="啟用群組" name="activate_group" />
-	<menu_item_call label="加入群組" name="join_group" />
-	<menu_item_call label="離開群組" name="leave_group" />
-	<menu_item_call label="複製群組到剪貼簿" name="url_copy_label" />
-	<menu_item_call label="複製SLurl到剪貼簿" name="url_copy" />
+	<menu_item_call label="显示群组信息" name="show_group"/>
+	<menu_item_call label="正在获取群组数据，请重试！" name="waiting_for_group_data"/>
+	<menu_item_call label="启用群组" name="activate_group"/>
+	<menu_item_call label="加入群组" name="join_group"/>
+	<menu_item_call label="离开群组" name="leave_group"/>
+	<menu_item_call label="复制群组到剪贴板" name="url_copy_label"/>
+	<menu_item_call label="复制SLurl到剪贴板" name="url_copy"/>
 </context_menu>

@@ -162,6 +162,35 @@ void FSInventoryLocalLabels::set(const LLUUID& id, const std::string& label)
         mLabels[id.asString()] = label;
     }
     save();
+
+    // Local labels are consumed by several inventory-backed views, not only
+    // LLFolderView. Notify all of them so outfit lists update immediately.
+    if (gInventory.getObject(id))
+    {
+        gInventory.addChangedMask(LLInventoryObserver::LABEL, id);
+        gInventory.notifyObservers();
+    }
+}
+
+void FSInventoryLocalLabels::edit(const LLUUID& id)
+{
+    LLSD args;
+    args["NAME"] = get(id);
+    LLSD payload;
+    payload["inventory_id"] = id;
+    LLNotificationsUtil::add("FSEditInventoryLocalLabel", args, payload,
+        [id](const LLSD& notification, const LLSD& response)
+        {
+            if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
+            {
+                return false;
+            }
+
+            std::string label = response["local_label"].asString();
+            LLStringUtil::trim(label);
+            FSInventoryLocalLabels::instance().set(id, label);
+            return false;
+        });
 }
 
 void FSInventoryLocalLabels::save() const
@@ -370,39 +399,7 @@ std::string LLInvFVBridge::getLocalLabel() const
 
 void LLInvFVBridge::editLocalLabel()
 {
-    LLSD args;
-    args["NAME"] = getLocalLabel();
-    LLSD payload;
-    payload["inventory_id"] = mUUID;
-    LLNotificationsUtil::add("FSEditInventoryLocalLabel", args, payload,
-        boost::bind(&LLInvFVBridge::onEditLocalLabel, this, _1, _2));
-}
-
-bool LLInvFVBridge::onEditLocalLabel(const LLSD& notification, const LLSD& response)
-{
-    if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
-    {
-        return false;
-    }
-
-    std::string label = response["local_label"].asString();
-    LLStringUtil::trim(label);
-    FSInventoryLocalLabels::instance().set(mUUID, label);
-
-    clearDisplayName();
-    dirtyFilter();
-    if (mInventoryPanel.get())
-    {
-        if (LLFolderViewItem* item = mInventoryPanel.get()->getItemByID(mUUID))
-        {
-            item->refresh();
-            if (LLFolderViewFolder* parent = item->getParentFolder())
-            {
-                parent->requestArrange();
-            }
-        }
-    }
-    return false;
+    FSInventoryLocalLabels::instance().edit(mUUID);
 }
 
 std::string LLInvFVBridge::getSearchableDescription() const

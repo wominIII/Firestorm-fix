@@ -2,15 +2,15 @@
 <floater name="floater_primfeed" title="分享到Primfeed">
 	<panel name="background">
 		<tab_container name="tabs">
-			<panel label="相片" name="panel_primfeed_photo"/>
-			<panel label="帳戶" name="panel_primfeed_account"/>
+			<panel label="照片" name="panel_primfeed_photo"/>
+			<panel label="账户" name="panel_primfeed_account"/>
 		</tab_container>
 		<panel name="connection_status_panel">
 			<text name="connection_error_text">
-				錯誤
+				错误
 			</text>
 			<text name="connection_loading_text">
-				加載中...
+				加载中...
 			</text>
 		</panel>
 	</panel>

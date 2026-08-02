@@ -1372,7 +1372,24 @@ void LLTranslate::translateScriptDialog(const std::string& context_key, const st
         if (!state->failed)
         {
             state->failed = true;
-            state->failure(status, error);
+            std::string url = gSavedSettings.getString("FSOutgoingGPTBaseURL");
+            const std::string key = gSavedSettings.getString("FSOutgoingGPTAPIKey");
+            const std::string model = gSavedSettings.getString("FSOutgoingGPTModel");
+            LLStringUtil::trim(url);
+            if (!url.empty() && !key.empty() && !model.empty())
+            {
+                LL_WARNS("ScriptDialogTranslate")
+                    << "Normal translation failed (" << status << ": " << error
+                    << "); falling back to context AI" << LL_ENDL;
+                LLCoros::instance().launch("ScriptDialogGPTFallback",
+                    boost::bind(&LLTranslate::translateScriptDialogGPTCoro,
+                                state->context_key, state->message, state->buttons,
+                                state->success, state->failure));
+            }
+            else
+            {
+                state->failure(status, error);
+            }
         }
     };
     const std::string target = gSavedSettings.getString("FSScriptDialogTranslateLanguage");
@@ -1476,7 +1493,75 @@ void LLTranslate::translateScriptDialogGPTCoro(std::string context_key, std::str
     }
     catch (const std::exception& e)
     {
-        failure(status.getType(), std::string("Invalid AI menu translation: ") + e.what());
+        LL_WARNS("ScriptDialogTranslate")
+            << "Structured AI menu translation was invalid (" << e.what()
+            << "); retrying each menu entry separately" << LL_ENDL;
+        translateScriptDialogGPTIndividually(context_key, message, buttons, success, failure);
+    }
+}
+
+void LLTranslate::translateScriptDialogGPTIndividually(std::string context_key, std::string message,
+                                                        LLSD buttons, ScriptDialogTranslationSuccess_fn success,
+                                                        TranslationFailure_fn failure)
+{
+    std::shared_ptr<StandardDialogTranslationState> state = std::make_shared<StandardDialogTranslationState>();
+    state->context_key = context_key;
+    state->message = message;
+    state->buttons = buttons;
+    state->result["message"] = getScriptDialogTranslation(context_key, message);
+    state->result["buttons"] = LLSD::emptyArray();
+    state->success = success;
+    state->failure = failure;
+    state->remaining = message.empty() ? 0 : 1;
+    for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
+    {
+        state->result["buttons"].append(LLSD());
+        ++state->remaining;
+    }
+
+    if (state->remaining == 0)
+    {
+        success(state->result);
+        return;
+    }
+
+    auto finish_one = [state]()
+    {
+        if (--state->remaining == 0 && !state->failed)
+        {
+            state->success(state->result);
+        }
+    };
+    auto fail_once = [state](int status, std::string error)
+    {
+        if (!state->failed)
+        {
+            state->failed = true;
+            state->failure(status, error);
+        }
+    };
+    const std::string target = gSavedSettings.getString("FSScriptDialogTranslateLanguage");
+
+    if (!message.empty())
+    {
+        translateMessageGPT(message, target,
+            [state, finish_one](std::string text, std::string)
+            {
+                cacheScriptDialogTranslation(state->context_key, state->message, text, false);
+                state->result["message"] = getScriptDialogTranslation(state->context_key, state->message);
+                finish_one();
+            }, fail_once);
+    }
+    for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
+    {
+        const std::string source = buttons[i].asString();
+        translateMessageGPT(source, target,
+            [state, finish_one, source, i](std::string text, std::string)
+            {
+                cacheScriptDialogTranslation(state->context_key, source, text, false);
+                state->result["buttons"][i] = getScriptDialogTranslation(state->context_key, source);
+                finish_one();
+            }, fail_once);
     }
 }
 

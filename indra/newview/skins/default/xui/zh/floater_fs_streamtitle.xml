@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="stream_info" title="當前媒體流資訊:">
+<floater name="stream_info" title="当前媒体流信息:">
 	<floater.string name="NoStream">
-		沒有活動的媒體流
+		没有活动的媒体流
 	</floater.string>
-	<button name="btn_history" label="歷史記錄" />
+	<button name="btn_history" label="历史记录"/>
 </floater>

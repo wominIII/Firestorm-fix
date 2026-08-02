@@ -3,29 +3,29 @@
 	<layout_stack name="maint_layout">
 		<layout_panel name="count_panel">
 			<text name="number_of_items">
-				上傳檔案數量：[COUNT]
+				上传项目数量：[COUNT]
 			</text>
 		</layout_panel>
 		<layout_panel name="warning_panel">
 			<text name="textures_2k_warning">
-				預設情況下，一個或多個選定的紋理將縮放到2048px。
+				默认情况下，一个或多个选定的纹理将缩放到2048px。
 			</text>
 		</layout_panel>
 		<layout_panel name="checkbox_panel">
-			<check_box label="最大將紋理縮放至1024px" name="upload_2k" />
+			<check_box label="最大将纹理缩放至1024px" name="upload_2k" />
 		</layout_panel>
 		<layout_panel name="cost_panel">
 			<text name="upload_cost">
-				上傳費用：L$[COST]
+				上传费用：L$[COST]
 			</text>
 		</layout_panel>
 		<layout_panel name="buttoms_panel">
-			<button label="上傳" name="upload_btn" />
-			<button label="取消" name="cancel_btn" />
+			<button label="上传" name="upload_btn"/>
+			<button label="取消" name="cancel_btn"/>
 		</layout_panel>
 		<layout_panel name="link_panel">
 			<text name="new_folder_textbox">
-				上傳時如何縮放紋理：
+				上传时如何缩放纹理：
 https://wiki.secondlife.com/wiki/Limits#All_Viewers
 			</text>
 		</layout_panel>

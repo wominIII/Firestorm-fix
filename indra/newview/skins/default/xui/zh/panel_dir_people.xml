@@ -1,19 +1,19 @@
 <panel label="人物" name="panel_dir_people">
 	<string name="searching_text">
-		搜尋中...
+		搜索中...
 	</string>
 	<string name="not_found_text">
-		未找到結果。
+		未找到结果。
 	</string>
 	<string name="found_text">
-		找到[COUNT]條結果。
+		找到[COUNT]条结果。
 	</string>
 	<text name="find">
-		輸入搜尋關鍵字：
+		输入搜索关键词：
 	</text>
 	<scroll_list name="results">
-		<column label="名稱" name="name"/>
+		<column label="名称" name="name"/>
 	</scroll_list>
-	<button tool_tip="上一頁" name="prev_btn"/>
-	<button tool_tip="下一頁" name="next_btn"/>
+	<button tool_tip="上一页" name="prev_btn"/>
+	<button tool_tip="下一页" name="next_btn"/>
 </panel>

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="modal container" title="設定按鍵">
+<floater name="modal container" title="设置按键">
 	<floater.string name="keyboard">
-		鍵盤
+		键盘
 	</floater.string>
 	<floater.string name="mouse">
-		滑鼠按鍵
+		鼠标按键
 	</floater.string>
 	<floater.string name="basic_description">
-		按下鍵盤或滑鼠按鍵以設定觸發器。
-允許的輸入：[INPUT]。
+		按下键盘或鼠标按键以设置触发器。
+允许的输入：[INPUT]。
 	</floater.string>
 	<floater.string name="reserved_by_menu">
-		組合鍵 [KEYSTR] 已被選單預留。
+		组合键 [KEYSTR] 已被菜单预留。
 	</floater.string>
 	<text name="description">
-		按下鍵盤或滑鼠按鍵以設定觸發器。
-允許的輸入：[INPUT]。
+		按下键盘或鼠标按键以设置触发器。
+允许的输入：[INPUT]。
 	</text>
-	<check_box label="為所有模式設定" name="apply_all" tool_tip="檢視器根據您在虛擬世界中的當前活動使用不同的鍵位設定。啟用此選項將使您的更改適用於所有模式。" />
-	<button label="清除" name="SetEmpty" />
-	<button label="預設" name="Default" />
-	<button label="取消" name="Cancel" />
+	<check_box label="为所有模式设置" name="apply_all" tool_tip="查看器根据您在虚拟世界中的当前活动使用不同的键位设置。启用此选项将使您的更改适用于所有模式。"/>
+	<button label="清除" name="SetEmpty"/>
+	<button label="默认" name="Default"/>
+	<button label="取消" name="Cancel"/>
 </floater>

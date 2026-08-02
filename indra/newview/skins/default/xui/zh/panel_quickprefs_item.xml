@@ -3,17 +3,17 @@
 	<panel name="option_ordering_panel">
 		<layout_stack name="option_inner_stack">
 			<layout_panel name="option_panel_updown">
-				<button name="remove_button" tool_tip="移除設定" />
+				<button name="remove_button" tool_tip="移除设置"/>
 			</layout_panel>
 			<layout_panel name="text_panel">
 				<text name="option_label">
-					標籤：
+					标签：
 				</text>
 			</layout_panel>
 			<layout_panel name="option_panel" width="155">
 				<radio_group name="option_radio_control">
-					<radio_item name="on" label="開" />
-					<radio_item name="off" label="關" />
+					<radio_item name="on" label="开"/>
+					<radio_item name="off" label="关"/>
 				</radio_group>
 			</layout_panel>
 		</layout_stack>

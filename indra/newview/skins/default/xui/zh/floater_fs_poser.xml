@@ -1,77 +1,77 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<floater name="floater_poser" title="化身與動畫模型的姿勢">
-	<string name="header_mHead">身體</string>
-	<string name="header_mFaceForeheadLeft">額頭/眉毛</string>
-	<string name="header_mEyeLeft">眼睛/眼瞼</string>
-	<string name="header_mFaceCheekUpperLeft">臉頰/嘴唇</string>
+<floater name="floater_poser" title="化身与动画模型的姿势">
+	<string name="header_mHead">身体</string>
+	<string name="header_mFaceForeheadLeft">额头/眉毛</string>
+	<string name="header_mEyeLeft">眼睛/眼睑</string>
+	<string name="header_mFaceCheekUpperLeft">脸颊/嘴唇</string>
 	<string name="header_mHandThumb1Left">左手</string>
 	<string name="header_mCollarLeft">左臂</string>
 	<string name="header_mHandThumb1Right">右手</string>
 	<string name="header_mCollarRight">右臂</string>
 	<string name="header_mHipLeft">腿</string>
 	<string name="header_mTail1">尾巴</string>
-	<string name="header_mHindLimbsRoot">後肢</string>
+	<string name="header_mHindLimbsRoot">后肢</string>
 	<string name="header_mWingsRoot">翼</string>
 	<string name="header_mFaceEar1Left">耳朵/鼻子</string>
-	<string name="header_mSkull">身體</string>
-	<string name="header_HEAD">身體</string>
-	<string name="header_L_UPPER_ARM">雙臂</string>
-	<string name="header_L_UPPER_LEG">雙腿</string>
-	<string name="title_mPelvis">化身整體</string>
-	<string name="title_mTorso">軀幹</string>
+	<string name="header_mSkull">身体</string>
+	<string name="header_HEAD">身体</string>
+	<string name="header_L_UPPER_ARM">双臂</string>
+	<string name="header_L_UPPER_LEG">双腿</string>
+	<string name="title_mPelvis">化身整体</string>
+	<string name="title_mTorso">躯干</string>
 	<string name="title_mSpine1">脊柱1</string>
 	<string name="title_mSpine2">脊柱2</string>
 	<string name="title_mSpine3">脊柱3</string>
 	<string name="title_mSpine4">脊柱4</string>
 	<string name="title_mChest">胸部</string>
-	<string name="title_mNeck">頸部</string>
-	<string name="title_mHead">頭顱</string>
-	<string name="title_mSkull">頭骨</string>
+	<string name="title_mNeck">颈部</string>
+	<string name="title_mHead">头颅</string>
+	<string name="title_mSkull">头骨</string>
 	<string name="title_mEyeRight">右眼</string>
 	<string name="title_mEyeLeft">左眼</string>
-	<string name="title_mFaceForeheadLeft">左額頭角</string>
-	<string name="title_mFaceForeheadRight">右額頭角</string>
+	<string name="title_mFaceForeheadLeft">左额头角</string>
+	<string name="title_mFaceForeheadRight">右额头角</string>
 	<string name="title_mFaceEyebrowOuterLeft">左眉毛外</string>
 	<string name="title_mFaceEyebrowCenterLeft">左眉毛中</string>
-	<string name="title_mFaceEyebrowInnerLeft">左眉毛內</string>
+	<string name="title_mFaceEyebrowInnerLeft">左眉毛内</string>
 	<string name="title_mFaceEyebrowOuterRight">右眉毛外</string>
 	<string name="title_mFaceEyebrowCenterRight">右眉毛中</string>
-	<string name="title_mFaceEyebrowInnerRight">右眉毛內</string>
-	<string name="title_mFaceEyeLidUpperLeft">左上眼瞼</string>
+	<string name="title_mFaceEyebrowInnerRight">右眉毛内</string>
+	<string name="title_mFaceEyeLidUpperLeft">左上眼睑</string>
 	<string name="title_mFaceEyecornerInnerLeft">左内眼角</string>
-	<string name="title_mFaceEyeLidLowerLeft">左下眼瞼</string>
-	<string name="title_mFaceEyeLidUpperRight">右上眼瞼</string>
+	<string name="title_mFaceEyeLidLowerLeft">左下眼睑</string>
+	<string name="title_mFaceEyeLidUpperRight">右上眼睑</string>
 	<string name="title_mFaceEyecornerInnerRight">右内眼角</string>
-	<string name="title_mFaceEyeLidLowerRight">右下眼瞼</string>
+	<string name="title_mFaceEyeLidLowerRight">右下眼睑</string>
 	<string name="title_mFaceEar1Left">左耳上</string>
 	<string name="title_mFaceEar2Left">左耳下</string>
 	<string name="title_mFaceEar1Right">右耳上</string>
 	<string name="title_mFaceEar2Right">右耳下</string>
 	<string name="title_mFaceNoseBase">鼻翼</string>
-	<string name="title_mFaceNoseBridge">鼻樑</string>
+	<string name="title_mFaceNoseBridge">鼻梁</string>
 	<string name="title_mFaceNoseLeft">鼻子左</string>
 	<string name="title_mFaceNoseCenter">鼻子中</string>
 	<string name="title_mFaceNoseRight">鼻子右</string>
-	<string name="title_mFaceCheekLowerLeft">左上臉頰</string>
-	<string name="title_mFaceCheekUpperLeft">左下臉頰</string>
-	<string name="title_mFaceCheekLowerRight">右上臉頰</string>
-	<string name="title_mFaceCheekUpperRight">右下臉頰</string>
-	<string name="title_mFaceJaw">下頜</string>
+	<string name="title_mFaceCheekLowerLeft">左上脸颊</string>
+	<string name="title_mFaceCheekUpperLeft">左下脸颊</string>
+	<string name="title_mFaceCheekLowerRight">右上脸颊</string>
+	<string name="title_mFaceCheekUpperRight">右下脸颊</string>
+	<string name="title_mFaceJaw">下颌</string>
 	<string name="title_mFaceTeethLower">下牙床</string>
 	<string name="title_mFaceLipLowerLeft">下唇左</string>
 	<string name="title_mFaceLipLowerRight">下唇右</string>
 	<string name="title_mFaceLipLowerCenter">下唇中</string>
 	<string name="title_mFaceTongueBase">舌根</string>
 	<string name="title_mFaceTongueTip">舌尖</string>
-	<string name="title_mFaceJawShaper">下頜形狀</string>
-	<string name="title_mFaceForeheadCenter">額頭中</string>
+	<string name="title_mFaceJawShaper">下颌形状</string>
+	<string name="title_mFaceForeheadCenter">额头中</string>
 	<string name="title_mFaceTeethUpper">上牙床</string>
 	<string name="title_mFaceLipUpperLeft">上唇左</string>
 	<string name="title_mFaceLipUpperRight">上唇右</string>
 	<string name="title_mFaceLipCornerLeft">左唇角</string>
 	<string name="title_mFaceLipCornerRight">右唇角</string>
 	<string name="title_mFaceLipUpperCenter">上唇中</string>
-	<string name="title_mCollarLeft">頸部左</string>
+	<string name="title_mCollarLeft">颈部左</string>
 	<string name="title_mShoulderLeft">左肩</string>
 	<string name="title_mElbowLeft">左肘</string>
 	<string name="title_mWristLeft">左腕</string>
@@ -81,16 +81,16 @@
 	<string name="title_mHandIndex1Left">左食指根</string>
 	<string name="title_mHandIndex2Left">左食指中</string>
 	<string name="title_mHandIndex3Left">左食指尖</string>
-	<string name="title_mHandRing1Left">左無名指根</string>
-	<string name="title_mHandRing2Left">左無名指中</string>
-	<string name="title_mHandRing3Left">左無名指尖</string>
+	<string name="title_mHandRing1Left">左无名指根</string>
+	<string name="title_mHandRing2Left">左无名指中</string>
+	<string name="title_mHandRing3Left">左无名指尖</string>
 	<string name="title_mHandPinky1Left">左小指根</string>
 	<string name="title_mHandPinky2Left">左小指中</string>
 	<string name="title_mHandPinky3Left">左小指尖</string>
 	<string name="title_mHandThumb1Left">左拇指根</string>
 	<string name="title_mHandThumb2Left">左拇指中</string>
 	<string name="title_mHandThumb3Left">左拇指尖</string>
-	<string name="title_mCollarRight">頸部右</string>
+	<string name="title_mCollarRight">颈部右</string>
 	<string name="title_mShoulderRight">右肩</string>
 	<string name="title_mElbowRight">右肘</string>
 	<string name="title_mWristRight">右腕</string>
@@ -100,9 +100,9 @@
 	<string name="title_mHandIndex1Right">右食指根</string>
 	<string name="title_mHandIndex2Right">右食指中</string>
 	<string name="title_mHandIndex3Right">右食指尖</string>
-	<string name="title_mHandRing1Right">右無名指根</string>
-	<string name="title_mHandRing2Right">右無名指中</string>
-	<string name="title_mHandRing3Right">右無名指尖</string>
+	<string name="title_mHandRing1Right">右无名指根</string>
+	<string name="title_mHandRing2Right">右无名指中</string>
+	<string name="title_mHandRing3Right">右无名指尖</string>
 	<string name="title_mHandPinky1Right">右小指根</string>
 	<string name="title_mHandPinky2Right">右小指中</string>
 	<string name="title_mHandPinky3Right">右小指尖</string>
@@ -122,39 +122,39 @@
 	<string name="title_mWing4FanRight">右翼面</string>
 	<string name="title_mHipRight">右腿</string>
 	<string name="title_mKneeRight">右膝</string>
-	<string name="title_mAnkleRight">右腳踝</string>
-	<string name="title_mFootRight">右腳</string>
-	<string name="title_mToeRight">右腳趾</string>
+	<string name="title_mAnkleRight">右脚踝</string>
+	<string name="title_mFootRight">右脚</string>
+	<string name="title_mToeRight">右脚趾</string>
 	<string name="title_mHipLeft">左腿</string>
 	<string name="title_mKneeLeft">左膝</string>
-	<string name="title_mAnkleLeft">左腳踝</string>
-	<string name="title_mFootLeft">左腳</string>
-	<string name="title_mToeLeft">左腳趾</string>
+	<string name="title_mAnkleLeft">左脚踝</string>
+	<string name="title_mFootLeft">左脚</string>
+	<string name="title_mToeLeft">左脚趾</string>
 	<string name="title_mTail1">尾巴根部</string>
 	<string name="title_mTail2">尾巴2</string>
 	<string name="title_mTail3">尾巴3</string>
 	<string name="title_mTail4">尾巴4</string>
 	<string name="title_mTail5">尾巴5</string>
 	<string name="title_mTail6">尾巴末梢</string>
-	<string name="title_mGroin">腹股溝</string>
-	<string name="title_mHindLimbsRoot">後肢根部</string>
-	<string name="title_mHindLimb1Left">左後肢</string>
+	<string name="title_mGroin">腹股沟</string>
+	<string name="title_mHindLimbsRoot">后肢根部</string>
+	<string name="title_mHindLimb1Left">左后肢</string>
 	<string name="title_mHindLimb2Left">左2</string>
 	<string name="title_mHindLimb3Left">左3</string>
 	<string name="title_mHindLimb4Left">左4</string>
-	<string name="title_mHindLimb1Right">右後肢</string>
+	<string name="title_mHindLimb1Right">右后肢</string>
 	<string name="title_mHindLimb2Right">右2</string>
 	<string name="title_mHindLimb3Right">右3</string>
 	<string name="title_mHindLimb4Right">右4</string>
-	<string name="title_HEAD">頭部</string>
-	<string name="title_NECK">頸部</string>
+	<string name="title_HEAD">头部</string>
+	<string name="title_NECK">颈部</string>
 	<string name="title_CHEST">胸部</string>
 	<string name="title_BUTT">臀部</string>
 	<string name="title_BELLY">腹部</string>
 	<string name="title_LEFT_PEC">左胸肌</string>
 	<string name="title_RIGHT_PEC">右胸肌</string>
-	<string name="title_L_CLAVICLE">左鎖骨</string>
-	<string name="title_R_CLAVICLE">右鎖骨</string>
+	<string name="title_L_CLAVICLE">左锁骨</string>
+	<string name="title_R_CLAVICLE">右锁骨</string>
 	<string name="title_L_UPPER_ARM">左上臂</string>
 	<string name="title_R_UPPER_ARM">右上臂</string>
 	<string name="title_L_LOWER_ARM">左下臂</string>
@@ -169,66 +169,66 @@
 	<string name="title_R_UPPER_LEG">右大腿</string>
 	<string name="title_L_LOWER_LEG">左小腿</string>
 	<string name="title_R_LOWER_LEG">右小腿</string>
-	<string name="title_L_FOOT">左腳</string>
-	<string name="title_R_FOOT">右腳</string>
-	<string name="LoadPoseLabel">載入姿勢</string>
-	<string name="SavePoseLabel">儲存姿勢</string>
-	<string name="LoadDiffLabel">載入差異</string>
-	<string name="SaveDiffLabel">儲存差異</string>
-	<string name="OverWriteLabel">覆蓋？</string>
+	<string name="title_L_FOOT">左脚</string>
+	<string name="title_R_FOOT">右脚</string>
+	<string name="LoadPoseLabel">加载姿势</string>
+	<string name="SavePoseLabel">保存姿势</string>
+	<string name="LoadDiffLabel">加载差异</string>
+	<string name="SaveDiffLabel">保存差异</string>
+	<string name="OverWriteLabel">覆盖？</string>
 	<layout_stack name="poser_stack">
 		<layout_panel name="regular_controls_layout">
 			<panel name="joints_parent_panel">
 				<tab_container name="joints_tabs">
-					<panel title="移動" name="positionRotation_panel">
+					<panel title="移动" name="positionRotation_panel">
 						<panel name="move_tab_panel">
 							<text name="av_position_updown_label">
 								上/下：
 							</text>
-							<slider name="av_position_updown" tool_tip="上下移動選中的化身"/>
+							<slider name="av_position_updown" tool_tip="上下移动选中的化身"/>
 							<text name="av_position_leftright_label">
 								左/右：
 							</text>
-							<slider name="av_position_leftright" tool_tip="左右移動選中的化身"/>
+							<slider name="av_position_leftright" tool_tip="左右移动选中的化身"/>
 							<text name="av_position_inout_label">
-								前/後：
+								前/后：
 							</text>
-							<slider name="av_position_inout" tool_tip="前後移動選中的化身"/>
-							<check_box name="unlock_pelvis_for_bvh_save_checkbox" label="在BVH中解鎖骨盆" tool_tip="將此姿勢儲存為BVH時，骨盆不會被「鎖定」，因此其他動畫可移動整個化身。若希望將此姿勢疊加播放，請啟用此選項。"/>
+							<slider name="av_position_inout" tool_tip="前后移动选中的化身"/>
+							<check_box name="unlock_pelvis_for_bvh_save_checkbox" label="在BVH中解锁骨盆" tool_tip="将此姿势保存为BVH时，骨盆不会被“锁定”，因此其他动画可移动整个化身。若希望将此姿势叠加播放，请启用此选项。"/>
 							<scroll_list name="entireAv_joint_scroll">
-								<scroll_list.columns label="身體部位" name="joint"/>
+								<scroll_list.columns label="身体部位" name="joint"/>
 							</scroll_list>
 						</panel>
 					</panel>
-					<panel title="身體" name="body_joints_panel">
+					<panel title="身体" name="body_joints_panel">
 						<scroll_list name="body_joints_scroll">
-							<scroll_list.columns label="身體部位" name="joint"/>
+							<scroll_list.columns label="身体部位" name="joint"/>
 						</scroll_list>
 					</panel>
 					<panel title="面部" name="face_joints_panel">
 						<scroll_list name="face_joints_scroll">
-							<scroll_list.columns label="身體部位" name="joint"/>
+							<scroll_list.columns label="身体部位" name="joint"/>
 						</scroll_list>
 					</panel>
 					<tab_container title="手" name="hands_tabs">
-						<panel title="調整" name="hands_joints_panel">
+						<panel title="调整" name="hands_joints_panel">
 							<scroll_list name="hand_joints_scroll">
-								<scroll_list.columns label="身體部位" name="joint"/>
+								<scroll_list.columns label="身体部位" name="joint"/>
 							</scroll_list>
 						</panel>
-						<panel title="預設" name="hands_presets_panel">
+						<panel title="预设" name="hands_presets_panel">
 							<scroll_list name="hand_presets_scroll">
-								<scroll_list.columns label="預設名稱" name="load_file_name_column"/>
+								<scroll_list.columns label="预设名称" name="load_file_name_column"/>
 								<scroll_list.columns label="日期" name="load_file_date_column"/>
 								<scroll_list.columns label="日期" name="load_file_date_sort_column"/>
 							</scroll_list>
-							<button label="設定左手" name="button_loadHandPoseLeft" tool_tip="點選將左手設定為選定的預設"/>
-							<button label="設定右手" name="button_loadHandPoseRight" tool_tip="點選將右手設定為選定的預設"/>
+							<button label="设置左手" name="button_loadHandPoseLeft" tool_tip="点击将左手设置为选定的预设"/>
+							<button label="设置右手" name="button_loadHandPoseRight" tool_tip="点击将右手设置为选定的预设"/>
 						</panel>
 					</tab_container>
 					<panel title="其他" name="misc_joints_panel">
 						<scroll_list name="misc_joints_scroll">
-							<scroll_list.columns label="身體部位" name="joint"/>
+							<scroll_list.columns label="身体部位" name="joint"/>
 						</scroll_list>
 					</panel>
 					<panel title="物理" name="collision_volumes_panel">
@@ -237,32 +237,32 @@
 						</scroll_list>
 					</panel>
 					<panel title="模型" name="avatarSelection_panel">
-						<scroll_list tool_tip="選擇要製作姿勢的化身或動畫物件。" name="avatarSelection_scroll">
-							<scroll_list.columns label="選擇..." name="name"/>
+						<scroll_list tool_tip="选择要制作姿势的化身或动画物件。" name="avatarSelection_scroll">
+							<scroll_list.columns label="选择..." name="name"/>
 						</scroll_list>
-						<button name="refresh_avatars" tool_tip="更新化身和動畫物件的列表"/>
-						<button label="開始姿勢" label_selected="停止姿勢" tool_tip="若有許可權，開始/停止選定的化身或動畫物件的姿勢。" name="start_stop_posing_button"/>
-						<button label="設為T姿勢" tool_tip="點選將選定的化身設為T姿勢" name="set_t_pose_button"/>
+						<button name="refresh_avatars" tool_tip="更新化身和动画物件的列表"/>
+						<button label="开始姿势" label_selected="停止姿势" tool_tip="若有权限，开始/停止选定的化身或动画物件的姿势。" name="start_stop_posing_button"/>
+						<button label="设为T姿势" tool_tip="点击将选定的化身设为T姿势" name="set_t_pose_button"/>
 					</panel>
-					<panel title="設定" name="settings_panel">
+					<panel title="设置" name="settings_panel">
 						<text name="trackpad_sensitivity_label">
-							觸控板敏感度：
+							触控板敏感度：
 						</text>
-						<slider name="trackpad_sensitivity_slider" tool_tip="設定觸控板的敏感度"/>
-						<check_box name="stop_posing_on_close_checkbox" label="關閉時停止" tool_tip="關閉時不停止姿勢可有助於保留目前工作。"/>
-						<check_box name="also_save_bvh_checkbox" label="儲存時也儲存BHV" tool_tip="當姿勢被儲存時，將同時創建一個BHV檔案，該檔案可以透過建造 > 上傳 > 動畫上傳，並用於自己或其他化身的姿勢。為了實現此功能，關節的基礎位置必須設為零，因為BHV無法從其他姿勢推導出來。"/>
-						<check_box name="confirm_overwrite_on_save_checkbox" label="確認覆蓋" tool_tip="儲存姿勢時，如果檔案已存在，您需要再次點擊保存按鈕以確認覆蓋。" />
-						<check_box name="natural_direction_checkbox" label="使用自然對齊" tool_tip="骨骼預設具有不自然的關節旋轉，這可能會讓姿勢調整變得更複雜。選取此選項後，關節將以更自然的方式旋轉。" />
-						<check_box name="show_joint_markers_checkbox" label="顯示關節標記" tool_tip="顯示關節標記，以便在姿勢編輯時更輕鬆地選擇關節。" />
-						<check_box name="dof_edit_mode_checkbox" label="在編輯模式中啟用景深" tool_tip="使用操控器時，景深通常會自動關閉。啟用此選項可在編輯姿勢或元素時保持景深效果。"/>
+						<slider name="trackpad_sensitivity_slider" tool_tip="设置触控板的敏感度"/>
+						<check_box name="stop_posing_on_close_checkbox" label="关闭时停止" tool_tip="关闭时不停止姿势可有助于保留当前工作。"/>
+						<check_box name="also_save_bvh_checkbox" label="保存时生成BHV" tool_tip="保存姿势时，还会生成一个BHV文件，该文件可通过“建造 > 上传 > 动画”上传，并用于自己的化身或其他化身的姿势。为此，必须将关节的基点设置为零，因为BHV不能从其他姿势派生。"/>
+						<check_box name="confirm_overwrite_on_save_checkbox" label="确认覆盖" tool_tip="保存姿势时，如果文件已存在，您需要再次点击保存按钮以确认覆盖。"/>
+						<check_box name="natural_direction_checkbox" label="使用自然对齐" tool_tip="骨骼默认具有不自然的关节旋转，这会使姿势调整变得复杂。选中此选项后，关节将以更自然的方式旋转。"/>
+						<check_box name="show_joint_markers_checkbox" label="显示关节标记" tool_tip="显示关节标记，以便在姿势编辑时更轻松地选择关节。"/>
+						<check_box name="dof_edit_mode_checkbox" label="在编辑模式中启用景深" tool_tip="使用操控器时，景深通常会自动关闭。启用此选项可在编辑姿势或元素时保持景深效果。"/>
 					</panel>
 				</tab_container>
-				<button name="toggleVisualManipulators" tool_tip="啟用 / 停用可視操控器。" />
+				<button name="toggleVisualManipulators" tool_tip="启用/禁用可视操控器。" />
 			</panel>
 			<panel name="joint_manipulation_panel">
 				<tab_container name="modifier_tabs">
-					<panel label="旋轉" name="trackball_panel">
-						<fs_virtual_trackpad name="limb_rotation" tool_tip="調整當前選取的身體部位旋轉。按住 Ctrl 以緩慢移動，滾動滑鼠滾輪可調整三軸。使用 Shift 或 Alt 切換旋轉軸的調整方式。" />
+					<panel label="旋转" name="trackball_panel">
+						<fs_virtual_trackpad name="limb_rotation" tool_tip="更改当前选定身体部位的旋转。按住 Ctrl 以缓慢移动。滚动鼠标滚轮以调整三轴。使用 Shift 或 Alt 交换旋转轴的调整方式。" />
 						<text name="limb_pitch_label">
 							上/下：
 						</text>
@@ -270,10 +270,10 @@
 							左/右：
 						</text>
 						<text name="limb_roll_label">
-							旋轉：
+							旋转：
 						</text>
 					</panel>
-					<panel title="移動 / 縮放" name="position_panel">
+					<panel title="移动 / 缩放" name="position_panel">
 						<text name="pos_x_label">
 							位置 X：
 						</text>
@@ -284,49 +284,49 @@
 							位置 Z：
 						</text>
 						<text name="scale_x_label">
-							縮放 X：
+							缩放 X：
 						</text>
 						<text name="scale_y_label">
-							縮放 Y：
+							缩放 Y：
 						</text>
 						<text name="scale_z_label">
-							縮放 Z：
+							缩放 Z：
 						</text>
 					</panel>
 				</tab_container>
 				<panel name="trackball_button_panel">
-					<button name="undo_change" tool_tip="撤銷上一次變更" />
-					<button name="button_redo_change" tool_tip="重做上一次變更"/>
-					<button name="poser_joint_reset" tool_tip="點選將選取的身體部位重設為最初開始調整姿勢時的狀態。"/>
-					<button name="delta_mode_toggle" tool_tip="如果改變多個關節，則改變它們相同的值而不是相同的角度。這也用於解決萬向節鎖定的問題。"/>
-					<button name="toggle_LockWorldRotation" tool_tip="鎖定所選肢體在全域座標系下的旋轉。被全域鎖定的肢體在父肢體移動時仍保持相同的全域旋轉。例如：鎖定眼睛後轉動頭部，眼睛仍會（大致）保持原始朝向。"/>
-					<button label="鏡像" name="button_toggleMirrorRotation" tool_tip="將變更鏡像到對側關節。"/>
-					<button label="複製" name="button_toggleSympatheticRotation" tool_tip="將變更複製到對側關節。"/>
-					<button label="W" name="poser_world_frame_toggle" tool_tip="相對於世界執行旋轉調整"/>
-					<button label="A" name="poser_avatar_frame_toggle" tool_tip="相對於化身執行旋轉調整"/>
-					<button label="B" name="poser_screen_frame_toggle" tool_tip="相對於螢幕執行旋轉調整"/>
-					<button label="複製左側&gt;右" name="button_symmetrize_left_to_right" tool_tip="點選將變更從左側複製到右側。" />
-					<button label="複製右側&gt;左" name="button_symmetrize_right_to_left" tool_tip="點選將變更從右側複製到左側。" />
+					<button name="undo_change" tool_tip="撤销上一次公衡"/>
+					<button name="button_redo_change" tool_tip="重做上一次变更"/>
+					<button name="refresh_avatars" tool_tip="点击将选定的身体部位重置为最初开始调整姿势时的状态"/>
+					<button name="delta_mode_toggle" tool_tip="如果改变多个关节，则改变它们相同的值而不是相同的角度。这也用于解决万向节锁定的问题。"/>
+					<button name="toggle_LockWorldRotation" tool_tip="锁定所选肢体在全局坐标系下的旋转。被全局锁定的肢体在父肢体移动时仍保持相同的全局旋转。例如：锁定眼睛后转动头部，眼睛仍会（大致）保持原始朝向。"/>
+					<button label="镜像" name="button_toggleMirrorRotation" tool_tip="将更改镜像到对侧关节。"/>
+					<button label="复制" name="button_toggleSympatheticRotation" tool_tip="将更改复制到对侧关节。"/>
+					<button label="W" name="poser_world_frame_toggle" tool_tip="相对于世界执行旋转调整。"/>
+					<button label="A" name="poser_avatar_frame_toggle" tool_tip="相对于化身执行旋转调整。"/>
+					<button label="B" name="poser_screen_frame_toggle" tool_tip="相对于屏幕执行旋转调整。"/>
+					<button label="复制左侧&gt;右" name="button_symmetrize_left_to_right" tool_tip="点击将变更从左侧复制到右侧。" />
+					<button label="复制右侧&gt;左" name="button_symmetrize_right_to_left" tool_tip="点击将变更从右侧复制到左侧。" />
 				</panel>
 			</panel>
 			<panel name="poses_loadSave">
-				<scroll_list tool_tip="為選定的化身載入姿勢。" name="poses_scroll">
-					<scroll_list.columns label="名稱" name="load_file_name_column"/>
+				<scroll_list tool_tip="为选定的化身加载姿势。" name="poses_scroll">
+					<scroll_list.columns label="名称" name="load_file_name_column"/>
 					<scroll_list.columns label="日期" name="load_file_date_column"/>
 				</scroll_list>
-				<line_editor label="輸入姿勢儲存名稱..." name="pose_save_name"/>
+				<line_editor label="输入姿势保存名称..." name="pose_save_name"/>
 			</panel>
 		</layout_panel>
 		<layout_panel name="button_controls_layout">
 			<panel name="button_controls_panel">
-				<button name="FlipPose_avatar" tool_tip="左右翻轉整個姿勢"/>
-				<button name="FlipJoint_avatar" tool_tip="鏡像翻轉選定的身體部位"/>
-				<button label="重捕" name="button_RecaptureParts" tool_tip="如果選擇的身體部位已關閉，這將重新捕捉這些身體部位當前的姿勢。"/>
-				<button label="啟用/禁用部位" name="toggle_PosingSelectedBones" tool_tip="啟用或禁用選定身體部位的姿勢。如果禁用，這些部位將正常動畫化。"/>
-				<button label="自定義姿勢" name="toggleLoadSavePanel" tool_tip="載入、儲存並管理自定義建立的姿勢"/>
-				<button tool_tip="管理姿勢目錄" name="open_poseDir_button"/>
-				<menu_button label="載入姿勢" tool_tip="載入目前選定的姿勢。" name="load_poses_button"/>
-				<button label="儲存差異" tool_tip="儲存與現有姿勢的差異。從T姿勢開始以建立新作品。" name="save_poses_button"/>
+				<button name="FlipPose_avatar" tool_tip="左右翻转整个姿势"/>
+				<button name="FlipJoint_avatar" tool_tip="镜像翻转选定的身体部位"/>
+				<button label="重捕" name="button_RecaptureParts" tool_tip="如果选择的身体部位已关闭，这将重新捕捉这些身体部位当前的姿势。"/>
+				<button label="启用/禁用部位" name="toggle_PosingSelectedBones" tool_tip="启用或禁用选定身体部位的姿势。如果禁用，这些部位将正常动画化。"/>
+				<button label="自定义姿势" name="toggleLoadSavePanel" tool_tip="加载、保存并管理自定义创建的姿势"/>
+				<button tool_tip="管理姿势目录" name="open_poseDir_button"/>
+				<menu_button label="加载姿势" tool_tip="加载当前选定的姿势。" name="load_poses_button"/>
+				<button label="保存差异" tool_tip="保存与现有姿势的差异。从T姿势开始以创建新作品。" name="save_poses_button"/>
 			</panel>
 		</layout_panel>
 	</layout_stack>

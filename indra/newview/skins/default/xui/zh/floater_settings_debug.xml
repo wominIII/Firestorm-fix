@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="settings_debug" title="除錯設定">
+<floater name="settings_debug" title="调试设置">
 	<panel name="debug_settings_search_panel">
-		<search_editor label="在此搜尋" name="search_settings_input" tool_tip="在此輸入搜尋詞。將顯示設定名稱和注釋中全文搜尋的結果。" />
+		<search_editor label="在此搜索" name="search_settings_input" tool_tip="在此输入搜索词。将显示设置名称和注释中全文搜索的结果。"/>
 		<scroll_list name="settings_scroll_list">
-			<scroll_list.columns label="設定" name="setting"/>
+			<scroll_list.columns label="设置" name="setting"/>
 		</scroll_list>
-		<check_box label="僅顯示已更改的設定" name="hide_default"/>
+		<check_box label="仅显示已更改的设置" name="hide_default"/>
 	</panel>
 	<panel name="debug_settings_values_panel">
-		<text_editor name="comment_text" tool_tip="除錯設定注釋。通常提供有關所選設定的有用資訊。" />
+		<text_editor name="comment_text" tool_tip="调试设置注释。通常提供有关所选设置的有用信息。"/>
 		<combo_box name="boolean_combo">
-			<combo_box.item label="開" name="TRUE" />
-			<combo_box.item label="關" name="FALSE" />
+			<combo_box.item label="开" name="TRUE"/>
+			<combo_box.item label="关" name="FALSE"/>
 		</combo_box>
-		<color_swatch label="顏色" name="val_color_swatch" />
-		<button name="sanity_warning_btn" tool_tip="這個設定未通過合理性檢查 - 值超出了推薦範圍。" />
-		<button label="複製" name="copy_btn" tool_tip="複製設定名稱到剪貼簿。" />
-		<button label="預設值" name="default_btn" tool_tip="將這個設定的值重設為預設值。" />
+		<color_swatch label="颜色" name="val_color_swatch"/>
+		<button name="sanity_warning_btn" tool_tip="这个设置未通过合理性检查 - 值超出了推荐范围。"/>
+		<button label="复制" name="copy_btn" tool_tip="复制设置名称到剪贴板。"/>
+		<button label="默认值" name="default_btn" tool_tip="将这个设置的值重置为默认值。"/>
 	</panel>
 </floater>

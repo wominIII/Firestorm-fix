@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel label="OpenSim" name="opensim_panel">
 	<tab_container label="OpenSim" name="tabs">
-		<panel label="類比網路管理" name="grid_management_panel">
-			<text name="add_grid_text">管理模擬網路</text>
-			<line_editor name="add_grid" label="連線位址" />
-			<button label="清除" label_selected="清除" name="clear_grid" />
-			<button label="新增" name="apply_new_grid" />
-			<text name="add_grid_text">管理模擬網路</text>
+		<panel label="模拟网络管理" name="grid_management_panel">
+			<text name="add_grid_text">添加新模拟网络</text>
+			<line_editor name="add_grid" label="连接地址"/>
+			<button label="清除" label_selected="清除" name="clear_grid"/>
+			<button label="添加" name="apply_new_grid"/>
+			<text name="add_grid_text">管理模拟网络</text>
 			<scroll_list name="grid_list">
-				<scroll_list.columns label="類比網路名稱" name="grid_label" />
-				<scroll_list.columns label="連線位址" name="login_uri" />
+				<scroll_list.columns label="模拟网络名称" name="grid_label"/>
+				<scroll_list.columns label="连接地址" name="login_uri"/>
 			</scroll_list>
-			<button label="更新" name="refresh_grid" />
-			<button label="移除" name="remove_grid" />
+			<button label="刷新" name="refresh_grid"/>
+			<button label="移除" name="remove_grid"/>
 			<panel name="advanced_grid_panel">
-				<text name="grid_name_text">類比網路名稱：</text>
-				<text name="grid_uri_text">位址：</text>
-				<text name="login_page_text">連線位址：</text>
-				<button label="儲存" name="save_grid" />
-				<text name="helper_uri_text">輔助：</text>
-				<text name="website_text">網站：</text>
-				<text name="support_text">支援：</text>
-				<text name="register_text">註冊：</text>
-				<text name="password_text">忘記密碼：</text>
-				<text name="search_text">搜尋：</text>
-				<text name="message_text">今日訊息：</text>
+				<text name="grid_name_text">模拟网络名称：</text>
+				<text name="grid_uri_text">地址：</text>
+				<text name="login_page_text">连接地址：</text>
+				<button label="保存" name="save_grid"/>
+				<text name="helper_uri_text">辅助：</text>
+				<text name="website_text">网站：</text>
+				<text name="support_text">支持：</text>
+				<text name="register_text">注册：</text>
+				<text name="password_text">忘记密码：</text>
+				<text name="search_text">搜索：</text>
+				<text name="message_text">今日消息：</text>
 			</panel>
 		</panel>
-		<panel label="雜項" name="opensim_misc_panel">
-			<check_box label="除錯搜尋" name="DebugSearch" />
-			<text name="search_url_debug_text">覆蓋當前搜尋頁面：（如果為空，則不活動）</text>
-			<button label="清除" label_selected="清除" name="clear_search_url_debug" />
-			<button label="設定" name="pick_current_search_url" />
+		<panel label="杂项" name="opensim_misc_panel">
+			<check_box label="调试搜索" name="DebugSearch"/>
+			<text name="search_url_debug_text">覆盖当前搜索页面：（如果为空，则不活动）</text>
+			<button label="清除" label_selected="清除" name="clear_search_url_debug"/>
+			<button label="设置" name="pick_current_search_url"/>
 		</panel>
 	</tab_container>
 </panel>

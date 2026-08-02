@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="Local Mesh" title="本地網格">
+<floater name="Local Mesh" title="本地网格">
 	<tab_container name="local_mesh_tabs">
-		<panel name="local_mesh_assets_panel" label="本地網格資源" title="本地網格資源">
+		<panel name="local_mesh_assets_panel" label="本地网格资源" title="本地网格资源">
 			<fs_scroll_list name="l_name_list">
-				<column name="unit_status" label="狀態" />
-				<column name="unit_name" label="名稱" />
-				<column name="unit_lods" label="細節" />
+				<column name="unit_status" label="状态"/>
+				<column name="unit_name" label="名称" />
+				<column name="unit_lods" label="细节" />
 				<column name="unit_objects" label="物件" />
 			</fs_scroll_list>
 		</panel>
-		<panel name="logs_panel" label="日誌" />
-		<panel name="local_mesh_settings_panel" label="設定">
-			<check_box name="local_mesh_scale_use_meters" label="假定比例為米" tool_tip="忽略在Maya等工具中使用的以公分為單位的縮放。" />
-			<check_box name="checkbox_apply_joint_offsets" label="套用關節偏移。" tool_tip="套用網格模型中的任何關節偏移，預設情況下這些偏移會被忽略。" />
-			<check_box name="checkbox_auto_reload" label="自動重新載入已變更的檔案" tool_tip="監視檔案系統中的本地網格檔案，並在發生變更時自動重新載入。"/>
+		<panel name="logs_panel" label="日志"/>
+		<panel name="local_mesh_settings_panel" label="设置">
+			<check_box name="local_mesh_scale_use_meters" label="假定比例为米" tool_tip="忽略在Maya等工具中使用的以厘米为单位的缩放。" />
+			<check_box name="checkbox_apply_joint_offsets" label="应用关节偏移。" tool_tip="应用网格模型中的任何关节偏移，默认情况下这些偏移会被忽略。" />
+			<check_box name="checkbox_auto_reload" label="自动重新加载已更改的文件" tool_tip="监视文件系统中的本地网格文件，并在发生更改时自动重新加载。"/>
 			<text name="auto_reload_period_label">
-				掃描間隔（秒）：
+				扫描间隔（秒）：
 			</text>
-			<spinner name="auto_reload_period" tool_tip="檢查被監視檔案是否發生變更的時間間隔。"/>
+			<spinner name="auto_reload_period" tool_tip="检查被监视文件是否发生更改的时间间隔。"/>
 			<text name="lod_suffix_label">
-				細節層次後綴:
+				细节层次后缀:
 			</text>
-			<combo_box name="lod_suffix_combo" tool_tip="選擇預設值或手動編輯... || SL標準 - 最低=細節層次0，最高無後綴 || 遊戲引擎 - Unity/UE5等（最低=細節層次3，最高=細節層次0）。 || 細節層次名稱 - 英文細節層次名稱（最低='LOWEST'，最高='HIGH'）。">
-				<combo_item name="choose_one">當前的</combo_item>
-				<combo_item name="suff_sl">SL標準</combo_item>
-				<combo_item name="suff_unity">遊戲引擎標準</combo_item>
-				<combo_item name="suff_descriptive">細節層次名稱</combo_item>
+			<combo_box name="lod_suffix_combo" tool_tip="选择默认值或手动编辑... || SL标准 - 最低=细节层次0，最高无后缀 || 游戏引擎 - Unity/UE5等（最低=细节层次3，最高=细节层次0）。 || 细节层次名称 - 英文细节层次名称（最低='LOWEST'，最高='HIGH'）。">
+				<combo_item name="choose_one">当前的</combo_item>
+				<combo_item name="suff_sl">SL标准</combo_item>
+				<combo_item name="suff_unity">游戏引擎标准</combo_item>
+				<combo_item name="suff_descriptive">细节层次名称</combo_item>
 			</combo_box>
 			<text name="suf_lowest_lab">
 				最低:
 			</text>
-			<line_editor name="suf_lowest" tool_tip="辨識檔案名中或檔案內模型的最低細節層次的後綴。" />
+			<line_editor name="suf_lowest" tool_tip="识别文件名中或文件内模型的最低细节层次的后缀。" />
 			<text name="suf_low_lab">
-				較低:
+				较低:
 			</text>
-			<line_editor name="suf_low" tool_tip="辨識檔案名中或檔案內模型的較低細節層次的後綴。" />
+			<line_editor name="suf_low" tool_tip="识别文件名中或文件内模型的较低细节层次的后缀。" />
 			<text name="suf_medium_lab">
 				中等:
 			</text>
-			<line_editor name="suf_medium" tool_tip="辨識檔案名中或檔案內模型的中等細節層次的後綴。" />
+			<line_editor name="suf_medium" tool_tip="识别文件名中或文件内模型的中等细节层次的后缀。" />
 			<text name="suf_high_lab">
-				較高:
+				较高:
 			</text>
-			<line_editor name="suf_high" tool_tip="辨識檔案名中或檔案內模型的較高細節層次的後綴。" />
+			<line_editor name="suf_high" tool_tip="识别文件名中或文件内模型的较高细节层次的后缀。" />
 			<text name="suf_physics_lab">
 				物理:
 			</text>
-			<line_editor name="suf_physics" tool_tip="辨識檔案名中或檔案內模型的物理特性的後綴。" />
+			<line_editor name="suf_physics" tool_tip="识别文件名中或文件内模型的物理特性的后缀。" />
 		</panel>
 	</tab_container>
-	<button name="btn_apply" label="應用" />
-	<button name="btn_add" label="新增" />
+	<button name="btn_apply" label="应用" />
+	<button name="btn_add" label="添加" />
 	<button name="btn_remove" label="移除" />
-	<button name="btn_reload" label="重新載入" />
+	<button name="btn_reload" label="重新加载" />
 	<button name="btn_clear" label="清空" />
-	<button name="btn_rez" label="放置所選" tool_tip="在世界中建立一個範本網格物件並用所選的本地網格填充。這將在世界中建立一個空物件。" />
+	<button name="btn_rez" label="放置所选" tool_tip="在世界中创建一个模板网格物件并用所选的本地网格填充。这将在世界中创建一个空物件。" />
 </floater>

@@ -201,6 +201,7 @@ protected:
     static void editOutfit();
 
     static void renameOutfit(const LLUUID& outfit_cat_id);
+    void onLocalLabel(const LLUUID& outfit_cat_id);
 
     void onThumbnail(const LLUUID &outfit_cat_id);
     void onFavorite(const LLUUID& outfit_cat_id);

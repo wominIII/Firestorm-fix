@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="preview notecard" title="記事卡：">
+<floater name="preview notecard" title="记事卡：">
 	<floater.string name="no_object">
-		未發現物件包含此記事卡。
+		未发现物件包含此记事卡。
 	</floater.string>
 	<floater.string name="not_allowed">
-		你並沒有權限去檢視此記事卡。
+		你并没有权限去查看此记事卡。
 	</floater.string>
 	<floater.string name="Title">
-		記事卡： [NAME]
+		记事卡： [NAME]
 	</floater.string>
 	<floater.string name="translation_failed">
-		記事卡翻譯失敗：
+		记事卡翻译失败：
 	</floater.string>
 	<text name="desc txt">
 		描述：
 	</text>
 	<text_editor name="Notecard Editor">
-		載入中...
+		加载中...
 	</text_editor>
-	<button label="機翻" name="Machine Translate" tool_tip="使用目前設定的機器翻譯服務。再次點擊可顯示原文。" />
-	<button label="AI 翻譯" name="AI Translate" tool_tip="使用目前設定的 GPT 相容服務。再次點擊可顯示原文。" />
-	<button tool_tip="尋找和替換" name="Search" />
-	<button label="編輯…" label_selected="編輯" name="Edit" />
-	<text name="byte_counter" initial_value="位元組: [BYTES] / [MAX]" />
-	<button label="儲存" label_selected="儲存" name="Save" />
-	<button label="刪除" label_selected="刪除" name="Delete" />
+	<button label="机器翻译" name="Machine Translate" tool_tip="使用当前设置的普通翻译服务；再次点击可显示原文。"/>
+	<button label="AI 翻译" name="AI Translate" tool_tip="使用当前设置的 GPT 兼容服务；再次点击可显示原文。"/>
+	<button tool_tip="查找和替换" name="Search"/>
+	<button label="编辑…" label_selected="编辑" name="Edit"/>
+	<button label="保存" label_selected="保存" name="Save"/>
+	<button label="删除" label_selected="删除" name="Delete"/>
 </floater>

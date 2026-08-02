@@ -1,126 +1,126 @@
-<?xml version="1.0" encoding="utf-8"?>
-<panel label="備份" name="backup">
-	<text name="backup_path_label">檔案夾：</text>
-	<button label="設定" name="set_backup_settings_path" />
+<?xml version="1.0" encoding="UTF-8"?>
+<panel label="备份" name="backup">
+	<text name="backup_path_label">文件夹：</text>
+	<button label="设置" name="set_backup_settings_path"/>
 	<layout_stack name="ls_account_specific_label">
 		<layout_panel name="lp_account_specific_label">
-			<text name="account_specific_label">您當前處於離線狀態。請注意，只有當您在線時，才能備份和恢復與您的帳戶相關的設定。 然而，適用於所有帳戶的設定可以在離線狀態下備份。</text>
+			<text name="account_specific_label">您当前处于离线状态。请注意，只有当您在线时，才能备份和恢复与您的帐户相关的设置。 然而，适用于所有帐户的设置可以在离线状态下备份。</text>
 		</layout_panel>
 		<layout_panel name="lp_buttons">
-			<text name="settings_restored_label">要恢復的設定組（備份始終包括全部）：</text>
+			<text name="settings_restored_label">要恢复的设置组（备份始终包括全部）：</text>
 			<layout_stack name="ls_list_view_stack">
 				<layout_panel name="lp_restore_global_files">
 					<scroll_list name="restore_global_files_list">
-						<column label="通用設定：" name="restore_global_files_label" />
-						<column label="值" name="value" />
+						<column label="通用设置：" name="restore_global_files_label"/>
+						<column label="值" name="value"/>
 						<row name="restore_global_row_login">
-							<column name="restore_global_files_label">登入資訊</column>
+							<column name="restore_global_files_label">登录信息</column>
 						</row>
 						<row name="restore_global_row_colors">
-							<column name="restore_global_files_label">顏色</column>
+							<column name="restore_global_files_label">颜色</column>
 						</row>
 						<row name="restore_global_row_dialogs">
-							<column name="restore_global_files_label">忽略彈窗</column>
+							<column name="restore_global_files_label">忽略弹窗</column>
 						</row>
 						<row name="restore_global_row_grids">
-							<column name="restore_global_files_label">使用者定義的網格</column>
+							<column name="restore_global_files_label">用户定义的网格</column>
 						</row>
 						<row name="restore_global_row_autoreplace">
-							<column name="restore_global_files_label">自動替換</column>
+							<column name="restore_global_files_label">自动替换</column>
 						</row>
 						<row name="restore_global_row_quickprefs">
-							<column name="restore_global_files_label">快速偏好設定</column>
+							<column name="restore_global_files_label">快速首选项</column>
 						</row>
 						<row name="restore_global_row_favorites">
-							<column name="restore_global_files_label">收藏夾</column>
+							<column name="restore_global_files_label">收藏夹</column>
 						</row>
 						<row name="restore_global_row_controls">
-							<column name="restore_global_files_label">按鍵分配</column>
+							<column name="restore_global_files_label">按键分配</column>
 						</row>
 						<row name="restore_global_row_omnifilter">
-							<column name="restore_global_files_label">全方位过滤器</column>
+							<column name="restore_global_files_label">全方位過濾器</column>
 						</row>
 					</scroll_list>
 				</layout_panel>
 				<layout_panel name="lp_restore_per_account_files">
 					<scroll_list name="restore_per_account_files_list">
-						<column label="與帳戶相關：" name="restore_per_account_files_label" />
-						<column label="值" name="value" />
+						<column label="与帐户相关：" name="restore_per_account_files_label"/>
+						<column label="值" name="value"/>
 						<row name="restore_per_account_row_blacklist">
-							<column name="restore_per_account_files_label">封鎖清單</column>
+							<column name="restore_per_account_files_label">封锁清单</column>
 						</row>
 						<row name="restore_per_account_row_contactsets">
-							<column name="restore_per_account_files_label">聯絡人分組</column>
+							<column name="restore_per_account_files_label">联系人分组</column>
 						</row>
 						<row name="restore_per_account_row_invfilters">
-							<column name="restore_per_account_files_label">庫存過濾器</column>
+							<column name="restore_per_account_files_label">库存过滤器</column>
 						</row>
 						<row name="restore_per_account_row_favsort">
-							<column name="restore_per_account_files_label">收藏夾排序</column>
+							<column name="restore_per_account_files_label">收藏夹排序</column>
 						</row>
 						<row name="restore_per_account_row_medialists">
-							<column name="restore_per_account_files_label">媒體封鎖/白名單</column>
+							<column name="restore_per_account_files_label">媒体封锁/白名单</column>
 						</row>
 						<row name="restore_per_account_row_toolbars">
-							<column name="restore_per_account_files_label">工具列</column>
+							<column name="restore_per_account_files_label">工具栏</column>
 						</row>
 						<row name="restore_per_account_row_volumes">
-							<column name="restore_per_account_files_label">語音聊天音量</column>
+							<column name="restore_per_account_files_label">语音聊天音量</column>
 						</row>
 						<row name="restore_per_account_row_tphistory">
-							<column name="restore_per_account_files_label">瞬間傳送歷史</column>
+							<column name="restore_per_account_files_label">瞬间传送历史</column>
 						</row>
 						<row name="restore_per_account_row_regiontracker">
-							<column name="restore_per_account_files_label">區域追蹤器</column>
+							<column name="restore_per_account_files_label">区域追踪器</column>
 						</row>
 						<row name="restore_per_account_row_groupmutes">
-							<column name="restore_per_account_files_label">禁用群組聊天</column>
-						</row>
-						<row name="restore_per_account_row_avatar_render_settings">
-							<column name="restore_per_account_files_label">化身彩現設定</column>
+							<column name="restore_per_account_files_label">禁用群组聊天</column>
 						</row>
 						<row name="restore_per_account_row_regiongrouptitles">
-							<column name="restore_per_account_files_label">區域群組頭銜</column>
+							<column name="restore_per_account_files_label">区域指定群组头衔</column>
+						</row>
+						<row name="restore_per_account_row_avatar_render_settings">
+							<column name="restore_per_account_files_label">化身渲染设置</column>
 						</row>
 					</scroll_list>
 				</layout_panel>
 				<layout_panel name="lp_restore_folders">
 					<scroll_list name="restore_global_folders_list">
-						<column label="其他：" name="restore_global_folders_label" />
-						<column label="值" name="value" />
+						<column label="其他：" name="restore_global_folders_label"/>
+						<column label="值" name="value"/>
 						<row name="restore_folders_row_beams">
-							<column name="restore_global_folders_label">選擇光束</column>
+							<column name="restore_global_folders_label">选择光束</column>
 						</row>
 						<row name="restore_folders_row_beamcolors">
-							<column name="restore_global_folders_label">選擇光束顏色</column>
+							<column name="restore_global_folders_label">选择光束颜色</column>
 						</row>
 						<row name="restore_folders_row_spellcheck">
-							<column name="restore_global_folders_label">自訂拼寫檢查</column>
+							<column name="restore_global_folders_label">自定义拼写检查</column>
 						</row>
 						<row name="restore_folders_row_windlight">
-							<column name="restore_global_folders_label">大氣彩現（重要）</column>
+							<column name="restore_global_folders_label">大气渲染（重要）</column>
 						</row>
 						<row name="restore_folders_row_daycycles">
-							<column name="restore_global_folders_label">大氣彩現 晝夜循環</column>
+							<column name="restore_global_folders_label">大气渲染 日循环</column>
 						</row>
 						<row name="restore_folders_row_skies">
-							<column name="restore_global_folders_label">大氣彩現 天空</column>
+							<column name="restore_global_folders_label">大气渲染 天空</column>
 						</row>
 						<row name="restore_folders_row_waters">
-							<column name="restore_global_folders_label">大氣彩現 水文</column>
+							<column name="restore_global_folders_label">大气渲染 水文</column>
 						</row>
 						<row name="restore_folders_row_presets">
-							<column name="restore_global_folders_label">預設</column>
+							<column name="restore_global_folders_label">预设</column>
 						</row>
 					</scroll_list>
 				</layout_panel>
 			</layout_stack>
-			<button label="全選" name="select_all_button" />
-			<button label="取消選擇全部" name="deselect_all_button" />
-			<check_box label="恢復通用設定" name="restore_global_settings_checkbox" />
-			<check_box label="恢復與帳戶相關的設定" name="restore_per_account_settings_checkbox" />
-			<button label="備份" name="backup_settings" />
-			<button label="恢復" name="restore_settings" />
+			<button label="全选" name="select_all_button"/>
+			<button label="取消选择全部" name="deselect_all_button"/>
+			<check_box label="恢复通用设置" name="restore_global_settings_checkbox"/>
+			<check_box label="恢复与帐户相关的设置" name="restore_per_account_settings_checkbox"/>
+			<button label="备份" name="backup_settings"/>
+			<button label="恢复" name="restore_settings"/>
 		</layout_panel>
 	</layout_stack>
 </panel>

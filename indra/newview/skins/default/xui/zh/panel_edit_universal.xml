@@ -2,18 +2,18 @@
 <panel name="edit_universal_panel">
 	<scroll_container name="avatar_universal_scroll">
 		<panel name="avatar_universal_color_panel">
-			<texture_picker label="頭部刺青" name="Head Universal Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="上半身刺青" name="Upper Universal Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="下半身刺青" name="Lower Universal Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="裙子刺青" name="Skirt Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="頭髮刺青" name="Hair Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="眼睛刺青" name="Eyes Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="左臂刺青" name="Left Arm Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="左腿刺青" name="Left Leg Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="Aux1刺青" name="Aux1 Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="Aux2刺青" name="Aux2 Tattoo" tool_tip="點擊以挑選圖片" />
-			<texture_picker label="Aux3刺青" name="Aux3 Tattoo" tool_tip="點擊以挑選圖片" />
-			<color_swatch label="顏色/色調" name="Color/Tint" tool_tip="點擊以開啟顏色挑選器" />
+			<texture_picker label="头部纹身" name="Head Universal Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="上半身纹身" name="Upper Universal Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="下半身纹身" name="Lower Universal Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="裙子纹身" name="Skirt Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="头发纹身" name="Hair Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="眼睛纹身" name="Eyes Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="左臂纹身" name="Left Arm Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="左腿纹身" name="Left Leg Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="Aux1纹身" name="Aux1 Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="Aux2纹身" name="Aux2 Tattoo" tool_tip="点击以挑选图片"/>
+			<texture_picker label="Aux3纹身" name="Aux3 Tattoo" tool_tip="点击以挑选图片"/>
+			<color_swatch label="颜色/色调" name="Color/Tint" tool_tip="点击以开启颜色挑选器"/>
 		</panel>
 	</scroll_container>
 </panel>

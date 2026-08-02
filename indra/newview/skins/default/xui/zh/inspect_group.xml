@@ -5,28 +5,28 @@
 -->
 <floater name="inspect_group">
 	<string name="PrivateGroup">
-		私人群組
+		私人群组
 	</string>
 	<string name="FreeToJoin">
-		免費加入
+		免费加入
 	</string>
 	<string name="CostToJoin">
-		花費 [AMOUNT] L$ 加入
+		花费 [AMOUNT] L$ 加入
 	</string>
 	<string name="YouAreMember">
-		你是成員
+		你是成员
 	</string>
 	<text name="group_subtitle">
-		123 位成員
+		123 位成员
 	</text>
 	<text name="group_details">
-		這一群人責在建立有麋鹿的房間。
-麋鹿萬歲！貓鼬萬歲！
+		这一群人责在创建有麋鹿的房间。
+麋鹿万岁！猫鼬万岁！
 	</text>
 	<text name="group_cost">
-		加入費用 123 L$
+		加入费用 123 L$
 	</text>
-	<button label="加入" name="join_btn" />
-	<button label="退出" name="leave_btn" />
-	<button label="檢視檔案" name="view_profile_btn" />
+	<button label="加入" name="join_btn"/>
+	<button label="退出" name="leave_btn"/>
+	<button label="查看档案" name="view_profile_btn"/>
 </floater>

@@ -4,16 +4,16 @@
 		收件人：
 	</text>
 	<text name="name_label">
-		發件人：
+		发件人：
 	</text>
 	<text name="subject_label">
 		主旨：
 	</text>
-	<line_editor label="在此輸入你的主旨。" name="subject_form" />
+	<line_editor label="在此输入你的主旨。" name="subject_form"/>
 	<text name="msg_label">
-		訊息：
+		消息：
 	</text>
 	<text_editor name="msg_form">
-		在此輸入你的訊息。
+		在此输入你的消息。
 	</text_editor>
 </panel>

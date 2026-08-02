@@ -1,75 +1,75 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="avatarpicker" title="選擇居民">
+<floater name="avatarpicker" title="选择居民">
 	<floater.string name="not_found">
-		沒有查到「[TEXT]」
+		没有查到“[TEXT]”
 	</floater.string>
 	<floater.string name="not_found_text">
-		未發現居民。
+		未发现居民。
 	</floater.string>
 	<floater.string name="no_one_near">
-		附近無人
+		附近无人
 	</floater.string>
 	<floater.string name="no_results">
-		沒有結果
+		没有结果
 	</floater.string>
 	<floater.string name="searching">
-		搜尋中...
+		搜索中...
 	</floater.string>
-	<string name="Select">
-		選擇
+	<string label="确定" label_selected="确定" name="Select">
+		选择
 	</string>
 	<string name="Close">
-		關閉
+		关闭
 	</string>
 	<tab_container name="ResidentChooserTabs">
-		<panel label="搜尋" name="SearchPanel">
+		<panel label="搜索" name="SearchPanel">
 			<text name="InstructSearchResidentName">
-				鍵入人名的一部分：
+				键入人名的一部分：
 			</text>
-			<button label="尋找" label_selected="查詢" name="Find" />
+			<button label="查找" label_selected="查找" name="Find"/>
 			<fs_scroll_list name="SearchResults">
-				<columns label="名稱" name="name" />
-				<columns label="使用者名稱" name="username" />
+				<columns label="名称" name="name"/>
+				<columns label="用户名" name="username"/>
 			</fs_scroll_list>
 		</panel>
 		<panel label="朋友" name="FriendsPanel">
 			<text name="InstructSelectFriend">
-				選擇一個人：
+				选择一个人：
 			</text>
 			<fs_scroll_list name="Friends">
-				<columns label="名稱" name="name" />
-				<columns label="使用者名稱" name="username" />
+				<columns label="名称" name="name"/>
+				<columns label="用户名" name="username"/>
 			</fs_scroll_list>
 		</panel>
 		<panel label="附近的人" name="NearMePanel">
 			<text name="InstructSelectResident">
-				選擇一個附近的人：
+				选择一个附近的人：
 			</text>
-			<slider label="範圍" name="near_me_range" />
+			<slider label="范围" name="near_me_range"/>
 			<text name="meters">
 				米
 			</text>
 			<fs_scroll_list name="NearMe">
-				<columns label="名稱" name="name" />
-				<columns label="使用者名稱" name="username" />
+				<columns label="名称" name="name"/>
+				<columns label="用户名" name="username"/>
 			</fs_scroll_list>
 		</panel>
-		<panel label="根據 UUID 搜尋" name="SearchPanelUUID">
+		<panel label="根据 UUID 搜索" name="SearchPanelUUID">
 			<text name="SearchByUUIDLabel">
-				輸入某人的 UUID：
+				输入某人的 UUID：
 			</text>
-			<button label="尋找" label_selected="查詢" name="FindUUID" />
+			<button label="查找" label_selected="查找" name="FindUUID"/>
 			<fs_scroll_list name="SearchResultsUUID">
-				<columns label="名稱" name="nameUUID" />
-				<columns label="使用者名稱" name="usernameUUID" />
+				<columns label="名称" name="nameUUID"/>
+				<columns label="用户名" name="usernameUUID"/>
 			</fs_scroll_list>
 		</panel>
-		<panel label="聯絡人分組" name="ContactSetsPanel">
+		<panel label="联系人分组" name="ContactSetsPanel">
 			<text name="SelectContactSetLabel">
-				選擇一個聯絡人分組：
+				选择一个联系人分组：
 			</text>
 		</panel>
 	</tab_container>
-	<button label="確定" label_selected="確定" name="ok_btn" />
-	<button label="取消" label_selected="取消" name="cancel_btn" />
+	<button label="确定" label_selected="确定" name="ok_btn"/>
+	<button label="取消" label_selected="取消" name="cancel_btn"/>
 </floater>

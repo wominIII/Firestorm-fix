@@ -1,51 +1,49 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="floater_about" title="關於 [APP_NAME]">
+<floater name="floater_about" title="关于 [APP_NAME]">
 	<tab_container name="about_tab">
-		<panel label="資訊" name="support_panel">
-			<text name="support_intro">
-如需瞭解有關 Firestorm 的最新資訊，請存取
+		<panel label="信息" name="support_panel">
+	<text name="support_intro">
+如需了解有关 Firestorm 的最新信息，请访问
 https://www.firestormviewer.org
-			</text>
-			<button label="複製到剪貼簿" name="copy_btn" />
+	</text>
+			<button label="复制到剪贴板" name="copy_btn"/>
+			<button label="查找是否有更新版本" name="update_btn"/>
 		</panel>
-		<panel label="鳴謝" name="credits_panel">
+		<panel label="鸣谢" name="credits_panel">
 			<text name="linden_intro">
-如果沒有林登實驗室將第二人生檢視器原始碼開放的決定，Firestorm 就不可能出現。
+如果没有林登实验室将第二人生查看器源代码开放的决定，Firestorm 就不可能出现。
 
-"第二人生"由林登實驗室提供、
-開放原始碼的貢獻者：
+"第二人生"由林登实验室提供、
+开放源代码的贡献者：
 			</text>
 			<text_editor name="contrib_names">
-				運行時會替換虛擬名稱
+				运行时会替换虚拟名称
 			</text_editor>
 		</panel>
-		<!-- Firestorm Credits -->
-		<panel label="Firestorm" name="fs_credits_panel">
+<!-- Firestorm Credits -->
+		<panel label="Firestorm" name="fs_credits_panel" height="930">
 			<scroll_container name="fs_credits_scroll_container">
 				<panel name="fs_credits_scroll_container_content_panel">
-					<text name="firestorm_intro">
-Firestorm是一個改善SecondLife(tm)檢視器體驗的社群檔案。 我們將社群開發人員的貢獻與林登實驗室的代碼以及我們自己的擴充結合起來， 以提供高品質、功能豐富的瀏覽器體驗。我們擁有一支龐大的志願者支援團隊。 Firestorm由非營利組織The Phoenix Firestorm Project, Inc提供。
+					<text name="firestorm_intro" height="120">
+Firestorm是一个改善SecondLife(tm)查看器体验的社区项目。 我们将社区开发人员的贡献与林登实验室的代码以及我们自己的扩展结合起来， 以提供高质量、功能丰富的浏览器体验。我们拥有一支庞大的志愿者支持团队。 Firestorm由非营利组织The Phoenix Firestorm Project, Inc提供。
 
-
-
-Firestorm開發團隊：
+Firestorm开发团队：
 					</text>
-					<text name="fs_contrib_intro">
-附加程式碼來自:
+					<text name="fs_contrib_intro" >
+附加程序代码来自:
 					</text>
-					<text name="fs_support_intro">
-特別感謝我們的Firestorm支援團隊、wiki作者、教學和翻譯人員：
+					<text name="fs_support_intro" >
+特别感谢我们的Firestorm支持团队、wiki作者、教学和翻译人员：
 					</text>
-					<text name="fs_art_intro">
-火風暴包含為火風暴修改的Starlight。它是由社群中的居民開發的設計的， 旨在提供一個更友好、更易於使用的界面。更多詳情，請參閱  &lt;nolink&gt;https://wiki.secondlife.com/wiki/Viewer_Skins/Starlight&lt;/nolink&gt;.
+					<text name="fs_art_intro" >
+火风暴包含为火风暴修改的Starlight。它是由社区中的居民开发的设计的， 旨在提供一个更友好、更易于使用的界面。更多详情，请参阅  &lt;nolink&gt;https://wiki.secondlife.com/wiki/Viewer_Skins/Starlight&lt;/nolink&gt;.
 
-
-UI 藝術家和設計師：
+UI 艺术家和设计师：
 					</text>
 				</panel>
 			</scroll_container>
 		</panel>
-		<panel label="許可" name="licenses_panel">
+		<panel label="许可" name="licenses_panel">
 			<text_editor name="licenses_editor">
 				3Dconnexion SDK Copyright (C) 1992-2009 3Dconnexion
 APR Copyright (C) 2011 The Apache Software Foundation
@@ -69,13 +67,13 @@ SSLeay Copyright (C) 1995-1998 Eric Young (eay@cryptsoft.com)
 xxHash Copyright (C) 2012-2020 Yann Collet.
 zlib Copyright (C) 1995-2012 Jean-loup Gailly and Mark Adler.
 
-第二人生檢視器採用 Havok (TM) 物理引擎。 (c)Copyright 1999-2010 Havok.com Inc.（及其放照人）。 保留一切權利。 詳情見 www.havok.com。
+第二人生查看器采用 Havok (TM) 物理引擎。 (c)Copyright 1999-2010 Havok.com Inc.（及其放照人）。 保留一切权利。 详情见 www.havok.com。
 
-本套裝軟體含 NVIDIA 公司提供的原始碼。
+本软件包含 NVIDIA 公司提供的源代码。
 
-保留一切權利。  詳情見 licenses.txt。
+保留一切权利。  详情见 licenses.txt。
 
-語音聊天音訊技術：Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
+语音聊天音频技术：Polycom(R) Siren14(TM) (ITU-T Rec. G.722.1 Annex C)
 			</text_editor>
 		</panel>
 	</tab_container>

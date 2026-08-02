@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="presets_pulldown">
 	<text name="Graphic Presets">
-		圖形預設
+		图形预设
 	</text>
-	<button label="圖形設定" name="open_prefs_btn" tool_tip="打開圖形設定" />
-	<button label="圖形設定" name="open_autofps_btn" tool_tip="打開效能視窗" />
+	<button label="图形设置" name="open_prefs_btn" tool_tip="打开图形设置"/>
+	<button label="图形设置" name="open_autofps_btn" tool_tip="打开性能窗口"/>
 </panel>

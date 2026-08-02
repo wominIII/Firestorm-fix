@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="world_map">
 	<panel.string name="Loading">
-		載入中...
+		加载中...
 	</panel.string>
 	<panel.string name="InvalidLocation">
-		無效的位置
+		无效的位置
 	</panel.string>
 	<panel.string name="world_map_north">
 		北
 	</panel.string>
 	<panel.string name="world_map_east">
-		東
+		东
 	</panel.string>
 	<panel.string name="world_map_west">
 		西
@@ -19,10 +19,10 @@
 		南
 	</panel.string>
 	<panel.string name="world_map_southeast">
-		東南
+		东南
 	</panel.string>
 	<panel.string name="world_map_northeast">
-		東北
+		东北
 	</panel.string>
 	<panel.string name="world_map_southwest">
 		西南
@@ -39,8 +39,8 @@
 	<text label="北" name="floater_map_north">
 		北
 	</text>
-	<text label="東" name="floater_map_east">
-		東
+	<text label="东" name="floater_map_east">
+		东
 	</text>
 	<text label="西" name="floater_map_west">
 		西
@@ -48,11 +48,11 @@
 	<text label="南" name="floater_map_south">
 		南
 	</text>
-	<text label="東南" name="floater_map_southeast">
-		東南
+	<text label="东南" name="floater_map_southeast">
+		东南
 	</text>
-	<text label="東北" name="floater_map_northeast">
-		東北
+	<text label="东北" name="floater_map_northeast">
+		东北
 	</text>
 	<text label="西南" name="floater_map_southwest">
 		西南

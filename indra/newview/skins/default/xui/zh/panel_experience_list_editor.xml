@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="experince_list_editor">
 	<panel.string name="loading">
-		載入中...
+		加载中...
 	</panel.string>
 	<panel.string name="panel_allowed">
-		允許的體驗：
+		允许的体验：
 	</panel.string>
 	<panel.string name="panel_blocked">
-		封鎖的體驗：
+		封锁的体验：
 	</panel.string>
 	<panel.string name="panel_trusted">
-		必要體驗：
+		必要体验：
 	</panel.string>
 	<panel.string name="no_results">
 		（空白）
 	</panel.string>
 	<text name="text_name">
-		體驗清單
+		体验清单
 	</text>
 	<name_list name="experience_list">
-		<name_list.columns label="名稱" name="experience_name" />
+		<name_list.columns label="名称" name="experience_name"/>
 	</name_list>
-	<button label="新增..." name="btn_add" />
-	<button label="移除" name="btn_remove" />
-	<button label="檔案..." name="btn_profile" />
+	<button label="添加..." name="btn_add"/>
+	<button label="移除" name="btn_remove"/>
+	<button label="档案..." name="btn_profile"/>
 </panel>

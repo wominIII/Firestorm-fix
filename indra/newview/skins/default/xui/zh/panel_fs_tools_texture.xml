@@ -1,53 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="紋理" name="Texture">
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<panel label="纹理" name="Texture">
 	<panel.string name="paste_error_face_selection_mismatch">
-		當複製多個面時，目標檔案必須選擇相同數量的麵。
+		当复制多个面时，目标文件必须选择相同数量的面。
 	</panel.string>
 	<panel.string name="paste_error_object_face_count_mismatch">
-		當複製所有面時，目標檔案必須具有相同數量的麵。
+		当复制所有面时，目标文件必须具有相同数量的面。
 	</panel.string>
 	<panel.string name="paste_error_inventory_not_found">
-		找不到一個或多個紋理。
+		找不到一个或多个纹理。
 	</panel.string>
 	<panel.string name="paste_options">
-		將紋理參數複製到剪貼簿
+		将纹理参数复制到剪贴板
 	</panel.string>
 	<tab_container name="tabs_material_type">
 		<panel name="panel_material_type_pbr">
 			<panel name="panel_material_maps">
-				<texture_picker name="pbr_control" label="材質" tool_tip="點擊選擇PBR材質" />
-				<texture_picker name="base_color_picker" label="基礎" tool_tip="點擊選擇基礎顏色貼圖（Albedo）" />
-				<color_swatch name="base_color_tint_picker" label="顏色" tool_tip="點擊選擇基礎顏色的色調" />
-				<button name="btn_select_same_gltf" tool_tip="選擇所有具有相同GLTF材質的表面" />
-				<texture_picker name="normal_map_picker" label="法線" tool_tip="點擊選擇法線貼圖" />
-				<texture_picker name="emissive_map_picker" label="自發光" tool_tip="點擊選擇自發光貼圖" />
-				<color_swatch name="emissive_color_tint_picker" label="顏色" tool_tip="點擊選擇自發光顏色的色調" />
-				<texture_picker name="metallic_map_picker" tool_tip="點擊選擇金屬粗糙度貼圖，可包含可選的遮蔽通道" />
+				<texture_picker name="pbr_control" label="材质" tool_tip="点击选择PBR材质" />
+				<texture_picker name="base_color_picker" label="基础" tool_tip="点击选择基础颜色贴图（Albedo）" />
+				<color_swatch name="base_color_tint_picker" label="颜色" tool_tip="点击选择基础颜色的色调" />
+				<button name="btn_select_same_gltf" tool_tip="选择所有具有相同GLTF材质的表面" />
+				<texture_picker name="normal_map_picker" label="法线" tool_tip="点击选择法线贴图" />
+				<texture_picker name="emissive_map_picker" label="自发光" tool_tip="点击选择自发光贴图" />
+				<color_swatch name="emissive_color_tint_picker" label="颜色" tool_tip="点击选择自发光颜色的色调" />
+				<texture_picker name="metallic_map_picker" tool_tip="点击选择金属粗糙度贴图，可包含可选的遮蔽通道" />
 			</panel>
 			<panel name="panel_material_parameters">
-				<check_box label="雙面" name="double sided" />
+				<check_box label="双面" name="double sided" />
 				<spinner label="不透明度" name="transparency" />
 				<text name="blend mode label">
 					模式
 				</text>
 				<combo_box name="alpha mode">
-					<combo_box.item label="無" name="None" />
+					<combo_box.item label="无" name="None" />
 					<combo_box.item label="混合" name="Alpha blending" />
 					<combo_box.item label="遮罩" name="Alpha masking" />
 				</combo_box>
 				<spinner label="裁剪" name="alpha cutoff" />
-				<spinner label="金屬度" name="metalness factor" />
+				<spinner label="金属度" name="metalness factor" />
 				<spinner label="粗糙度" name="roughness factor" />
-				<button name="save_selected_pbr" label="儲存" />
+				<button name="save_selected_pbr" label="保存" />
 			</panel>
 			<tab_container name="tabs_pbr_transforms">
 				<panel label="全部" name="panel_pbr_transforms_all">
 					<panel name="pbr_transforms_all_scale">
 						<text name="pbr_transforms_all_scale_label">
-							縮放
+							缩放
 						</text>
-						<button name="flipTextureScaleMU" tool_tip="翻轉" />
-						<button name="flipTextureScaleMV" tool_tip="翻轉" />
+						<button name="flipTextureScaleMU" tool_tip="翻转" />
+						<button name="flipTextureScaleMV" tool_tip="翻转" />
 					</panel>
 					<panel name="pbr_transforms_all_offset">
 						<text name="pbr_transforms_all_offset_label">
@@ -56,17 +56,17 @@
 					</panel>
 					<panel name="pbr_transforms_all_rotation">
 						<text name="pbr_transforms_all_rotation_label">
-							旋轉
+							旋转
 						</text>
 					</panel>
 				</panel>
-				<panel label="基礎" name="panel_pbr_transforms_base_color">
+				<panel label="基础" name="panel_pbr_transforms_base_color">
 					<panel name="pbr_transforms_base_color_scale">
 						<text name="pbr_transforms_base_color_scale_label">
-							縮放
+							缩放
 						</text>
-						<button name="flipTextureScaleMU" tool_tip="翻轉" />
-						<button name="flipTextureScaleMV" tool_tip="翻轉" />
+						<button name="flipTextureScaleMU" tool_tip="翻转" />
+						<button name="flipTextureScaleMV" tool_tip="翻转" />
 					</panel>
 					<panel name="pbr_transforms_base_color_offset">
 						<text name="pbr_transforms_base_color_offset_label">
@@ -75,17 +75,17 @@
 					</panel>
 					<panel name="pbr_transforms_base_color_rotation">
 						<text name="pbr_transforms_base_color_rotation_label">
-							旋轉
+							旋转
 						</text>
 					</panel>
 				</panel>
-				<panel label="法線" name="panel_pbr_transforms_normal">
+				<panel label="法线" name="panel_pbr_transforms_normal">
 					<panel name="pbr_transforms_normal_scale">
 						<text name="pbr_transforms_normal_scale_label">
-							縮放
+							缩放
 						</text>
-						<button name="flipTextureScaleMU" tool_tip="翻轉" />
-						<button name="flipTextureScaleMV" tool_tip="翻轉" />
+						<button name="flipTextureScaleMU" tool_tip="翻转" />
+						<button name="flipTextureScaleMV" tool_tip="翻转" />
 					</panel>
 					<panel name="pbr_transforms_normal_offset">
 						<text name="pbr_transforms_normal_offset_label">
@@ -94,61 +94,61 @@
 					</panel>
 					<panel name="pbr_transforms_normal_rotation">
 						<text name="pbr_transforms_normal_rotation_label">
-							旋轉
+							旋转
 						</text>
 					</panel>
 				</panel>
-				<panel name="panel_pbr_transforms_metallic">
-					<panel name="pbr_transforms_orm_scale">
-						<text name="pbr_transforms_orm_scale_label">
-					縮放
+		<panel name="panel_pbr_transforms_metallic">
+			<panel name="pbr_transforms_orm_scale">
+				<text name="pbr_transforms_orm_scale_label">
+					缩放
 				</text>
-						<button name="flipTextureScaleMU" tool_tip="翻轉" />
-						<button name="flipTextureScaleMV" tool_tip="翻轉" />
-					</panel>
-					<panel name="pbr_transforms_orm_offset">
-						<text name="pbr_transforms_orm_offset_label">
+				<button name="flipTextureScaleMU" tool_tip="翻转" />
+				<button name="flipTextureScaleMV" tool_tip="翻转" />
+			</panel>
+			<panel name="pbr_transforms_orm_offset">
+				<text name="pbr_transforms_orm_offset_label">
 					偏移
 				</text>
-					</panel>
-					<panel name="pbr_transforms_orm_rotation">
-						<text name="pbr_transforms_orm_rotation_label">
-					旋轉
+			</panel>
+			<panel name="pbr_transforms_orm_rotation">
+				<text name="pbr_transforms_orm_rotation_label">
+					旋转
 				</text>
-					</panel>
-				</panel>
-				<panel label="自發光" name="panel_pbr_transforms_emissive">
-					<panel name="pbr_transforms_emissive_scale">
-						<text name="pbr_transforms_emissive_scale_label">
-					縮放
+			</panel>
+		</panel>
+		<panel label="自发光" name="panel_pbr_transforms_emissive">
+			<panel name="pbr_transforms_emissive_scale">
+				<text name="pbr_transforms_emissive_scale_label">
+					缩放
 				</text>
-						<button name="flipTextureScaleMU" tool_tip="翻轉" />
-						<button name="flipTextureScaleMV" tool_tip="翻轉" />
-					</panel>
-					<panel name="pbr_transforms_emissive_offset">
-						<text name="pbr_transforms_emissive_offset_label">
+				<button name="flipTextureScaleMU" tool_tip="翻转" />
+				<button name="flipTextureScaleMV" tool_tip="翻转" />
+			</panel>
+			<panel name="pbr_transforms_emissive_offset">
+				<text name="pbr_transforms_emissive_offset_label">
 					偏移
 				</text>
-					</panel>
-					<panel name="pbr_transforms_emissive_rotation">
-						<text name="pbr_transforms_emissive_rotation_label">
-					旋轉
+			</panel>
+			<panel name="pbr_transforms_emissive_rotation">
+				<text name="pbr_transforms_emissive_rotation_label">
+					旋转
 				</text>
-					</panel>
-				</panel>
-			</tab_container>
+			</panel>
+		</panel>
+		</tab_container>
 		</panel>
 		<panel name="panel_material_type_blinn_phong">
 			<layout_stack name="panel_material_type_blinn_phong_layout_stack">
 				<layout_panel name="panel_blinn_phong_maps">
-					<texture_picker name="texture control" label="紋理" tool_tip="點擊選擇圖像" />
-					<color_swatch name="colorswatch" label="顏色" tool_tip="點擊選擇顏色" />
-					<button name="btn_select_same_diff" tool_tip="選擇所有具有相同紋理（漫反射）的表面" />
-					<texture_picker label="法線" name="bumpytexture control" tool_tip="點擊選擇圖像" />
-					<button name="btn_select_same_norm" tool_tip="選擇所有具有相同法線貼圖的表面" />
-					<texture_picker label="光澤" name="shinytexture control" tool_tip="點擊選擇圖像" />
-					<color_swatch label="顏色" name="shinycolorswatch" tool_tip="點擊選擇顏色" />
-					<button name="btn_select_same_spec" tool_tip="選擇所有具有相同光澤貼圖（高光）的表面" />
+					<texture_picker name="texture control" label="纹理" tool_tip="点击选择图像" />
+					<color_swatch name="colorswatch" label="颜色" tool_tip="点击选择颜色" />
+					<button name="btn_select_same_diff" tool_tip="选择所有具有相同纹理（漫反射）的表面" />
+					<texture_picker label="法线" name="bumpytexture control" tool_tip="点击选择图像" />
+					<button name="btn_select_same_norm" tool_tip="选择所有具有相同法线贴图的表面" />
+					<texture_picker label="光泽" name="shinytexture control" tool_tip="点击选择图像" />
+					<color_swatch label="颜色" name="shinycolorswatch" tool_tip="点击选择颜色" />
+					<button name="btn_select_same_spec" tool_tip="选择所有具有相同光泽贴图（高光）的表面" />
 				</layout_panel>
 				<layout_panel name="panel_blinn_phong_options">
 					<check_box label="全亮" name="checkbox fullbright" />
@@ -157,56 +157,56 @@
 						Alpha模式
 					</text>
 					<combo_box name="combobox alphamode">
-						<combo_box.item label="無" name="None" />
+						<combo_box.item label="无" name="None" />
 						<combo_box.item label="混合" name="Alpha blending" />
 						<combo_box.item label="遮罩" name="Alpha masking" />
-						<combo_box.item label="自發光遮罩" name="Emissive mask" />
+						<combo_box.item label="自发光遮罩" name="Emissive mask" />
 					</combo_box>
 					<spinner label="遮罩裁剪" name="maskcutoff" />
 					<text name="label bumpiness">
 						表面
 					</text>
 					<combo_box name="combobox bumpiness">
-						<combo_box.item label="無" name="None" />
+						<combo_box.item label="无" name="None" />
 						<combo_box.item label="亮度" name="Brightness" />
 						<combo_box.item label="暗度" name="Darkness" />
-						<combo_box.item label="木紋" name="woodgrain" />
-						<combo_box.item label="樹皮" name="bark" />
-						<combo_box.item label="磚塊" name="bricks" />
-						<combo_box.item label="棋盤" name="checker" />
+						<combo_box.item label="木纹" name="woodgrain" />
+						<combo_box.item label="树皮" name="bark" />
+						<combo_box.item label="砖块" name="bricks" />
+						<combo_box.item label="棋盘" name="checker" />
 						<combo_box.item label="混凝土" name="concrete" />
-						<combo_box.item label="瓷磚" name="crustytile" />
-						<combo_box.item label="石頭" name="cutstone" />
-						<combo_box.item label="圓盤" name="discs" />
-						<combo_box.item label="礫石" name="gravel" />
+						<combo_box.item label="瓷砖" name="crustytile" />
+						<combo_box.item label="石头" name="cutstone" />
+						<combo_box.item label="圆盘" name="discs" />
+						<combo_box.item label="砾石" name="gravel" />
 						<combo_box.item label="化石" name="petridish" />
-						<combo_box.item label="邊緣" name="siding" />
-						<combo_box.item label="石磚" name="stonetile" />
+						<combo_box.item label="边缘" name="siding" />
+						<combo_box.item label="石砖" name="stonetile" />
 						<combo_box.item label="灰泥" name="stucco" />
-						<combo_box.item label="吸盤" name="suction" />
-						<combo_box.item label="編織" name="weave" />
+						<combo_box.item label="吸盘" name="suction" />
+						<combo_box.item label="编织" name="weave" />
 					</combo_box>
 					<text name="label shininess">
-						光澤
+						光泽
 					</text>
 					<combo_box name="combobox shininess">
-						<combo_box.item label="無" name="None" />
+						<combo_box.item label="无" name="None" />
 						<combo_box.item label="低" name="Low" />
 						<combo_box.item label="中" name="Medium" />
 						<combo_box.item label="高" name="High" />
 					</combo_box>
 					<spinner name="glossiness" label="光滑度" />
-					<spinner name="environment" label="環境" />
+					<spinner name="environment" label="环境" />
 				</layout_panel>
 			</layout_stack>
 			<tab_container name="tabs_blinn_phong_uvs">
-				<panel label="紋理" name="panel_blinn_phong_diffuse">
+				<panel label="纹理" name="panel_blinn_phong_diffuse">
 					<panel name="transforms_diffuse_scale">
 						<text name="transforms_diffuse_scale_label">
-							縮放
+							缩放
 						</text>
-						<button name="flipTextureScaleU" tool_tip="翻轉" />
-						<button name="flipTextureScaleV" tool_tip="翻轉" />
+						<button name="flipTextureScaleU" tool_tip="翻转" />
+						<button name="flipTextureScaleV" tool_tip="翻转" />
 					</panel>
 					<panel name="transforms_diffuse_offset">
 						<text name="transforms_diffuse_offset_label">
@@ -215,17 +215,17 @@
 					</panel>
 					<panel name="transforms_diffuse_rotation">
 						<text name="transforms_diffuse_rotation_label">
-							旋轉
+							旋转
 						</text>
 					</panel>
 				</panel>
-				<panel label="法線" name="panel_blinn_phong_normal">
+				<panel label="法线" name="panel_blinn_phong_normal">
 					<panel name="transforms_normal_scale">
 						<text name="transforms_normal_scale_label">
-							縮放
+							缩放
 						</text>
-						<button name="flipTextureScaleNU" tool_tip="翻轉" />
-						<button name="flipTextureScaleNV" tool_tip="翻轉" />
+						<button name="flipTextureScaleNU" tool_tip="翻转" />
+						<button name="flipTextureScaleNV" tool_tip="翻转" />
 					</panel>
 					<panel name="transforms_normal_offset">
 						<text name="transforms_normal_offset_label">
@@ -234,17 +234,17 @@
 					</panel>
 					<panel name="transforms_normal_rotation">
 						<text name="transforms_normal_rotation_label">
-							旋轉
+							旋转
 						</text>
 					</panel>
 				</panel>
-				<panel label="光澤" name="panel_blinn_phong_specular">
+				<panel label="光泽" name="panel_blinn_phong_specular">
 					<panel name="transforms_specular_scale">
 						<text name="transforms_specular_scale_label">
-							縮放
+							缩放
 						</text>
-						<button name="flipTextureScaleSU" tool_tip="翻轉" />
-						<button name="flipTextureScaleSV" tool_tip="翻轉" />
+						<button name="flipTextureScaleSU" tool_tip="翻转" />
+						<button name="flipTextureScaleSV" tool_tip="翻转" />
 					</panel>
 					<panel name="transforms_specular_offset">
 						<text name="transforms_specular_offset_label">
@@ -253,33 +253,33 @@
 					</panel>
 					<panel name="transforms_specular_rotation">
 						<text name="transforms_specular_rotation_label">
-							旋轉
+							旋转
 						</text>
 					</panel>
 				</panel>
 			</tab_container>
 		</panel>
-		<panel label="媒體" name="panel_material_type_media">
+		<panel label="媒体" name="panel_material_type_media">
 			<text name="media_info">
-				如果存在，選擇的媒體URL
+				如果存在，选择的媒体URL
 			</text>
-			<button name="add_media" label="選擇..." tool_tip="新增媒體" />
-			<button name="delete_media" label="刪除" tool_tip="刪除此媒體紋理" />
-			<button name="button align" label="對齊" label_selected="對齊媒體" tool_tip="對齊媒體紋理（必須先載入）" />
+			<button name="add_media" label="选择..." tool_tip="添加媒体" />
+			<button name="delete_media" label="删除" tool_tip="删除此媒体纹理" />
+			<button name="button align" label="对齐" label_selected="对齐媒体" tool_tip="对齐媒体纹理（必须先加载）" />
 		</panel>
 	</tab_container>
 	<panel name="panel_face_params">
-		<spinner name="rptctrl" label="每米重複次數" />
-		<check_box label="同步材質" name="checkbox_sync_settings" tool_tip="同步紋理貼圖參數" />
-		<check_box label="對齊平面表面" name="checkbox planar align" tool_tip="將所有選定表面上的紋理與最後選擇的表面對齊。需要平面紋理對映。" />
-		<check_box label="隱藏水" name="checkbox_hide_water" />
+		<spinner name="rptctrl" label="每米重复次数" />
+		<check_box label="同步材质" name="checkbox_sync_settings" tool_tip="同步纹理贴图参数" />
+		<check_box label="对齐平面表面" name="checkbox planar align" tool_tip="将所有选定表面上的纹理与最后选择的表面对齐。需要平面纹理映射。" />
+		<check_box label="隐藏水" name="checkbox_hide_water" />
 		<combo_box name="combobox texgen">
-			<combo_box.item label="預設" name="Default" />
+			<combo_box.item label="默认" name="Default" />
 			<combo_box.item label="平面" name="Planar" />
 		</combo_box>
-		<button label="對齊" name="button align textures" tool_tip="對齊當前紋理層" />
+		<button label="对齐" name="button align textures" tool_tip="对齐当前纹理层" />
 	</panel>
-	<button name="copy_face_btn" tool_tip="將紋理參數複製到剪貼簿" />
-	<button name="paste_face_btn" tool_tip="從剪貼簿黏貼紋理參數" />
-	<spinner label="光暈" name="glow" />
+	<button name="copy_face_btn" tool_tip="将纹理参数复制到剪贴板" />
+	<button name="paste_face_btn" tool_tip="从剪贴板粘贴纹理参数" />
+	<spinner label="光晕" name="glow" />
 </panel>

@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="floater_placedetails" title="地標">
+<floater name="floater_placedetails" title="地标">
 	<string name="title_place">
-		地點概況
+		地点概况
 	</string>
 	<string name="title_remote_place">
-		地點概況
+		地点概况
 	</string>
 	<string name="title_remote_place_detail">
-		地點概況：[NAME]
+		地点概况：[NAME]
 	</string>
 	<string name="title_landmark">
-		地標
+		地标
 	</string>
 	<string name="title_landmark_detail">
-		地標：[NAME]
+		地标：[NAME]
 	</string>
 	<string name="title_create_landmark">
-		建立地標
+		创建地标
 	</string>
 	<string name="title_teleport_history_item">
-		瞬間傳送歷史詳情：[NAME]
+		瞬间传送历史详情：[NAME]
 	</string>
 	<panel name="button_panel">
 		<layout_stack name="bottom_bar_ls0">
 			<layout_panel name="lp1">
 				<layout_stack name="bottom_bar_ls1">
 					<layout_panel name="teleport_btn_lp">
-						<button label="瞬間傳送" name="teleport_btn" tool_tip="瞬間傳送到選定的位置" />
+						<button label="瞬间传送" name="teleport_btn" tool_tip="瞬间传送到选定的位置"/>
 					</layout_panel>
 					<layout_panel name="map_btn_lp">
-						<button label="地圖" name="map_btn" tool_tip="在地圖上顯示相應位置" />
+						<button label="地图" name="map_btn" tool_tip="在地图上显示相应位置"/>
+					</layout_panel>
+					<layout_panel name="edit_btn_lp">
+						<button label="编辑" name="edit_btn" tool_tip="编辑地标信息"/>
 					</layout_panel>
 					<layout_panel name="overflow_btn_lp">
-						<menu_button name="overflow_btn" tool_tip="顯示附加選項" />
+						<menu_button name="overflow_btn" tool_tip="显示附加选项"/>
 					</layout_panel>
 				</layout_stack>
 			</layout_panel>
@@ -41,17 +44,17 @@
 			<layout_panel name="lp2">
 				<layout_stack name="bottom_bar_close_ls3">
 					<layout_panel name="close_btn_lp">
-						<button label="關閉" name="close_btn" />
+						<button label="关闭" name="close_btn"/>
 					</layout_panel>
 				</layout_stack>
 			</layout_panel>
 		</layout_stack>
 		<layout_stack name="bottom_bar_ls2">
 			<layout_panel name="save_btn_lp">
-				<button label="儲存" name="save_btn" />
+				<button label="保存" name="save_btn"/>
 			</layout_panel>
 			<layout_panel name="cancel_btn_lp">
-				<button label="取消" name="cancel_btn" />
+				<button label="取消" name="cancel_btn"/>
 			</layout_panel>
 		</layout_stack>
 	</panel>

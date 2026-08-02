@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<panel label="日與月" name="panel_settings_sky_hbodies">
+<panel label="日与月" name="panel_settings_sky_hbodies">
 	<layout_stack name="main_ls">
 		<layout_panel name="sun_layout">
 			<text name="sun_stars_label">
-				太陽 &amp; 星星
+				太阳 &amp; 星星
 			</text>
-			<check_box label="顯示太陽信標" name="sunbeacon" />
+			<check_box label="显示太阳信标" name="sunbeacon"/>
 			<text name="position_label">
 				位置：
 			</text>
 			<text name="image_label">
-				圖像 &amp; 縮放：
+				图像 &amp; 缩放：
 			</text>
 			<text name="color_label">
-				顏色：
+				颜色：
 			</text>
 			<text name="sun_azimuth_label">
 				方位角：
@@ -22,10 +22,10 @@
 				高度角：
 			</text>
 			<text name="glow_focus_label">
-				光暈焦點：
+				光晕焦点：
 			</text>
 			<text name="glow_size_label">
-				光暈強度：
+				光晕强度：
 			</text>
 			<text name="star_brightness_label">
 				星星亮度：
@@ -35,12 +35,12 @@
 			<text name="moon_label">
 				月亮
 			</text>
-			<check_box label="顯示月信標" name="moonbeacon" />
+			<check_box label="显示月信标" name="moonbeacon"/>
 			<text name="position_label">
 				位置：
 			</text>
 			<text name="moon_image_label">
-				圖像 &amp; 縮放：
+				图像 &amp; 缩放：
 			</text>
 			<text name="moon_azimuth_label">
 				方位角：

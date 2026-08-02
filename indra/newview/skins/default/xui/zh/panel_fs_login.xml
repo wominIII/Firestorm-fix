@@ -1,60 +1,60 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="panel_login">
 	<string name="ServerComboTooltip">
-		已知的類比網路或類比網路URI
+		已知的模拟网络或模拟网络URI
 	</string>
 	<layout_stack name="login_widgets">
 		<layout_panel name="login">
 			<text name="log_in_text">
-				登入
+				登录
 			</text>
 			<text name="username_text">
-				使用者名稱：
+				用户名：
 			</text>
-			<combo_box name="username_combo" tool_tip="使用者名稱是你註冊時所挑選的，像是 bobsmith12 或 Steller Sunshine" />
-			<button tool_tip="移除該使用者名稱" name="remove_user_btn" />
+			<combo_box name="username_combo" tool_tip="用户名是你注册时所挑选的，象是 bobsmith12 或 Steller Sunshine"/>
+			<button tool_tip="移除该用户名" name="remove_user_btn"/>
 			<text name="password_text">
-				密碼：
+				密码：
 			</text>
 		</layout_panel>
 		<layout_panel name="start_location_panel">
 			<text name="start_location_text">
-				開始地點：
+				开始地点：
 			</text>
 			<combo_box name="start_location_combo">
-				<combo_box.item label="我上一次的位置" name="MyLastLocation" />
-				<combo_box.item label="我的家" name="MyHome" />
-				<combo_box.item label="&lt;請輸入區域名稱&gt;" name="Typeregionname" />
+				<combo_box.item label="我上一次的位置" name="MyLastLocation"/>
+				<combo_box.item label="我的家" name="MyHome"/>
+				<combo_box.item label="&lt;请输入区域名称&gt;" name="Typeregionname"/>
 			</combo_box>
 		</layout_panel>
 		<layout_panel name="grid_panel">
 			<text name="grid_builder_text">
-				+ 新增更多類比網格
+				+ 添加更多模拟网格
 			</text>
 			<text name="grid_login_text">
-				類比網路選擇：
+				模拟网络选择：
 			</text>
 		</layout_panel>
 		<layout_panel name="links_login_panel">
 			<text name="create_new_account_text">
-				登入時需要幫助？
+				登录时需要帮助？
 			</text>
 			<text name="forgot_password_text">
-				忘記你的使用者名稱或密碼？
+				忘记你的用户名或密码？
 			</text>
-			<button label="登入" name="connect_btn" />
-			<check_box label="儲存使用者名稱" name="remember_username_check" />
-			<check_box label="記住密碼" name="remember_check" />
-			<button name="password_show_btn" tool_tip="顯示密碼文字" />
-			<button name="password_hide_btn" tool_tip="隱藏密碼文字" />
+			<button label="登录" name="connect_btn"/>
+			<check_box label="保存用户名" name="remember_username_check"/>
+			<check_box label="记住密码" name="remember_check"/>
+			<button name="password_show_btn" tool_tip="显示密码文本"/>
+			<button name="password_hide_btn" tool_tip="隐藏密码文本"/>
 		</layout_panel>
 		<layout_panel name="links">
 			<text name="create_account_text">
-				建立你的帳號
+				创建你的帐号
 			</text>
-			<combo_box name="mode_combo" tool_tip="選擇您最熟悉的檢視器樣式，以便根據您的需求進行調整。">
-				<combo_box.item label="混合" name="Hybrid" />
-				<combo_box.item label="文字" name="Text" />
+			<combo_box name="mode_combo" tool_tip="选择您最熟悉的查看器样式，以便根据您的需求进行调整。">
+				<combo_box.item label="混合" name="Hybrid"/>
+				<combo_box.item label="文本" name="Text"/>
 			</combo_box>
 		</layout_panel>
 	</layout_stack>
