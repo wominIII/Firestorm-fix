@@ -97,6 +97,9 @@ public:
     void reloadMessages(bool clean_messages = false);
     void sendMsgFromInputEditor(EChatType type);
     void sendMsg(const std::string& msg);
+    void translateAndSendMsg(const std::string& msg);
+    void onOutgoingTranslationSuccess(std::string translation, std::string detected_lang);
+    void onOutgoingTranslationFailure(int status, std::string error);
 
     // callback for LLIMModel on new messages
     // route to specific floater if it is visible
@@ -121,6 +124,9 @@ public:
     static void clearAllOpenHistories();    // <FS:CR> FIRE-11734
 
     void onChatSearchButtonClicked();
+    void onOutgoingTranslateButtonClicked();
+    bool onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK mask);
+    void updateOutgoingTranslateButton();
 
     bool handleDragAndDrop(S32 x, S32 y, MASK mask,
                            bool drop, EDragAndDropType cargo_type,
@@ -265,6 +271,7 @@ private:
     LLTextBox* mUnreadMessagesNotificationTextBox;
     LLButton* mEmojiRecentPanelToggleBtn;
     LLButton* mEmojiPickerToggleBtn;
+    LLButton* mOutgoingTranslateBtn;
     LLLayoutPanel* mEmojiRecentPanel;
     LLTextBox* mEmojiRecentEmptyText;
     LLPanelEmojiComplete* mEmojiRecentIconsCtrl;
@@ -302,6 +309,7 @@ private:
     boost::signals2::connection mRecentEmojisUpdatedCallbackConnection{};
     boost::signals2::connection mEmojiCloseConn{};
     U32 mEmojiHelperLastCallbackFrame{ 0 };
+    std::string mPendingOutgoingText;
 };
 
 class FSFloaterIMTimer : public LLEventTimer
