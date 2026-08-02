@@ -81,6 +81,11 @@ public :
      */
     static void translateMessage(const std::string &from_lang, const std::string &to_lang, const std::string &mesg, TranslationSuccess_fn success, TranslationFailure_fn failure);
 
+    // Translate arbitrary text through the configured GPT-compatible endpoint,
+    // independently of the outgoing-chat translation mode.
+    static void translateMessageGPT(const std::string& mesg, const std::string& to_lang,
+                                    TranslationSuccess_fn success, TranslationFailure_fn failure);
+
     // Translate text immediately before it is sent. Context is an array of
     // maps containing "name" and "text" and is used only by GPT mode.
     static void translateOutgoingMessage(const std::string& mesg, const LLSD& context,
@@ -124,7 +129,7 @@ public :
 private:
     static void translateOutgoingGPT(const std::string& mesg, const LLSD& context,
                                      TranslationSuccess_fn success, TranslationFailure_fn failure);
-    static void translateOutgoingGPTCoro(std::string mesg, LLSD context,
+    static void translateOutgoingGPTCoro(std::string mesg, LLSD context, std::string target,
                                          TranslationSuccess_fn success, TranslationFailure_fn failure);
     static void translateScriptDialogGPTCoro(std::string context_key, std::string message,
                                              LLSD buttons, ScriptDialogTranslationSuccess_fn success,

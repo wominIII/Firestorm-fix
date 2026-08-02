@@ -1389,11 +1389,14 @@ void LLSecAPIBasicHandler::_readProtectedData(unsigned char *unique_id, U32 id_l
 
 void LLSecAPIBasicHandler::_readProtectedData()
 {
-    unsigned char unique_id[MAC_ADDRESS_BYTES];
+    unsigned char unique_id[MAC_ADDRESS_BYTES]{};
     try
     {
         // try default id
-        LLMachineID::getUniqueID(unique_id, sizeof(unique_id));
+        if (!LLMachineID::getUniqueID(unique_id, sizeof(unique_id)))
+        {
+            LLTHROW(LLProtectedDataException("Stable machine ID is unavailable."));
+        }
         _readProtectedData(unique_id, sizeof(unique_id));
     }
     catch(LLProtectedDataException&)
@@ -1413,6 +1416,13 @@ void LLSecAPIBasicHandler::_readProtectedData()
 
 void LLSecAPIBasicHandler::_writeProtectedData()
 {
+    unsigned char unique_id[MAC_ADDRESS_BYTES]{};
+    if (!LLMachineID::getUniqueID(unique_id, sizeof(unique_id)))
+    {
+        LL_WARNS("SECAPI") << "Not writing protected data without a stable machine ID" << LL_ENDL;
+        return;
+    }
+
     std::ostringstream formatted_data_ostream;
     U8 salt[STORE_SALT_SIZE];
     U8 buffer[BUFFER_READ_SIZE];
@@ -1445,8 +1455,6 @@ void LLSecAPIBasicHandler::_writeProtectedData()
         // todo: ctx error handling
 
         EVP_EncryptInit(ctx, EVP_rc4(), salt, NULL);
-        unsigned char unique_id[MAC_ADDRESS_BYTES];
-        LLMachineID::getUniqueID(unique_id, sizeof(unique_id));
         LLXORCipher cipher(unique_id, sizeof(unique_id));
         cipher.encrypt(salt, STORE_SALT_SIZE);
         protected_data_stream.write((const char *)salt, STORE_SALT_SIZE);

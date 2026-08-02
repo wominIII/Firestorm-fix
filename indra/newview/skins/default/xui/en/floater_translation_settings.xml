@@ -187,7 +187,7 @@
    name="azure_api_endpoint_combo"
    height="23"
    left_pad="10"
-   right="-10"
+   width="295"
    top_delta="-4"
    max_chars="512"
    value="https://api.cognitive.microsofttranslator.com"
@@ -400,10 +400,11 @@
   top="28"
   width="400">
    <text
-    font="SansSerifBold"
-    height="20"
-    left="12"
-    top="10"
+   font="SansSerifBold"
+   height="20"
+   left="12"
+    name="outgoing_translation_title"
+   top="10"
     width="370">Outgoing message translation</text>
    <radio_group
     control_name="FSOutgoingTranslateMode"
@@ -416,7 +417,7 @@
      <radio_item label="Normal API" name="normal" value="1" left="75" />
      <radio_item label="Context AI" name="gpt" value="2" left="195" />
    </radio_group>
-   <text height="18" left="12" top_pad="8" width="105">Target language:</text>
+   <text height="18" left="12" name="outgoing_target_language_label" top_pad="8" width="105">Target language:</text>
    <line_editor
     control_name="FSOutgoingTranslateLanguage"
     height="22"
@@ -424,7 +425,7 @@
     name="outgoing_target_language"
     top_delta="-3"
     width="250" />
-   <text height="18" left="12" top_pad="8" width="105">Send format:</text>
+   <text height="18" left="12" name="outgoing_send_format_label" top_pad="8" width="105">Send format:</text>
    <combo_box
     control_name="FSOutgoingTranslateFormat"
     height="22"
@@ -436,7 +437,7 @@
      <combo_box.item label="Original + translation" name="original_first" value="1" />
      <combo_box.item label="Translation + original" name="translation_first" value="2" />
    </combo_box>
-   <text height="18" left="12" top_pad="10" width="105">GPT Base URL:</text>
+   <text height="18" left="12" name="outgoing_gpt_url_label" top_pad="10" width="105">GPT Base URL:</text>
    <line_editor
     control_name="FSOutgoingGPTBaseURL"
     height="22"
@@ -445,7 +446,7 @@
     name="outgoing_gpt_url"
     top_delta="-3"
     width="250" />
-   <text height="18" left="12" top_pad="8" width="105">API key:</text>
+   <text height="18" left="12" name="outgoing_gpt_key_label" top_pad="8" width="105">API key:</text>
    <line_editor
     control_name="FSOutgoingGPTAPIKey"
     height="22"
@@ -455,7 +456,7 @@
     name="outgoing_gpt_key"
     top_delta="-3"
     width="250" />
-   <text height="18" left="12" top_pad="8" width="105">Model:</text>
+   <text height="18" left="12" name="outgoing_gpt_model_label" top_pad="8" width="105">Model:</text>
    <line_editor
     control_name="FSOutgoingGPTModel"
     height="22"
@@ -464,7 +465,7 @@
     name="outgoing_gpt_model"
     top_delta="-3"
     width="250" />
-   <text height="18" left="12" top_pad="8" width="105">Context messages:</text>
+   <text height="18" left="12" name="outgoing_gpt_context_label" top_pad="8" width="105">Context messages:</text>
    <spinner
     control_name="FSOutgoingGPTContextCount"
     decimal_digits="0"
@@ -476,7 +477,7 @@
     name="outgoing_gpt_context"
     top_delta="-3"
     width="75" />
-   <text height="18" left="12" top_pad="9" width="360">Editable system prompt ({target_language} is supported):</text>
+   <text height="18" left="12" name="outgoing_gpt_prompt_label" top_pad="9" width="360">Editable system prompt ({target_language} is supported):</text>
    <text_editor
     control_name="FSOutgoingGPTPrompt"
     follows="left|right|bottom"
@@ -490,6 +491,7 @@
    <text
     height="32"
     left="12"
+    name="outgoing_gpt_context_note"
     top_pad="5"
     width="370"
     wrap="true">The AI receives only the latest messages from the current nearby, group, or private conversation.</text>
@@ -502,6 +504,7 @@
     font="SansSerifBold"
     height="20"
     left="12"
+    name="script_dialog_translation_title"
     top_pad="8"
     width="370">Script object menu translation</text>
    <radio_group
@@ -515,7 +518,7 @@
      <radio_item label="Normal API" name="normal" value="1" left="75" />
      <radio_item label="Context AI" name="gpt" value="2" left="195" />
    </radio_group>
-   <text height="18" left="12" top_pad="8" width="105">Target language:</text>
+   <text height="18" left="12" name="script_dialog_target_language_label" top_pad="8" width="105">Target language:</text>
    <line_editor
     control_name="FSScriptDialogTranslateLanguage"
     height="22"
@@ -523,7 +526,7 @@
     name="script_dialog_target_language"
     top_delta="-3"
     width="250" />
-   <text height="18" left="12" top_pad="8" width="360">AI menu prompt ({target_language} is supported):</text>
+   <text height="18" left="12" name="script_dialog_gpt_prompt_label" top_pad="8" width="360">AI menu prompt ({target_language} is supported):</text>
    <text_editor
     control_name="FSScriptDialogGPTPrompt"
     height="70"
@@ -536,6 +539,7 @@
    <text
     height="30"
     left="12"
+    name="script_dialog_translation_note"
     top_pad="4"
     width="370"
     wrap="true">AI mode reuses the GPT Base URL, API key and model above. Translations are saved locally.</text>

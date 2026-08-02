@@ -109,6 +109,7 @@ if (WINDOWS)
       )
   add_compile_options(
           /Zo
+          /utf-8
           /GS
           /TP
           /W3
@@ -253,4 +254,3 @@ if (LINUX OR DARWIN)
   add_compile_options(${GCC_WARNINGS})
   add_compile_options(-m${ADDRESS_SIZE})
 endif (LINUX OR DARWIN)
-

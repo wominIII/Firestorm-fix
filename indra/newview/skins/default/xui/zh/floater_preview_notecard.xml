@@ -9,12 +9,17 @@
 	<floater.string name="Title">
 		記事卡： [NAME]
 	</floater.string>
+	<floater.string name="translation_failed">
+		記事卡翻譯失敗：
+	</floater.string>
 	<text name="desc txt">
 		描述：
 	</text>
 	<text_editor name="Notecard Editor">
 		載入中...
 	</text_editor>
+	<button label="機翻" name="Machine Translate" tool_tip="使用目前設定的機器翻譯服務。再次點擊可顯示原文。" />
+	<button label="AI 翻譯" name="AI Translate" tool_tip="使用目前設定的 GPT 相容服務。再次點擊可顯示原文。" />
 	<button tool_tip="尋找和替換" name="Search" />
 	<button label="編輯…" label_selected="編輯" name="Edit" />
 	<text name="byte_counter" initial_value="位元組: [BYTES] / [MAX]" />

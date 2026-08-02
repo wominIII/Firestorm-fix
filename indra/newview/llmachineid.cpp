@@ -47,15 +47,17 @@ class LLWMIMethods
 {
 public:
     LLWMIMethods()
-    :   pLoc(NULL),
-        pSvc(NULL)
+    :   mHR(E_FAIL),
+        pLoc(NULL),
+        pSvc(NULL),
+        mCOMInitialized(false)
     {
         initCOMObjects();
     }
 
     ~LLWMIMethods()
     {
-        if (isInitialized())
+        if (pSvc || pLoc || mCOMInitialized)
         {
             cleanCOMObjects();
         }
@@ -76,6 +78,7 @@ private:
     HRESULT mHR;
     IWbemLocator *pLoc;
     IWbemServices *pSvc;
+    bool mCOMInitialized;
 };
 
 
@@ -85,11 +88,19 @@ void LLWMIMethods::initCOMObjects()
     // Step 1: --------------------------------------------------
     // Initialize COM. ------------------------------------------
 
-    mHR = CoInitializeEx(0, COINIT_APARTMENTTHREADED);
-    if (FAILED(mHR))
+    const HRESULT com_hr = CoInitializeEx(0, COINIT_APARTMENTTHREADED);
+    mCOMInitialized = SUCCEEDED(com_hr);
+    if (FAILED(com_hr) && com_hr != RPC_E_CHANGED_MODE)
     {
-        // if result S_FALSE, it's already initialized
-        LL_DEBUGS("AppInit") << "Failed to initialize COM library. Error code = 0x" << std::hex << mHR << LL_ENDL;
+        mHR = com_hr;
+        LL_WARNS("AppInit") << "Failed to initialize COM library. Error code = 0x" << std::hex << mHR << LL_ENDL;
+        return;
+    }
+    if (com_hr == RPC_E_CHANGED_MODE)
+    {
+        // COM is already initialized in a different apartment. WMI can still
+        // be used, but this instance must not balance it with CoUninitialize().
+        LL_DEBUGS("AppInit") << "COM already initialized with a different apartment model" << LL_ENDL;
     }
 
     // Step 2: --------------------------------------------------
@@ -111,10 +122,18 @@ void LLWMIMethods::initCOMObjects()
         NULL                         // Reserved
     );
 
-    if (FAILED(mHR))
+    if (mHR == RPC_E_TOO_LATE)
+    {
+        // Text services and IMEs may initialize process COM security before
+        // the viewer reaches this point. The existing security configuration
+        // is usable; continue instead of disabling the stable machine ID.
+        LL_DEBUGS("AppInit") << "COM security was already initialized" << LL_ENDL;
+        mHR = S_OK;
+    }
+    else if (FAILED(mHR))
     {
         LL_WARNS("AppInit") << "Failed to initialize security. Error code = 0x" << std::hex << mHR << LL_ENDL;
-        CoUninitialize();
+        cleanCOMObjects();
         return;               // Program has failed.
     }
 
@@ -130,7 +149,7 @@ void LLWMIMethods::initCOMObjects()
     if (FAILED(mHR))
     {
         LL_WARNS("AppInit") << "Failed to create IWbemLocator object." << " Err code = 0x" << std::hex << mHR << LL_ENDL;
-        CoUninitialize();
+        cleanCOMObjects();
         return;               // Program has failed.
     }
 
@@ -154,8 +173,7 @@ void LLWMIMethods::initCOMObjects()
     if (FAILED(mHR))
     {
         LL_WARNS("AppInit") << "Could not connect. Error code = 0x" << std::hex << mHR << LL_ENDL;
-        pLoc->Release();
-        CoUninitialize();
+        cleanCOMObjects();
         return;               // Program has failed.
     }
 
@@ -186,9 +204,22 @@ void LLWMIMethods::initCOMObjects()
 
 void LLWMIMethods::cleanCOMObjects()
 {
-    pSvc->Release();
-    pLoc->Release();
-    CoUninitialize();
+    if (pSvc)
+    {
+        pSvc->Release();
+        pSvc = NULL;
+    }
+    if (pLoc)
+    {
+        pLoc->Release();
+        pLoc = NULL;
+    }
+    if (mCOMInitialized)
+    {
+        CoUninitialize();
+        mCOMInitialized = false;
+    }
+    mHR = E_FAIL;
 }
 
 bool LLWMIMethods::getWindowsProductNumber(unsigned char *unique_id, size_t len)

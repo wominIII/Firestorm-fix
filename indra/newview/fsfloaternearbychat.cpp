@@ -66,6 +66,7 @@
 #include "lllogchat.h"
 #include "llmenugl.h"
 #include "llmultigesture.h"
+#include "llnotificationsutil.h"
 #include "llpanelemojicomplete.h"
 #include "llresizebar.h"
 #include "llresizehandle.h"
@@ -432,11 +433,11 @@ void FSFloaterNearbyChat::updateOutgoingTranslateButton()
     const LLTranslate::EOutgoingMode mode = LLTranslate::getOutgoingMode();
     mOutgoingTranslateBtn->setLabel(mode == LLTranslate::OUTGOING_GPT ? "AI" : "T");
     mOutgoingTranslateBtn->setToggleState(mode != LLTranslate::OUTGOING_DISABLED);
-    mOutgoingTranslateBtn->setToolTip(mode == LLTranslate::OUTGOING_DISABLED
+    mOutgoingTranslateBtn->setToolTip(LLStringExplicit(mode == LLTranslate::OUTGOING_DISABLED
         ? "Outgoing translation: Off (click to use normal translator)"
         : mode == LLTranslate::OUTGOING_STANDARD
             ? "Outgoing translation: Normal API (click for AI)"
-            : "Outgoing translation: Context-aware AI (click to turn off)");
+            : "Outgoing translation: Context-aware AI (click to turn off)"));
 }
 
 void FSFloaterNearbyChat::onSearchButtonClicked()

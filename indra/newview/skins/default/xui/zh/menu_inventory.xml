@@ -76,6 +76,7 @@
 	<menu_item_call label="打開原件" name="Open Original" />
 	<menu_item_call label="屬性" name="Properties" />
 	<menu_item_call label="重新命名" name="Rename" />
+	<menu_item_call label="編輯本地標籤…" name="Edit Local Label" />
 	<menu_item_call label="縮圖..." name="thumbnail" />
 	<menu_item_call label="鎖定檔案夾" name="ProtectFolder" />
 	<menu_item_call label="解鎖檔案夾" name="UnprotectFolder" />

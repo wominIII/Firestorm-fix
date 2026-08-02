@@ -1992,6 +1992,18 @@ if (WINDOWS)
 
     set_source_files_properties( llappviewer.cpp llviewermenu.cpp PROPERTIES COMPILE_FLAGS /bigobj )
 
+    # chatbar_as_cmdline.h contains legacy Windows-1252 smart quotes in its
+    # license comment. Suppress the resulting UTF-8 diagnostic only for the
+    # translation units that include that header.
+    set_property(SOURCE
+      chatbar_as_cmdline.cpp
+      fsfloaternearbychat.cpp
+      fsnearbychathub.cpp
+      llgesturemgr.cpp
+      llviewermessage.cpp
+      APPEND PROPERTY COMPILE_OPTIONS /wd4828
+      )
+
     list(APPEND viewer_HEADER_FILES
          llappviewerwin32.h
          llvelopack.h

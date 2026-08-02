@@ -396,7 +396,10 @@ bool LLInvFVBridge::onEditLocalLabel(const LLSD& notification, const LLSD& respo
         if (LLFolderViewItem* item = mInventoryPanel.get()->getItemByID(mUUID))
         {
             item->refresh();
-            item->requestArrange();
+            if (LLFolderViewFolder* parent = item->getParentFolder())
+            {
+                parent->requestArrange();
+            }
         }
     }
     return false;

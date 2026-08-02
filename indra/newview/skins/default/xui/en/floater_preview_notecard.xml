@@ -4,7 +4,7 @@
  legacy_header_height="18"
  can_resize="true"
  default_tab_group="1"
- height="361"
+ height="387"
  layout="topleft"
  min_height="243"
  min_width="354"
@@ -24,6 +24,9 @@
     <floater.string
      name="Title">
         Notecard: [NAME]
+    </floater.string>
+    <floater.string name="translation_failed">
+        Notecard translation failed:
     </floater.string>
     <icon
      follows="top|right"
@@ -79,13 +82,55 @@
      parse_urls="false" 
      spellcheck="true"
      tab_group="1"
-     top="46"
+     top="72"
      use_color="true"
      show_emoji_helper="true"
      width="392"
      word_wrap="true">
         Loading...
     </text_editor>
+    <text_editor
+     bg_focus_color="NotecardBackgroundColor"
+     bg_writeable_color="NotecardBackgroundColor"
+     bg_selected_color="NotecardSelectionColor"
+     text_color="NotecardTextColor"
+     cursor_color="NotecardCursorColor"
+     embedded_items="false"
+     follows="left|top|right|bottom"
+     font="SansSerif"
+     height="281"
+     layout="topleft"
+     left="4"
+     max_length="65536"
+     name="Notecard Translation"
+     parse_urls="true"
+     read_only="true"
+     spellcheck="false"
+     top="72"
+     visible="false"
+     width="392"
+     word_wrap="true" />
+    <button
+     follows="left|top"
+     height="22"
+     is_toggle="true"
+     label="Machine"
+     layout="topleft"
+     left="4"
+     name="Machine Translate"
+     tool_tip="Translate with the configured machine translation service. Click again to show the original."
+     top="46"
+     width="92" />
+    <button
+     follows="left|top"
+     height="22"
+     is_toggle="true"
+     label="AI Translate"
+     layout="topleft"
+     left_pad="4"
+     name="AI Translate"
+     tool_tip="Translate with the configured GPT-compatible service. Click again to show the original."
+     width="92" />
     <button
      follows="left|bottom"
      height="22"
@@ -94,7 +139,7 @@
      left="3"
      name="Search"
      tool_tip="Search &amp; Replace"
-     top="332"
+     top="358"
      width="30" />
     <button
      follows="left|bottom"
@@ -104,13 +149,13 @@
      layout="topleft"
      left="38"
      name="Edit"
-     top="332"
+     top="358"
      width="100" />
     <text
      name="byte_counter"
      layout="topleft"
      left="150"
-     top="336"
+     top="362"
      height="16"
      width="200"
      follows="left|bottom"
@@ -124,7 +169,7 @@
      layout="topleft"
      left="188"
      name="Save"
-     top="332"
+     top="358"
      width="100" />
     <button
      follows="right|bottom"
@@ -134,6 +179,6 @@
      layout="topleft"
      left="292"
      name="Delete"
-     top="332"
+     top="358"
      width="100" />
 </floater>

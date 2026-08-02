@@ -1292,6 +1292,34 @@
 		 width="270"
 		 control_name="FSSplitInventorySearchOverTabs"
 		 tool_tip="If enabled, it is possible to enter a different search term for each tab in inventory."/>
+		<text
+		 top_pad="6"
+		 left="20"
+		 follows="left|top"
+		 height="16"
+		 name="FSInventoryLocalLabelShortcutLabel"
+		 width="205">
+			Local label shortcut:
+		</text>
+		<line_editor
+		 control_name="FSInventoryLocalLabelShortcut"
+		 follows="left|top"
+		 height="20"
+		 left_pad="5"
+		 max_length_chars="32"
+		 name="FSInventoryLocalLabelShortcut"
+		 tool_tip="Examples: X, Ctrl+L, Alt+X. Leave empty to disable. The shortcut works only while the inventory list has focus."
+		 top_delta="-3"
+		 width="100" />
+		<text
+		 follows="left|top"
+		 height="16"
+		 left_pad="8"
+		 name="FSInventoryLocalLabelShortcutHint"
+		 top_delta="3"
+		 width="180">
+			X / Ctrl+L / Alt+X
+		</text>
 
     </panel>
 

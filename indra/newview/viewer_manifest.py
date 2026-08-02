@@ -162,10 +162,13 @@ class ViewerManifest(LLManifest,FSViewerManifest):
                     settings_install['sourceid']['Value'] = sourceid
                     print("Set sourceid in settings_install.xml to '%s'" % sourceid)
 
-                if self.args.get('channel_suffix'):
+                display_channel = self.channel().replace("-by-zmer", "-by:zmer")
+                if self.args.get('channel_suffix') or display_channel != self.channel():
                     settings_install['CmdLineChannel'] = settings_template['CmdLineChannel'].copy()
-                    settings_install['CmdLineChannel']['Value'] = self.channel_with_pkg_suffix()
-                    print("Set CmdLineChannel in settings_install.xml to '%s'" % self.channel_with_pkg_suffix())
+                    settings_install['CmdLineChannel']['Value'] = (
+                        display_channel + (' ' + self.args['channel_suffix'] if self.args.get('channel_suffix') else '')
+                    )
+                    print("Set CmdLineChannel in settings_install.xml to '%s'" % settings_install['CmdLineChannel']['Value'])
 
                 if self.args.get('grid'):
                     settings_install['CmdLineGridChoice'] = settings_template['CmdLineGridChoice'].copy()
@@ -1131,7 +1134,9 @@ class Windows_x86_64_Manifest(ViewerManifest):
         if self.channel_type() == 'release':
             substitution_strings['caption'] = CHANNEL_VENDOR_BASE
         else:
-            substitution_strings['caption'] = self.app_name() + ' ${VERSION}'
+            # Windows filenames cannot contain ':', so the filesystem-safe
+            # by-zmer channel keeps its hyphen while visible branding uses by:zmer.
+            substitution_strings['caption'] = self.app_name().replace("-by-zmer", "-by:zmer") + ' ${VERSION}'
 
         inst_vars_template = """
             OutFile "%(installer_file)s"

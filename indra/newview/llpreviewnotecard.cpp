@@ -47,6 +47,7 @@
 #include "roles_constants.h"
 #include "llscrollbar.h"
 #include "llselectmgr.h"
+#include "lltranslate.h"
 #include "lltrans.h"
 #include "llviewertexteditor.h"
 #include "llfilesystem.h"
@@ -115,6 +116,18 @@ bool LLPreviewNotecard::postBuild()
     mEditor->setAutoreplaceCallback(boost::bind(&LLAutoReplace::autoreplaceCallback, LLAutoReplace::getInstance(), _1, _2, _3, _4, _5)); // <FS:Ansariel> FIRE-22810: Add autoreplace to notecards
     mEditor->setNotecardInfo(mItemUUID, mObjectID, getKey());
     mEditor->makePristine();
+
+    mTranslationEditor = getChild<LLViewerTextEditor>("Notecard Translation");
+    mTranslationEditor->setReadOnly(true);
+    mTranslationEditor->setVisible(false);
+
+    mMachineTranslateBtn = getChild<LLButton>("Machine Translate");
+    mMachineTranslateBtn->setClickedCallback(
+        boost::bind(&LLPreviewNotecard::onTranslateClicked, this, TRANSLATION_MACHINE));
+    mAITranslateBtn = getChild<LLButton>("AI Translate");
+    mAITranslateBtn->setClickedCallback(
+        boost::bind(&LLPreviewNotecard::onTranslateClicked, this, TRANSLATION_AI));
+    updateTranslationButtons();
 
     mSaveBtn = getChild<LLButton>("Save");
     mSaveBtn->setCommitCallback(boost::bind(&LLPreviewNotecard::saveIfNeeded, this, nullptr, true));
@@ -267,6 +280,153 @@ void LLPreviewNotecard::setEnabled(bool enabled)
     {
         mSaveBtn->setEnabled(enabled && mEditor && (!mEditor->isPristine()));
     }
+    updateTranslationButtons();
+}
+
+void LLPreviewNotecard::updateTranslationButtons()
+{
+    if (!mMachineTranslateBtn || !mAITranslateBtn || !mEditor)
+    {
+        return;
+    }
+
+    const bool can_translate = !mTranslationInProgress &&
+        mAssetStatus == PREVIEW_ASSET_LOADED && !mEditor->getText().empty();
+    mMachineTranslateBtn->setEnabled(can_translate);
+    mAITranslateBtn->setEnabled(can_translate);
+    mMachineTranslateBtn->setToggleState(mTranslationView == TRANSLATION_MACHINE);
+    mAITranslateBtn->setToggleState(mTranslationView == TRANSLATION_AI);
+}
+
+void LLPreviewNotecard::showOriginalNotecard()
+{
+    mTranslationView = TRANSLATION_NONE;
+    if (mTranslationEditor)
+    {
+        mTranslationEditor->setVisible(false);
+    }
+    if (mEditor)
+    {
+        mEditor->setVisible(true);
+    }
+    updateTranslationButtons();
+}
+
+void LLPreviewNotecard::showNotecardTranslation(ETranslationView mode, const std::string& translation)
+{
+    if (!mEditor || !mTranslationEditor)
+    {
+        return;
+    }
+
+    mTranslationEditor->setText(LLStringExplicit(translation));
+    mTranslationEditor->makePristine();
+    mEditor->setVisible(false);
+    mTranslationEditor->setVisible(true);
+    mTranslationView = mode;
+    updateTranslationButtons();
+}
+
+void LLPreviewNotecard::onTranslateClicked(ETranslationView mode)
+{
+    if (!mEditor || mTranslationInProgress)
+    {
+        return;
+    }
+
+    if (mTranslationView == mode)
+    {
+        showOriginalNotecard();
+        return;
+    }
+
+    const std::string source = mEditor->getText();
+    if (source.empty())
+    {
+        return;
+    }
+
+    const std::string& cached_source = mode == TRANSLATION_AI
+        ? mAITranslationSource : mMachineTranslationSource;
+    const std::string& cached_translation = mode == TRANSLATION_AI
+        ? mAITranslation : mMachineTranslation;
+    if (cached_source == source && !cached_translation.empty())
+    {
+        showNotecardTranslation(mode, cached_translation);
+        return;
+    }
+
+    mTranslationInProgress = true;
+    const U32 request_serial = ++mTranslationRequestSerial;
+    updateTranslationButtons();
+
+    LLHandle<LLFloater> handle = getHandle();
+    auto success = [handle, mode, request_serial, source](std::string translation, std::string)
+    {
+        if (LLPreviewNotecard* self = dynamic_cast<LLPreviewNotecard*>(handle.get()))
+        {
+            self->onNotecardTranslationSuccess(mode, request_serial, source, translation);
+        }
+    };
+    auto failure = [handle, request_serial](int status, std::string reason)
+    {
+        if (LLPreviewNotecard* self = dynamic_cast<LLPreviewNotecard*>(handle.get()))
+        {
+            self->onNotecardTranslationFailure(request_serial, status, reason);
+        }
+    };
+
+    const std::string target = LLTranslate::getTranslateLanguage();
+    if (mode == TRANSLATION_AI)
+    {
+        LLTranslate::translateMessageGPT(source, target, success, failure);
+    }
+    else
+    {
+        LLTranslate::translateMessage(std::string(), target, source, success, failure);
+    }
+}
+
+void LLPreviewNotecard::onNotecardTranslationSuccess(ETranslationView mode, U32 request_serial,
+                                                       const std::string& source,
+                                                       const std::string& translation)
+{
+    if (request_serial != mTranslationRequestSerial)
+    {
+        return;
+    }
+
+    mTranslationInProgress = false;
+    if (!mEditor || mEditor->getText() != source || translation.empty())
+    {
+        showOriginalNotecard();
+        return;
+    }
+
+    if (mode == TRANSLATION_AI)
+    {
+        mAITranslationSource = source;
+        mAITranslation = translation;
+    }
+    else
+    {
+        mMachineTranslationSource = source;
+        mMachineTranslation = translation;
+    }
+    showNotecardTranslation(mode, translation);
+}
+
+void LLPreviewNotecard::onNotecardTranslationFailure(U32 request_serial, int, const std::string& reason)
+{
+    if (request_serial != mTranslationRequestSerial)
+    {
+        return;
+    }
+
+    mTranslationInProgress = false;
+    showOriginalNotecard();
+    LLNotificationsUtil::add("GenericAlert",
+        LLSD().with("MESSAGE", getString("translation_failed") + " " + reason));
 }
 
 
@@ -382,6 +542,14 @@ void LLPreviewNotecard::updateTitleButtons()
 
 void LLPreviewNotecard::loadAsset()
 {
+    ++mTranslationRequestSerial;
+    mTranslationInProgress = false;
+    mMachineTranslationSource.clear();
+    mMachineTranslation.clear();
+    mAITranslationSource.clear();
+    mAITranslation.clear();
+    showOriginalNotecard();
+
     // request the asset.
     const LLInventoryItem* item = getItem();
     bool fail = false;
@@ -434,6 +602,10 @@ void LLPreviewNotecard::loadAsset()
                     user_data =  new LLSD(mItemUUID);
                 }
 
+                // The asset cache may invoke onLoadComplete() synchronously.
+                // Mark the request as loading before starting it so a cached
+                // callback cannot set LOADED and then be overwritten here.
+                mAssetStatus = PREVIEW_ASSET_LOADING;
                 gAssetStorage->getInvItemAsset(source_sim,
                                                 gAgent.getID(),
                                                 gAgent.getSessionID(),
@@ -445,7 +617,6 @@ void LLPreviewNotecard::loadAsset()
                                                 &onLoadComplete,
                                                 (void*)user_data,
                                                 true);
-                mAssetStatus = PREVIEW_ASSET_LOADING;
             }
         }
         else
@@ -502,6 +673,7 @@ void LLPreviewNotecard::loadAsset()
         // (e.g. when this gets called initially)
         //mAssetStatus = PREVIEW_ASSET_LOADED;
     }
+    updateTranslationButtons();
 }
 
 // static
@@ -551,6 +723,7 @@ void LLPreviewNotecard::onLoadComplete(const LLUUID& asset_uuid,
             preview->setEnabled(modifiable);
             preview->syncExternal();
             preview->mAssetStatus = PREVIEW_ASSET_LOADED;
+            preview->updateTranslationButtons();
             // <FS> Byte counter
             preview->updateByteCounter();
             // </FS>
@@ -1067,6 +1240,10 @@ void LLPreviewNotecard::onFontChanged()
     if (font)
     {
         mEditor->setFont(font);
+        if (mTranslationEditor)
+        {
+            mTranslationEditor->setFont(font);
+        }
     }
 }
 // </FS:Ansariel>

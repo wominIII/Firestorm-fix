@@ -6029,6 +6029,14 @@ https://wiki.firestormviewer.org/antivirus_whitelisting
 			<ignore name="ignore" text="按下匯入按鈕時顯示萬能過濾器規則集匯入說明"/>
 		</form>
 	</notification>
+	<notification label="編輯本地庫存標籤" name="FSEditInventoryLocalLabel">
+		本地標籤（僅儲存在這台電腦上）：
+		<form name="form">
+			<input name="local_label">[NAME]</input>
+			<button name="OK" text="儲存"/>
+			<button name="Cancel" text="取消"/>
+		</form>
+	</notification>
 	<notification name="OmniFilterNonAscii">
 		所選記事卡名稱「[INPUTNAME]」無效，僅支援 ASCII 字元。
 		<form name="form">

@@ -96,9 +96,24 @@ public:
 
 protected:
 
+    enum ETranslationView
+    {
+        TRANSLATION_NONE,
+        TRANSLATION_MACHINE,
+        TRANSLATION_AI
+    };
+
     void updateTitleButtons() override;
     void loadAsset() override;
     bool saveIfNeeded(LLInventoryItem* copyitem = NULL, bool sync = true);
+
+    void onTranslateClicked(ETranslationView mode);
+    void showOriginalNotecard();
+    void showNotecardTranslation(ETranslationView mode, const std::string& translation);
+    void onNotecardTranslationSuccess(ETranslationView mode, U32 request_serial,
+                                      const std::string& source, const std::string& translation);
+    void onNotecardTranslationFailure(U32 request_serial, int status, const std::string& reason);
+    void updateTranslationButtons();
 
     // <FS> Byte Counter
     void updateByteCounter();
@@ -139,11 +154,22 @@ protected:
 
 protected:
     LLViewerTextEditor* mEditor = nullptr;
+    LLViewerTextEditor* mTranslationEditor = nullptr;
     LLLineEditor* mDescEditor = nullptr;
     LLButton* mSaveBtn = nullptr;
     LLButton* mEditBtn = nullptr;
     LLButton* mDeleteBtn = nullptr;
     LLUICtrl* mLockBtn = nullptr;
+    LLButton* mMachineTranslateBtn = nullptr;
+    LLButton* mAITranslateBtn = nullptr;
+
+    ETranslationView mTranslationView = TRANSLATION_NONE;
+    bool mTranslationInProgress = false;
+    U32 mTranslationRequestSerial = 0;
+    std::string mMachineTranslationSource;
+    std::string mMachineTranslation;
+    std::string mAITranslationSource;
+    std::string mAITranslation;
 
     // <FS> Byte counter
     LLTextBox* mByteCounter = nullptr;

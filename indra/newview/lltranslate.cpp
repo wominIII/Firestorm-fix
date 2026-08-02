@@ -38,7 +38,7 @@
 #include "llcoros.h"
 #include "llcorehttputil.h"
 #include "lldir.h"
-#include "llfstream.h"
+#include "llfile.h"
 #include "llsdserialize.h"
 #include "llurlregistry.h"
 #include "stringize.h"
@@ -1209,18 +1209,25 @@ void LLTranslate::translateOutgoingMessage(const std::string& mesg, const LLSD& 
 void LLTranslate::translateOutgoingGPT(const std::string& mesg, const LLSD& context,
                                        TranslationSuccess_fn success, TranslationFailure_fn failure)
 {
+    const std::string target = gSavedSettings.getString("FSOutgoingTranslateLanguage");
     LLCoros::instance().launch("OutgoingGPTTranslation",
-        boost::bind(&LLTranslate::translateOutgoingGPTCoro, mesg, context, success, failure));
+        boost::bind(&LLTranslate::translateOutgoingGPTCoro, mesg, context, target, success, failure));
 }
 
-void LLTranslate::translateOutgoingGPTCoro(std::string mesg, LLSD context,
+void LLTranslate::translateMessageGPT(const std::string& mesg, const std::string& to_lang,
+                                      TranslationSuccess_fn success, TranslationFailure_fn failure)
+{
+    LLCoros::instance().launch("GPTTextTranslation",
+        boost::bind(&LLTranslate::translateOutgoingGPTCoro, mesg, LLSD::emptyArray(),
+                    to_lang, success, failure));
+}
+
+void LLTranslate::translateOutgoingGPTCoro(std::string mesg, LLSD context, std::string target,
                                            TranslationSuccess_fn success, TranslationFailure_fn failure)
 {
     std::string url = gSavedSettings.getString("FSOutgoingGPTBaseURL");
     std::string key = gSavedSettings.getString("FSOutgoingGPTAPIKey");
     std::string model = gSavedSettings.getString("FSOutgoingGPTModel");
-    const std::string target = gSavedSettings.getString("FSOutgoingTranslateLanguage");
-
     LLStringUtil::trim(url);
     while (!url.empty() && url.back() == '/') url.pop_back();
     if (url.size() < 17 || url.substr(url.size() - 17) != "/chat/completions")

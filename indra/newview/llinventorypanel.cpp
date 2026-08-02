@@ -43,6 +43,7 @@
 #include "llinspecttexture.h"
 #include "llinventorybridge.h"
 #include "llinventoryfunctions.h"
+#include "llkeyboard.h"
 #include "llinventorymodelbackgroundfetch.h"
 #include "llnotificationsutil.h"
 #include "llpanelmaininventory.h"
@@ -85,6 +86,50 @@ LLUIColor LLInventoryPanel::sLibraryColor;
 LLUIColor LLInventoryPanel::sLinkColor;
 
 const LLColor4U DEFAULT_WHITE(255, 255, 255);
+
+namespace
+{
+bool matchesInventoryLocalLabelShortcut(KEY key, MASK mask)
+{
+    std::string shortcut = gSavedSettings.getString("FSInventoryLocalLabelShortcut");
+    LLStringUtil::trim(shortcut);
+    LLStringUtil::toUpper(shortcut);
+    boost::erase_all(shortcut, " ");
+    if (shortcut.empty())
+    {
+        return false;
+    }
+
+    std::vector<std::string> tokens;
+    boost::split(tokens, shortcut, boost::is_any_of("+"), boost::token_compress_off);
+
+    MASK shortcut_mask = MASK_NONE;
+    KEY shortcut_key = 0;
+    for (const std::string& token : tokens)
+    {
+        if (token == "CTRL" || token == "CONTROL" || token == "CTL")
+        {
+            shortcut_mask |= MASK_CONTROL;
+        }
+        else if (token == "ALT")
+        {
+            shortcut_mask |= MASK_ALT;
+        }
+        else if (token == "SHIFT")
+        {
+            shortcut_mask |= MASK_SHIFT;
+        }
+        else if (shortcut_key != 0 || !LLKeyboard::keyFromString(token, &shortcut_key))
+        {
+            return false;
+        }
+    }
+
+    const MASK relevant_mask = MASK_CONTROL | MASK_ALT | MASK_SHIFT;
+    return shortcut_key != 0 && key == shortcut_key &&
+        (mask & relevant_mask) == shortcut_mask;
+}
+}
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Class LLInventoryPanelObserver
@@ -2515,6 +2560,25 @@ void LLInventoryPanel::onCustomAction(const LLSD& userdata)
 bool LLInventoryPanel::handleKeyHere( KEY key, MASK mask )
 {
     bool handled = false;
+
+    if (mFolderRoot.get() && gFocusMgr.childHasKeyboardFocus(mFolderRoot.get()) &&
+        matchesInventoryLocalLabelShortcut(key, mask))
+    {
+        const std::set<LLFolderViewItem*> selection = mFolderRoot.get()->getSelectionList();
+        if (selection.size() == 1)
+        {
+            LLFolderViewItem* folder_item = *selection.begin();
+            LLInvFVBridge* bridge = static_cast<LLInvFVBridge*>(folder_item->getViewModelItem());
+            if (bridge &&
+                gInventory.isObjectDescendentOf(bridge->getUUID(), gInventory.getRootFolderID()) &&
+                !bridge->isItemInTrash())
+            {
+                bridge->editLocalLabel();
+                return true;
+            }
+        }
+    }
+
     switch (key)
     {
     case KEY_RETURN:

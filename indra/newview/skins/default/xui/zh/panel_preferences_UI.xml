@@ -188,6 +188,9 @@
 			<check_box label="在庫存中顯示「收件箱」檔案夾" name="FSShowInboxFolder" tool_tip="如果啟用，將在庫存視窗中將「收件箱」檔案夾顯示為常規檔案夾。" />
 			<check_box label="始終在庫存視窗中顯示「收件箱」按鈕" name="FSAlwaysShowInboxButton" tool_tip="如果啟用，即使庫存中顯示檔案夾，也將始終在庫存視窗中顯示「收件箱」按鈕。" />
 			<check_box label="允許在每個索引標籤中使用不同的庫存搜尋術語" name="FSSplitInventorySearchOverTabs" tool_tip="如果啟用，可以在庫存視窗的每個索引標籤中輸入不同的搜尋術語。" />
+			<text name="FSInventoryLocalLabelShortcutLabel">本地標籤快速鍵：</text>
+			<line_editor name="FSInventoryLocalLabelShortcut" tool_tip="例如：X、Ctrl+L、Alt+X。留空即可停用。只有庫存清單取得焦點時才會生效。" />
+			<text name="FSInventoryLocalLabelShortcutHint">X / Ctrl+L / Alt+X</text>
 		</panel>
 		<panel label="提示框" name="UI-toasts-tab">
 			<text name="ToastSettings">

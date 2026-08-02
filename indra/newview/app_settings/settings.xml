@@ -27105,6 +27105,17 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <real>0.7</real>
     </map>
+    <key>FSInventoryLocalLabelShortcut</key>
+    <map>
+      <key>Comment</key>
+      <string>Keyboard shortcut used to edit the local label of the selected inventory item. Empty disables the shortcut.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>X</string>
+    </map>
     <key>FSShowInventoryThumbnailTooltips</key>
     <map>
       <key>Comment</key>
