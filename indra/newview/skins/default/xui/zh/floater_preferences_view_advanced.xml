@@ -12,3 +12,4 @@
 	<button label="保存为预设..." name="save_preset_btn" width="180"/>
 	<button label="关闭" name="close_btn" width="70"/>
 </floater>
+

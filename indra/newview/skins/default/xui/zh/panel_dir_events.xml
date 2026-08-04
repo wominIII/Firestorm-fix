@@ -32,6 +32,7 @@
 	<scroll_list name="results">
 		<column label="名称" name="name" />
 		<column label="时间(PT)" name="date"/>
+		<column label="时间" name="time" />
 	</scroll_list>
 	<button tool_tip="上一页" name="prev_btn"/>
 	<button tool_tip="下一页" name="next_btn"/>
@@ -39,6 +40,6 @@
 		<radio_item name="current" label="当前及即将开始"/>
 		<radio_item name="date" label="日期"/>
 	</radio_group>
-	<button label="&lt;&lt;" label_selected="&lt;&lt;" name="back_btn" tool_tip="后退一天"/>
-	<button label="&gt;&gt;" label_selected="&gt;&gt;" name="forward_btn" tool_tip="前进一天"/>
+	<button name="back_btn" tool_tip="后退一天"/>
+	<button name="forward_btn" tool_tip="前进一天"/>
 </panel>

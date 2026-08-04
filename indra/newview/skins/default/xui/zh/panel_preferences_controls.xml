@@ -8,3 +8,4 @@
 	</combo_box>
 	<button label="重置" tool_tip="恢复所有控制模式的默认值。" name="restore_defaults"/>
 </panel>
+

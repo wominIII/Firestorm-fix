@@ -5,6 +5,7 @@
 	<menu_item_check label="显示收藏夹" name="ShowNavbarFavoritesPanel"/>
 	<menu_item_check label="显示位置" name="ShowMenuBarLocation"/>
 	<menu_item_check label="显示模拟主机版本" name="FSStatusbarShowSimulatorVersion"/>
+	<menu_item_check label="显示万能过滤器控件" name="FSOmnifilterControls" />
 	<menu_item_check label="在菜单中显示搜索" name="FSMenuSearch"/>
 	<menu_item_check label="显示货币余额" name="FSShowCurrencyBalanceInStatusbar"/>
 	<menu_item_check label="显示音量控制" name="FSEnableVolumeControls"/>

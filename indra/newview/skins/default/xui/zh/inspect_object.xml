@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<!--
-  Not can_close / no title to avoid window chrome
-  Single instance - only have one at a time, recycle it each spawn
--->
 <floater name="inspect_object">
 	<string name="Creator">
 		来自 [CREATOR]
@@ -10,9 +6,6 @@
 	<string name="CreatorAndOwner">
 		来自 [CREATOR]
 所有者 [OWNER]
-	</string>
-	<string name="Price">
-		[AMOUNT] L$
 	</string>
 	<string name="PriceFree">
 		免费！
@@ -23,23 +16,12 @@
 	<string name="Sit">
 		坐下
 	</string>
-	<text name="object_name" value="测试物件名称是否很长，且横跨两行。"/>
-	<text name="object_creator">
-		来自 secondlife:///app/agent/0e346d8b-4433-4d66-a6b0-fd37083abc4c/about
-所有者 secondlife:///app/agent/0e346d8b-4433-4d66-a6b0-fd37083abc4c/about
-	</text>
-	<text name="price_text">
-		L$
-	</text>
-	<text name="object_description">
-	    这是一个物件的非常长的描述，至少80个字符长， 或者现在至少已经有120个字符长，比原来的英文文本还要长。没有人确切知道。
-	</text>
+	<icon name="secure_browsing" tool_tip="安全浏览"/>
 	<button label="购买" name="buy_btn"/>
 	<button label="支付" name="pay_btn"/>
 	<button label="获取副本" name="take_free_copy_btn"/>
 	<button label="触碰" name="touch_btn"/>
 	<button label="坐下" name="sit_btn"/>
 	<button label="打开" name="open_btn"/>
-	<icon name="secure_browsing" tool_tip="安全浏览"/>
 	<button label="更多" name="more_info_btn"/>
 </floater>

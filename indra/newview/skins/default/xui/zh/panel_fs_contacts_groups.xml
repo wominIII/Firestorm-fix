@@ -11,3 +11,4 @@
 	<button label="搜索..." name="search_btn" />
 	<button label="邀请..." name="invite_btn" />
 </panel>
+

@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <panel name="edit_physics_panel">
 	<tab_container name="wearable_accordion">
-		<panel name="physics_breast_updown_tab_holder" title="乳房彈性">
+		<panel name="physics_breast_updown_tab_holder" title="乳房弹性">
 			<text name="physics_breast_updown_not_available">
-				乳房彈性僅適用於女性化身。
+				乳房弹性仅适用于女性化身。
 			</text>
 		</panel>
-		<panel name="physics_breast_inout_tab_holder" title="乳溝深淺">
+		<panel name="physics_breast_inout_tab_holder" title="乳沟深浅">
 			<text name="physics_breast_inout_not_available">
-				乳溝深淺僅適用於女性化身。
+				乳沟深浅仅适用于女性化身。
 			</text>
 		</panel>
-		<panel name="physics_breast_leftright_tab_holder" title="乳房搖擺">
+		<panel name="physics_breast_leftright_tab_holder" title="乳房摇摆">
 			<text name="physics_breast_leftright_not_available">
-				乳房搖擺僅適用於女性化身。
+				乳房摇摆仅适用于女性化身。
 			</text>
 		</panel>
-		<panel name="physics_belly_tab_holder" title="腹部彈性" />
-		<panel name="physics_butt_tab_holder" title="臀部彈性" />
-		<panel name="physics_butt_leftright_tab_holder" title="臀部搖擺" />
-		<panel name="physics_advanced_tab_holder" title="進階參數" />
+		<panel name="physics_belly_tab_holder" title="腹部弹性"/>
+		<panel name="physics_butt_tab_holder" title="臀部弹性"/>
+		<panel name="physics_butt_leftright_tab_holder" title="臀部摇摆"/>
+		<panel name="physics_advanced_tab_holder" title="高级参数"/>
 	</tab_container>
 </panel>
+

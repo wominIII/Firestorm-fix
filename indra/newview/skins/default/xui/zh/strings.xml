@@ -93,7 +93,7 @@ Voice Server Version: [VOICE_VERSION]
   <string name="LocalTime">[year, datetime, local] [month, datetime, local] [day, datetime, local] [hour, datetime, local]:[min, datetime, local]:[second,datetime, local]</string>
 	<string name="ErrorFetchingServerReleaseNotesURL">获取服务器发行文件URL失败.</string>
 	<string name="BuildConfiguration">生成配置</string>
-
+	
 	<!--  progress -->
 	<string name="ProgressRestoring">恢复中...</string>
 	<string name="ProgressChangingResolution">更改分辨率...</string>
@@ -136,10 +136,12 @@ Voice Server Version: [VOICE_VERSION]
 	<string name="LoginFailedHeader">登录失败.</string>
 	<string name="Quit">退出</string>
 	<string name="create_account_url">https://www.firestormviewer.org/join-secondlife/</string>
-
+	
 	<string name="AgniGridLabel">第二人生主网络 (Agni)</string>
 	<string name="AditiGridLabel">第二人生测试网络 (Aditi)</string>
-
+	<string name="AgniGridLabelShort">Agni（正式）</string>
+	<string name="AditiGridLabelShort">Aditi（测试）</string>
+	
 	<string name="ViewerDownloadURL">https://www.firestormviewer.org/choose-your-platform/</string>
 	<string name="LoginFailedViewerNotPermitted">
 当前版本查看器已无法继续登录第二人生, 请前往以下网站下载最新版本查看器:
@@ -178,7 +180,7 @@ http://secondlife.com/viewer-access-faq</string>
 support@secondlife.com.</string>
   <!--'Pacific time' placeholder for [TIME] in case time from server can't be decoded-->
   <string name="PacificTime">太平洋时间</string>
-	<string name="LoginFailedAcountSuspended">你的账号需在太平洋时间 [TIME]
+	<string name="LoginFailedAcountSuspended">你的账号需在太平洋时间 [TIME] 
 之后方可登陆。
 如果你觉得这是我们的错误，请联系 support@secondlife.com.</string>
 	<string name="LoginFailedAccountDisabled">我们无法完成你的当前请求。
@@ -186,7 +188,7 @@ support@secondlife.com.</string>
 	<string name="LoginFailedTransformError">登录时发现资料不一致。
 请联系 support@secondlife.com.</string>
 	<string name="LoginFailedAccountMaintenance">你的账号目前正在临时维护中。
-你的账号需在太平洋时间 [TIME]
+你的账号需在太平洋时间 [TIME] 
 之后方可登陆。
 如果你觉得这是我们的错误，请联系 support@secondlife.com.</string>
 	<string name="LoginFailedPendingLogoutFault">注销登陆时模拟主机发生错误。</string>
@@ -242,7 +244,7 @@ support@secondlife.com.</string>
   <string name="SocialPrimfeedNotAuthorized">未经授权...</string>
   <string name="SocialPrimfeedPosting">正在发布...</string>
   <string name="SocialPrimfeedErrorPosting">发布到Primfeed时出现问题</string>
-
+  
 	<!-- SLShare: User Friendly Filter Names Translation -->
     <string name="BlackAndWhite">黑 &amp; 白</string>
     <string name="Colors1970">1970年代&apos; 色调</string>
@@ -274,9 +276,9 @@ support@secondlife.com.</string>
     <string name="Rotatecolors180">色彩偏移</string>
     <string name="Sharpen">锐化</string>
     <string name="Thematrix">矩阵</string>
-
-
-
+	
+	
+	
     <!-- Tooltip -->
 	<string name="TooltipPerson">人名</string><!-- Object under mouse pointer is an avatar -->
 	<string name="TooltipNoName">(没有名字)</string> <!-- No name on an object -->
@@ -476,7 +478,7 @@ support@secondlife.com.</string>
 	<string name="settings blob">设定</string>
 	<string name="render material">材质</string>
 	<string name="mesh">网格模型</string>
-
+  
 	<!-- llvoavatar. Displayed in the avatar chat bubble -->
 	<string name="AvatarEditingAppearance">(外观编辑)</string>
 	<string name="AvatarAway">离开</string>
@@ -569,7 +571,7 @@ support@secondlife.com.</string>
 	<string name="worldmap_item_tooltip_format">[AREA] 平方米 [PRICE] L$ ([SQMPRICE] L$每平米)</string>
 	<string name="worldmap_results_none_found">查无结果。</string>
 	<string name="worldmap_agent_position">你在这里</string>
-
+	
 	<!-- mini map -->
 	<string name="minimap_distance">(距离: [DISTANCE] 米)</string>
 	<string name="minimap_no_focus">镜头无法聚焦到目标身上，因为他在你的显示距离之外。</string>
@@ -592,6 +594,8 @@ support@secondlife.com.</string>
 	<string name="reconnect_nearby">已将你重新连接到附近语音聊天</string>
 	<string name="ScriptQuestionCautionChatGranted">物件“[OBJECTNAME]&apos;”（所有者“[OWNERNAME]”，位于“[REGIONNAME]”，方位“[REGIONPOS]”）已获得下列权限：[PERMISSIONS]。</string>
 	<string name="ScriptQuestionCautionChatDenied">物件“[OBJECTNAME]&apos;”（所有者“[OWNERNAME]”，位于“[REGIONNAME]”，方位“[REGIONPOS]”）已获得下列权限：[PERMISSIONS]。</string>
+	<string name="ScriptTakeMoneyCaution">物件“&lt;nolink&gt;[OBJECTNAME]&lt;/nolink&gt;”请求完全访问你的 Linden 货币账户。如果你允许，该物件可以随时从你的账户中扣款，甚至在不另行警告的情况下完全清空你的账户，并可能持续执行此操作。</string> 
+	<string name="PrivilegedLandAccessCaution">物件“&lt;nolink&gt;[OBJECTNAME]&lt;/nolink&gt;”请求你的土地特权访问权限。如果你允许，它可能在不另行警告的情况下出售你的土地。</string>
 	<string name="AdditionalPermissionsRequestHeader">如果你允许该物件访问你的账户，则该物件会:</string>
 	<string name="ScriptTakeMoney">从你身上获取林登币(L$) -危险行为</string>
 	<string name="ActOnControlInputs">按照你的控制做出相应操作</string>
@@ -609,11 +613,11 @@ support@secondlife.com.</string>
 	<string name="ChangeYourDefaultAnimations">更改你的默认动画</string>
 	<string name="ForceSitAvatar">强迫你的化身坐下</string>
 	<string name="ChangeEnvSettings">更改你的环境设置</string>
+	<string name="PrivilegedLandAccess">代你出售土地。</string>
 	<string name="SnapshotSavedToDisk">照片已保存: [FILENAME]</string>
-
+	
 	<string name="NotConnected">未附着</string>
-	<string name="AgentNameSubst">(你)</string> <!-- Substitution for agent name -->
-	<string name="JoinAnExperience"/><!-- intentionally blank -->
+	<string name="AgentNameSubst">(你)</string>
 	<string name="SilentlyManageEstateAccess">不显示管理领地出入许可名单时的警告</string>
 	<string name="OverrideYourAnimations">替换你的当前动画</string>
 	<string name="ScriptReturnObjects">替你退回物件</string>
@@ -789,6 +793,7 @@ support@secondlife.com.</string>
 	<string name="InventoryNoMatchingRecentItems">未找到你想要的？ 尝试[secondlife:///app/inventory/filters 更改过滤器].</string>
 	<string name="InventoryNoMatchingFavorites">您尚未将任何物件标记为收藏。</string>
 	<string name="FSInventoryCustomTabDefaultName">自定义</string>
+	<string name="FSInventoryCustomTabShowHidden">显示隐藏标签页</string>
 	<string name="PlacesNoMatchingItems">要将地点添加到您的地标，请点击地点名称右侧的星形图标。</string>
 	<string name="FavoritesNoMatchingItems">将地标拖入此处便可加入“收藏夹”</string>
 	<string name="MarketplaceNoListing">你尚未登录。</string>
@@ -987,7 +992,7 @@ support@secondlife.com.</string>
 	<string name="InvFolder #RLV">#RLV</string>
 
 	<string name="InvFolder My Suitcase">我的箱子</string>
-
+	
 	<string name="no_attachments">未穿戴任何附件</string>
     <string name="Attachments remain">附件 (还能容纳 [COUNT] 件)</string>
 
@@ -1160,7 +1165,7 @@ support@secondlife.com.</string>
 	<string name="UploadFailed">文件上传失败：[REASON]</string>
 	<string name="ObjectOutOfRange">脚本（物件超出范围）</string>
 	<string name="ScriptWasDeleted">脚本（已从库存删除）</string>
-
+	
 	<!-- god tools -->
 	<string name="GodToolsObjectOwnedBy">物件 [OBJECT] 所有者为 [OWNER]</string>
 
@@ -1280,7 +1285,7 @@ support@secondlife.com.</string>
     <string name="ATTACH_GROIN">腹股沟</string>
     <string name="ATTACH_HIND_LFOOT">左后脚</string>
     <string name="ATTACH_HIND_RFOOT">右后脚</string>
-
+			
   <!-- script editor -->
 	<string name="CursorPos">横排[LINE], 竖排[COLUMN]</string>
 
@@ -1294,7 +1299,7 @@ support@secondlife.com.</string>
 	<!-- panel contents -->
 	<string name="PanelContentsTooltip">目标内容</string>
 	<string name="PanelContentsNewScript">新脚本</string>
-
+	
 	<!-- Mute -->
 	<string name="MuteByName">(姓名)</string>
 	<string name="MuteAgent">(居民)</string>
@@ -1499,7 +1504,10 @@ support@secondlife.com.</string>
 		[APP_NAME] 上次执行时好像出现冻结或崩溃。
 你是否想要发送崩溃报告？
 	</string>
-	<string name="MBAlert">Notification</string>
+	<string name="MBFreezeDetected">
+		[APP_NAME] 似乎已无响应。如果此问题经常发生，请通过 https://www.firestormviewer.org/support 联系技术支持。
+	</string>
+	<string name="MBAlert">通知</string>
 	<string name="MBNoDirectX">
 		[APP_NAME] 未检测到 DirectX 9.0b 或更高版本。
 [APP_NAME] 使用 DirectX 来检测过时硬件可能引发的稳定性差、性能低下、驱动崩溃等问题。你可以在没有它的情况下继续运行 [APP_NAME]，但我们强烈建议你安装DirectX 9.0b。
@@ -2172,17 +2180,17 @@ support@secondlife.com.</string>
 	<string name="Unnamed">(未命名)</string>
 	<string name="IM_moderated_chat_label">(有人主持：默认关闭语音)</string>
 	<string name="IM_unavailable_text_label">这次通话无法使用文字聊天。</string>
-	<string name="IM_muted_text_label">群组主持人已禁止你进行文字聊天。</string>
+	<string name="IM_muted_text_label">群组管理员已禁止你进行文字聊天。</string>
 	<string name="IM_default_text_label">点按此处以传送私聊消息。</string>
 	<string name="IM_to_label">至</string>
-	<string name="IM_moderator_label">(主持人)</string>
+	<string name="IM_moderator_label">(管理员)</string>
 	<string name="Saved_message">(于 [LONG_TIMESTAMP] 储存)</string>
 	<string name="IM_unblock_only_groups_friends">要察看这消息，你必须到「偏好设定 / 隐私」，取消勾选「只有我的朋友和群组可以私聊或与我通话」。</string>
   <string name="OnlineStatus">上线</string>
   <string name="OfflineStatus">离线</string>
 	<string name="not_online_msg">用户不在线 - 消息将留存，稍后传递。</string>
 	<string name="not_online_inventory">用户不在线 - 库存已储存。</string>
-
+	
 	<!-- Additional IM messages -->
 	<string name="IM_announce_incoming">收到来自 [NAME] 的消息。</string>
 	<string name="IM_autoresponse_sent">已发送自动回复：[MESSAGE]</string>
@@ -2267,17 +2275,17 @@ support@secondlife.com.</string>
     你没有这个能力。
   </string>
   <string name="not_a_mod_error">
-    你没有聊天主持人身份。
+    你没有聊天管理员身份。
   </string>
   <!--Some times string name is getting from the body of server response.
   For ex.: from gIMMgr::showSessionStartError in the LLViewerChatterBoxSessionStartReply::post.
   In case of the EXT-3562 issue 'muted' is passed into the gIMMgr::showSessionStartError as a string name.
   So, let add string with name="muted" with the same value as "muted_error" -->
   <string name="muted">
-    群组主持人已禁止你进行文字聊天。
+    群组管理员已禁止你进行文字聊天。
   </string>
   <string name="muted_error">
-    群组主持人已禁止你进行文字聊天。
+    群组管理员已禁止你进行文字聊天。
   </string>
   <string name="add_session_event">
     无法增加用户加入与 [RECIPIENT] 的聊天会话。
@@ -2358,7 +2366,7 @@ support@secondlife.com.</string>
 
   <string name="uploading_costs">上传花费 [AMOUNT] L$ </string>
   <string name="this_costs">本次花费 [AMOUNT] L$ </string>
-
+  
   <string name="buying_selected_land">土地费用</string>
   <string name="this_object_costs">物件价格</string>
   <string name="giving">你需支付</string>
@@ -2439,7 +2447,7 @@ support@secondlife.com.</string>
   <string name="New Water">新的水文</string>
   <string name="New Sky">新的天空</string>
   <string name="New Settings">新环境设置</string>
-
+  
 
   <string name="/bow">/鞠躬</string>
   <string name="/clap">/拍手</string>
@@ -2518,7 +2526,7 @@ support@secondlife.com.</string>
   <string name="Accounting">报告</string>
   <string name="Notices">通知</string>
   <string name="Chat">聊天</string>
-
+  
   <!-- SL Membership -->
   <string name="BaseMembership">基础成员</string>
   <string name="PremiumMembership">高级会员</string>
@@ -2755,7 +2763,7 @@ support@secondlife.com.</string>
   <string name="Command_Poser_Tooltip">编辑你的化身和动画物件的姿势</string>
   <string name="Command_Primfeed_Label">Primfeed</string>
   <string name="Command_Primfeed_Tooltip">直接发布到您的Primfeed账户。</string>
-  <string name="Command_Omnifilter_Label">全方位过滤器</string>
+  <string name="Command_Omnifilter_Label">万能过滤器</string>
   <string name="Command_AvatarAlign_Label">化身对齐</string>
   <string name="Command_FaceNearest_Label">朝最近的化身旋转</string>
 
@@ -2826,7 +2834,7 @@ support@secondlife.com.</string>
   <string name="Command_RFO_Tooltip">在查看器中只显示你的好友，其他化身都将被隐藏。一旦使用瞬间传送就会恢复其他人的显示。</string>
   <string name="Command_DAO_Tooltip">取消动画物件（Animesh）-临时取消渲染当前所有可见（已附着或自由行动）的动画物件。瞬间传送后自动恢复动画物件。</string>
   <string name="Command_Beacons_Tooltip">显示信标</string>
-  <string name="Command_Omnifilter_Tooltip">编辑全方位过滤器规则</string>
+  <string name="Command_Omnifilter_Tooltip">编辑万能过滤器规则</string>
 
   <string name="Toolbar_Bottom_Tooltip">位于你的底部工具栏</string>
   <string name="Toolbar_Left_Tooltip"  >位于你的左侧工具栏</string>
@@ -2835,7 +2843,7 @@ support@secondlife.com.</string>
   <string name="Command_Fly_Tooltip">打开/关闭飞行模式 (HOME)</string>
   <string name="Command_Stop_Animations_Label">停止动画</string>
   <string name="Command_Stop_Animations_Tooltip">停止我的化身上的动画</string>
-
+  
   <string name="Command_Discord_Label">Discord</string>
   <string name="Command_Discord_Tooltip">Discord</string>
 
@@ -2886,7 +2894,7 @@ support@secondlife.com.</string>
   <string name="MediaFilterMediaContentDomainAlwaysBlocked">来自区域 [DOMAIN] 的多媒体被永久阻止播放。</string>
   <string name="MediaFilterMediaContentUrlAlwaysAllowed">始终播放来自 URL [MEDIAURL] 的多媒体。</string>
   <string name="MediaFilterMediaContentUrlAlwaysBlocked">来自 URL [MEDIAURL] 的多媒体被永久阻止播放。</string>
-
+  
   <string name="MediaFilterAudioContentBlocked">来自区域 [DOMAIN] 的音频已被阻止</string>
   <string name="MediaFilterAudioContentDomainAlwaysAllowed">始终播放来自区域 [DOMAIN] 的音频。</string>
   <string name="MediaFilterAudioContentDomainAlwaysBlocked">来自区域 [DOMAIN] 的音频被永久阻止播放。</string>
@@ -2911,12 +2919,12 @@ support@secondlife.com.</string>
   <string name="MovelockEnabled">我自己 &gt; 动作 &gt; 移动锁定已开启</string>
 
   <string name="BusyResponse">应答器忙</string>
-
+  
   <string name="TeleportMaturityExceeded">居民不得进入此区域。</string>
 
   <!-- Spell check settings floater -->
   <string name="UserDictionary">[User]</string>
-
+  
   <!-- RLVa -->
   <string name="RLVaPendingRestart">(重启挂起的活动)</string>
   <string name="RLVaToggleMessageLogin">RLVa已经 [STATE] （无需重启）</string>
@@ -2924,7 +2932,7 @@ support@secondlife.com.</string>
   <string name="RLVaToggleEnabled">开启</string>
   <string name="RLVaToggleDisabled">关闭</string>
   <string name="RLVaStatusDisabled">(关闭)</string>
-
+   
   <!-- Experience Tools strings -->
   <string name="experience_tools_experience">体验</string>
   <string name="ExperienceNameNull">(没有体验)</string>
@@ -2957,7 +2965,7 @@ support@secondlife.com.</string>
   <string name="ExperiencePermissionShort12">许可</string>
   <string name="ExperiencePermissionShort16">坐下</string>
   <string name="ExperiencePermissionShort17">环境</string>
-
+  
   <!-- PBR Materials -->
   <string name="Material Texture Name Header">此材质使用的纹理:</string>
   <string name="material_selection_title">材質選擇</string>
@@ -2986,7 +2994,7 @@ support@secondlife.com.</string>
   <string name="Default">默认</string>
   <string name="none_paren_cap">(无)</string>
   <string name="no_limit">无限制</string>
-
+  
   <string name="Mav_Details_MAV_FOUND_DEGENERATE_TRIANGLES">
       物理模型包含太多的三角形。尝试简化物理模型。
   </string>
@@ -3030,6 +3038,16 @@ SecondLife.com网站的“支持”部分
 
   <string name="DrawDistanceSteppingGestureObsolete">由于编码发生变化，不再需要使用该手势。“渐进绘制距离步进”已启用。</string>
   <string name="FSCameraPositionCopied">相机位置 [POS] 已复制到剪贴板。</string>
+  <string name="FSCameraPositionPasted">相机已恢复到 [POS]。</string>
+  <string name="FSCameraPositionParseError">无效的相机位置。格式应为：&lt;x, y, z&gt; 或 &lt;x, y, z&gt;|&lt;fx, fy, fz&gt;|roll（本地坐标）。</string>
+  <string name="FSCmdLineZOffsetUsage">设置化身悬浮高度（用法：/zoffset value 或 +delta）。</string>
+  <string name="FSCmdLineNoValidRegion">无法获取有效的区域指针。</string>
+  <string name="FSCmdLineTrackPosUsage">在世界地图上跟踪位置或化身（用法：cmd &lt;x, y, z&gt; 或 cmd 名称）。</string>
+  <string name="FSCmdLineTrackPosParseError">无效位置。请使用 cpcampos 格式：&lt;x, y, z&gt; 或 &lt;x, y, z&gt;|&lt;fx, fy, fz&gt;|roll。</string>
+  <string name="FSCmdLineTrackPosLocation">正在跟踪 [REGION] ([POS])。</string>
+  <string name="FSCmdLineTrackPosAvatar">正在跟踪 [NAME]。</string>
+  <string name="FSCmdLineTrackPosNotFound">无法在雷达中找到匹配 “[NAME]” 的化身。</string>
+  <string name="FSCmdLineTrackPosMapError">无法打开世界地图。</string>
 
   <string name="FSCmdLineDrawDistanceSet">绘制距离设置为 [DISTANCE] 米。</string>
   <string name="FSCmdLineRollDiceTotal">最后结果为 [DICE]d[FACES][MODIFIER]: [RESULT].</string>
@@ -3043,11 +3061,11 @@ SecondLife.com网站的“支持”部分
   <string name="FSCmdLineCalcRandError">'[RAND]' RAND不是正确的表达式(min,max). MAX 必须大于 MIN, 且两者应处于 -10000 与 10000 之间。</string>
   <string name="FSCmdLineRSP">最大带宽设置为 [VALUE] KBPS.</string>
   <string name="FSCmdLineTpOffered">主动传送至 [NAME].</string>
-
+  
   <!-- Build types for about floater -->
   <string name="FSWithHavok">使用Havok引擎支持</string>
   <string name="FSWithOpensim">使用OpenSimulator项目支持</string>
-
+    
   <!-- Firestorm search -->
   <string name="not_found">未找到 &apos;[TEXT]&apos;</string>
   <string name="no_results">没有结果</string>
@@ -3056,7 +3074,7 @@ SecondLife.com网站的“支持”部分
   <string name="search_banned">基于社区中已确定的内容限制标准，搜索查询中的某些词语被排除在外。</string>
   <string name="search_short">你的搜索词太短，因此没有执行任何搜索。</string>
   <string name="search_disabled">已在此区域禁用旧版搜索。</string>
-
+  
   <string name="render_quality_low">低 (1/7)</string>
   <string name="render_quality_mediumlow">中-低 (2/7)</string>
   <string name="render_quality_medium">中 (3/7)</string>
@@ -3142,14 +3160,14 @@ SecondLife.com网站的“支持”部分
   <string name="PS_Arms_straight_sitting">双臂向前，坐姿</string>
   <string name="PS_Arms_upward_Legs_apart">双臂向上，双腿分开</string>
   <string name="PS_Arms_upward_Legs_together">双臂向上，双腿并拢</string>
-
+  
   <string name="QP_WL_Region_Default">默认环境</string>
   <string name="QP_WL_Day_Cycle_Based">基于一天周期</string>
   <string name="QP_WL_None">没有</string>
 
   <string name="GroupChatMuteNotice">将来自 [NAME] 群组的聊天静音。</string>
   <string name="IgnoredAdHocSession">[AVATAR_NAME] 邀请你参加（临时）聊天, 但由于你的设置，查看器自动忽略了它。</string>
-
+  
   <!-- <FS:Ansariel> Radar notifications -->
   <string name="camera_no_focus">相机无法聚焦于 [AVATARNAME] 用户，因为他们在你的绘制距离之外。</string>
   <string name="entering_draw_distance">进入绘制距离 ([DISTANCE] 米).</string>
@@ -3215,7 +3233,7 @@ SecondLife.com网站的“支持”部分
   <string name="animation_explorer_seconds_ago">[SECONDS] 秒前</string>
   <string name="animation_explorer_still_playing">还在播放</string>
   <string name="animation_explorer_unknown_priority">未知</string>
-
+  
   <string name="FriendOnlineNotification">已上线。</string>
   <string name="FriendOfflineNotification">已离线。</string>
 
@@ -3253,7 +3271,7 @@ SecondLife.com网站的“支持”部分
   <string name="Favorites">收藏</string>
   <string name="InvOfferGroupNoticeName">群组成员名[NAME]</string>
   <string name="CallingCardOnlineLabelSuffix">(online)</string>
-
+  
   <string name="GroupNoticesPanelDateString">[year,datetime,local]/[mthnum,datetime,local]/[day,datetime,local] [hour,datetime,local]:[min,datetime,local]:[second,datetime,local]</string>
   <string name="GroupNoticesPanelDateStringAMPM">[year,datetime,local]/[mthnum,datetime,local]/[day,datetime,local] [hour12,datetime,local]:[min,datetime,local]:[second,datetime,local] [timezone,datetime,local]</string>
   <string name="GroupNoticesToastDateString">[year,datetime,slt], [mth,datetime,slt] [day,datetime,slt] [wkday,datetime,slt] [hour,datetime,slt]:[min,datetime,slt]:[second,datetime,slt] [timezone,datetime,slt]</string>
@@ -3269,7 +3287,6 @@ SecondLife.com网站的“支持”部分
   <string name="Nametag_Texture_Area_Label">纹理面积：[TEXTURE_AREA] m²</string>
 
   <string name="font_unknown">未知字体</string>
-  <string name="font_fonts.xml">Deja Vu</string>
   <string name="font_fonts_ubuntu.xml">Ubuntu 字体家族</string>
   <string name="font_fonts_liberation.xml">Liberation</string>
   <string name="font_fonts_droid.xml">Droid Sans</string>
@@ -3315,5 +3332,6 @@ SecondLife.com网站的“支持”部分
   <string name="Very High">超高</string>
   <string name="Ultra">极致</string>
   <string name="Maximum">最大值</string>
-  <string name="OmnifilterReplacement">全方位过滤器替换：[REPLACEMENT]</string>
+  <string name="OmnifilterReplacement">万能过滤器替换：[REPLACEMENT]</string>
+  <string name="OmnifilterDefaultName">默认</string>
 </strings>

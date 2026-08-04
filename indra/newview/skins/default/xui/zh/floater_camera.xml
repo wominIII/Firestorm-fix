@@ -15,6 +15,15 @@
 	<string name="inactive_combo_text">
 		默认值
 	</string>
+	<panel name="buttons_panel">
+		<panel_camera_item name="front_view" tool_tip="前视图"/>
+		<panel_camera_item name="group_view" tool_tip="侧视图"/>
+		<panel_camera_item name="rear_view" tool_tip="后视图"/>
+		<panel_camera_item name="tpp_view" tool_tip="第三人称视角"/>
+		<panel_camera_item name="object_view" tool_tip="物件视图"/>
+		<panel_camera_item name="mouselook_view" tool_tip="鼠标观察"/>
+		<panel_camera_item name="reset_view" tool_tip="重置视图"/>
+	</panel>
 	<panel name="zoom">
 		<layout_stack name="camera_view_layout_stack">
 			<layout_panel name="camera_rotate_layout_panel">
@@ -30,21 +39,12 @@
 			</layout_panel>
 		</layout_stack>
 	</panel>
-	<panel name="buttons_panel">
-		<panel_camera_item name="front_view" tool_tip="前视图"/>
-		<panel_camera_item name="group_view" tool_tip="侧视图"/>
-		<panel_camera_item name="rear_view" tool_tip="后视图"/>
-		<panel_camera_item name="tpp_view" tool_tip="第三人称视角"/>
-		<panel_camera_item name="object_view" tool_tip="物件视图"/>
-		<panel_camera_item name="mouselook_view" tool_tip="鼠标观察"/>
-		<panel_camera_item name="reset_view" tool_tip="重置视图"/>
-	</panel>
 	<panel name="preset_buttons_panel">
 		<button label="位置..." name="camera_position_btn"/>
+		<button name="save_preset_btn" tool_tip="保存为预设"/>
 		<combo_box name="preset_combo">
 			<combo_box.item label="使用预设" name="Use preset"/>
 		</combo_box>
 		<button name="gear_btn" tool_tip="相机预设"/>
-		<button name="save_preset_btn" tool_tip="保存为预设"/>
 	</panel>
 </floater>

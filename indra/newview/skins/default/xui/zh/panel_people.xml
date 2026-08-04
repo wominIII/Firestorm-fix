@@ -13,7 +13,7 @@
 
 [secondlife:///app/floater/destinations 目的地] 包含模拟网络管理员选择的地点。
 
-[secondlife:///app/search/ 搜索] 可让您在模拟网络中搜索特定关键词。
+[secondlife:///app/search/ 搜索] 可让您在模拟网络中搜索特定关键词。	
 	</string>
 	<string name="no_filtered_friends_msg">
 		找不到你要找的吗？ 请试试[secondlife:///app/search/people/[SEARCH_TERM] 搜索]。

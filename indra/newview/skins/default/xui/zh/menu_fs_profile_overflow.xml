@@ -6,8 +6,8 @@
 	<menu_item_call label="语音通话" name="call"/>
 	<menu_item_call label="添加到联系人分组" name="add_to_contact_set"/>
 	<menu_item_call label="复制名称" name="copy_name_to_clipboard"/>
-	<menu_item_call label="复制 URI" name="copy_uri_to_clipboard"/>
-	<menu_item_call label="复制 UUID" name="copy_key_to_clipboard"/>
+	<menu_item_call label="复制URI" name="copy_uri_to_clipboard"/>
+	<menu_item_call label="复制UUID/用户标识码" name="copy_key_to_clipboard"/>
 	<menu_item_call label="踢出" name="kick"/>
 	<menu_item_call label="冻结" name="freeze"/>
 	<menu_item_call label="解冻" name="unfreeze"/>

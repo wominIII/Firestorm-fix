@@ -35,7 +35,6 @@
 		</menu>
 		<menu_item_call label="移除选定的附件" name="Remove Selected Attachments"/>
 		<menu_item_call label="化身入门礼包" name="Avatar Welcome Pack"/>
-		<menu_item_call label="选择化身" name="Avatar Picker"/>
 		<menu_item_call label="悬浮高度" name="HoverHeight"/>
 		<menu label="动作" name="Movement">
 			<menu_item_call label="坐下" name="Sit Down Here"/>
@@ -101,11 +100,8 @@
 		<menu_item_check label="本地聊天" name="Nearby Chat"/>
 		<menu_item_check label="人员" name="People"/>
 		<menu_item_check label="聊天" name="Conversations"/>
-		<menu_item_call label="全方位过滤器" name="Omnifilter"/>
+		<menu_item_call label="万能过滤器" name="Omnifilter"/>
 		<menu_item_check label="快捷手势" name="Gestures"/>
-		<menu_item_call label="Flickr..." name="Flickr"/>
-		<menu_item_call label="Primfeed..." name="Primfeed"/>
-		<menu_item_call label="Discord..." name="Discord"/>
 		<menu_item_check label="聊天记录" name="Conversation Log..."/>
 		<menu_item_check label="附近的语音" name="Nearby Voice"/>
 		<menu_item_call label="封锁列表" name="Block List"/>
@@ -418,7 +414,6 @@
 			<menu_item_check label="调试控制台" name="Debug Console"/>
 			<menu_item_call label="通知控制台" name="Notifications"/>
 			<menu_item_check label="快速计时器" name="Fast Timers"/>
-			<menu_item_check label="内存" name="Memory"/>
 			<menu_item_check label="场景统计数据" name="Scene Statistics"/>
 			<menu_item_check label="场景加载监视器" name="Scene Loading Monitor"/>
 			<menu_item_check label="区域调试控制台" name="Region Debug Console"/>

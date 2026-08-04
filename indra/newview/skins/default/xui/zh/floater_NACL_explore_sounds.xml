@@ -16,9 +16,9 @@
 	<check_box name="objects_chk" label="物件"/>
 	<check_box name="collision_chk" label="默认碰撞声音"/>
 	<check_box name="repeated_asset_chk" label="重复资产"/>
-	<check_box name="pause_chk" label="暂停日志" left_delta="125"/>
+	<check_box name="pause_chk" label="暂停日志"/>
 	<scroll_list name="sound_list">
-		<columns label="正在播放" name="playing" width="95"/>
+		<columns label="正在播放" name="playing"/>
 		<columns label="类型" name="type"/>
 		<columns label="所有者" name="owner"/>
 		<columns label="声音" name="sound"/>

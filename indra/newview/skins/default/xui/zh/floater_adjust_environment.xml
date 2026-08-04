@@ -44,7 +44,7 @@
 						云层尺寸:
 					</text>
 					<text name="reflection_probe_ambiance_label">
-						反射探测环境光:
+						反射探测环境光: 
 					</text>
 					<slider name="probe_ambiance" tool_tip="基于环境的间接照明强度。数值为0时，HDR 等级比例变为亮度"/>
 					<text name="scene_gamma_label">

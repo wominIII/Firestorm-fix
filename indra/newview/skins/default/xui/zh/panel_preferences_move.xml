@@ -23,7 +23,7 @@
 			<text name="mouse_warp_lbl">
 				鼠标归位：
 			</text>
-			<combo_box name="mouse_warp_combo" tooltip="控制在Alt缩放和鼠标观察模式下，鼠标是否自动跳转至屏幕中心。">
+			<combo_box name="mouse_warp_combo" tool_tip="控制在Alt缩放和鼠标观察模式下，鼠标是否自动跳转至屏幕中心。">
 				<combo_box.item label="自动" name="0"/>
 				<combo_box.item label="开启" name="1"/>
 				<combo_box.item label="关闭" name="2"/>

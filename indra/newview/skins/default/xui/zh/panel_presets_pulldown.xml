@@ -3,6 +3,6 @@
 	<text name="Graphic Presets">
 		图形预设
 	</text>
-	<button label="图形设置" name="open_prefs_btn" tool_tip="打开图形设置"/>
-	<button label="图形设置" name="open_autofps_btn" tool_tip="打开性能窗口"/>
+	<button name="open_prefs_btn" label="选项" tool_tip="打开图形偏好设置选项卡" />
+	<button name="open_autofps_btn" label="性能" tool_tip="打开性能设置窗口" />
 </panel>

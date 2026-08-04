@@ -13,7 +13,7 @@
 	<text name="find">
 		输入搜索关键词：
 	</text>
-	<check_box label="包含适度成人内容的群组" name="incmature"/>
+<!-- <check_box label="包含适度成人内容的群组" name="incmature"/> -->
 	<combo_box name="groups_maturity">
 		<combo_box.item label="普级" name="Desired_PG"/>
 		<combo_box.item label="普级与适度成人" name="Desired_Mature"/>

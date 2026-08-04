@@ -12,23 +12,14 @@
 	<floater.string name="done_text">
 		权限变更要求已完成。
 	</floater.string>
-	<check_box label="动画" name="check_animation"/>
 	<icon name="icon_animation" tool_tip="动画"/>
-	<check_box label="身体部位" name="check_bodypart"/>
 	<icon name="icon_bodypart" tool_tip="身体部位"/>
-	<check_box label="装扮" name="check_clothing"/>
 	<icon name="icon_clothing" tool_tip="服装"/>
-	<check_box label="手势" name="check_gesture"/>
 	<icon name="icon_gesture" tool_tip="手势"/>
-	<check_box label="记事卡" name="check_notecard"/>
 	<icon name="icon_notecard" tool_tip="记事卡"/>
-	<check_box label="物件" name="check_object"/>
 	<icon name="icon_object" tool_tip="物件"/>
-	<check_box label="脚本" name="check_script"/>
 	<icon name="icon_script" tool_tip="脚本"/>
-	<check_box label="声音" name="check_sound"/>
 	<icon name="icon_sound" tool_tip="声音"/>
-	<check_box label="纹理" name="check_texture"/>
 	<icon name="icon_texture" tool_tip="纹理"/>
 	<icon name="icon_setting" tool_tip="环境设置"/>
 	<icon name="icon_materials" tool_tip="材质"/>

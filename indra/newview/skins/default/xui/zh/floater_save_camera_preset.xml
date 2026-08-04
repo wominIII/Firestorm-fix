@@ -9,3 +9,4 @@
 	<button label="保存" name="save"/>
 	<button label="取消" name="cancel"/>
 </floater>
+

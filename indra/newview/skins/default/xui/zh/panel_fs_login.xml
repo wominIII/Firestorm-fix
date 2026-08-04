@@ -53,6 +53,7 @@
 				创建你的帐号
 			</text>
 			<combo_box name="mode_combo" tool_tip="选择您最熟悉的查看器样式，以便根据您的需求进行调整。">
+				<combo_box.item label="现代" name="Modern"/>
 				<combo_box.item label="混合" name="Hybrid"/>
 				<combo_box.item label="文本" name="Text"/>
 			</combo_box>

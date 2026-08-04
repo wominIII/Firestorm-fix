@@ -56,3 +56,4 @@
 	<button name="btn_clear" label="清空" />
 	<button name="btn_rez" label="放置所选" tool_tip="在世界中创建一个模板网格物件并用所选的本地网格填充。这将在世界中创建一个空物件。" />
 </floater>
+

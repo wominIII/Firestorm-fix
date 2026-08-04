@@ -13,47 +13,6 @@
 	<global name="implicitclosebutton">
 		关闭
 	</global>
-	<template name="okbutton">
-		<form>
-			<button name="OK_okbutton" text="$yestext"/>
-		</form>
-	</template>
-	<template name="okignore">
-		<form>
-			<button name="OK_okignore" text="$yestext"/>
-		</form>
-	</template>
-	<template name="okcancelbuttons">
-		<form>
-			<button name="OK_okcancelbuttons" text="$yestext"/>
-			<button name="Cancel_okcancelbuttons" text="$notext"/>
-		</form>
-	</template>
-	<template name="okcancelignore">
-		<form>
-			<button name="OK_okcancelignore" text="$yestext"/>
-			<button name="Cancel_okcancelignore" text="$notext"/>
-		</form>
-	</template>
-	<template name="okhelpbuttons">
-		<form>
-			<button name="OK_okhelpbuttons" text="$yestext"/>
-			<button name="Help" text="$helptext"/>
-		</form>
-	</template>
-	<template name="okhelpignore">
-		<form>
-			<button name="OK_okhelpignore" text="$yestext"/>
-			<button name="Help_okhelpignore" text="$helptext"/>
-		</form>
-	</template>
-	<template name="yesnocancelbuttons">
-		<form>
-			<button name="Yes" text="$yestext"/>
-			<button name="No" text="$notext"/>
-			<button name="Cancel_yesnocancelbuttons" text="$canceltext"/>
-		</form>
-	</template>
 	<notification functor="GenericAcknowledge" label="未知的通知消息" name="MissingAlert">
 		你的 [APP_NAME] 版本无法显示它刚刚收到的通知。  请确定你安装了最新版本的查看器。
 
@@ -753,7 +712,7 @@
 		<url name="url">
 			[URL]
 		</url>
-		<usetemplate ignoretext="我的显示驱动程序太老旧" name="okcancelignore" notext="取消" yestext="是"/>
+		<usetemplate ignoretext="我的显示驱动程序太老旧" name="okcancelignore" notext="否" yestext="是"/>
 	</notification>
 	<notification name="UnknownGPU">
 		你的系统含有一个 [APP_NAME] 无法辨认的显卡。
@@ -768,6 +727,19 @@
 为了避免一些典型的驱动错误，图形质量将被设置为低。一些图形功能将被关闭。
 我们建议您更新您的显卡驱动程序。
 您可以在偏好设置 > 显示中重新提高图形质量。
+	</notification>
+	<notification name="AutoFPSConfirmDisable">
+		更改此设置将禁用性能自动调优，并关闭“自动设置”。
+确定要继续吗？
+		<usetemplate name="okcancelbuttons" notext="取消" yestext="继续" />
+	</notification>
+	<notification name="AdvancedLightingConfirm">
+		要启用高级光照，必须将图形质量提升至等级 4。
+		<usetemplate name="okcancelbuttons" notext="取消" yestext="确定"/>
+	</notification>
+	<notification name="ShadowsConfirm">
+		要启用阴影，必须将图形质量提升至等级 4。
+		<usetemplate name="okcancelbuttons" notext="取消" yestext="确定" />
 	</notification>
 	<notification name="RegionNoTerraforming">
 		这个 [REGION] 区域并不允许变更地形。
@@ -1408,6 +1380,10 @@
 			<button name="Cancel" text="取消"/>
 		</form>
 	</notification>
+	<notification label="关闭过滤器标签页" name="FSInventoryCustomTabClose">
+		要关闭过滤器标签页“[NAME]”吗？其保存的过滤条件将被删除。
+		<usetemplate name="okcancelignore" notext="取消" yestext="是，关闭" ignoretext="关闭自定义库存过滤器标签页前始终确认" />
+	</notification>
 	<notification label="重命名手势" name="RenameGesture">
 		新的手势名称：
 		<form name="form">
@@ -1611,6 +1587,13 @@
 如果你是第一次使用 [CURRENT_GRID]，你将需要创建新帐号才可登录。
 		<usetemplate name="okcancelbuttons" notext="继续" yestext="创建帐号…"/>
 	</notification>
+	<notification name="LoginCantRemoveUsername">
+		已保存的用户名可以在我自己 &gt; 偏好设置 &gt; 进阶 &gt; 记住的用户名中删除。
+	</notification>
+	<notification name="LoginCantRemoveCurUsername">
+		忘记当前登录的用户名需要先退出登录。
+		<usetemplate name="okcancelbuttons" notext="取消" yestext="确认并退出登录" />
+	</notification>
 	<notification name="LoginPacketNeverReceived">
 		连线出现问题。 问题可能出在你的网络连线或 [CURRENT_GRID]。
 
@@ -1720,13 +1703,13 @@ SHA1指纹：[MD5_DIGEST]
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="确定"/>
 	</notification>
 	<notification name="InvalidTerrainBitDepth">
-无法设置区域纹理：
+		无法设置区域纹理：
 地形纹理 [TEXTURE_NUM] 的比特深度 [TEXTURE_BIT_DEPTH] 无效。
 
 请将纹理 [TEXTURE_NUM] 替换成RGB [MAX_SIZE]x[MAX_SIZE] 或更小图像，然后点击“应用”。
 	</notification>
 	<notification name="InvalidTerrainAlphaNotFullyLoaded">
-无法设置区域纹理:
+		无法设置区域纹理:
 地形纹理 [TEXTURE_NUM] 未完全加载,但由于位深度为 [TEXTURE_BIT_DEPTH],假定其包含透明度。目前不支持地形纹理的透明度。
 
 如果纹理 [TEXTURE_NUM] 是不透明的,请等待纹理完全加载后再次点击"应用"。
@@ -1734,33 +1717,39 @@ SHA1指纹：[MD5_DIGEST]
 不透明度仅在地形材质(PBR金属粗糙度)中支持,且要求 alphaMode="MASK" 和 doubleSided=false。
 	</notification>
 	<notification name="InvalidTerrainAlpha">
-无法设置区域纹理:
+		无法设置区域纹理:
 地形纹理 [TEXTURE_NUM] 包含透明度。目前不支持地形纹理的透明度。
 
 请将纹理 [TEXTURE_NUM] 替换为不透明的RGB图像,然后再次点击"应用"。
 
 不透明度仅在地形材质(PBR金属粗糙度)中支持,且要求 alphaMode="MASK" 和 doubleSided=false。
 	</notification>
+	<notification name="InvalidTerrainSize">
+		无法设置区域纹理：
+地形纹理 [TEXTURE_NUM] 过大 - [TEXTURE_SIZE_X]x[TEXTURE_SIZE_Y]。
+
+请将纹理 [TEXTURE_NUM] 替换为尺寸为 [MAX_SIZE]x[MAX_SIZE] 或更小的 RGB 纹理，然后再次点击“应用”。
+	</notification>
 	<notification name="InvalidTerrainMaterialNotLoaded">
-无法设置区域材质:
+		无法设置区域材质:
 地形材质 [MATERIAL_NUM] 未加载。
 
 请等待材质加载完成,或将材质 [MATERIAL_NUM] 替换为有效材质。
 	</notification>
 	<notification name="InvalidTerrainMaterialLoadFailed">
-无法设置区域材质:
+		无法设置区域材质:
 地形材质 [MATERIAL_NUM] 加载失败。
 
 请将材质 [MATERIAL_NUM] 替换为有效材质。
 	</notification>
 	<notification name="InvalidTerrainMaterialDoubleSided">
-无法设置区域材质:
+		无法设置区域材质:
 地形材质 [MATERIAL_NUM] 是双面材质。PBR地形目前不支持双面材质。
 
 请将材质 [MATERIAL_NUM] 替换为 doubleSided=false 的材质。
 	</notification>
 	<notification icon="alertmodal.tga" name="InvalidTerrainMaterialAlphaMode">
-无法设置区域材质:
+		无法设置区域材质:
 地形材质 [MATERIAL_NUM] 使用了不支持的 alphaMode="[MATERIAL_ALPHA_MODE]"。
 
 请将材质 [MATERIAL_NUM] 替换为 alphaMode="OPAQUE" 或 alphaMode="MASK" 的材质。
@@ -2756,7 +2745,7 @@ URL:[UNTRUSTED_URL]
 			<button ignore="永不离开“请勿打扰”模式" name="No" text="取消"/>
 		</form>
 	</notification>
-	<notification name="ParcelPlayingMedia">
+	<notification label="此地块正在播放媒体" name="ParcelPlayingMedia">
 		此地块正在播放媒体：
 [URL]
 您想要播放吗？
@@ -3384,7 +3373,7 @@ URL：[AUDIOURL]
 			<button name="Discard" text="丢弃"/>
 		</form>
 	</notification>
-	<notification name="UserGiveItem">
+	<notification name="UserGiveItem" label="[NAME_LABEL]发送了一个物件">
 		[NAME_SLURL] 给了你这个 [OBJECTTYPE]：
 [ITEM_SLURL]
 		<form name="form">
@@ -3394,10 +3383,10 @@ URL：[AUDIOURL]
 			<button name="Mute" text="封锁"/>
 		</form>
 	</notification>
-	<notification name="UserGiveItemLegacy">
+	<notification name="UserGiveItemLegacy" label="[NAME_LABEL]发送了一个物件">
 		[NAME_SLURL] 给了你这个 [OBJECTTYPE]：
 [ITEM_SLURL]
-你想保留它吗？”静音”将封锁 [NAME_SLURL] 今后的所有提议或消息。
+你想保留它吗？”封锁”将屏蔽 [NAME_SLURL] 今后的所有提议或消息。
 		<form name="form">
 			<button name="Show" text="显示"/>
 			<button name="Accept" text="保留"/>
@@ -3421,7 +3410,7 @@ URL：[AUDIOURL]
 			<button name="Info" text="信息"/>
 		</form>
 	</notification>
-	<notification name="TeleportOffered">
+	<notification name="TeleportOffered" label="来自[NAME_LABEL]的瞬间传送邀请">
 		[NAME_SLURL] 想要瞬间传送你到他的地点：
 
 [MESSAGE]
@@ -3451,7 +3440,7 @@ URL：[AUDIOURL]
 
 可是，此区域含有仅限成人的内容。
 	</notification>
-	<notification name="TeleportOffered_SLUrl">
+	<notification name="TeleportOffered_SLUrl" label="来自[NAME_LABEL]的瞬间传送邀请">
 		[NAME_SLURL] 想要瞬间传送你到他的地点 （[POS_SLURL]）：
 
 [MESSAGE]
@@ -3502,7 +3491,7 @@ URL：[AUDIOURL]
 			<button name="GoNow..." text="立即前往..."/>
 		</form>
 	</notification>
-	<notification name="OfferFriendship">
+	<notification name="OfferFriendship" label="来自[NAME_LABEL]的好友请求">
 		[NAME_SLURL] 想成为你的朋友。
 
 [MESSAGE]
@@ -3516,7 +3505,7 @@ URL：[AUDIOURL]
 	<notification name="FriendshipOffered">
 		已经邀请 [TO_NAME] 成为朋友
 	</notification>
-	<notification name="OfferFriendshipNoMessage">
+	<notification name="OfferFriendshipNoMessage" label="来自[NAME_LABEL]的好友请求">
 		[NAME_SLURL] 想成为你的朋友。
 
 （根据默认设置，你们将可看到彼此的在线状态。）
@@ -3659,9 +3648,10 @@ URL：[AUDIOURL]
 		</form>
 	</notification>
 	<notification name="ScriptQuestionCaution">
-		警告：物件「&lt;nolink&gt;[OBJECTNAME]&lt;/nolink&gt;」请求访问你的林登币账户，以便从中提取资金。如果你允许，它将能够随时提取你账户中的部分或全部资金，而不会再给出任何警告或请求。
+警告：
+[WARNINGS]
 
-在决定是否允许此访问之前，请务必了解该物件的性质以及它为何提出这样的请求。此外，仔细考虑你是否信任这个物件的创造者。如果你对此没有把握，请点击“拒绝”以防止任何未经授权的资金提取。
+如果您不清楚对方为何请求访问您的账户，请勿授予权限。
 
 
 
@@ -3852,6 +3842,12 @@ URL：[AUDIOURL]
 	<notification name="SnapshotToLocalDirNotExist">
 		将快照保存于[PATH]时失败：目录不存在。
 	</notification>
+	<notification name="SnapshotSavedToComputer">
+		截图已保存到：
+[FILEPATH]
+
+点击以打开文件夹。
+	</notification>
 	<notification name="PresetNotSaved">
 		保存默认名称[NAME]时出错。
 	</notification>
@@ -3875,15 +3871,22 @@ URL：[AUDIOURL]
 		<usetemplate name="okbutton" yestext="确定"/>
 	</notification>
 	<notification name="TextChatIsMutedByModerator">
-		主持人已设置封锁你的文本聊天内容。
+		管理员已设置封锁你的文本聊天内容。
 		<usetemplate name="okbutton" yestext="确定"/>
 	</notification>
 	<notification name="VoiceIsMutedByModerator">
-		主持人已将你的语音静音。
+		管理员已将你的语音静音。
 		<usetemplate name="okbutton" yestext="确定"/>
 	</notification>
+	<notification name="NearbyVoiceMutedByModerator">
+		管理员已将你的附近语音静音。
+该区域的其他人将无法听到你说话。
+	</notification>
+	<notification name="NearbyVoiceUnmutedByModerator">
+		你现在可以被该区域的其他人听到。
+	</notification>
 	<notification name="FailedToGetBenefits">
-		很遗憾，我们无法为这次会话获取到福利信息。在正常的生产环境中，这不应该发生。请联系支持部门。这次会话将无法正常进行，我们建议重新开始会话。
+		很抱歉，我们无法获取本次会话的权益信息。在正常环境中不应出现此情况。请联系技术支持。本次会话可能无法正常运行，建议重新启动。
 		<usetemplate name="okbutton" yestext="OK"/>
 	</notification>
 	<notification name="NotEnoughMoneyForBulkUpload">
@@ -4106,7 +4109,11 @@ https://wiki.firestormviewer.org/fs_voice
 	</notification>
 	<notification name="ConfirmLeaveCall">
 		你确定要结束这段通话？
-		<usetemplate ignoretext="我挂断前进行确认" name="okcancelignore" notext="否" yestext="是"/>
+		<usetemplate ignoretext="挂断前进行确认" name="okcancelignore" notext="否" yestext="是"/>
+	</notification>
+	<notification name="ConfirmLeaveAdhoc">
+		你确定要离开此临时会议吗？
+		<usetemplate ignoretext="离开临时会议前进行确认" name="okcancelignore" notext="否" yestext="是" />
 	</notification>
 	<notification name="ConfirmMuteAll">
 		你已选择要将所有参与群组通话的人静音。
@@ -4388,6 +4395,23 @@ https://wiki.firestormviewer.org/fs_voice
 	<notification name="RenameAOMustBeASCII">
 		无法将动画覆盖集重命名为“[AO_SET_NAME]”。
 名称只能包含ASCII字符，不包括“:”和“|”。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="RenameAOGroup">
+		为这个新的动画组指定名称：
+名称只能包含ASCII字符，不包括“:”和“|”。
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<button name="Cancel" text="取消"/>
+		</form>
+	</notification>
+	<notification name="RenameAOEntryMustBeASCII">
+		无法重命名为“[AO_SET_NAME]”。
+名称只能包含ASCII字符，不包括“:”和“|”。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="AOFolderDropNoAnimations">
+		文件夹“[NAME]”不包含可添加的动画。
 		<usetemplate name="okbutton" yestext="确定"/>
 	</notification>
 	<notification name="NewAONameCantExist">
@@ -5437,8 +5461,8 @@ switch语句在没有默认标签情况下的行为不正确已被修正。
 	<notification name="ExportFinished">
 		导出到 [FILENAME] 完成。
 	</notification>
-	<notification name="ExportCollada">
-		导出意外失败。有关详细信息，请查看日志文件。
+	<notification name="ExportFailed">
+		导出失败。请查看日志以获取更多详细信息。
 	</notification>
 	<notification name="ExportColladaSuccess">
 		[OBJECT] 成功保存为 [FILENAME]。
@@ -5838,7 +5862,7 @@ gzip级别6压缩的测试结果，对[FILE]文件大小[SIZE] KB：
 		</form>
 	</notification>
 	<notification name="WhitelistReminder">
-为提高[APP_NAME]的性能，请将其加入杀毒软件白名单。
+	为提高[APP_NAME]的性能，请将其加入杀毒软件白名单。
 
 某些防病毒程序可能错误地拦截[APP_NAME]的部分内容，从而降低其性能并导致某些功能失常。为了避免这些问题，我们强烈建议将[APP_NAME]添加到您的杀毒软件的白名单（或排除列表）中。这样可以确保程序顺畅运行。
 
@@ -5846,13 +5870,13 @@ gzip级别6压缩的测试结果，对[FILE]文件大小[SIZE] KB：
 
 https://wiki.firestormviewer.org/antivirus_whitelisting
 	</notification>
-	<notification name="ConfirmPoserOverwrite">
+	<notification label="确认覆盖姿势" name="ConfirmPoserOverwrite">
 		是否覆盖现有的姿势“[POSE_NAME]”？
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="确定"/>
 	</notification>
 	<notification name="FSLargeOutfitsWarningInThisSession">
-		檢測到大量裝扮：[AMOUNT]。這可能會導致檢視器卡頓或連線中斷。請考慮將裝扮數量限制在[MAX]以內，以提升效能。 这只是一个建议，如果你的电脑运行正常，你可以放心忽略它。
-		<usetemplate ignoretext="裝扮過多警告" name="okignore" yestext="確定" />
+		检测到大量装扮：[AMOUNT]。这可能会导致查看器卡顿或连接断开。请考虑将装扮数量限制在[MAX]以内，以提升性能。 这只是一个建议，如果你的电脑运行正常，你可以放心忽略它。
+		<usetemplate ignoretext="装扮过多警告" name="okignore" yestext="确定" />
 	</notification>
 	<notification name="PrimfeedLoginRequestFailed">
 		Primfeed 登录请求被拒绝。
@@ -5934,6 +5958,85 @@ https://wiki.firestormviewer.org/antivirus_whitelisting
 	<notification name="FSSetTitleRegionNotFound">
 		无法找到区域“[REGION]”。请检查名称并重试。
 		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="OmniFilterNewRuleSet">
+		请输入新规则集的名称：
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<button name="Cancel" text="取消"/>
+		</form>
+	</notification>
+	<notification name="OmniFilterrNewRuleSetBlank">
+		名称不能为空。请输入一个名称后重试。
+	</notification>
+	<notification name="OmniFilterNewRuleSetDuplicate">
+		不允许使用重复名称。请使用其他名称重试。
+	</notification>
+	<notification name="OmniFilterCloneRuleSet">
+		请输入规则集副本的名称：
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<button name="Cancel" text="取消" />
+		</form>
+	</notification>
+	<notification name="OmniFilterCloneRuleSetBlank">
+		名称不能为空。请输入一个名称后重试。
+	</notification>
+	<notification name="OmniFilterCloneRuleSetDuplicate">
+		不允许使用重复名称。请使用其他名称重试。
+	</notification>
+	<notification name="OmniFilterRemoveRuleSet">
+		确定要删除 [RULESETNAME] 吗？
+		<usetemplate ignoretext="删除规则集前要求确认。" name="okcancelignore" notext="取消" yestext="确定"/>
+	</notification>
+	<notification name="OmniFilterRemoveRuleSetDefault">
+		无法删除默认规则集。
+	</notification>
+	<notification name="OmniFilterRemoveRuleSetOutofBounds">
+		无法删除规则集，因为索引超出范围。
+	</notification>
+	<notification name="OmniFilterRemoveRuleSetInvalidName">
+		无法删除规则集，因为找不到指定名称。
+	</notification>
+	<notification name="OmniFilterExportRuleSet">
+		请输入用于导出规则集“[RULESETNAME]”的记事卡名称：
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<button name="Cancel" text="取消"/>
+		</form>
+	</notification>
+	<notification name="OmniFilterMissingCategory">
+		库存中未找到记事卡文件夹，无法创建记事卡。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="OmniFilterImportRuleSet">
+		请输入导入规则集“[IMPORTNAME]”的名称：
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<button name="Cancel" text="取消"/>
+		</form>
+	</notification>
+	<notification name="OmniFilterInvalidImport">
+		错误：记事卡“[IMPORTNAME]”不包含有效的规则集，无法导入。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="OmniFilterNotANotecard">
+		错误：该物件不是记事卡。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="OmnifilterImportInstructions" label="万能过滤器导入说明">
+		要从记事卡导入规则集，请在库存中选择相应的记事卡，然后将其拖放到此窗口中。
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<ignore name="ignore" text="点击导入按钮时显示万能过滤器规则集导入说明"/>
+		</form>
+	</notification>
+	<notification name="OmniFilterNonAscii">
+		所选记事卡名称“[INPUTNAME]”无效，仅支持 ASCII 字符。
+		<form name="form">
+			<button name="OK" text="确定"/>
+			<button name="Cancel" text="取消"/>
+		</form>
 	</notification>
 	<notification label="编辑本地标签" name="FSEditInventoryLocalLabel">
 		本地标签（仅保存在这台电脑上，不修改服务器原名）：

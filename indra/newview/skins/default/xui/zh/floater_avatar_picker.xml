@@ -15,7 +15,7 @@
 	<floater.string name="searching">
 		搜索中...
 	</floater.string>
-	<string label="确定" label_selected="确定" name="Select">
+	<string name="Select">
 		选择
 	</string>
 	<string name="Close">

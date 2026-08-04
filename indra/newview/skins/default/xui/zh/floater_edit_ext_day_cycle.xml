@@ -12,9 +12,6 @@
 	<string name="hint_edit">
 		若要编辑你的日循环，请调整下方各项控制，再点击“保存”。
 	</string>
-	<string name="time_label">
-		([HH]:[MM])
-	</string>
 	<string name="sky_track_label">
 		天空[ALT]
 	</string>

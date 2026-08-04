@@ -22,7 +22,7 @@
 	<menu_item_call label="违规举报" name="Report Abuse"/>
 	<menu_item_check label="封锁" name="Block Unblock"/>
 	<menu_item_check label="封锁文字" name="Mute Text"/>
-	<context_menu label="主持人选项" name="Moderator Options">
+	<context_menu label="管理员选项" name="Moderator Options">
 		<menu_item_call label="允许文本聊天" name="AllowTextChat"/>
 		<menu_item_call label="禁止文本聊天" name="ForbidTextChat"/>
 		<menu_item_call label="将此参与者静音" name="ModerateVoiceMuteSelected"/>

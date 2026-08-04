@@ -104,9 +104,9 @@
 			<text name="GroupText">
 				正在加载...
 			</text>
-			<button label="设定" label_selected="设定中..." name="Set..." width="90"/>
+			<button label="设定" name="Set..."/>
 			<check_box label="允许转让给群组" name="check deed" tool_tip="群组工作人员可将这土地转让给群组，使其得到群组土地配置的支持."/>
-			<button label="转让" label_selected="转让中..." name="Deed..." tool_tip="你必须是所选群组的工作人员才能转让土地."/>
+			<button label="转让" name="Deed..." tool_tip="你必须是所选群组的工作人员才能转让土地."/>
 			<check_box label="所有者通过转让操作进行捐献" name="check contrib" tool_tip="将土地转让给群组，表示上一个所有者会捐献足够土地来支持转让"/>
 			<text name="For Sale:">
 				出售：
@@ -118,7 +118,7 @@
 				价格：[PRICE] L$ ([PRICE_PER_SQM] L$/平方米）
 			</text>
 			<text name="SalePending"/>
-			<button label="出售土地" label_selected="出售土地中..." name="Sell Land..."/>
+			<button label="出售土地" name="Sell Land..."/>
 			<text name="For sale to">
 				出售给：[BUYER]
 			</text>
@@ -147,13 +147,13 @@
 			<text name="DwellText">
 				加载中...
 			</text>
-			<button label="购买土地" label_selected="购买土地中..." name="Buy Land..."/>
-			<button label="林登出售" label_selected="林登出售中..." name="Linden Sale..." tool_tip="土地必须有人拥有、已设有内容，并且不在拍卖中。"/>
+			<button label="购买土地" name="Buy Land..."/>
+			<button label="林登出售" name="Linden Sale..." tool_tip="土地必须有人拥有、已设有内容，并且不在拍卖中。"/>
 			<button label="脚本信息" name="Scripts..."/>
-			<button label="为群组购买" label_selected="为群组购买中..." name="Buy For Group..."/>
-			<button label="购买通行权" label_selected="购买通行权中..." name="Buy Pass..." tool_tip="通行权允许你暂时可出入这块土地。"/>
-			<button label="放弃土地" label_selected="放弃土地中..." name="Abandon Land..."/>
-			<button label="收回土地" label_selected="收回土地中..." name="Reclaim Land..."/>
+			<button label="为群组购买" name="Buy For Group..."/>
+			<button label="购买通行权" name="Buy Pass..." tool_tip="通行权允许你暂时可出入这块土地。"/>
+			<button label="放弃土地" name="Abandon Land..."/>
+			<button label="收回土地" name="Reclaim Land..."/>
 		</panel>
 		<panel label="契约" name="land_covenant_panel">
 			<panel.string name="can_resell">
@@ -281,8 +281,8 @@
 			<text name="Object Owners:">
 				物件所有者：
 			</text>
-			<button label="刷新清单" label_selected="刷新清单" name="Refresh List" tool_tip="刷新物件清单"/>
-			<button label="退回物件" label_selected="退回物件中..." name="Return objects..."/>
+			<button label="刷新清单" name="Refresh List" tool_tip="刷新物件清单"/>
+			<button label="退回物件" name="Return objects..."/>
 			<name_list name="owner list">
 				<name_list.columns label="类型" name="type"/>
 				<name_list.columns label="名称" name="name"/>
@@ -383,7 +383,7 @@
 			<text name="allow_see_label">
 				其他地块的化身可以看见本地块里的化身，并相互聊天
 			</text>
-			<check_box label="查看化身" name="SeeAvatarsCheck" tool_tip="允许其他地块的化身看到本地块包括你在内的化身，并可互相聊天。"/>
+			<check_box name="SeeAvatarsCheck" tool_tip="允许其他地块的化身看到本地块包括你在内的化身，并可互相聊天。"/>
 			<text name="landing_point">
 				登陆点：[LANDING]
 			</text>

@@ -7,9 +7,7 @@
 		结束颜色
 	</floater.string>
 	<text name="beamcolor_text">
-请用鼠标选择您希望光束开始和停止的颜色。
-左键单击可改变开始颜色。
-右击改变结束颜色。
+		请用鼠标选择您希望光束开始和停止的颜色。左键单击可改变开始颜色。右击改变结束颜色。
 	</text>
 	<color_swatch name="BeamColor_Preview" tool_tip="单击打开颜色选择"/>
 	<text name="beamcolor_text2">

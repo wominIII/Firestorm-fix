@@ -50,7 +50,11 @@
 	<text name="RenderNameShowTime_LabelSuffix">秒)</text>
 	<check_box label="我的名字" name="show_my_name_checkbox1"/>
 	<check_box label="用户名" name="show_slids" tool_tip="显示用户名称，如 bobsmith123"/>
-	<check_box label="群组头衔" name="show_all_title_checkbox1" tool_tip="显示群组头衔，如 Officer 或 Member"/>
+	<combo_box tool_tip="显示群组头衔，例如：军官" name="group_title">
+		<combo_box.item label="无群组头衔" name="no_tags" />
+		<combo_box.item label="仅我的群组头衔" name="my_tag" />
+		<combo_box.item label="所有群组头衔" name="all_tags" />
+	</combo_box>
 	<check_box label="隐藏我的群组头衔" name="RenderHideGroupTitle" tool_tip="隐藏或显示您自己和他人的群组头衔。"/>
 	<check_box label="显示名" name="display_names_check" tool_tip="在聊天、私聊、标签等中使用显示名。"/>
 	<check_box label="继承的名称而不是用户名" name="FSshow_legacyun" tool_tip="显示继承的名称（名字姓氏）而不是用户名称（名字.姓氏）"/>
@@ -94,3 +98,4 @@
 	</combo_box>
 	<text name="text_box3">自动回复可以在 [secondlife:///app/openfloater/preferences?tab=im&amp;subtab=tab-autoresponse-1 隐私 ＞ 自动回复] 选项中设置</text>
 </panel>
+

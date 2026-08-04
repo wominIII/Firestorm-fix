@@ -24,9 +24,6 @@
 	<floater.string name="string.listing_price">
 		广告价格：[LISTING_PRICE]
 	</floater.string>
-	<floater.string name="string.slurl">
-		[SLURL]
-	</floater.string>
 	<floater.string name="string.duration">
 		活动时长：[DURATION]
 	</floater.string>
@@ -44,6 +41,11 @@
 	</tab_container>
 	<!-- Details/Action Panes -->
 	<panel name="panel_ls_details">
+		<text_editor name="title" value="未定义名称" />
+		<text_editor name="aux1" value="附加信息字段 1" />
+		<text_editor name="aux2" value="附加信息字段 2" />
+		<text_editor name="location" value="位置信息" />
+		<text_editor name="desc" value="你正用想象力之钥打开这扇门。门后是另一个维度：声音的维度、视觉的维度、心灵的维度。你正踏入一个由阴影与实体、事物与思想构成的领域；你刚刚进入了《阴阳魔界》。你将看到的一切都是真实的；屏幕上的人物并非演员。他们是真实的人，在真正的小额索赔法院提出诉讼后，被说服放弃诉讼，并在这里——这个法庭——人民法院中解决纠纷。" />
 		<button label="查看个人资料" name="people_profile_btn"/>
 		<button label="发送消息" name="people_message_btn"/>
 		<button label="加为朋友" name="people_friend_btn"/>

@@ -15,7 +15,6 @@
 	<string name="inactive_combo_text">
 		预设...
 	</string>
-
 	<tab_container name="tabs">
 		<panel name="P_Cam_Controls_1" label="控制 1">
 			<panel name="cameracontrolspanel">
@@ -72,7 +71,6 @@
 						<joystick_track name="cam_track_stick" tool_tip="相机上下左右移动"/>
 					</panel>
 				</panel>
-
 				<panel name="buttons">
 					<button name="presets_btn" tool_tip="预定义视图"/>
 					<button name="pan_btn" tool_tip="旋转、缩放、平移"/>
@@ -81,48 +79,40 @@
 					<button name="load_camera_view_btn" tool_tip="加载保存的相机视图"/>
 				</panel>
 			</panel>
-
 			<panel name="P_Cam_Mov_Settings">
 				<text name="T_Cam_Mov_Settings">
 					相机移动设置
 				</text>
 			</panel>
-
 			<panel name="P_Zoom">
 				<text name="T_Zoom" tool_tip="在现实世界中，这相当于一个缩放功能。它改变了观察窗口内的视角。它的功能与按Ctrl-0或Ctrl-8相同。注意：如果启用了飞行相机（三维控制器），此功能将不可用。">
 					视角
 				</text>
 				<button name="Reset_Camera_Angle" tool_tip="重置为默认值。"/>
-
 				<text name="T_Zoom_Speed" tool_tip="设置相机缩放的快慢。较高的值会产生更慢更平滑的缩放效果。">
 					过渡时间
 				</text>
 				<button name="Reset_Zoom_Time" tool_tip="重置为默认值。"/>
-
 				<text name="T_Camera_Lag" tool_tip="设置相机跟随化身移动的延迟程度（0 = 无延迟，30 = 化身速度）。">
 					延迟
 				</text>
 				<button name="Reset_Camera_Lag" tool_tip="重置为默认值。"/>
-
 				<text name="T_Camera_Offset" tool_tip="设置相机从标准位置的偏移距离。">
 					距离
 				</text>
 				<button name="Reset_Camera_Offset" tool_tip="重置为默认值。"/>
-
 				<text name="T_Camera_Smoothing" tool_tip="设置相机启动和停止的平滑度。较高的值意味着更平滑（因此更慢）的移动。">
 					平滑
 				</text>
 				<button name="Reset_Camera_Smoothing" tool_tip="重置为默认值。"/>
 			</panel>
 		</panel>
-
 		<panel name="P_Cam_Controls_2" label="控制 2">
 			<panel name="P_Mouse_Movement">
 				<text name="T_Mouse_Movement">
 					鼠标移动设置
 				</text>
 			</panel>
-
 			<panel name="P_Mouse_Movement_Settings">
 				<text name="T_Mouse_Sensitivity" tool_tip="设置鼠标在鼠标视角模式下的灵敏度。">
 					灵敏度
@@ -131,13 +121,11 @@
 				<check_box label="在鼠标视角模式下显示化身和附件" tool_tip="在鼠标视角模式下显示脖子下方的化身和附件。默认值为关闭。" name="first_person_avatar_visible"/>
 				<check_box label="平滑鼠标视角移动" tool_tip="在鼠标视角模式下平滑鼠标移动。" name="MouseSmooth"/>
 			</panel>
-
 			<panel name="P_Additional_Camera_Options">
 				<text name="T_Additional_Camera_Options">
 					更多相机选项
 				</text>
 			</panel>
-
 			<panel name="P_Add_Cam_Opt_Settings">
 				<check_box label="点击化身保持相机位置" name="clickonavatarkeepscamera" tool_tip="通常情况下，点击化身会重置相机位置。此选项可以防止这种行为。"/>
 				<check_box label="传送后重置相机位置" name="FSResetCameraOnTP" tool_tip="通常情况下，传送会重置相机位置。此选项可以防止这种行为。"/>
@@ -145,7 +133,6 @@
 				<check_box label="化身移动时重置相机" name="resetcameraonmovement" tool_tip="化身移动时重置相机位置。"/>
 			</panel>
 		</panel>
-
 		<panel name="P_3D_Mouse" label="3D鼠标">
 			<panel name="P_3D_Mouse_Settings1">
 				<slider label="左/右" name="FlycamAxisScale1b" tool_tip="设置左右移动的灵敏度。如果在精确控制上有困难，应使用较小的值。"/>
@@ -157,15 +144,15 @@
 				<slider label="缩放" name="FlycamAxisScale6" tool_tip="设置缩放变焦的灵敏度。如果在精确控制上有困难，应使用较小的值。"/>
 				<slider label="减速" name="FlycamFeathering" tool_tip="如果将滑块移至最右端，相机将变得僵硬，并且可以直接通过操纵杆控制。如果将滑块移至最左端，相机将变得迟缓。"/>
 			</panel>
-
 			<panel name="P_3D_Mouse_Settings2">
 				<spinner label="缩放轴映射" name="JoystickAxis6" tool_tip="设置哪个鼠标轴用于缩放功能。"/>
 				<check_box label="启用3D鼠标" tool_tip="此设置启用3D鼠标。" name="enable_joystick"/>
 				<check_box name="CB_Zoom_Control" label="启用缩放控制（详见工具提示！）" tool_tip="要使缩放控制有效，必须将“缩放轴映射”设置为大于4的值。"/>
-				<check_box name="CB_Auto_Leveling" label="自动水平（无相机滚动）" tool_tip="如果启用，相机将自动对齐。"/>
-				<check_box name="CB_3D_Mouse_Avatar" label="使用3D鼠标控制化身" tool_tip="如果启用，化身将通过鼠标控制。"/>
+				<check_box name="CB_Auto_Leveling" label="自动水平（无相机滚动）"/>
+				<check_box name="CB_3D_Mouse_Avatar" label="使用3D鼠标控制化身"/>
 				<check_box name="CB_3D_Mouse_Build" label="使用3D鼠标移动物件" tool_tip="如果启用，可以使用3D鼠标在建造和编辑时移动物件。"/>
 			</panel>
 		</panel>
 	</tab_container>
 </floater>
+

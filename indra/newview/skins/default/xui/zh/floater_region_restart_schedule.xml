@@ -47,3 +47,4 @@
 	<button name="save_btn" label="保存"/>
 	<button name="cancel_btn" label="取消"/>
 </floater>
+

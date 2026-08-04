@@ -86,8 +86,5 @@
 	<text name="image_res_text">
 		[WIDTH]像素（宽）x [HEIGHT]像素（高）
 	</text>
-	<text name="file_size_label">
-		[SIZE] KB
-	</text>
 	<button label="制作360°照片" name="360_label"/>
 </floater>

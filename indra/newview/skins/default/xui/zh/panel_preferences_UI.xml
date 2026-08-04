@@ -113,6 +113,7 @@
 			<check_box label="在菜单栏中显示媒体控制" name="FSEnableVolumeControls" tool_tip="如果启用，将在屏幕右上角的菜单栏中显示媒体控制图标。如果界面设计已包含自己的媒体控制图标，则此选项很有用。"/>
 			<check_box label="在菜单栏中显示位置" name="ShowMenuBarLocation" />
 			<check_box label="在菜单栏中显示模拟主机版本" name="FSStatusbarShowSimulatorVersion" tool_tip="在当前区域运行的模拟主机版本将显示在菜单栏中。"/>
+			<check_box label="显示万能过滤器控件" name="show_omnifilter_controls_check" tool_tip="控件包括：启用/禁用万能过滤器、切换万能过滤器规则编辑器，以及更改当前使用的规则集。"/>
 			<check_box label="显示菜单搜索" name="show_search_menu_check"/>
 			<check_box label="显示货币余额" name="FSShowCurrencyBalanceInStatusbar"/>
 			<check_box label="当鼠标悬停在菜单栏图标上时弹出窗口" name="FSStatusBarMenuButtonPopupOnRollover"/>
@@ -259,21 +260,28 @@
 				点（需要重新启动）
 默认 0。较大的值可能无法正确工作。
 			</text>
+			<text name="tooltip_textbox8">
+				行间距：
+			</text>
+			<text name="tooltip_textbox9">
+				像素（需重新启动）
+默认值为 0。
+			</text>
 			<text name="tooltip_textbox3">
 				聊天行间距：
 			</text>
 			<text name="tooltip_textbox4">
 				像素（需要重新启动）
-[VIEWER_GENERATION] 默认 0。Viewer 1 默认 2。
+Second Life 查看器默认 0。V1 默认 2。
 			</text>
 			<text name="Label_FolderItemViewHeight">
 				文件夹项目视图高度：
 			</text>
 			<text name="Label_FolderItemViewHeight_Scale">
 				像素（需要重新启动）
-[VIEWER_GENERATION] 默认 20。Viewer 1 默认 18。
+Second Life 查看器默认 20。V1 默认 18。
 			</text>
-			<text name="text_box_notecard_font" width="125">
+			<text name="text_box_notecard_font" >
 				记事卡字体：
 			</text>
 			<combo_box name="FSNotecardFontName" tool_tip="用于记事卡编辑器的字体名称">

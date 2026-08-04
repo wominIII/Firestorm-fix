@@ -7,8 +7,6 @@
 	<check_box label="包括我的 Second Life 用户名" name="checkSendName"/>
 	<text name="textSendName">(如果需要，用于请求额外信息)</text>
 	<text name="textRestartRequired">任何设置的更改都需要重新启动才能生效。</text>
-	<text name="textInformation1">除非另有说明，报告仅包含与崩溃有关的必要信息</text>
-	<text name="textInformation2">第二人生记录不会被发送，如果您认为它们可能包含额外信息，请在电子邮件中注明其内容并发送。</text>
-	<text name="textInformation3">如果您认为它们可能包含额外信息，请通过电子邮件发送。</text>
+	<text name="textInformation">除非另有说明，否则该报告仅包含与崩溃相关的信息。日志不会被发送，请检查内容，并在你认为其中可能包含重要信息时单独发送电子邮件。</text>
 	<text name="textInformation4">隐私政策：[URL]</text>
 </panel>

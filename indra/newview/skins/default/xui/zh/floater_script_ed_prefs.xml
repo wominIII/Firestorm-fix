@@ -54,7 +54,7 @@
 	<text name="prefs_label">
 		脚本编辑器选项：
 	</text>
-	<check_box name="convert_tabs_to_spaces_checkbox" label="将制表符转换为空格" tool_tip="如果启用，当从外部编辑器粘贴脚本时，制表符将被转换为空格（通常是4个）。"/>
+	<check_box name="convert_tabs_to_spaces_checkbox" label="将制表符转换为空格"/>
 	<check_box label="启用LSL预处理器" tool_tip="为LSL脚本启用预处理器支持" name="preproc_checkbox"/>
 	<check_box label="脚本优化器" tool_tip="优化脚本所需的空间。" name="preprocoptimizer_checkbox"/>
 	<check_box label="switch()命令" tool_tip="提供switch()命令进行流程控制。" name="preprocswitch_checkbox"/>

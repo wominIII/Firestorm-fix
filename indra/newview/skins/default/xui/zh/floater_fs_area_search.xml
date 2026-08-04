@@ -48,6 +48,7 @@
 			<check_box name="regular_expression" label="使用正则表达式"/>
 			<button name="search" label="搜索"/>
 			<button name="clear" label="移除"/>
+			<button name="copy_link" label="复制为链接" tool_tip="复制 secondlife:///app/openfloater/area_search?... 链接，用于重现当前的搜索条件和筛选设置。"/>
 		</panel>
 		<panel label="过滤" name="area_search_filter_panel">
 			<text name="only_list">

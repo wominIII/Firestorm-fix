@@ -7,4 +7,7 @@
 	<menu_item_check label="列表视图" name="list_view"/>
 	<menu_item_check label="图片视图" name="gallery_view"/>
 	<menu_item_check label="组合视图" name="combination_view"/>
+	<menu_item_check label="显示最近获得" name="recent_tab" />
+	<menu_item_check label="显示已穿戴" name="worn_tab" />
+	<menu_item_check label="显示已收藏" name="favorites_tab" />
 </toggleable_menu>

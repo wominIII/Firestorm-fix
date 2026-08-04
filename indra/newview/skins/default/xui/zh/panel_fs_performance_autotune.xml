@@ -12,9 +12,7 @@
 	<check_box label="基于距离精简" name="FSAutoTuneImpostorByDistEnabled" tool_tip="查看器将根据最大非精简化身参数来限制完全渲染的化身数量，该参数将调整为仅在指定半径范围内显示。" />
 	<spinner label="完整化身最大范围" name="ffa_autotune" />
 	<text name="distant_av_advice">
-远距离的化身始终会产生较大影响。
-请设置相机距离，在该距离之外的化身将进行精简。
-注意：如果附近没有化身，此设置会将最大非精简化身设置为1。
+远距离的化身始终会产生较大影响。请设置相机距离，在该距离之外的化身将进行精简。注意：如果附近没有化身，此设置会将最大非精简化身设置为1。
 	</text>
 	<text name="distance_lbl">
 		可见距离设置
@@ -33,3 +31,4 @@
 这些选项控制更精细的参数。请使用在线帮助页面获取更多有关其操作的信息。
 	</text>
 </panel>
+

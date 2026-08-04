@@ -173,7 +173,7 @@
 	<string name="title_R_FOOT">右脚</string>
 	<string name="LoadPoseLabel">加载姿势</string>
 	<string name="SavePoseLabel">保存姿势</string>
-	<string name="LoadDiffLabel">加载差异</string>
+ 	<string name="LoadDiffLabel">加载差异</string>
 	<string name="SaveDiffLabel">保存差异</string>
 	<string name="OverWriteLabel">覆盖？</string>
 	<layout_stack name="poser_stack">

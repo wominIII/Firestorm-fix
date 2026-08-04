@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater name="animation_overrider" title="动画覆盖器">
-	<floater.string name="ao_no_sets_loaded">
-		未加载配置
-	</floater.string>
-	<floater.string name="ao_no_animations_loaded">
-		未加载动画
-	</floater.string>
-	<floater.string name="ao_dnd_only_on_full_interface">
-		带有 AO 配置的记事卡&amp;只能拖放到最大化的窗口中。点击工具图标可最大化窗口。
-	</floater.string>
+	<floater.string name="ao_no_sets_loaded">未加载配置</floater.string>
+	<floater.string name="ao_no_animations_loaded">未加载动画</floater.string>
+	<floater.string name="ao_dnd_only_on_full_interface">带有 AO 配置的记事卡&amp;只能拖放到最大化的窗口中。点击工具图标可最大化窗口。</floater.string>
+	<floater.string name="ao_add_blank_label">新建空白动画集...</floater.string>
+	<floater.string name="ao_add_clone_label">复制当前动画集...</floater.string>
+	<floater.string name="ao_track_main">主轨道</floater.string>
+	<floater.string name="ao_no_track_animations">空轨道 - 将动画拖放到此处</floater.string>
+	<floater.string name="ao_group_tooltip">动画组 - 这些动画会同时播放：</floater.string>
+	<floater.string name="ao_member_tooltip">动画组成员 - 会与同组中的其他动画一起播放。双击可单独预览。</floater.string>
+	<floater.string name="ao_cm_expand">展开</floater.string>
+	<floater.string name="ao_cm_collapse">折叠</floater.string>
+	<floater.string name="ao_cm_rename_group">重命名组...</floater.string>
+	<floater.string name="ao_cm_move_out">移出组</floater.string>
+	<floater.string name="ao_cm_find_original">查找原始动画</floater.string>
+	<floater.string name="ao_cm_delete">删除</floater.string>
+	<floater.string name="ao_dnd_merge">拖放以与此动画建立动画组</floater.string>
+	<floater.string name="ao_dnd_add_to_group">拖放以添加到此组</floater.string>
+	<floater.string name="ao_dnd_add_to_track">拖放以添加到此轨道</floater.string>
+	<floater.string name="ao_dnd_folder_group">拖放文件夹以创建动画组</floater.string>
+	<floater.string name="ao_dnd_folder_pour">拖放文件夹以将其中的动画添加到此轨道</floater.string>
 </floater>

@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <menu name="Popup">
-	<menu_item_call label="新建刊登" name="Marketplace Create Listing"/>
-	<menu_item_call label="关联刊登" name="Marketplace Associate Listing"/>
-	<menu_item_call label="获取（刷新）刊登" name="Marketplace Get Listing"/>
-	<menu_item_call label="检查是否有误" name="Marketplace Check Listing"/>
-	<menu_item_call label="编辑刊登" name="Marketplace Edit Listing"/>
-	<menu_item_call label="刊登" name="Marketplace List"/>
-	<menu_item_call label="停止刊登" name="Marketplace Unlist"/>
-	<menu_item_call label="启用" name="Marketplace Activate"/>
-	<menu_item_call label="停用" name="Marketplace Deactivate"/>
 	<menu_item_call label="分享" name="Share"/>
 	<menu_item_call label="打开" name="Task Open"/>
 	<menu_item_call label="播放" name="Task Play"/>
@@ -58,8 +49,6 @@
 		<menu_item_check label="模型上传" name="Model uploads"/>
 		<menu_item_check label="PBR材质上传" name="PBR uploads"/>
 	</menu>
-	<menu_item_call label="作为收藏夹使用" name="Set Favorites folder"/>
-	<menu_item_call label="重置收藏夹" name="Reset Favorites folder"/>
 	<menu label="变更类型" name="Change Type">
 		<menu_item_call label="默认" name="Default"/>
 		<menu_item_call label="手套" name="Gloves"/>
@@ -97,12 +86,15 @@
 	<menu_item_call label="还原至之前的位置" name="Restore to Last Position"/>
 	<menu_item_call label="剪切" name="Cut"/>
 	<menu_item_call label="复制" name="Copy"/>
+	<menu_item_call label="复制名称" name="Copy Name"/>
 	<menu_item_call label="粘贴" name="Paste"/>
-	<menu_item_call label="以联结格式粘贴" name="Paste As Link"/>
-	<menu_item_call label="查找所有联结" name="Find Links"/>
-	<menu_item_call label="替换联结" name="Replace Links"/>
+	<menu label="联结" name="Links">
+		<menu_item_call label="以联结格式粘贴" name="Paste As Link"/>
+		<menu_item_call label="查找所有联结" name="Find Links"/>
+		<menu_item_call label="替换联结" name="Replace Links"/>
+		<menu_item_call label="清理损坏的联结" name="Cleanup broken Links"/>
+	</menu>
 	<menu_item_call label="删除" name="Delete"/>
-	<menu_item_call label="清理损坏的联结" name="Cleanup broken Links"/>
 	<menu_item_call label="移至默认文件夹" name="Move to Default Folder"/>
 	<menu_item_call label="移至失物招领" name="Move to Lost And Found"/>
 	<menu_item_call label="删除系统文件夹" name="Delete System Folder"/>
@@ -141,7 +133,18 @@
 	<menu_item_call label="脱下" name="Take Off"/>
 	<menu_item_call label="仅应用到我自己" name="Settings Apply Local"/>
 	<menu_item_call label="应用到地块" name="Settings Apply Parcel"/>
-	<menu_item_call label="复制到市场刊登" name="Marketplace Copy"/>
-	<menu_item_call label="移到市场刊登" name="Marketplace Move"/>
+	<menu label="线上市场" name="Marketplace">
+		<menu_item_call label="新建刊登" name="Marketplace Create Listing"/>
+		<menu_item_call label="关联刊登" name="Marketplace Associate Listing"/>
+		<menu_item_call label="获取（刷新）刊登" name="Marketplace Get Listing"/>
+		<menu_item_call label="检查是否有误" name="Marketplace Check Listing"/>
+		<menu_item_call label="编辑刊登" name="Marketplace Edit Listing"/>
+		<menu_item_call label="刊登" name="Marketplace List"/>
+		<menu_item_call label="停止刊登" name="Marketplace Unlist"/>
+		<menu_item_call label="启用" name="Marketplace Activate"/>
+		<menu_item_call label="停用" name="Marketplace Deactivate"/>
+		<menu_item_call label="复制到市场刊登" name="Marketplace Copy"/>
+		<menu_item_call label="移到市场刊登" name="Marketplace Move"/>
+	</menu>
 	<menu_item_call label="--无选项--" name="--no options--"/>
 </menu>

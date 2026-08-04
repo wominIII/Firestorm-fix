@@ -7,7 +7,6 @@
 https://www.firestormviewer.org
 	</text>
 			<button label="复制到剪贴板" name="copy_btn"/>
-			<button label="查找是否有更新版本" name="update_btn"/>
 		</panel>
 		<panel label="鸣谢" name="credits_panel">
 			<text name="linden_intro">

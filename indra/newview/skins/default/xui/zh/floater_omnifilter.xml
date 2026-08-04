@@ -1,20 +1,53 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="omnifilter" title="全方位过滤器规则编辑">
+<floater name="omnifilter" title="万能过滤器规则编辑">
+	<floater.string name="OmnifilterNewNeedle">
+		新规则
+	</floater.string>
+	<floater.string name="OmnifilterNewRuleSet">
+		新规则集
+	</floater.string>
+	<floater.string name="OmnifilterCloneRuleSet">
+		规则集副本
+	</floater.string>
+	<panel name="needle_rule_set_controls">
+		<text name="lbl_ruleset" value="规则集：" />
+		<layout_stack name="rule_set_buttons_stack">
+			<layout_panel name="rule_set_group_1">
+				<combo_box name="cmb_rule_sets" tool_tip="选择要使用的万能过滤器规则集。" />
+			</layout_panel>
+			<layout_panel name="rule_set_group_2">
+				<button name="btn_rule_set_new" label="新建规则集" tool_tip="创建一个新的空白万能过滤器规则集。" />
+			</layout_panel>
+			<layout_panel name="rule_set_group_3">
+				<button name="btn_rule_set_clone" label="克隆规则集" tool_tip="创建当前万能过滤器规则集的副本。" />
+			</layout_panel>
+			<layout_panel name="rule_set_group_4">
+				<button name="btn_rule_set_remove" label="删除规则集" tool_tip="删除当前万能过滤器规则集。" />
+			</layout_panel>
+		</layout_stack>
+	</panel>
 	<layout_stack name="needle_list_stack">
 		<layout_panel name="needle_list_layout">
-			<check_box name="enable_omnifilter" label="启用全方位过滤器"/>
+			<check_box name="enable_omnifilter" label="启用万能过滤器"/>
+			<check_box name="show_omnifilter_controls" tool_tip="启用后，将在主界面顶部菜单栏显示快捷按钮。" label="在菜单栏显示万能过滤器工具"/>
 			<fs_scroll_list name="needle_list">
 				<fs_scroll_list.columns name="enabled" label="启用"/>
 				<fs_scroll_list.columns name="needle_name" label="规则"/>
 			</fs_scroll_list>
 			<button name="add_needle" label="添加"/>
 			<button name="remove_needle" label="删除"/>
+			<button name="up_needle" label="上移" tool_tip="将规则上移 1 个位置。"/>
+			<button name="down_needle" label="下移" tool_tip="将规则下移 1 个位置。"/>
 		</layout_panel>
 		<layout_panel name="filter_log_layout">
 			<fs_scroll_list name="filter_log">
 				<fs_scroll_list.columns name="timestamp" label="时间 (SLT)"/>
 				<fs_scroll_list.columns name="log_entry" label="规则"/>
 			</fs_scroll_list>
+		</layout_panel>
+		<layout_panel name="inport_export_layout">
+			<button name="btn_rule_set_export" tool_tip="将规则集导出到记事卡。" label="导出"/>
+			<button name="btn_rule_set_import" tool_tip="从记事卡导入规则集。" label="导入"/>
 		</layout_panel>
 	</layout_stack>
 	<panel name="panel_details">
@@ -35,6 +68,7 @@
 		</combo_box>
 		<text name="content_label" value="内容:"/>
 		<text_editor name="content" tool_tip="消息的实际文本" />
+		<button name="btn_match_dlg_btn_lbl" label="匹配对话框按钮文本" tool_tip="允许匹配对话框窗口中的按钮文本，可用于自动响应指定按钮。"/>
 		<check_box name="content_case" tool_tip="区分大小写" />
 		<combo_box name="content_match_type" tool_tip="匹配模式">
 			<combo_item name="content_exact">
@@ -47,7 +81,7 @@
 				<column name="longtext" label="正则表达式"/>
 			</combo_item>
 		</combo_box>
-		<text name="region_name_label" value="区域名称：" tool_tip="来源的区域名称。仅适用于物件接收请求相关功能。"/>
+		<text name="region_name_label" value="区域名称："/>
 		<line_editor name="region_name" tool_tip="来源的地区名称。仅适用于库存给予。"/>
 		<text name="owner_label" value="所有者UUID："/>
 		<line_editor name="owner_uuid" tool_tip="群组邀请场景：填写群组UUID&#10;物件聊天消息/所有者消息/调试消息/私聊消息：填写物品UUID&#10;物件私聊消息：填写物件所有者UUID&#10;其他所有场景：填写发送者的UUID"/>
@@ -84,5 +118,8 @@
 		<line_editor name="button_reply" tool_tip="要在脚本对话框中“点击”的按钮标签，包括“忽略”" />
 		<text name="text_box_reply_label" value="用文本框回复：" />
 		<text_editor name="text_box_reply" tool_tip="如同在脚本对话框的文本框中手动输入的回复文本" />
+		<text name="reply_delay_label" value="延迟：" />
+		<spinner name="reply_delay_slider" tool_tip="触发事件后等待发送回复的秒数。默认值为 0.0，表示不延迟。" />
+		<text name="reply_delay_seconds_label" value="秒" />
 	</panel>
 </floater>

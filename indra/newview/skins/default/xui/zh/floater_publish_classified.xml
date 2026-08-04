@@ -5,11 +5,7 @@
 
 请注意，个人广告刊登费恕不退还。
 	</text>
-	<spinner label="价格：L$" name="price_for_listing" tool_tip="刊登费。" value="50"/>
-	<text name="l$_text" value="L$"/>
-	<text name="more_info_text">
-		更多信息（帮助链接）
-	</text>
+	<spinner label="价格：L$" name="price_for_listing" tool_tip="刊登费。"/>
 	<button label="发布" name="publish_btn"/>
 	<button label="取消" name="cancel_btn"/>
 </floater>

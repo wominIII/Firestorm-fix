@@ -19,3 +19,4 @@
 		<button label="默认值" name="default_btn" tool_tip="将这个设置的值重置为默认值。"/>
 	</panel>
 </floater>
+

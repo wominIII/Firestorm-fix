@@ -20,6 +20,9 @@
 			<menu_item_call name="inventory_new_window" label="新库存窗口"/>
 			<menu_item_check name="Protected Folders" label="受保护的文件夹"/>
 			<menu_item_check label="库存设置..." name="inv_settings"/>
+			<menu_item_check label="显示最近获得" name="show_recent_tab"/>
+			<menu_item_check label="显示已穿戴" name="show_worn_tab"/>
+			<menu_item_check label="显示已收藏" name="show_favorites_tab"/>
 			<menu_item_check label="列表视图" name="list_view"/>
 			<menu_item_check label="图片视图" name="gallery_view"/>
 			<menu_item_check label="组合视图" name="combination_view"/>

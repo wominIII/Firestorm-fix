@@ -223,11 +223,15 @@
 			<button name="Def_UISndFSKeywordSound" label="↻" tool_tip="重置。"/>
 		</panel>
 		<panel label="命令" name="tab-CmdLine">
+			<text name="FSCmdLineDoc_txt">
+				[https://wiki.firestormviewer.org/preferences_chat_tab#cmdline_tab 文档]
+			</text>
 			<check_box label="使用聊天栏发送命令行" name="chat_cmd_toggle"/>.
 			<text name="FSCmdLineCalc_txt">计算表达式（例如：cmd SIN(2+2)）</text>
 			<text name="FSCmdLineDrawDistance_txt">更改显示距离（例如：cmd meters）</text>
 			<text name="FSCmdLineBandWidth_txt">最大带宽（例如：cmd kbps）</text>
 			<text name="FSCmdLineCopyCam_txt">复制相机位置</text>
+			<text name="FSCmdLinePasteCam_txt">设置摄像机位置（例如：pos focus roll）</text>
 			<text name="FSCmdLineAO_txt">启用/禁用环境光遮蔽（例如：cmd on/off）</text>
 			<text name="FSCmdLineClearChat_txt">清除记录（例如：cmd）</text>
 			<line_editor tool_tip="清除聊天记录以减少垃圾影响。" name="FSCmdLineClearChat"/>
@@ -240,6 +244,8 @@
 			<text name="FSCmdLineKeyToName_txt">通过 UUID 获取化身名称（例如：cmd key）</text>
 			<text name="FSCmdLineRollDice_txt">掷骰子（例如：cmd dice faces mt mv）</text>
 			<line_editor tool_tip="掷骰子 - cmd [骰子数量] [面数] [修改类型（可选）] [修改值（可选）]。例如：cmd 1 20、cmd 2 40 + 5。如果没有参数，则为 cmd 1 6（标准骰子）。" name="FSCmdLineRollDice"/>
+			<text name="FSCmdLineTrackPos_txt">跟踪位置或化身（例如：pos 或 名称）</text>
+			<line_editor name="FSCmdLineTrackPos" tool_tip="在世界地图上为一个位置（cpcampos 格式）或部分化身名称设置追踪信标"/>
 			<text name="FSCmdLinePos_txt">传送到模拟主机(sim)中（例如：cmd x y z）</text>
 			<text name="FSCmdLineGround_txt">传送到地面（例如：cmd）</text>
 			<text name="FSCmdLineHeight_txt">传送到指定高度..（例如：cmd z）</text>
@@ -250,6 +256,7 @@
 			<text name="FSCmdLineTeleportHome_txt">传送回家（例如：cmd）</text>
 			<text name="FSCmdLineMapTo_txt">传送到模拟主机(sim)（例如：cmd simname）</text>
 			<check_box label="在模拟主机(sim)之间使用相同的位置" name="toggle"/>
+			<check_box label="将命令结果发送到频道：" name="FSCmdLineAnnounceToChannel" />
 		</panel>
 	</tab_container>
 </panel>

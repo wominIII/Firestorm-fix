@@ -66,10 +66,10 @@
 				<text name="events_label">
 					位置：
 				</text>
-				<button label="瞬间传送" label_selected="瞬间" name="Teleport" tool_tip="传送到选定位置"/>
-				<button label="复制SLurl" name="copy_slurl" tool_tip="复制当前位置的SLurl以在网页中使用。" width="88"/>
-				<button label="删除" name="Clear" tool_tip="关闭追踪并重置地图。" width="75"/>
-				<button label="显示选择" label_selected="显示目标" name="Show Destination" tool_tip="将地图中心移到选定位置"/>
+				<button label="瞬间传送" name="Teleport" tool_tip="传送到选定位置"/>
+				<button label="复制SLurl" name="copy_slurl" tool_tip="复制当前位置的SLurl以在网页中使用。"/>
+				<button label="删除" name="Clear" tool_tip="关闭追踪并重置地图。"/>
+				<button label="显示选择" name="Show Destination" tool_tip="将地图中心移到选定位置"/>
 				<button label="追踪区域" name="track_region" tool_tip="将区域添加到区域追踪器"/>
 			</panel>
 		</layout_panel>

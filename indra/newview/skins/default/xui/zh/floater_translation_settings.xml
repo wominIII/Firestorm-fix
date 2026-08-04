@@ -45,7 +45,7 @@
 		选择翻译服务：
 	</text>
 	<radio_group name="translation_service_rg">
-		<radio_item label="Azure 翻译" name="bing"/>
+		<radio_item label="Azure 翻译" name="azure"/>
 		<radio_item label="Google 翻译" name="google"/>
 		<radio_item label="DeepL 翻译" name="deepl"/>
 	</radio_group>
@@ -85,10 +85,10 @@
 	</text>
 	<panel name="outgoing_translation_panel">
 		<text name="outgoing_translation_title">发送消息翻译</text>
-		<radio_group name="outgoing_mode">
-			<radio_item label="关闭" name="off"/>
-			<radio_item label="普通 API" name="normal"/>
-			<radio_item label="AI 上下文" name="gpt"/>
+		<radio_group height="22" left="12" name="outgoing_mode" top_pad="4" width="370">
+			<radio_item label="关闭" name="off" value="0"/>
+			<radio_item label="普通 API" left="75" name="normal" value="1"/>
+			<radio_item label="AI 上下文" left="195" name="gpt" value="2"/>
 		</radio_group>
 		<text name="outgoing_target_language_label">目标语言：</text>
 		<text name="outgoing_send_format_label">发送格式：</text>
@@ -104,10 +104,10 @@
 		<text name="outgoing_gpt_prompt_label">可编辑的系统提示词（支持 {target_language}）：</text>
 		<text name="outgoing_gpt_context_note">AI 只会读取当前附近聊天、群聊或私聊中最近的少量消息。</text>
 		<text name="script_dialog_translation_title">脚本物品菜单翻译</text>
-		<radio_group name="script_dialog_translate_mode">
-			<radio_item label="关闭" name="off"/>
-			<radio_item label="普通 API" name="normal"/>
-			<radio_item label="AI 上下文" name="gpt"/>
+		<radio_group height="22" left="12" name="script_dialog_translate_mode" top_pad="4" width="370">
+			<radio_item label="关闭" name="off" value="0"/>
+			<radio_item label="普通 API" left="75" name="normal" value="1"/>
+			<radio_item label="AI 上下文" left="195" name="gpt" value="2"/>
 		</radio_group>
 		<text name="script_dialog_target_language_label">目标语言：</text>
 		<text name="script_dialog_gpt_prompt_label">AI 菜单提示词（支持 {target_language}）：</text>

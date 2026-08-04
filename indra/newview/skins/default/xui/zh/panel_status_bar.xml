@@ -18,6 +18,11 @@
 	<panel.string name="buycurrencylabel">
 		[AMT]L$
 	</panel.string>
+	<panel name="omnifilter_controls_panel">
+		<check_box name="enable_omnifilter" tool_tip="启用万能过滤器"/>
+		<button name="btn_show_omnifilter" tool_tip="显示万能过滤器"/>
+		<combo_box name="cmb_omnifilter_rule_sets" tool_tip="选择要使用的万能过滤器规则集。"/>
+	</panel>
 	<panel name="menu_search_panel">
 		<search_editor label="搜索选项" name="search_menu_edit" tool_tip="在这里输入你想搜索的字词。 若在选项中有全文配对到结果，将会显示部分结果。"/>
 	</panel>

@@ -17,7 +17,18 @@
 		<text name="global_label">
 			全局设置：
 		</text>
+		<text name="FSContactSetsProfilePlacement_label">
+			个人档案中的联系人分组：
+		</text>
+		<combo_box name="FSContactSetsProfilePlacement">
+			<combo_box.item label="位于群组列表下方" name="below"/>
+			<combo_box.item label="位于群组列表上方" name="above"/>
+			<combo_box.item label="隐藏" name="hidden"/>
+		</combo_box>
+		<check_box label="在联系人分组列表中显示个人档案图标" name="FSContactSetsListShowIcons"/>
 		<color_swatch label="颜色" name="global_swatch" tool_tip="点击以打开颜色选择"/>
+		<color_swatch name="offline_swatch" tool_tip="用于未归入任何分组的联系人离线状态颜色。在联系人自定义分组中，自定义的分组颜色具有更高优先级。"/>
+		<check_box label="自定义离线联系人颜色" name="FSContactSetsListColorizeOffline"/>
 		<text name="label_online">
 			在线通知：
 		</text>

@@ -39,7 +39,7 @@
 			<text name="asset_text_box5">
 				mb
 			</text>
-			<button label="清除库存缓存" name="ClearInventoryCache" left="350" width="180"/>
+			<button label="清除库存缓存" name="ClearInventoryCache" />
 			<text name="Cache location">缓存位置：</text>
 			<button label="打开" label_selected="打开" name="open_cache"/>
 			<button label="设置" width="55" label_selected="设置" name="set_cache"/>

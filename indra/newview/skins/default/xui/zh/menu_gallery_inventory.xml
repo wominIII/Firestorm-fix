@@ -21,9 +21,12 @@
 	<menu_item_call label="重命名" name="Rename"/>
 	<menu_item_call label="剪切" name="Cut"/>
 	<menu_item_call label="复制" name="Copy"/>
+	<menu_item_call label="复制名称" name="Copy Name"/>
 	<menu_item_call label="粘贴" name="Paste"/>
-	<menu_item_call label="粘贴为联结" name="Paste As Link"/>
-	<menu_item_call label="替换联结" name="Replace Links"/>
+	<menu label="联结" name="Links">
+		<menu_item_call label="粘贴为联结" name="Paste As Link"/>
+		<menu_item_call label="替换联结" name="Replace Links"/>
+	</menu>
 	<menu_item_call label="移除" name="Delete"/>
 	<menu_item_call label="移除系统文件夹" name="Delete System Folder"/>
 	<menu_item_call label="播放声音" name="Sound Play"/>
@@ -95,13 +98,15 @@
 		<menu_item_call label="批量上传..." name="Bulk Upload" />
 	</menu>
 	<menu label="默认用作" name="upload_def">
-		<menu_item_call label="上传图像" name="Image uploads"/>
-		<menu_item_call label="上传声音" name="Sound uploads"/>
-		<menu_item_call label="上传动画" name="Animation uploads"/>
-		<menu_item_call label="上传模型" name="Model uploads"/>
-		<menu_item_call label="上传PBR材质" name="PBR uploads" />
+		<menu_item_check label="上传图像" name="Image uploads"/>
+		<menu_item_check label="上传声音" name="Sound uploads"/>
+		<menu_item_check label="上传动画" name="Animation uploads"/>
+		<menu_item_check label="上传模型" name="Model uploads"/>
+		<menu_item_check label="上传PBR材质" name="PBR uploads" />
 	</menu>
-	<menu_item_call label="复制到市场刊登" name="Marketplace Copy"/>
-	<menu_item_call label="移到市场刊登" name="Marketplace Move"/>
+	<menu label="线上市场" name="Marketplace">
+		<menu_item_call label="复制到市场刊登" name="Marketplace Copy"/>
+		<menu_item_call label="移到市场刊登" name="Marketplace Move"/>
+	</menu>
 	<menu_item_call label="--无选项--" name="--no options--"/>
 </context_menu>

@@ -2,6 +2,8 @@
 <context_menu name="Attachment Pie">
 	<menu_item_call label="触碰" name="Attachment Object Touch"/>
 	<menu_item_call label="在库存中显示" name="Show original"/>
+	<menu_item_call label="添加到收藏" name="Add to favorites" />
+	<menu_item_call label="从收藏中移除" name="Remove from favorites" />
 	<menu_item_call label="编辑" name="Edit..."/>
 	<menu_item_call label="编辑PBR材质" name="EditGLTFMaterial"/>
 	<menu_item_call label="卸下" name="Detach"/>

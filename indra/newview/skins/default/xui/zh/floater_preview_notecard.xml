@@ -22,6 +22,7 @@
 	<button label="AI 翻译" name="AI Translate" tool_tip="使用当前设置的 GPT 兼容服务；再次点击可显示原文。"/>
 	<button tool_tip="查找和替换" name="Search"/>
 	<button label="编辑…" label_selected="编辑" name="Edit"/>
+	<text name="byte_counter" initial_value="字节数: [BYTES] / [MAX]"/>
 	<button label="保存" label_selected="保存" name="Save"/>
 	<button label="删除" label_selected="删除" name="Delete"/>
 </floater>

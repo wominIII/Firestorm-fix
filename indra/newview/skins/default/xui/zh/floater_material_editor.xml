@@ -10,8 +10,9 @@
 		<button label="保存" name="save"/>
 		<button label="另存为" name="save_as"/>
 		<text name="total_upload_fee">
-			总上传费用：[FEE]L$
+			总上传费用：[FEE]L$ 
 		</text>
 		<button label="取消" name="cancel"/>
 	</panel>
 </floater>
+

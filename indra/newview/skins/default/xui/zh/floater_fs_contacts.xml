@@ -3,8 +3,8 @@
 	<string name="no_friends" value="没有朋友"/>
 	<string name="no_filtered_groups_msg" value="未找到名称包含“[SEARCH_TERM]”的群组。"/>
 	<string name="no_groups_msg" value="你在寻找要加入的群组吗？尝试 [secondlife:///app/search/groups 搜索]。"/>
-	<string name="favorite_label">固定</string>
-	<string name="unfavorite_label">取消固定</string>
+	<string name="favorite_label" value="固定" />
+	<string name="unfavorite_label" value="取消固定" />
 	<tab_container name="friends_and_groups">
 		<panel label="朋友" name="friends_panel"/>
 		<panel label="群组" name="groups_panel"/>

@@ -8,7 +8,6 @@
 文本: [MSG_DESCRIPTION]
 	</floater.string>
 	<button name="refresh_screenshot" tool_tip="更新照片"/>
-	<check_box label="使用这张快照" name="screen_check"/>
 	<text name="reporter_title">
 		举报者：
 	</text>
@@ -20,9 +19,6 @@
 	</text>
 	<text name="pos_title">
 		位置：
-	</text>
-	<text name="pos_field">
-		{128.1, 128.1, 15.4}
 	</text>
 	<text name="select_object_label">
 		点击按钮，再点击违规的物件：
