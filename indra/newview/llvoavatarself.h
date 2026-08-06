@@ -139,6 +139,11 @@ public:
     /*virtual*/ bool    updateCharacter(LLAgent &agent);
     /*virtual*/ void    idleUpdateTractorBeam();
     bool                checkStuckAppearance();
+    LLVector3           getPredictedVisualPositionAgent() const;
+
+private:
+    void                updateLocalMovementPrediction();
+    void                resetLocalMovementPrediction();
 
     //--------------------------------------------------------------------
     // Loading state
@@ -162,6 +167,11 @@ private:
 
     // <FS:Ansariel> FIRE-12004: Attachments getting lost on TP
     bool            mIsCrossingRegion;
+
+    LLVector3       mLocalMovementPredictionOffset;
+    LLVector3       mLocalMovementPredictionDirection;
+    LLFrameTimer    mLocalMovementPredictionTimer;
+    bool            mLocalMovementPredictionActive;
 
 /**                    State
  **                                                                            **

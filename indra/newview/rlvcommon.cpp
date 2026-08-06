@@ -951,7 +951,8 @@ bool rlvPredCanRemoveItem(const LLUUID& idItem)
     if (isAgentAvatarValid())
     {
         const LLViewerObject* pAttachObj = gAgentAvatarp->getWornAttachment(idItem);
-        return (pAttachObj) && (!gRlvAttachmentLocks.isLockedAttachment(pAttachObj));
+        return (pAttachObj) && ((RlvSettings::getEmergencyDetachOverride()) ||
+                               (!gRlvAttachmentLocks.isLockedAttachment(pAttachObj)));
     }
 
     return false;

@@ -80,6 +80,7 @@
 // </FS:Ansariel> [Legacy Bake]
 
 #include <boost/lexical_cast.hpp>
+#include <cmath>
 
 LLPointer<LLVOAvatarSelf> gAgentAvatarp = NULL;
 
@@ -175,6 +176,9 @@ LLVOAvatarSelf::LLVOAvatarSelf(const LLUUID& id,
     mLastRegionHandle(0),
     mRegionCrossingCount(0),
     mIsCrossingRegion(false), // <FS:Ansariel> FIRE-12004: Attachments getting lost on TP
+    mLocalMovementPredictionOffset(LLVector3::zero),
+    mLocalMovementPredictionDirection(LLVector3::zero),
+    mLocalMovementPredictionActive(false),
     // Value outside legal range, so will always be a mismatch the
     // first time through.
     mLastHoverOffsetSent(LLVector3(0.0f, 0.0f, -999.0f)),
@@ -1000,7 +1004,138 @@ bool LLVOAvatarSelf::updateCharacter(LLAgent &agent)
         resetHUDAttachments();
     }
 
-    return LLVOAvatar::updateCharacter(agent);
+    const bool updated = LLVOAvatar::updateCharacter(agent);
+
+    if (mRoot && !mLocalMovementPredictionOffset.isExactlyZero())
+    {
+        mRoot->touch();
+        mRoot->setWorldPosition(mRoot->getWorldPosition() + mLocalMovementPredictionOffset);
+        mRoot->updateWorldMatrixChildren();
+    }
+
+    return updated;
+}
+
+LLVector3 LLVOAvatarSelf::getPredictedVisualPositionAgent() const
+{
+    return getRenderPosition() + mLocalMovementPredictionOffset;
+}
+
+void LLVOAvatarSelf::resetLocalMovementPrediction()
+{
+    mLocalMovementPredictionOffset.clearVec();
+    mLocalMovementPredictionDirection.clearVec();
+    mLocalMovementPredictionActive = false;
+}
+
+void LLVOAvatarSelf::updateLocalMovementPrediction()
+{
+    static LLCachedControl<bool> enabled(gSavedSettings, "FSLocalMovementPrediction", true);
+
+    const U32 controls = gAgent.getControlFlags();
+    const U32 vertical_or_stopping = AGENT_CONTROL_UP_POS |
+                                     AGENT_CONTROL_UP_NEG |
+                                     AGENT_CONTROL_STOP |
+                                     AGENT_CONTROL_SIT_ON_GROUND |
+                                     AGENT_CONTROL_STAND_UP;
+
+    if (!enabled || isSitting() || getParent() || gAgent.getFlying() ||
+        gAgent.getAutoPilot() || gAgent.isMovementLocked() ||
+        gAgent.getTeleportState() != LLAgent::TELEPORT_NONE ||
+        isCrossingRegion() || (controls & vertical_or_stopping))
+    {
+        resetLocalMovementPrediction();
+        return;
+    }
+
+    LLVector3 direction = LLVector3::zero;
+    const bool nudge = controls & (AGENT_CONTROL_NUDGE_AT_POS |
+                                   AGENT_CONTROL_NUDGE_AT_NEG |
+                                   AGENT_CONTROL_NUDGE_LEFT_POS |
+                                   AGENT_CONTROL_NUDGE_LEFT_NEG);
+
+    if (controls & (AGENT_CONTROL_AT_POS | AGENT_CONTROL_NUDGE_AT_POS))
+    {
+        direction += gAgent.getAtAxis();
+    }
+    if (controls & (AGENT_CONTROL_AT_NEG | AGENT_CONTROL_NUDGE_AT_NEG))
+    {
+        direction -= gAgent.getAtAxis();
+    }
+    if (controls & (AGENT_CONTROL_LEFT_POS | AGENT_CONTROL_NUDGE_LEFT_POS))
+    {
+        direction += gAgent.getLeftAxis();
+    }
+    if (controls & (AGENT_CONTROL_LEFT_NEG | AGENT_CONTROL_NUDGE_LEFT_NEG))
+    {
+        direction -= gAgent.getLeftAxis();
+    }
+
+    direction.mV[VZ] = 0.f;
+    direction.normalize();
+
+    const F32 dt = llclamp(gFrameDTClamped, 0.f, 0.05f);
+    bool accumulate_prediction = false;
+
+    if (!direction.isExactlyZero())
+    {
+        const F32 direction_dot = direction * mLocalMovementPredictionDirection;
+        if (!mLocalMovementPredictionActive || direction_dot < 0.95f)
+        {
+            if (mLocalMovementPredictionActive && direction_dot < 0.f)
+            {
+                mLocalMovementPredictionOffset.clearVec();
+            }
+            mLocalMovementPredictionTimer.reset();
+        }
+
+        mLocalMovementPredictionActive = true;
+        mLocalMovementPredictionDirection = direction;
+
+        constexpr F32 MAX_PREDICTION_SECONDS = 0.5f;
+        if (mLocalMovementPredictionTimer.getElapsedTimeF32() < MAX_PREDICTION_SECONDS)
+        {
+            constexpr F32 NUDGE_SPEED = 1.5f;
+            constexpr F32 WALK_SPEED = 3.2f;
+            constexpr F32 RUN_SPEED = 5.0f;
+            const F32 desired_speed = nudge ? NUDGE_SPEED : (gAgent.getRunning() ? RUN_SPEED : WALK_SPEED);
+
+            LLVector3 server_velocity = getVelocity();
+            server_velocity.mV[VZ] = 0.f;
+            const F32 unacknowledged_speed = llclamp(desired_speed - server_velocity * direction,
+                                                     0.f,
+                                                     desired_speed);
+            if (unacknowledged_speed > 0.05f)
+            {
+                mLocalMovementPredictionOffset += direction * unacknowledged_speed * dt;
+                accumulate_prediction = true;
+            }
+        }
+    }
+    else
+    {
+        mLocalMovementPredictionActive = false;
+        mLocalMovementPredictionDirection.clearVec();
+    }
+
+    constexpr F32 MAX_PREDICTION_DISTANCE = 1.f;
+    F32 offset_length = mLocalMovementPredictionOffset.magVec();
+    if (offset_length > MAX_PREDICTION_DISTANCE)
+    {
+        mLocalMovementPredictionOffset *= MAX_PREDICTION_DISTANCE / offset_length;
+        offset_length = MAX_PREDICTION_DISTANCE;
+    }
+
+    if (!accumulate_prediction && offset_length > 0.f)
+    {
+        const F32 half_life = offset_length < 0.1f ? 0.55f :
+                              offset_length < 0.5f ? 0.25f : 0.12f;
+        mLocalMovementPredictionOffset *= std::exp2(-dt / half_life);
+        if (mLocalMovementPredictionOffset.magVec() < 0.002f)
+        {
+            mLocalMovementPredictionOffset.clearVec();
+        }
+    }
 }
 
 // virtual
@@ -1016,6 +1151,7 @@ void LLVOAvatarSelf::idleUpdate(LLAgent &agent, const F64 &time)
 {
     if (isAgentAvatarValid())
     {
+        updateLocalMovementPrediction();
         LLVOAvatar::idleUpdate(agent, time);
         idleUpdateTractorBeam();
 
@@ -3799,4 +3935,3 @@ void LLVOAvatarSelf::processRebakeAvatarTextures(LLMessageSystem* msg, void**)
     }
 }
 // </FS:Ansariel> [Legacy Bake]
-

@@ -231,6 +231,11 @@ bool RlvAttachmentLocks::canAttach() const
 // Checked: 2010-08-07 (RLVa-1.2.0i) | Modified: RLVa-1.2.0i
 bool RlvAttachmentLocks::canDetach(const LLViewerJointAttachment* pAttachPt, bool fDetachAll /*=false*/) const
 {
+    if ( (RlvSettings::getEmergencyDetachOverride()) && (!fDetachAll) )
+    {
+        return (pAttachPt) && (!pAttachPt->mAttachedObjects.empty());
+    }
+
     //   (fDetachAll) | (isLockedAttachment)
     //   ===================================
     //        F       |         F             => unlocked attachment => return true
@@ -666,6 +671,13 @@ void RlvAttachmentLockWatchdog::onDetach(const LLViewerObject* pAttachObj, const
     }
     // </FS:Ansariel>
 
+    // The emergency override only changes user removal policy; the RLVa lock itself remains recorded.
+    if (RlvSettings::getEmergencyDetachOverride())
+    {
+        RlvBehaviourNotifyHandler::onDetach(pAttachPt, true);
+        return;
+    }
+
     // If it's an attachment that's pending force-detach then we don't want to do anything (even if it's currently "remove locked")
     rlv_detach_map_t::iterator itDetach = std::find(m_PendingDetach.begin(), m_PendingDetach.end(), idAttachItem);
     if (itDetach != m_PendingDetach.end())
@@ -835,6 +847,11 @@ void RlvWearableLocks::addWearableTypeLock(LLWearableType::EType eType, const LL
 // Checked: 2010-03-19 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
 bool RlvWearableLocks::canRemove(LLWearableType::EType eType) const
 {
+    if (RlvSettings::getEmergencyDetachOverride())
+    {
+        return (gAgentWearables.getWearableCount(eType) > 0);
+    }
+
     // NOTE: we return true if the wearable type has at least one wearable that can be removed by the user
     for (U32 idxWearable = 0, cntWearable = gAgentWearables.getWearableCount(eType); idxWearable < cntWearable; idxWearable++)
         if (!isLockedWearable(gAgentWearables.getViewerWearable(eType, idxWearable)))

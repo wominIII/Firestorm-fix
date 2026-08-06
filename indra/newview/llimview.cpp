@@ -1956,12 +1956,12 @@ void LLIMModel::addMessage(const LLUUID& session_id, const std::string& from, co
                            const std::string& utf8_text, bool log2file /* = true */, bool is_region_msg /* = false */, U32 time_stamp /* = 0 */, bool is_announcement /* = false */, bool keyword_alert_performed /* = false */)
 {
     //if (gSavedSettings.getBOOL("TranslateChat") && (from != SYSTEM_FROM))
-    if (gSavedSettings.getBOOL("TranslateChat") && (from != SYSTEM_FROM) && !is_announcement && !keyword_alert_performed)
+    if (gSavedSettings.getBOOL("TranslateChat") && (from != SYSTEM_FROM) && from_id != gAgentID && !is_announcement && !keyword_alert_performed)
     {
         const std::string from_lang = ""; // leave empty to trigger autodetect
         const std::string to_lang = LLTranslate::getTranslateLanguage();
         U64 time_n_flags = ((U64) time_stamp) | (log2file ? (1LL << 32) : 0) | (is_region_msg ? (1LL << 33) : 0);   // boost::bind has limited parameters
-        LLTranslate::translateMessage(from_lang, to_lang, utf8_text,
+        LLTranslate::translateIncomingMessage(from_lang, to_lang, utf8_text,
             boost::bind(&translateSuccess, session_id, from, from_id, utf8_text, time_n_flags, utf8_text, from_lang, _1, _2),
             boost::bind(&translateFailure, session_id, from, from_id, utf8_text, time_n_flags, _1, _2));
     }
@@ -5248,4 +5248,3 @@ LLHTTPRegistration<LLViewerChatterBoxSessionUpdate>
 LLHTTPRegistration<LLViewerChatterBoxInvitation>
     gHTTPRegistrationMessageChatterBoxInvitation(
         "/message/ChatterBoxInvitation");
-

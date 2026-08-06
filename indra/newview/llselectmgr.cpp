@@ -5390,7 +5390,8 @@ void LLSelectMgr::sendDetach()
     }
 
 // [RLVa:KB]
-    if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) )
+    if ( (rlv_handler_t::isEnabled()) && (!RlvSettings::getEmergencyDetachOverride()) &&
+         (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) )
     {
         LLObjectSelectionHandle hSelect = LLSelectMgr::getInstance()->getSelection();
         RlvSelectHasLockedAttach f;
@@ -9341,4 +9342,3 @@ bool LLCheckIdenticalFunctor<class LLFace *>::same(class LLFace* const & a, clas
     (void)tolerance;                                                                \
     return a == b;                                                                  \
 }
-

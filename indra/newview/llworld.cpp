@@ -706,7 +706,7 @@ void LLWorld::removeRegion(const LLHost &host)
         LL_WARNS() << "gFrameTimeSeconds " << gFrameTimeSeconds << LL_ENDL;
 
         LL_WARNS() << "Disabling region " << regionp->getName() << " that agent is in!" << LL_ENDL;
-        LLAppViewer::instance()->forceDisconnect(LLTrans::getString("YouHaveBeenDisconnected"));
+        LLAppViewer::instance()->requestAutoReconnect(LLTrans::getString("YouHaveBeenDisconnected"));
 
         regionp->saveObjectCache() ; //force to save objects here in case that the object cache is about to be destroyed.
         return;

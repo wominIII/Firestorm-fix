@@ -65,6 +65,17 @@
             (requires restart)
         </text>
         <check_box
+         control_name="RLVaEmergencyDetachOverride"
+         layout="topleft"
+         follows="left|top"
+         top_pad="3"
+         left="10"
+         width="520"
+         height="20"
+         name="checkRLVaEmergencyDetachOverride"
+         label="Emergency override: allow removing RLVa-locked attachments and clothing"
+         tool_tip="When enabled, you can manually remove locked attachments and clothing. Other RLVa restrictions remain active, and disabling this restores normal lock enforcement."/>
+        <check_box
          top_pad="3"
          left="10"
          follows="left|top"

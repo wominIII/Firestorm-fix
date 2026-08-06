@@ -51,6 +51,7 @@
 			<check_box label="按住跳跃/下蹲键可以起飞/降落" name="automatic_fly"/>
 			<check_box label="保持下蹲直到站立起来" name="crouch_toggle_mode"/>
 			<check_box label="在跳跃和降落之前禁用动画延迟" name="FSIgnoreFinishAnimation"/>
+			<check_box label="低延迟本地移动预测（实验性）" name="FSLocalMovementPrediction" tool_tip="等待模拟主机响应时，仅立即移动本地显示的化身和相机。如果出现视觉滑动或回正异常，请关闭此选项。"/>
 			<check_box label="向后走时不会自动转身" name="FSDisableTurningAroundWhenWalkingBackwards" tool_tip="阻止您的化身在向后行走时自动转身以面向相机。 此选项仅影响您的视角，不与AO兼容。"/>
 			<check_box label="选中物件时自动转向" name="FSTurnAvatarToSelectedObject" tool_tip="将您的化身朝向当前选择的物件。"/>
 			<slider label="化身旋转速度" name="av_turn_spd" tool_tip="更改您的化身响应旋转的速度。 0-100 以最大旋转速度的估计百分比。较高的值会导致突然而明显的结果。"/>

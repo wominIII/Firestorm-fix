@@ -22,16 +22,36 @@
   label="Enable machine translation while chatting"
   layout="topleft"
   left="10"
-  name="translate_chat_checkbox"
-  top="30"
-  width="20" />
+ name="translate_chat_checkbox"
+ top="30"
+ width="20" />
+ <text
+  follows="left|top"
+  height="20"
+  layout="topleft"
+  left="40"
+  name="incoming_mode_label"
+  top_pad="10"
+  width="130">
+  Incoming translator:
+ </text>
+ <combo_box
+  height="23"
+  layout="topleft"
+  left="170"
+  name="incoming_mode"
+  top_delta="-3"
+  width="270">
+  <combo_box.item label="Normal API" name="normal" value="1" />
+  <combo_box.item label="AI model" name="gpt" value="2" />
+ </combo_box>
  <text
   height="20"
   follows="left|top"
   layout="topleft"
   left="40"
   name="translate_language_label"
-  top_pad="20"
+  top_pad="12"
   width="130">
   Translate chat into: 
  </text>
@@ -406,17 +426,16 @@
     name="outgoing_translation_title"
    top="10"
     width="370">Outgoing message translation</text>
-   <radio_group
-    control_name="FSOutgoingTranslateMode"
-    height="22"
+   <combo_box
+    height="23"
     left="12"
     name="outgoing_mode"
     top_pad="4"
-    width="370">
-     <radio_item label="Off" name="off" value="0" />
-     <radio_item label="Normal API" name="normal" value="1" left="75" />
-     <radio_item label="Context AI" name="gpt" value="2" left="195" />
-   </radio_group>
+    width="363">
+     <combo_box.item label="Off" name="off" value="0" />
+     <combo_box.item label="Normal API" name="normal" value="1" />
+     <combo_box.item label="Context AI" name="gpt" value="2" />
+   </combo_box>
    <text height="18" left="12" name="outgoing_target_language_label" top_pad="8" width="105">Target language:</text>
    <line_editor
     control_name="FSOutgoingTranslateLanguage"
@@ -506,18 +525,27 @@
     left="12"
     name="script_dialog_translation_title"
     top_pad="8"
-    width="370">Script object menu translation</text>
-   <radio_group
-    control_name="FSScriptDialogTranslateMode"
+    width="230">Script object menu translation</text>
+   <button
+    follows="right|top"
     height="22"
+    label="Clear cache..."
+    layout="topleft"
+    left="247"
+    name="clear_script_dialog_cache_btn"
+    tool_tip="Delete all saved automatic translations and manual corrections for script object menus."
+    top_delta="-3"
+    width="128" />
+   <combo_box
+    height="23"
     left="12"
     name="script_dialog_translate_mode"
     top_pad="4"
-    width="370">
-     <radio_item label="Off" name="off" value="0" />
-     <radio_item label="Normal API" name="normal" value="1" left="75" />
-     <radio_item label="Context AI" name="gpt" value="2" left="195" />
-   </radio_group>
+    width="363">
+     <combo_box.item label="Off" name="off" value="0" />
+     <combo_box.item label="Normal API" name="normal" value="1" />
+     <combo_box.item label="Context AI" name="gpt" value="2" />
+   </combo_box>
    <text height="18" left="12" name="script_dialog_target_language_label" top_pad="8" width="105">Target language:</text>
    <line_editor
     control_name="FSScriptDialogTranslateLanguage"

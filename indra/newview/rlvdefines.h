@@ -413,6 +413,7 @@ namespace RlvSettingNames
 
     /*inline*/ constexpr std::string_view DebugHideUnsetDup = make_string_view("RLVaDebugHideUnsetDuplicate");
     /*inline*/ constexpr std::string_view EnableIMQuery = make_string_view("RLVaEnableIMQuery");
+    /*inline*/ constexpr std::string_view EmergencyDetachOverride = make_string_view("RLVaEmergencyDetachOverride");
     /*inline*/ constexpr std::string_view EnableLegacyNaming = make_string_view("RLVaEnableLegacyNaming");
     /*inline*/ constexpr std::string_view EnableSharedWear = make_string_view("RLVaEnableSharedWear");
     /*inline*/ constexpr std::string_view EnableTempAttach = make_string_view("RLVaEnableTemporaryAttachments");
@@ -438,6 +439,7 @@ namespace RlvSettingNames
 
     constexpr const char DebugHideUnsetDup[] = "RLVaDebugHideUnsetDuplicate";
     constexpr const char EnableIMQuery[] = "RLVaEnableIMQuery";
+    constexpr const char EmergencyDetachOverride[] = "RLVaEmergencyDetachOverride";
     constexpr const char EnableLegacyNaming[] = "RLVaEnableLegacyNaming";
     constexpr const char EnableSharedWear[] = "RLVaEnableSharedWear";
     constexpr const char EnableTempAttach[] = "RLVaEnableTemporaryAttachments";

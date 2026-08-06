@@ -68,6 +68,9 @@ private:
     static void setVerificationStatus(int service, bool alert, bool ok, S32 status);
 
     LLCheckBoxCtrl* mMachineTranslationCB;
+    LLComboBox* mIncomingModeCombo;
+    LLComboBox* mOutgoingModeCombo;
+    LLComboBox* mScriptDialogModeCombo;
     LLComboBox* mLanguageCombo;
     LLComboBox* mAzureAPIEndpointEditor;
     LLLineEditor* mAzureAPIKeyEditor;

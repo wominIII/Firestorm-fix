@@ -2561,7 +2561,8 @@ bool LLInventoryPanel::handleKeyHere( KEY key, MASK mask )
 {
     bool handled = false;
 
-    if (mFolderRoot.get() && gFocusMgr.childHasKeyboardFocus(mFolderRoot.get()) &&
+    if (mFolderRoot.get() &&
+        (hasFocus() || gFocusMgr.childHasKeyboardFocus(mFolderRoot.get())) &&
         matchesInventoryLocalLabelShortcut(key, mask))
     {
         const std::set<LLFolderViewItem*> selection = mFolderRoot.get()->getSelectionList();

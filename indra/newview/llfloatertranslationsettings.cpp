@@ -48,6 +48,9 @@
 LLFloaterTranslationSettings::LLFloaterTranslationSettings(const LLSD& key)
 :   LLFloater(key)
 ,   mMachineTranslationCB(NULL)
+,   mIncomingModeCombo(NULL)
+,   mOutgoingModeCombo(NULL)
+,   mScriptDialogModeCombo(NULL)
 ,   mAzureKeyVerified(false)
 ,   mGoogleKeyVerified(false)
 ,   mDeepLKeyVerified(false)
@@ -58,6 +61,9 @@ LLFloaterTranslationSettings::LLFloaterTranslationSettings(const LLSD& key)
 bool LLFloaterTranslationSettings::postBuild()
 {
     mMachineTranslationCB = getChild<LLCheckBoxCtrl>("translate_chat_checkbox");
+    mIncomingModeCombo = getChild<LLComboBox>("incoming_mode");
+    mOutgoingModeCombo = getChild<LLComboBox>("outgoing_mode");
+    mScriptDialogModeCombo = getChild<LLComboBox>("script_dialog_translate_mode");
     mLanguageCombo = getChild<LLComboBox>("translate_language_combo");
     mTranslationServiceRadioGroup = getChild<LLRadioGroup>("translation_service_rg");
     mAzureAPIEndpointEditor = getChild<LLComboBox>("azure_api_endpoint_combo");
@@ -72,9 +78,30 @@ bool LLFloaterTranslationSettings::postBuild()
     mOKBtn = getChild<LLButton>("ok_btn");
 
     mMachineTranslationCB->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::updateControlsEnabledState, this));
+    mIncomingModeCombo->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::updateControlsEnabledState, this));
+    mOutgoingModeCombo->setCommitCallback([this](LLUICtrl*, const LLSD&)
+    {
+        gSavedSettings.setS32("FSOutgoingTranslateMode", mOutgoingModeCombo->getSelectedValue().asInteger());
+    });
+    mScriptDialogModeCombo->setCommitCallback([this](LLUICtrl*, const LLSD&)
+    {
+        gSavedSettings.setS32("FSScriptDialogTranslateMode", mScriptDialogModeCombo->getSelectedValue().asInteger());
+    });
     mTranslationServiceRadioGroup->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::updateControlsEnabledState, this));
     mOKBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnOK, this));
     getChild<LLButton>("cancel_btn")->setClickedCallback(boost::bind(&LLFloater::closeFloater, this, false));
+    getChild<LLButton>("clear_script_dialog_cache_btn")->setClickedCallback([](LLUICtrl*, const LLSD&)
+    {
+        LLNotificationsUtil::add("ConfirmClearScriptDialogTranslationCache", LLSD(), LLSD(),
+            [](const LLSD& notification, const LLSD& response)
+            {
+                if (LLNotificationsUtil::getSelectedOption(notification, response) == 0)
+                {
+                    LLTranslate::clearScriptDialogTranslations();
+                }
+                return false;
+            });
+    });
     mAzureVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnAzureVerify, this));
     mGoogleVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnGoogleVerify, this));
     mDeepLVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnDeepLVerify, this));
@@ -116,6 +143,9 @@ bool LLFloaterTranslationSettings::postBuild()
 void LLFloaterTranslationSettings::onOpen(const LLSD& key)
 {
     mMachineTranslationCB->setValue(gSavedSettings.getBOOL("TranslateChat"));
+    mIncomingModeCombo->setSelectedByValue(gSavedSettings.getS32("FSIncomingTranslateMode"), true);
+    mOutgoingModeCombo->setSelectedByValue(gSavedSettings.getS32("FSOutgoingTranslateMode"), true);
+    mScriptDialogModeCombo->setSelectedByValue(gSavedSettings.getS32("FSScriptDialogTranslateMode"), true);
     mLanguageCombo->setSelectedByValue(gSavedSettings.getString("TranslateLanguage"), true);
     mTranslationServiceRadioGroup->setSelectedByValue(gSavedSettings.getString("TranslationService"), true);
 
@@ -258,48 +288,53 @@ void LLFloaterTranslationSettings::updateControlsEnabledState()
 {
     // Enable/disable controls based on the checkbox value.
     bool on = mMachineTranslationCB->getValue().asBoolean();
+    bool use_gpt = mIncomingModeCombo->getSelectedValue().asInteger() == LLTranslate::INCOMING_GPT;
+    bool use_standard = !use_gpt;
     std::string service = getSelectedService();
     bool azure_selected = service == "azure";
     bool google_selected = service == "google";
     bool deepl_selected = service == "deepl";
 
-    mTranslationServiceRadioGroup->setEnabled(on);
+    mIncomingModeCombo->setEnabled(on);
+    mTranslationServiceRadioGroup->setEnabled(on && use_standard);
     mLanguageCombo->setEnabled(on);
 
     // MS Azure
-    getChild<LLTextBox>("azure_api_endoint_label")->setEnabled(on);
-    mAzureAPIEndpointEditor->setEnabled(on && azure_selected);
-    getChild<LLTextBox>("azure_api_key_label")->setEnabled(on);
-    mAzureAPIKeyEditor->setEnabled(on && azure_selected);
-    getChild<LLTextBox>("azure_api_region_label")->setEnabled(on);
-    mAzureAPIRegionEditor->setEnabled(on && azure_selected);
+    getChild<LLTextBox>("azure_api_endoint_label")->setEnabled(on && use_standard);
+    mAzureAPIEndpointEditor->setEnabled(on && use_standard && azure_selected);
+    getChild<LLTextBox>("azure_api_key_label")->setEnabled(on && use_standard);
+    mAzureAPIKeyEditor->setEnabled(on && use_standard && azure_selected);
+    getChild<LLTextBox>("azure_api_region_label")->setEnabled(on && use_standard);
+    mAzureAPIRegionEditor->setEnabled(on && use_standard && azure_selected);
 
-    mAzureVerifyBtn->setEnabled(on && azure_selected &&
+    mAzureVerifyBtn->setEnabled(on && use_standard && azure_selected &&
                                 !mAzureKeyVerified && getEnteredAzureKey().isMap());
 
     // Google
-    getChild<LLTextBox>("google_api_key_label")->setEnabled(on);
-    mGoogleAPIKeyEditor->setEnabled(on && google_selected);
+    getChild<LLTextBox>("google_api_key_label")->setEnabled(on && use_standard);
+    mGoogleAPIKeyEditor->setEnabled(on && use_standard && google_selected);
 
-    mGoogleVerifyBtn->setEnabled(on && google_selected &&
+    mGoogleVerifyBtn->setEnabled(on && use_standard && google_selected &&
         !mGoogleKeyVerified && !getEnteredGoogleKey().empty());
 
     // DeepL
-    getChild<LLTextBox>("deepl_api_domain_label")->setEnabled(on);
-    mDeepLAPIDomainCombo->setEnabled(on && deepl_selected);
-    getChild<LLTextBox>("deepl_api_key_label")->setEnabled(on);
-    mDeepLAPIKeyEditor->setEnabled(on && deepl_selected);
+    getChild<LLTextBox>("deepl_api_domain_label")->setEnabled(on && use_standard);
+    mDeepLAPIDomainCombo->setEnabled(on && use_standard && deepl_selected);
+    getChild<LLTextBox>("deepl_api_key_label")->setEnabled(on && use_standard);
+    mDeepLAPIKeyEditor->setEnabled(on && use_standard && deepl_selected);
 
-    mDeepLVerifyBtn->setEnabled(on && deepl_selected &&
+    mDeepLVerifyBtn->setEnabled(on && use_standard && deepl_selected &&
                                  !mDeepLKeyVerified && getEnteredDeepLKey().isMap());
 
     bool service_verified =
         (azure_selected && mAzureKeyVerified)
         || (google_selected && mGoogleKeyVerified)
         || (deepl_selected && mDeepLKeyVerified);
-    gSavedPerAccountSettings.setBOOL("TranslatingEnabled", service_verified);
+    bool translation_configured = use_gpt ? LLTranslate::isGPTTranslationConfigured() : service_verified;
+    gSavedPerAccountSettings.setBOOL("TranslatingEnabled", on && translation_configured);
 
-    mOKBtn->setEnabled(!on || service_verified);
+    // GPT fields are edited in the right panel and may not commit until OK takes focus.
+    mOKBtn->setEnabled(!on || use_gpt || service_verified);
 }
 
 /*static*/
@@ -412,11 +447,17 @@ void LLFloaterTranslationSettings::onClose(bool app_quitting)
         (azure_selected && mAzureKeyVerified)
         || (google_selected && mGoogleKeyVerified)
         || (deepl_selected && mDeepLKeyVerified);
-    gSavedPerAccountSettings.setBOOL("TranslatingEnabled", service_verified);
+    bool use_gpt = LLTranslate::getIncomingMode() == LLTranslate::INCOMING_GPT;
+    bool translation_configured = use_gpt ? LLTranslate::isGPTTranslationConfigured() : service_verified;
+    gSavedPerAccountSettings.setBOOL("TranslatingEnabled",
+                                     gSavedSettings.getBOOL("TranslateChat") && translation_configured);
 }
 void LLFloaterTranslationSettings::onBtnOK()
 {
     gSavedSettings.setBOOL("TranslateChat", mMachineTranslationCB->getValue().asBoolean());
+    gSavedSettings.setS32("FSIncomingTranslateMode", mIncomingModeCombo->getSelectedValue().asInteger());
+    gSavedSettings.setS32("FSOutgoingTranslateMode", mOutgoingModeCombo->getSelectedValue().asInteger());
+    gSavedSettings.setS32("FSScriptDialogTranslateMode", mScriptDialogModeCombo->getSelectedValue().asInteger());
     gSavedSettings.setString("TranslateLanguage", mLanguageCombo->getSelectedValue().asString());
     gSavedSettings.setString("TranslationService", getSelectedService());
     gSavedSettings.setLLSD("AzureTranslateAPIKey", getEnteredAzureKey());

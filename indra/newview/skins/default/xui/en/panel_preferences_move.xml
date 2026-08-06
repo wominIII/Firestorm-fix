@@ -596,6 +596,17 @@
          width="237"
          top_pad="0"/>
         <check_box
+         control_name="FSLocalMovementPrediction"
+         follows="left|top"
+         height="20"
+         label="Low-latency local movement prediction (experimental)"
+         layout="topleft"
+         left_delta="0"
+         name="FSLocalMovementPrediction"
+         tool_tip="Moves only your locally rendered avatar and camera immediately while waiting for the simulator. Disable this if you see visual sliding or incorrect corrections."
+         width="330"
+         top_pad="0"/>
+        <check_box
          top_pad="0"
          follows="left|top"
          height="20"

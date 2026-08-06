@@ -99,6 +99,7 @@ public:
     #ifdef RLV_EXPERIMENTAL_COMPOSITEFOLDERS
     static bool getEnableComposites()           { return s_fCompositeFolders; }
     #endif // RLV_EXPERIMENTAL_COMPOSITEFOLDERS
+    static bool getEmergencyDetachOverride()    { return rlvGetSetting<bool>(RlvSettingNames::EmergencyDetachOverride, false); }
     static bool getEnableIMQuery()              { return rlvGetSetting<bool>(RlvSettingNames::EnableIMQuery, true); }
     static bool getEnableLegacyNaming()         { return s_fLegacyNaming; }
     static bool getEnableSharedWear()           { return rlvGetSetting<bool>(RlvSettingNames::EnableSharedWear, false); }

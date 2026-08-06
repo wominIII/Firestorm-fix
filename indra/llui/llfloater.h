@@ -32,6 +32,7 @@
 #define LL_FLOATER_H
 
 #include "llpanel.h"
+#include "llframetimer.h"
 #include "lltoolbar.h"
 #include "lluuid.h"
 //#include "llnotificationsutil.h"
@@ -505,6 +506,13 @@ protected:
     // <FS:Ansariel> Make this accessible from child classes
     std::string     mInstanceName;        // Store the instance name so we can remove ourselves from the list
 private:
+    enum EUITransition
+    {
+        UI_TRANSITION_NONE,
+        UI_TRANSITION_OPENING,
+        UI_TRANSITION_CLOSING
+    };
+
     LLRect          mExpandedRect;
 
     LLUIString      mTitle;
@@ -576,6 +584,9 @@ private:
 
     // <FS:Ansariel> MultiFloater without titlebar for hosted floater
     bool            mHostedFloaterShowtitlebar;
+
+    EUITransition   mUITransition{UI_TRANSITION_NONE};
+    LLFrameTimer    mUITransitionTimer;
 };
 
 
@@ -689,6 +700,5 @@ private:
 extern LLFloaterView* gFloaterView;
 
 #endif  // LL_FLOATER_H
-
 
 

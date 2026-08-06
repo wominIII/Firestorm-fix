@@ -454,7 +454,7 @@ inline bool RlvAttachmentLocks::canDetach(const LLInventoryItem* pItem) const
 {
     const LLViewerObject* pAttachObj =
         ((pItem) && (isAgentAvatarValid())) ? gAgentAvatarp->getWornAttachment(pItem->getLinkedUUID()) : NULL;
-    return (!pAttachObj) || (!isLockedAttachment(pAttachObj));
+    return (!pAttachObj) || (RlvSettings::getEmergencyDetachOverride()) || (!isLockedAttachment(pAttachObj));
 }
 
 // Checked: 2010-11-30 (RLVa-1.3.0b) | Modified: RLVa-1.3.0b
@@ -507,7 +507,7 @@ inline bool RlvWearableLocks::canRemove(const LLInventoryItem* pItem) const
     // The specified item can be removed if its wearable can be removed
     RLV_ASSERT( (pItem) && (LLInventoryType::IT_WEARABLE == pItem->getInventoryType()) );
     const LLViewerWearable* pWearable = (pItem) ? gAgentWearables.getWearableFromItemID(pItem->getLinkedUUID()) : NULL;
-    return (pWearable) && (!isLockedWearable(pWearable));
+    return (pWearable) && ((RlvSettings::getEmergencyDetachOverride()) || (!isLockedWearable(pWearable)));
 }
 
 // Checked: 2011-03-27 (RLVa-1.3.0g) | Modified: RLVa-1.3.0g

@@ -592,6 +592,8 @@ void FSFloaterIM::translateAndSendMsg(const std::string& msg)
 
 void FSFloaterIM::onOutgoingTranslationSuccess(std::string translation, std::string detected_lang)
 {
+    if (mPendingOutgoingText.empty()) return;
+
     const S32 format = gSavedSettings.getS32("FSOutgoingTranslateFormat");
     if (format == 1) translation = mPendingOutgoingText + "\n" + translation;
     else if (format == 2) translation += "\n" + mPendingOutgoingText;
@@ -602,6 +604,8 @@ void FSFloaterIM::onOutgoingTranslationSuccess(std::string translation, std::str
 
 void FSFloaterIM::onOutgoingTranslationFailure(int status, std::string error)
 {
+    if (mPendingOutgoingText.empty()) return;
+
     if (mInputEditor)
     {
         mInputEditor->setEnabled(true);
@@ -644,6 +648,20 @@ void FSFloaterIM::updateOutgoingTranslateButton()
         : mode == LLTranslate::OUTGOING_STANDARD
             ? "Outgoing translation: Normal API (click for AI)"
             : "Outgoing translation: Context-aware AI (click to turn off)"));
+}
+
+void FSFloaterIM::onOutgoingTranslateModeChanged(const LLSD&)
+{
+    updateOutgoingTranslateButton();
+    if (LLTranslate::getOutgoingMode() != LLTranslate::OUTGOING_DISABLED || mPendingOutgoingText.empty())
+    {
+        return;
+    }
+
+    const std::string text = mPendingOutgoingText;
+    mPendingOutgoingText.clear();
+    if (mInputEditor) mInputEditor->setEnabled(true);
+    sendMsg(text);
 }
 
 void FSFloaterIM::sendMsg(const std::string& msg)
@@ -745,6 +763,7 @@ FSFloaterIM::~FSFloaterIM()
     }
 
     mEmojiCloseConn.disconnect();
+    mOutgoingTranslateModeConnection.disconnect();
 
     LLFloaterChatMentionPicker::removeParticipantSource(this);
 }
@@ -1099,6 +1118,8 @@ bool FSFloaterIM::postBuild()
     mOutgoingTranslateBtn = getChild<LLButton>("outgoing_translate_btn");
     mOutgoingTranslateBtn->setClickedCallback(boost::bind(&FSFloaterIM::onOutgoingTranslateButtonClicked, this));
     mOutgoingTranslateBtn->setRightMouseDownCallback(boost::bind(&FSFloaterIM::onOutgoingTranslateButtonRightClick, this, _2, _3, _4));
+    mOutgoingTranslateModeConnection = gSavedSettings.getControl("FSOutgoingTranslateMode")->getSignal()->connect(
+        boost::bind(&FSFloaterIM::onOutgoingTranslateModeChanged, this, _2));
     updateOutgoingTranslateButton();
     // <FS:TJ> [FIRE-35804] Allow the IM floater to have separate transparency
     mInputEditor->setTransparencyOverrideCallback(boost::bind(&FSFloaterIM::onGetChatEditorOpacityCallback, this, _1, _2));

@@ -19,6 +19,11 @@
 		DeepL API 密钥已验证。
 	</string>
 	<check_box label="聊天时启用机器翻译" name="translate_chat_checkbox"/>
+	<text name="incoming_mode_label">接收消息翻译：</text>
+	<combo_box name="incoming_mode">
+		<combo_box.item label="普通 API" name="normal"/>
+		<combo_box.item label="AI 模型" name="gpt"/>
+	</combo_box>
 	<text name="translate_language_label">
 		将聊天内容翻译成：
 	</text>
@@ -85,11 +90,11 @@
 	</text>
 	<panel name="outgoing_translation_panel">
 		<text name="outgoing_translation_title">发送消息翻译</text>
-		<radio_group height="22" left="12" name="outgoing_mode" top_pad="4" width="370">
-			<radio_item label="关闭" name="off" value="0"/>
-			<radio_item label="普通 API" left="75" name="normal" value="1"/>
-			<radio_item label="AI 上下文" left="195" name="gpt" value="2"/>
-		</radio_group>
+		<combo_box name="outgoing_mode">
+			<combo_box.item label="关闭" name="off"/>
+			<combo_box.item label="普通 API" name="normal"/>
+			<combo_box.item label="AI 上下文" name="gpt"/>
+		</combo_box>
 		<text name="outgoing_target_language_label">目标语言：</text>
 		<text name="outgoing_send_format_label">发送格式：</text>
 		<combo_box name="outgoing_send_format">
@@ -104,11 +109,12 @@
 		<text name="outgoing_gpt_prompt_label">可编辑的系统提示词（支持 {target_language}）：</text>
 		<text name="outgoing_gpt_context_note">AI 只会读取当前附近聊天、群聊或私聊中最近的少量消息。</text>
 		<text name="script_dialog_translation_title">脚本物品菜单翻译</text>
-		<radio_group height="22" left="12" name="script_dialog_translate_mode" top_pad="4" width="370">
-			<radio_item label="关闭" name="off" value="0"/>
-			<radio_item label="普通 API" left="75" name="normal" value="1"/>
-			<radio_item label="AI 上下文" left="195" name="gpt" value="2"/>
-		</radio_group>
+		<button label="清除翻译缓存…" name="clear_script_dialog_cache_btn" tool_tip="删除所有脚本物品菜单的自动翻译和人工校定结果。"/>
+		<combo_box name="script_dialog_translate_mode">
+			<combo_box.item label="关闭" name="off"/>
+			<combo_box.item label="普通 API" name="normal"/>
+			<combo_box.item label="AI 上下文" name="gpt"/>
+		</combo_box>
 		<text name="script_dialog_target_language_label">目标语言：</text>
 		<text name="script_dialog_gpt_prompt_label">AI 菜单提示词（支持 {target_language}）：</text>
 		<text name="script_dialog_translation_note">AI 模式共用上方的 GPT 接口地址、API 密钥和模型；翻译结果会保存在本地。</text>

@@ -148,6 +148,9 @@ public:
     std::string getWindowTitle() const; // The window display name.
 
     void forceDisconnect(const std::string& msg); // Force disconnection, with a message to the user.
+    void requestAutoReconnect(const std::string& msg);
+    bool autoReconnectRequested() const { return mAutoReconnectRequested; }
+    S32 getAutoReconnectAttempt() const { return mAutoReconnectAttempt; }
 
     // sendSimpleLogoutRequest does not create a marker file.
     // Meant for lost network case, and for forced shutdowns,
@@ -379,6 +382,8 @@ private:
     bool mQuitRequested;                // User wants to quit, may have modified documents open.
     bool mClosingFloaters;
     bool mLogoutRequestSent;            // Disconnect message sent to simulator, no longer safe to send messages to the sim.
+    bool mAutoReconnectRequested;
+    S32 mAutoReconnectAttempt;
     struct SettingsFiles* mSettingsLocationList;
 
     LLWatchdogTimeout* mMainloopTimeout;

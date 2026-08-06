@@ -337,7 +337,7 @@ namespace Details
                     if (gAgent.getRegion() && gAgent.getRegion()->getHost().getIPandPort() == mSenderIp)
                     {
                         LL_WARNS("LLEventPollImpl") << "< " << counter << "> Forcing disconnect due to stalled main region event poll." << LL_ENDL;
-                        LLAppViewer::instance()->forceDisconnect(LLTrans::getString("AgentLostConnection"));
+                        LLAppViewer::instance()->requestAutoReconnect(LLTrans::getString("AgentLostConnection"));
                     }
                     else
                     {

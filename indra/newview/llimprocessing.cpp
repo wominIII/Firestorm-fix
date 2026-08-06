@@ -52,6 +52,7 @@
 #include "llstring.h"
 #include "lltoastnotifypanel.h"
 #include "lltrans.h"
+#include "lltranslate.h"
 #include "llviewergenericmessage.h"
 #include "llviewerobjectlist.h"
 #include "llviewermessage.h"
@@ -1813,14 +1814,47 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
                     chat.mChatStyle = CHAT_STYLE_IRC;
                 }
 
-                LLNotificationsUI::LLNotificationManager::instance().onChat(chat, args);
-                if (message != "")
+                LLSD msg_notify;
+                msg_notify["session_id"] = LLUUID();
+                msg_notify["from_id"] = chat.mFromID;
+                msg_notify["source_type"] = chat.mSourceType;
+
+                auto show_object_message = [args, msg_notify](LLChat display_chat)
                 {
-                    LLSD msg_notify;
-                    msg_notify["session_id"] = LLUUID();
-                    msg_notify["from_id"] = chat.mFromID;
-                    msg_notify["source_type"] = chat.mSourceType;
-                    on_new_message(msg_notify);
+                    LLNotificationsUI::LLNotificationManager::instance().onChat(display_chat, args);
+                    if (!display_chat.mText.empty())
+                    {
+                        on_new_message(msg_notify);
+                    }
+                };
+
+                if (gSavedSettings.getBOOL("TranslateChat") && !message.empty())
+                {
+                    LLTranslate::instance().logCharsSeen(message.size());
+                    LLTranslate::instance().logCharsSent(message.size());
+                    LLTranslate::translateIncomingMessage(std::string(), LLTranslate::getTranslateLanguage(), message,
+                        [chat, message, show_object_message](std::string translation, std::string) mutable
+                        {
+                            if (!translation.empty()
+                                && LLStringUtil::compareInsensitive(translation, message) != 0)
+                            {
+                                chat.mText += " (" + LLTranslate::removeNoTranslateTags(translation) + ")";
+                            }
+                            LLTranslate::instance().logSuccess(1);
+                            show_object_message(chat);
+                        },
+                        [chat, show_object_message](int, std::string error) mutable
+                        {
+                            std::string failure = LLTrans::getString("TranslationFailed", LLSD().with("[REASON]", error));
+                            LLStringUtil::replaceString(failure, "\n", " ");
+                            chat.mText += " (" + failure + ")";
+                            LLTranslate::instance().logFailure(1);
+                            show_object_message(chat);
+                        });
+                }
+                else
+                {
+                    show_object_message(chat);
                 }
             }
 
@@ -2605,4 +2639,3 @@ void LLIMProcessing::requestOfflineMessagesLegacy()
     msg->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
     gAgent.sendReliableMessage();
 }
-

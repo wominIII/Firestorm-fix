@@ -1484,7 +1484,7 @@ void LLAgentCamera::updateCamera()
             if (current_cam)
             {
                 mFollowCam.copyParams(*current_cam);
-                mFollowCam.setSubjectPositionAndRotation( gAgentAvatarp->getRenderPosition(), avatarRotationForFollowCam );
+                mFollowCam.setSubjectPositionAndRotation( gAgentAvatarp->getPredictedVisualPositionAgent(), avatarRotationForFollowCam );
                 mFollowCam.update();
                 LLViewerJoystick::getInstance()->setCameraNeedsUpdate(true);
             }
@@ -1980,7 +1980,7 @@ LLVector3d LLAgentCamera::calcCameraPositionTargetGlobal(bool *hit_limit)
         else
         {
             head_offset.mdV[VZ] += gAgentAvatarp->mHeadOffset.mV[VZ];
-            camera_position_global = gAgent.getPosGlobalFromAgent(gAgentAvatarp->getRenderPosition());//frame_center_global;
+            camera_position_global = gAgent.getPosGlobalFromAgent(gAgentAvatarp->getPredictedVisualPositionAgent());//frame_center_global;
             head_offset = head_offset * gAgentAvatarp->getRenderRotation();
             camera_position_global = camera_position_global + head_offset;
         }

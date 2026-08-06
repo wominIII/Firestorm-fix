@@ -8,6 +8,7 @@
 		<panel label="更多" name="tab-extras">
 			<check_box name="checkMiscRLVa" label="允许远程脚本查看器控件 (RLVa)"/>
 			<text name="textMiscRLVaRestart">(需要重新启动)</text>
+			<check_box name="checkRLVaEmergencyDetachOverride" label="紧急覆盖：允许脱下受 RLVa 锁定的附件和衣物" tool_tip="启用后，你可以手动脱下受锁定的附件和衣物；其他 RLVa 限制仍然有效。关闭后恢复正常的锁定保护。"/>
 			<check_box label="始终将放置的物件分配给地块群组（如有可能）" name="grouplandrez" tool_tip="如果您是地块的所有者，则将放置在地块上的物件分配给群组所有者，即使该群组未启用。"/>
 			<check_box label="当脚本通信时创建粒子效果" name="EffectScriptChatParticles" tool_tip="启用此选项会在与通信的物件周围显示一个小的旋转云。"/>
 			<check_box label="当您接近特定人物时关闭追踪标签 (&lt;= 3m)" name="FSDisableAvatarTrackerAtCloseIn" tool_tip="启用此选项将在您接近人物时自动关闭追踪标签 (&lt;= 3m 默认)"/>

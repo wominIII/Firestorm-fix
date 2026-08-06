@@ -71,6 +71,12 @@ public :
         OUTGOING_GPT = 2
     };
 
+    enum EIncomingMode
+    {
+        INCOMING_STANDARD = 1,
+        INCOMING_GPT = 2
+    };
+
     /**
      * Translate given text.
      *
@@ -80,6 +86,12 @@ public :
      * @param mesg       Text to translate.
      */
     static void translateMessage(const std::string &from_lang, const std::string &to_lang, const std::string &mesg, TranslationSuccess_fn success, TranslationFailure_fn failure);
+
+    // Translate received nearby chat or IM through the selected incoming mode.
+    static void translateIncomingMessage(const std::string& from_lang, const std::string& to_lang,
+                                         const std::string& mesg, TranslationSuccess_fn success,
+                                         TranslationFailure_fn failure);
+    static EIncomingMode getIncomingMode();
 
     // Translate arbitrary text through the configured GPT-compatible endpoint,
     // independently of the outgoing-chat translation mode.
@@ -99,6 +111,7 @@ public :
                                            const std::string& source, const std::string& translation);
     static std::string getScriptDialogTranslation(const std::string& context_key,
                                                   const std::string& source);
+    static void clearScriptDialogTranslations();
 
     /**
      * Verify given API key of a translation service.
@@ -117,6 +130,7 @@ public :
      * @return true if translation is configured properly.
      */
     static bool isTranslationConfigured();
+    static bool isGPTTranslationConfigured();
 
     static std::string addNoTranslateTags(std::string mesg);
     static std::string removeNoTranslateTags(std::string mesg);
@@ -129,7 +143,7 @@ public :
 private:
     static void translateOutgoingGPT(const std::string& mesg, const LLSD& context,
                                      TranslationSuccess_fn success, TranslationFailure_fn failure);
-    static void translateOutgoingGPTCoro(std::string mesg, LLSD context, std::string target,
+    static void translateOutgoingGPTCoro(std::string mesg, LLSD context, S32 context_count, std::string target,
                                          TranslationSuccess_fn success, TranslationFailure_fn failure);
     static void translateScriptDialogGPTCoro(std::string context_key, std::string message,
                                              LLSD buttons, ScriptDialogTranslationSuccess_fn success,

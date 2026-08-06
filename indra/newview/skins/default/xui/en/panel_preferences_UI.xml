@@ -358,10 +358,22 @@
          top_pad="-14"
          width="390" />
 
+        <check_box
+         control_name="FSUIAnimations"
+         follows="left|top"
+         height="16"
+         label="Use smooth window animations"
+         layout="topleft"
+         left="10"
+         name="FSUIAnimations"
+         tool_tip="Fade and gently slide viewer windows when they open or when you close them. Disable this if you prefer immediate window changes."
+         top_pad="5"
+         width="300" />
+
       <text
        type="string"
        left="10"
-       top_pad="15"
+       top_pad="5"
        width="150"
        follows="left|top"
        height="16"

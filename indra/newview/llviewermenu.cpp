@@ -9431,7 +9431,8 @@ class LLAttachmentDetachFromPoint : public view_listener_t
             {
                 LLViewerObject *attached_object = iter->get();
 // [RLVa:KB] - Checked: 2010-03-04 (RLVa-1.2.0a) | Added: RLVa-1.2.0a
-                if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.isLockedAttachment(attached_object)) )
+                if ( (rlv_handler_t::isEnabled()) && (!RlvSettings::getEmergencyDetachOverride()) &&
+                     (gRlvAttachmentLocks.isLockedAttachment(attached_object)) )
                     continue;
                 ids_to_remove.push_back(attached_object->getAttachmentItemID());
 // [/RLVa:KB]
@@ -9535,7 +9536,8 @@ class LLAttachmentDetach : public view_listener_t
 
 // [RLVa:KB] - Checked: 2010-03-15 (RLVa-1.2.0a) | Modified: RLVa-1.0.5
                 // NOTE: copy/paste of the code in enable_detach()
-                if ((rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) &&
+                if ((rlv_handler_t::isEnabled()) && (!RlvSettings::getEmergencyDetachOverride()) &&
+                    (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) &&
                     gRlvAttachmentLocks.isLockedAttachment(objectp->getRootEdit()))
         {
                     return false;
@@ -9680,7 +9682,8 @@ bool enable_detach(const LLSD&)
 
             // RELEASE-RLVa: [SL-2.2.0] LLSelectMgr::sendDetach() and LLSelectMgr::sendDropAttachment() call sendListToRegions with
             //                          SEND_ONLY_ROOTS so we only need to examine the roots which saves us time
-            if ( (rlv_handler_t::isEnabled()) && (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) )
+            if ( (rlv_handler_t::isEnabled()) && (!RlvSettings::getEmergencyDetachOverride()) &&
+                 (gRlvAttachmentLocks.hasLockedAttachmentPoint(RLV_LOCK_REMOVE)) )
             {
                 LLObjectSelectionHandle hSelect = LLSelectMgr::getInstance()->getSelection();
                 RlvSelectHasLockedAttach f;
@@ -12030,7 +12033,8 @@ class LLEditTakeOff : public view_listener_t
                 S32 wearable_index = gAgentWearables.getWearableCount(type) - 1;
 
 // [RLVa:KB] - Checked: 2010-06-09 (RLVa-1.2.0g) | Added: RLVa-1.2.0g
-                if ( (rlv_handler_t::isEnabled()) && (gRlvWearableLocks.hasLockedWearable(type)) )
+                if ( (rlv_handler_t::isEnabled()) && (!RlvSettings::getEmergencyDetachOverride()) &&
+                     (gRlvWearableLocks.hasLockedWearable(type)) )
                 {
                     // We'll use the first wearable we come across that can be removed (moving from top to bottom)
                     for (; wearable_index >= 0; wearable_index--)

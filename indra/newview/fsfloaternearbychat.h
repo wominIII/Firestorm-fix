@@ -122,6 +122,7 @@ protected:
     void translateAndSendChat(const std::string& text, EChatType type, bool animate);
     void onOutgoingTranslationSuccess(std::string translation, std::string detected_lang);
     void onOutgoingTranslationFailure(int status, std::string error);
+    void onOutgoingTranslateModeChanged(const LLSD& value);
     void onChatBoxCommit();
     void onChatTypeChanged();
 
@@ -180,6 +181,7 @@ private:
     boost::signals2::connection mRecentEmojisUpdatedCallbackConnection{};
     boost::signals2::connection mEmojiCloseConn{};
     boost::signals2::connection mRlvBehaviorCallbackConnection{};
+    boost::signals2::connection mOutgoingTranslateModeConnection{};
     U32                         mEmojiHelperLastCallbackFrame{ 0 };
 };
 

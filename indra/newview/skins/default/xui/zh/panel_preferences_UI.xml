@@ -47,6 +47,7 @@
 			<text name="HUD Size:" width="95">
 				HUD大小：
 			</text>
+			<check_box label="启用顺滑窗口动效" name="FSUIAnimations" tool_tip="窗口打开和主动关闭时使用淡入淡出与轻微滑动效果。关闭后窗口将立即显示或隐藏。"/>
 			<text name="ScriptDialogsPerObjectLabel">
 				每个物件的脚本弹窗：
 			</text>

@@ -129,6 +129,26 @@ bool            LLFloater::sQuitting = false; // Flag to prevent storing visibil
 
 LLFloaterView* gFloaterView = NULL;
 
+namespace
+{
+    constexpr F32 UI_OPEN_TRANSITION_TIME = 0.16f;
+    constexpr F32 UI_CLOSE_TRANSITION_TIME = 0.12f;
+    constexpr F32 UI_OPEN_OFFSET = 8.f;
+    constexpr F32 UI_CLOSE_OFFSET = 6.f;
+
+    bool floaterAnimationsEnabled()
+    {
+        static LLUICachedControl<bool> enabled("FSUIAnimations", true);
+        return enabled;
+    }
+
+    F32 smoothTransition(F32 value)
+    {
+        value = llclamp(value, 0.f, 1.f);
+        return value * value * (3.f - 2.f * value);
+    }
+}
+
 /*==========================================================================*|
 // DEV-38598: The fundamental problem with this operation is that it can only
 // support a subset of LLSD values. While it's plausible to compare two arrays
@@ -647,10 +667,21 @@ LLControlGroup* LLFloater::getControlGroup()
 
 void LLFloater::setVisible( bool visible )
 {
+    const bool becoming_visible = visible && !getVisible();
+    if (!visible)
+    {
+        mUITransition = UI_TRANSITION_NONE;
+    }
     LLPanel::setVisible(visible); // calls onVisibilityChange()
     if( visible && mFirstLook )
     {
         mFirstLook = false;
+    }
+
+    if (becoming_visible && !getHost() && !getIsChrome() && floaterAnimationsEnabled())
+    {
+        mUITransition = UI_TRANSITION_OPENING;
+        mUITransitionTimer.reset();
     }
 
     if( !visible )
@@ -702,6 +733,7 @@ void LLFloater::onVisibilityChange ( bool new_visibility )
 
 void LLFloater::openFloater(const LLSD& key)
 {
+    const bool was_shown = getVisible() && !isMinimized();
     LL_INFOS() << "Opening floater " << getName() << " full path: " << getPathname() << LL_ENDL;
 
     LLViewerEventRecorder::instance().logVisibilityChange( getPathname(), getName(), true,"floater"); // Last param is event subtype or empty string
@@ -761,11 +793,22 @@ void LLFloater::openFloater(const LLSD& key)
     mOpenSignal(this, key);
     onOpen(key);
 
+    if (!was_shown && getVisible() && !getHost() && !getIsChrome() && floaterAnimationsEnabled())
+    {
+        mUITransition = UI_TRANSITION_OPENING;
+        mUITransitionTimer.reset();
+    }
+    else
+    {
+        mUITransition = UI_TRANSITION_NONE;
+    }
+
     dirtyRect();
 }
 
 void LLFloater::closeFloater(bool app_quitting)
 {
+    mUITransition = UI_TRANSITION_NONE;
     // <FS:PP> FIRE-10373 / BUG-6437: UISndWindowClose played if an online or offline notification toast is still open for the same person
     // LL_INFOS() << "Closing floater " << getName() << LL_ENDL;
     // LLViewerEventRecorder::instance().logVisibilityChange( getPathname(), getName(), false,"floater"); // Last param is event subtype or empty string
@@ -2152,7 +2195,17 @@ void LLFloater::onClickCloseBtn(bool app_quitting)
     }
     // </FS:Ansariel>
 
-    closeFloater(false);
+    if (!app_quitting && getVisible() && !getHost() && !getIsChrome() && floaterAnimationsEnabled())
+    {
+        if (mUITransition != UI_TRANSITION_CLOSING)
+        {
+            mUITransition = UI_TRANSITION_CLOSING;
+            mUITransitionTimer.reset();
+        }
+        return;
+    }
+
+    closeFloater(app_quitting);
 }
 
 
@@ -2162,7 +2215,56 @@ void LLFloater::draw()
     LL_PROFILE_ZONE_SCOPED_CATEGORY_UI;
     LL_PROFILE_ZONE_TEXT(getTitle().c_str(), getTitle().length());
 
-    const F32 alpha = getCurrentTransparency();
+    F32 transition_alpha = 1.f;
+    F32 transition_offset = 0.f;
+    if (mUITransition != UI_TRANSITION_NONE)
+    {
+        if (!floaterAnimationsEnabled())
+        {
+            if (mUITransition == UI_TRANSITION_CLOSING)
+            {
+                mUITransition = UI_TRANSITION_NONE;
+                closeFloater(false);
+                return;
+            }
+            mUITransition = UI_TRANSITION_NONE;
+        }
+        else
+        {
+            const bool opening = mUITransition == UI_TRANSITION_OPENING;
+            const F32 duration = opening ? UI_OPEN_TRANSITION_TIME : UI_CLOSE_TRANSITION_TIME;
+            const F32 progress = llclamp(mUITransitionTimer.getElapsedTimeF32() / duration, 0.f, 1.f);
+            const F32 eased = smoothTransition(progress);
+            if (opening)
+            {
+                transition_alpha = 0.15f + 0.85f * eased;
+                transition_offset = -UI_OPEN_OFFSET * (1.f - eased);
+            }
+            else
+            {
+                transition_alpha = 1.f - eased;
+                transition_offset = -UI_CLOSE_OFFSET * eased;
+            }
+
+            if (progress >= 1.f)
+            {
+                mUITransition = UI_TRANSITION_NONE;
+                if (!opening)
+                {
+                    closeFloater(false);
+                    return;
+                }
+                transition_alpha = 1.f;
+                transition_offset = 0.f;
+            }
+        }
+    }
+
+    LLViewDrawContext transition_context(transition_alpha);
+    LLUI::pushMatrix();
+    LLUI::translate(0.f, transition_offset);
+
+    const F32 alpha = getCurrentTransparency() * getDrawContext().mAlpha;
 
     // draw background
     if( isBackgroundVisible() )
@@ -2244,6 +2346,8 @@ void LLFloater::draw()
             setCanTearOff(false);
         }
     }
+
+    LLUI::popMatrix();
 }
 
 void    LLFloater::drawShadow(LLPanel* panel)
@@ -2263,7 +2367,7 @@ void    LLFloater::drawShadow(LLPanel* panel)
         shadow_color.mV[VALPHA] *= 0.5f;
     }
     gl_drop_shadow(left, top, right, bottom,
-        shadow_color % getCurrentTransparency(),
+        shadow_color % (getCurrentTransparency() * getDrawContext().mAlpha),
         ll_round(shadow_offset));
 }
 

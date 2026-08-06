@@ -100,6 +100,7 @@ public:
     void translateAndSendMsg(const std::string& msg);
     void onOutgoingTranslationSuccess(std::string translation, std::string detected_lang);
     void onOutgoingTranslationFailure(int status, std::string error);
+    void onOutgoingTranslateModeChanged(const LLSD& value);
 
     // callback for LLIMModel on new messages
     // route to specific floater if it is visible
@@ -308,6 +309,7 @@ private:
 
     boost::signals2::connection mRecentEmojisUpdatedCallbackConnection{};
     boost::signals2::connection mEmojiCloseConn{};
+    boost::signals2::connection mOutgoingTranslateModeConnection{};
     U32 mEmojiHelperLastCallbackFrame{ 0 };
     std::string mPendingOutgoingText;
 };

@@ -3379,7 +3379,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
         // <FS:PP> gSavedSettings to LLCachedControl
         // if (gSavedSettings.getBOOL("TranslateChat") && chat.mSourceType != CHAT_SOURCE_SYSTEM)
         static LLCachedControl<bool> TranslateChat(gSavedSettings, "TranslateChat");
-        if (TranslateChat && chat.mSourceType != CHAT_SOURCE_SYSTEM)
+        if (TranslateChat && chat.mSourceType != CHAT_SOURCE_SYSTEM && from_id != gAgentID)
         // </FS:PP>
         {
             if (chat.mChatStyle == CHAT_STYLE_IRC)
@@ -3390,7 +3390,7 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
             const std::string to_lang = LLTranslate::getTranslateLanguage();
 
             LLTranslate::instance().logCharsSent(mesg.size());
-            LLTranslate::translateMessage(from_lang, to_lang, mesg,
+            LLTranslate::translateIncomingMessage(from_lang, to_lang, mesg,
                 boost::bind(&translateSuccess, chat, args, mesg, from_lang, _1, _2),
                 boost::bind(&translateFailure, chat, args, _1, _2));
 
@@ -3903,7 +3903,7 @@ void process_agent_movement_complete(LLMessageSystem* msg, void**)
     if (!gAgent.getRegion())
     {
         LL_WARNS("Teleport","Messaging") << "Agent was disconnected from the region" << LL_ENDL;
-        LLAppViewer::instance()->forceDisconnect(LLTrans::getString("YouHaveBeenDisconnected"));
+        LLAppViewer::instance()->requestAutoReconnect(LLTrans::getString("YouHaveBeenDisconnected"));
         return;
     }
     // </FS:Ansariel>

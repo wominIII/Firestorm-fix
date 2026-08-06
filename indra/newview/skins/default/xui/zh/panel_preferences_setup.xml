@@ -10,6 +10,7 @@
 			<text name="NetworkPrefText4">可能有问题</text>
 			<check_box label="自定义端口" name="connection_port_enabled"/>
 			<spinner label="号码：" name="connection_port"/>
+			<check_box label="断线后自动重连" name="automatic_reconnect" tool_tip="先走正常注销和设置保存流程，等待 3 秒后重启当前客户端，并使用已保存账号自动登录。需要勾选记住用户名和记住密码。"/>
 			<text name="Web:">网络浏览器：</text>
 			<radio_group name="preferred_browser_behavior">
 				<radio_item label="使用我的浏览器（Chrome、Firefox、Edge）打开所有链接" name="new_external" tool_tip="使用系统默认浏览器打开所有链接和帮助。如果您在全屏模式下，不建议使用此选项。"/>
@@ -34,7 +35,7 @@
 			<text name="cache_size_label_l">缓存大小（[https://wiki.firestormviewer.org/cache 需要帮助？]）：</text>
 			<text name="text_box5">mb</text>
 			<text name="asset_cache_size_label_l">
-				数据资源（资产）缓存：
+				资产缓存（最高 200 GB，建议使用 SSD）：
 			</text>
 			<text name="asset_text_box5">
 				mb

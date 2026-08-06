@@ -7133,6 +7133,20 @@ Are you sure you want to clear your inventory cache?
      notext="Cancel"
      yestext="OK"/>
   </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   name="ConfirmClearScriptDialogTranslationCache"
+   type="alertmodal">
+Clear all saved script object menu translations and manual corrections?
+
+This cannot be undone. Menus will be translated again the next time they open.
+    <tag>confirm</tag>
+    <usetemplate
+     name="okcancelbuttons"
+     notext="Cancel"
+     yestext="Clear"/>
+  </notification>
   
   <notification
    icon="alertmodal.tga"

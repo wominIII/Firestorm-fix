@@ -201,6 +201,17 @@
 		 name="connection_port"
 		 width="150" />
 
+		<check_box
+		 control_name="FSAutomaticReconnect"
+		 height="16"
+		 label="Auto-reconnect after disconnection"
+		 layout="topleft"
+		 left="200"
+		 name="automatic_reconnect"
+		 tool_tip="Uses the normal logout and settings-save flow, restarts this viewer after 3 seconds, then logs in with the saved account. Requires Remember username and Remember password."
+		 top_delta="0"
+		 width="320" />
+
 		<text
 		 type="string"
 		 length="1"
@@ -435,7 +446,7 @@
 		 name="asset_cache_size_label_l"
 		 top_pad="15"
 		 width="500">
-		   Asset Cache Size:
+		   Asset Cache Size (up to 200 GB, SSD recommended):
 		</text>
 		<slider
 		 can_edit_text="true"
@@ -443,10 +454,10 @@
 		 decimal_digits="0"
 		 follows="left|top"
 		 height="15"
-		 increment="64"
+		 increment="1024"
 		 initial_value="1024"
 		 layout="topleft"
-		 max_val="20000"
+		 max_val="204800"
 		 min_val="256"
 		 top_pad="10"
 		 name="asset_cache_size"

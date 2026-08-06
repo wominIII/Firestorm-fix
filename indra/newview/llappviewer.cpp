@@ -770,6 +770,8 @@ LLAppViewer::LLAppViewer()
     mQuitRequested(false),
     mClosingFloaters(false),
     mLogoutRequestSent(false),
+    mAutoReconnectRequested(false),
+    mAutoReconnectAttempt(0),
     mMainloopTimeout(NULL),
     mAgentRegionLastAlive(false),
     mRandomizeFramerate(LLCachedControl<bool>(gSavedSettings,"Randomize Framerate", false)),
@@ -1728,6 +1730,11 @@ bool LLAppViewer::doFrame()
                         gAgent.moveUp(-1);
                     }
                     // </FS:Ansariel>
+
+                    // Send changed movement controls before the rest of idle processing.
+                    // AgentUpdate is intentionally unreliable: the newest state supersedes
+                    // older movement state and must not wait behind reliable retries.
+                    send_agent_update(false);
                 }
             }
 
@@ -5280,7 +5287,11 @@ bool LLAppViewer::initCache()
     // total cache size - the 'CacheSize' pref - for all caches.
     // <FS:Ansariel> Better cache size control
     //const uintmax_t disk_cache_size = uintmax_t(cache_total_size * disk_cache_percent / 100);
-    const unsigned int disk_cache_mb = gSavedSettings.getU32("FSDiskCacheSize");
+    constexpr U32 MIN_ASSET_CACHE_SIZE_MB = 256U;
+    constexpr U32 MAX_ASSET_CACHE_SIZE_MB = 200U * 1024U;
+    const U32 disk_cache_mb = llclamp(gSavedSettings.getU32("FSDiskCacheSize"),
+                                      MIN_ASSET_CACHE_SIZE_MB,
+                                      MAX_ASSET_CACHE_SIZE_MB);
     const uintmax_t disk_cache_size = disk_cache_mb * 1024ULL * 1024ULL;
     // </FS:Ansariel>
     const bool enable_cache_debug_info = gSavedSettings.getBOOL("EnableDiskCacheDebugInfo");
@@ -5673,6 +5684,33 @@ void LLAppViewer::forceDisconnect(const std::string& mesg)
         args["MESSAGE"] = big_reason;
         LLNotificationsUtil::add("YouHaveBeenLoggedOut", args, LLSD(), &finish_disconnect );
     }
+}
+
+void LLAppViewer::requestAutoReconnect(const std::string& mesg)
+{
+    if (mAutoReconnectRequested || mQuitRequested || LLApp::isExiting())
+    {
+        return;
+    }
+
+    static LLCachedControl<bool> enabled(gSavedSettings, "FSAutomaticReconnect", true);
+    static LLCachedControl<U32> max_attempts(gSavedSettings, "FSAutomaticReconnectMaxAttempts", 3);
+
+    const S32 current_attempt = gSavedSettings.getS32("FSAutomaticReconnectAttempt");
+    const bool saved_credentials = gSavedSettings.getBOOL("FSRememberUsername") &&
+                                   gSavedSettings.getBOOL("RememberPassword");
+
+    if (!enabled || !saved_credentials || current_attempt >= static_cast<S32>(max_attempts()))
+    {
+        forceDisconnect(mesg);
+        return;
+    }
+
+    mAutoReconnectRequested = true;
+    mAutoReconnectAttempt = current_attempt + 1;
+    LL_INFOS("AutoReconnect") << "Connection lost; starting graceful logout before automatic reconnect attempt "
+                               << mAutoReconnectAttempt << " of " << max_attempts() << LL_ENDL;
+    requestQuit();
 }
 
 void LLAppViewer::badNetworkHandler()
@@ -6659,6 +6697,13 @@ static LLTrace::BlockTimerStatHandle FTM_CHECK_REGION_CIRCUIT("Check Region Circ
 
 void LLAppViewer::idleNetwork()
 {
+    if (gSavedSettings.getS32("FSAutomaticReconnectAttempt") > 0 &&
+        gLoggedInTime.getElapsedTimeF32() >= 60.f)
+    {
+        gSavedSettings.setS32("FSAutomaticReconnectAttempt", 0);
+        LL_INFOS("AutoReconnect") << "Connection remained stable; automatic reconnect attempt counter reset." << LL_ENDL;
+    }
+
     LL_PROFILE_ZONE_SCOPED_CATEGORY_NETWORK;
     pingMainloopTimeout("idleNetwork");
 
@@ -6751,7 +6796,7 @@ void LLAppViewer::idleNetwork()
         if ((mAgentRegionLastAlive && !this_region_alive) // newly dead
             && (mAgentRegionLastID == this_region_id)) // same region
         {
-            forceDisconnect(LLTrans::getString("AgentLostConnection"));
+            requestAutoReconnect(LLTrans::getString("AgentLostConnection"));
         }
         mAgentRegionLastID = this_region_id;
         mAgentRegionLastAlive = this_region_alive;

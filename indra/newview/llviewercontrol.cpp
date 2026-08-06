@@ -1120,7 +1120,11 @@ void handlePlayBentoIdleAnimationChanged(const LLSD& newValue)
 // <FS:Ansariel> Better asset cache size control
 void handleDiskCacheSizeChanged(const LLSD& newValue)
 {
-    const unsigned int disk_cache_mb = gSavedSettings.getU32("FSDiskCacheSize");
+    constexpr U32 MIN_ASSET_CACHE_SIZE_MB = 256U;
+    constexpr U32 MAX_ASSET_CACHE_SIZE_MB = 200U * 1024U;
+    const U32 disk_cache_mb = llclamp(gSavedSettings.getU32("FSDiskCacheSize"),
+                                      MIN_ASSET_CACHE_SIZE_MB,
+                                      MAX_ASSET_CACHE_SIZE_MB);
     const U64 disk_cache_bytes = disk_cache_mb * 1024ULL * 1024ULL;
     LLDiskCache::getInstance()->setMaxSizeBytes(disk_cache_bytes);
 }
@@ -1629,4 +1633,3 @@ void test_cached_control()
 //There's no LLSD comparsion for LLCC yet. TEST_LLCC(LLSD, test_llsd);
 }
 #endif // TEST_CACHED_CONTROL
-
