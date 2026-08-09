@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<keys xml_version="1">
+<keys xml_version="4">
   <first_person>
     <binding key="A" mask="NONE" command="slide_left"/>
     <binding key="D" mask="NONE" command="slide_right"/>
@@ -8,6 +8,8 @@
     <binding key="E" mask="NONE" command="jump"/>
     <binding key="C" mask="NONE" command="push_down"/>
     <binding key="F" mask="NONE" command="toggle_fly"/>
+    <binding key="P" mask="NONE" command="toggle_spectator_mode"/>
+    <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
 
     <binding key="LEFT" mask="NONE" command="slide_left"/>
     <binding key="RIGHT" mask="NONE" command="slide_right"/>
@@ -40,6 +42,8 @@
     <binding key="T" mask="NONE" command="roll_right"/>
 <!-- </FS:Chanayane> -->
     <binding key="F" mask="NONE" command="toggle_fly"/>
+    <binding key="P" mask="NONE" command="toggle_spectator_mode"/>
+    <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
 
     <binding key="SPACE" mask="NONE" command="stop_moving"/>
     <binding key="ENTER" mask="NONE" command="start_chat"/>
@@ -93,6 +97,8 @@
     <binding key="" mask="NONE" mouse="LMB" command="script_trigger_lbutton"/>
   </third_person>
   <sitting>
+    <binding key="P" mask="NONE" command="toggle_spectator_mode"/>
+    <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
     <binding key="A" mask="ALT" command="spin_around_cw"/>
     <binding key="D" mask="ALT" command="spin_around_ccw"/>
     <binding key="W" mask="ALT" command="move_forward"/>
@@ -171,6 +177,8 @@
     <binding key="" mask="NONE" mouse="LMB" command="script_trigger_lbutton"/>
   </sitting>
   <edit_avatar>
+    <binding key="P" mask="NONE" command="toggle_spectator_mode"/>
+    <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
     <!--Avatar editing camera controls-->
     <binding key="A" mask="NONE" command="edit_avatar_spin_cw"/>
     <binding key="D" mask="NONE" command="edit_avatar_spin_ccw"/>

@@ -277,6 +277,8 @@ using namespace LL;
 
 #include "growlmanager.h"
 #include "fsavatarrenderpersistence.h"
+#include "fsmcpbridge.h"
+#include "fsspectatormode.h"
 
 // *FIX: These extern globals should be cleaned up.
 // The globals either represent state/config/resource-storage of either
@@ -1130,6 +1132,7 @@ bool LLAppViewer::init()
     FSAssetBlacklist::getInstance();
 
     LLViewerFloaterReg::registerFloaters();
+    FSMCPBridge::init();
 
     /////////////////////////////////////////////////
     //
@@ -2016,6 +2019,9 @@ bool LLAppViewer::cleanup()
     }
     velopack_cleanup();
 #endif
+
+    FSSpectatorMode::shutdown();
+    FSMCPBridge::shutdown();
 
     //ditch LLVOAvatarSelf instance
     gAgentAvatarp = NULL;
@@ -6311,7 +6317,12 @@ void LLAppViewer::idle()
 
     LLWorld::getInstance()->updateParticles();
 
-    if (gAgentPilot.isPlaying() && gAgentPilot.getOverrideCamera())
+    FSSpectatorMode::update();
+    if (FSSpectatorMode::isCameraOverride())
+    {
+        // The spectator controller already applied the render camera.
+    }
+    else if (gAgentPilot.isPlaying() && gAgentPilot.getOverrideCamera())
     {
         gAgentPilot.moveCamera();
     }

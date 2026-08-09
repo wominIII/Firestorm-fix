@@ -1475,6 +1475,53 @@ void LLTranslate::clearScriptDialogTranslations()
     LL_INFOS("ScriptDialogTranslate") << "Cleared script dialog translation cache" << LL_ENDL;
 }
 
+LLSD LLTranslate::exportManualScriptDialogTranslations()
+{
+    LLSD result = LLSD::emptyMap();
+    const LLSD& cache = scriptDialogTranslationCache();
+    for (LLSD::map_const_iterator context = cache.beginMap(); context != cache.endMap(); ++context)
+    {
+        if (!context->second.isMap()) continue;
+        for (LLSD::map_const_iterator entry = context->second.beginMap();
+             entry != context->second.endMap(); ++entry)
+        {
+            if (entry->second.isMap() && entry->second["manual"].asBoolean() &&
+                !entry->second["text"].asString().empty())
+            {
+                result[context->first][entry->first] = entry->second;
+            }
+        }
+    }
+    return result;
+}
+
+bool LLTranslate::importManualScriptDialogTranslations(const LLSD& translations)
+{
+    if (!translations.isMap())
+    {
+        return false;
+    }
+
+    LLSD& cache = scriptDialogTranslationCache();
+    for (LLSD::map_const_iterator context = translations.beginMap();
+         context != translations.endMap(); ++context)
+    {
+        if (!context->second.isMap()) continue;
+        for (LLSD::map_const_iterator entry = context->second.beginMap();
+             entry != context->second.endMap(); ++entry)
+        {
+            const std::string text = entry->second["text"].asString();
+            if (entry->second.isMap() && entry->second["manual"].asBoolean() && !text.empty())
+            {
+                cache[context->first][entry->first]["text"] = text;
+                cache[context->first][entry->first]["manual"] = true;
+            }
+        }
+    }
+    saveScriptDialogTranslationCache();
+    return true;
+}
+
 void LLTranslate::translateScriptDialog(const std::string& context_key, const std::string& message,
                                         const LLSD& buttons, ScriptDialogTranslationSuccess_fn success,
                                         TranslationFailure_fn failure)

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
  legacy_header_height="18"
- height="650"
+ height="700"
  layout="topleft"
  name="floater_translation_settings"
  help_topic="translation_settings"
@@ -413,7 +413,7 @@
  <panel
   border="true"
   follows="top|right|bottom"
-  height="585"
+  height="635"
   layout="topleft"
   left="490"
   name="outgoing_translation_panel"
@@ -565,12 +565,27 @@
     top_pad="3"
     wrap="true" />
    <text
-    height="30"
+    height="24"
     left="12"
     name="script_dialog_translation_note"
     top_pad="4"
     width="370"
     wrap="true">AI mode reuses the GPT Base URL, API key and model above. Translations are saved locally.</text>
+   <button
+    height="22"
+    label="Export backup..."
+    left="12"
+    name="export_localization_backup_btn"
+    tool_tip="Back up inventory local labels and manually corrected script menu translations. API keys are not included."
+    top_pad="5"
+    width="175" />
+   <button
+    height="22"
+    label="Import backup..."
+    left_pad="8"
+    name="import_localization_backup_btn"
+    tool_tip="Merge local labels and manual script menu corrections from a backup file."
+    width="175" />
  </panel>
 
  <button

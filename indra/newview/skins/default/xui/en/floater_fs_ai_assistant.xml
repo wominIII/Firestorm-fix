@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater
+ can_close="true"
+ can_minimize="true"
+ can_resize="true"
+ height="640"
+ layout="topleft"
+ min_height="460"
+ min_width="720"
+ name="fs_ai_assistant"
+ save_rect="true"
+ title="AI Diagnostics and Repair Assistant"
+ width="980">
+  <string name="scan_complete">Snapshot updated. Review the captured data, then run AI diagnostics.</string>
+  <string name="api_not_configured">Configure the OpenAI-compatible API URL, key and model in Translation Settings first. The key is never included in the snapshot or report.</string>
+  <string name="analyzing">Analyzing the current snapshot...</string>
+  <string name="select_object_first">Select an object or attachment first.</string>
+  <string name="request_failed">AI request failed</string>
+
+  <text
+   follows="left|top"
+   height="18"
+   layout="topleft"
+   left="10"
+   name="snapshot_label"
+   top="10"
+   value="Current viewer snapshot"
+   width="290" />
+  <text
+   follows="left|top"
+   height="18"
+   layout="topleft"
+   left="500"
+   name="analysis_label"
+   top="10"
+   value="AI diagnostic report"
+   width="290" />
+  <check_box
+   control_name="FSAIAssistantMCPEnabled"
+   follows="right|top"
+   height="20"
+   label="Enable local MCP bridge"
+   layout="topleft"
+   left="765"
+   name="mcp_enabled"
+   top="7"
+   width="205" />
+
+  <text_editor
+   follows="left|top|bottom"
+   height="430"
+   layout="topleft"
+   left="10"
+   name="snapshot_editor"
+   read_only="true"
+   top="32"
+   width="460"
+   word_wrap="false" />
+  <text_editor
+   follows="left|right|top|bottom"
+   height="430"
+   layout="topleft"
+   left="500"
+   name="analysis_editor"
+   read_only="true"
+   top="32"
+   width="470"
+   word_wrap="true" />
+
+  <text
+   follows="left|bottom"
+   height="18"
+   layout="topleft"
+   left="10"
+   name="question_label"
+   top="474"
+   value="Problem to diagnose (optional)"
+   width="300" />
+  <text_editor
+   follows="left|right|bottom"
+   height="80"
+   layout="topleft"
+   left="10"
+   max_length="2048"
+   name="question_editor"
+   top="496"
+   width="960"
+   word_wrap="true" />
+
+  <button
+   follows="left|bottom"
+   height="26"
+   label="Scan current state"
+   layout="topleft"
+   left="10"
+   name="scan_btn"
+   top="594"
+   width="150" />
+  <button
+   follows="left|bottom"
+   height="26"
+   label="Run AI diagnostics"
+   layout="topleft"
+   left_pad="8"
+   name="analyze_btn"
+   width="160" />
+  <button
+   follows="left|bottom"
+   height="26"
+   label="Focus selection"
+   layout="topleft"
+   left_pad="8"
+   name="focus_btn"
+   width="140" />
+  <button
+   follows="left|bottom"
+   height="26"
+   label="Open build tools"
+   layout="topleft"
+   left_pad="8"
+   name="build_btn"
+   width="140" />
+  <text
+   follows="left|right|bottom"
+   height="28"
+   layout="topleft"
+   left_pad="12"
+   name="safety_note"
+   top_delta="0"
+   value="Repairs remain permission-checked and require review before server-side changes."
+   width="310"
+   word_wrap="true" />
+</floater>

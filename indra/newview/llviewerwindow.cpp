@@ -234,6 +234,7 @@
 #include "llnetmap.h"
 #include "lggcontactsets.h"
 #include "fspanellogin.h"
+#include "fsspectatormode.h"
 
 #include "lltracerecording.h"
 
@@ -3630,6 +3631,12 @@ bool LLViewerWindow::handleUnicodeChar(llwchar uni_char, MASK mask)
 void LLViewerWindow::handleScrollWheel(S32 clicks)
 {
     LLUI::getInstance()->resetMouseIdleTimer();
+
+    if (FSSpectatorMode::isMoving())
+    {
+        FSSpectatorMode::adjustMoveSpeed(clicks);
+        return;
+    }
 
     LLMouseHandler* mouse_captor = gFocusMgr.getMouseCapture();
     if( mouse_captor )

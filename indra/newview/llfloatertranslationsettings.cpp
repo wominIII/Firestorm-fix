@@ -34,7 +34,9 @@
 #include "fsfloaternearbychat.h"
 // </FS:Ansariel> [FS communication UI]
 #include "lltranslate.h"
+#include "llinventorybridge.h"
 #include "llviewercontrol.h" // for gSavedSettings
+#include "llviewermenufile.h"
 
 // Linden library includes
 #include "llbutton.h"
@@ -44,6 +46,14 @@
 #include "lllineeditor.h"
 #include "llnotificationsutil.h"
 #include "llradiogroup.h"
+#include "llfile.h"
+#include "llsdserialize.h"
+
+namespace
+{
+constexpr char LOCALIZATION_BACKUP_FORMAT[] = "firestorm_localization_backup";
+constexpr S32 LOCALIZATION_BACKUP_VERSION = 1;
+}
 
 LLFloaterTranslationSettings::LLFloaterTranslationSettings(const LLSD& key)
 :   LLFloater(key)
@@ -102,6 +112,10 @@ bool LLFloaterTranslationSettings::postBuild()
                 return false;
             });
     });
+    getChild<LLButton>("export_localization_backup_btn")->setClickedCallback(
+        boost::bind(&LLFloaterTranslationSettings::onExportLocalizationBackup, this));
+    getChild<LLButton>("import_localization_backup_btn")->setClickedCallback(
+        boost::bind(&LLFloaterTranslationSettings::onImportLocalizationBackup, this));
     mAzureVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnAzureVerify, this));
     mGoogleVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnGoogleVerify, this));
     mDeepLVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnDeepLVerify, this));
@@ -137,6 +151,63 @@ bool LLFloaterTranslationSettings::postBuild()
 
     center();
     return true;
+}
+
+void LLFloaterTranslationSettings::onExportLocalizationBackup()
+{
+    LLFilePickerReplyThread::startPicker(&LLFloaterTranslationSettings::saveLocalizationBackup,
+        LLFilePicker::FFSAVE_XML, "firestorm_localization_backup.xml");
+}
+
+void LLFloaterTranslationSettings::onImportLocalizationBackup()
+{
+    LLFilePickerReplyThread::startPicker(&LLFloaterTranslationSettings::loadLocalizationBackup,
+        LLFilePicker::FFLOAD_XML, false);
+}
+
+void LLFloaterTranslationSettings::saveLocalizationBackup(const std::vector<std::string>& filenames,
+                                                           LLFilePicker::ELoadFilter,
+                                                           LLFilePicker::ESaveFilter)
+{
+    if (filenames.empty()) return;
+
+    LLSD backup = LLSD::emptyMap();
+    backup["format"] = LOCALIZATION_BACKUP_FORMAT;
+    backup["version"] = LOCALIZATION_BACKUP_VERSION;
+    backup["inventory_local_labels"] = FSInventoryLocalLabels::instance().exportLabels();
+    backup["manual_script_dialog_translations"] = LLTranslate::exportManualScriptDialogTranslations();
+
+    llofstream file(filenames.front());
+    const bool saved = file.is_open() && LLSDSerialize::toPrettyXML(backup, file);
+    LLNotificationsUtil::add(saved ? "FSLocalizationBackupExported" : "FSLocalizationBackupFailed");
+}
+
+void LLFloaterTranslationSettings::loadLocalizationBackup(const std::vector<std::string>& filenames,
+                                                           LLFilePicker::ELoadFilter,
+                                                           LLFilePicker::ESaveFilter)
+{
+    if (filenames.empty()) return;
+
+    LLSD backup;
+    llifstream file(filenames.front());
+    const bool valid = file.is_open() &&
+        LLSDSerialize::fromXML(backup, file) != LLSDParser::PARSE_FAILURE &&
+        backup.isMap() && backup["format"].asString() == LOCALIZATION_BACKUP_FORMAT &&
+        backup["version"].asInteger() == LOCALIZATION_BACKUP_VERSION &&
+        backup["inventory_local_labels"].isMap() &&
+        backup["manual_script_dialog_translations"].isMap();
+    if (!valid)
+    {
+        LLNotificationsUtil::add("FSLocalizationBackupInvalid");
+        return;
+    }
+
+    const bool labels_ok = FSInventoryLocalLabels::instance().importLabels(
+        backup["inventory_local_labels"]);
+    const bool translations_ok = LLTranslate::importManualScriptDialogTranslations(
+        backup["manual_script_dialog_translations"]);
+    LLNotificationsUtil::add(labels_ok && translations_ok ?
+        "FSLocalizationBackupImported" : "FSLocalizationBackupFailed");
 }
 
 // virtual

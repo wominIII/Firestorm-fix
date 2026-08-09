@@ -53,6 +53,7 @@
 #include "llselectmgr.h"
 #include "llfloaterwebcontent.h"
 #include "fsfloatersearch.h"
+#include "fsspectatormode.h"
 #include "llvoiceclient.h"
 
 //
@@ -91,6 +92,7 @@ LLViewerInput gViewerInput;
 
 bool agent_jump( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     static bool first_fly_attempt(true);
     if (KEYSTATE_UP == s)
     {
@@ -129,6 +131,7 @@ bool agent_jump( EKeystate s )
 
 bool agent_push_down( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     if( KEYSTATE_UP == s  ) return true;
     // <FS:Ansariel> Chalice Yao's crouch toggle
     //gAgent.moveUp(-1);
@@ -224,6 +227,7 @@ bool camera_move_forward( EKeystate s );
 
 bool agent_push_forward( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     if(gAgent.isMovementLocked()) return true;
 
     //in free camera control mode we need to intercept keyboard events for avatar movements
@@ -242,6 +246,7 @@ bool camera_move_backward( EKeystate s );
 
 bool agent_push_backward( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     if(gAgent.isMovementLocked()) return true;
 
     static LLCachedControl<bool> leave_mouselook(gSavedSettings, "LeaveMouselook"); // <FS:PP> Speed optimisation
@@ -284,6 +289,7 @@ static void agent_slide_leftright( EKeystate s, S32 direction, LLAgent::EDoubleT
 
 bool agent_slide_left( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     if(gAgent.isMovementLocked()) return true;
     agent_slide_leftright(s, 1, LLAgent::DOUBLETAP_SLIDELEFT);
     return true;
@@ -292,6 +298,7 @@ bool agent_slide_left( EKeystate s )
 
 bool agent_slide_right( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     if(gAgent.isMovementLocked()) return true;
     agent_slide_leftright(s, -1, LLAgent::DOUBLETAP_SLIDERIGHT);
     return true;
@@ -301,6 +308,7 @@ bool camera_spin_around_cw( EKeystate s );
 
 bool agent_turn_left(EKeystate s)
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     //in free camera control mode we need to intercept keyboard events for avatar movements
     if (LLFloaterCamera::inFreeCameraMode())
     {
@@ -332,6 +340,7 @@ bool camera_spin_around_ccw( EKeystate s );
 
 bool agent_turn_right( EKeystate s )
 {
+    if (FSSpectatorMode::isEngaged()) return true;
     //in free camera control mode we need to intercept keyboard events for avatar movements
     if (LLFloaterCamera::inFreeCameraMode())
     {
@@ -382,6 +391,28 @@ bool agent_toggle_fly( EKeystate s )
     if (KEYSTATE_DOWN == s )
     {
         LLAgent::toggleFlying();
+    }
+    return true;
+}
+
+bool spectator_mode_cycle(EKeystate s)
+{
+    if (KEYSTATE_DOWN == s)
+    {
+        FSSpectatorMode::toggle();
+    }
+    return true;
+}
+
+bool spectator_mouse_mode_toggle(EKeystate s)
+{
+    if (!FSSpectatorMode::isEngaged())
+    {
+        return false;
+    }
+    if (KEYSTATE_DOWN == s)
+    {
+        FSSpectatorMode::toggleMouseMode();
     }
     return true;
 }
@@ -1048,6 +1079,8 @@ REGISTER_KEYBOARD_ACTION("push_backward", agent_push_backward);
 REGISTER_KEYBOARD_ACTION("look_up", agent_look_up);
 REGISTER_KEYBOARD_ACTION("look_down", agent_look_down);
 REGISTER_KEYBOARD_ACTION("toggle_fly", agent_toggle_fly);
+REGISTER_KEYBOARD_ACTION("toggle_spectator_mode", spectator_mode_cycle);
+REGISTER_KEYBOARD_ACTION("toggle_spectator_mouse_mode", spectator_mouse_mode_toggle);
 REGISTER_KEYBOARD_ACTION("turn_left", agent_turn_left);
 REGISTER_KEYBOARD_ACTION("turn_right", agent_turn_right);
 REGISTER_KEYBOARD_ACTION("slide_left", agent_slide_left);
@@ -1511,39 +1544,75 @@ S32 LLViewerInput::loadBindingsXML(const std::string& filename)
         binding_count += loadBindingMode(keys.edit_avatar, MODE_EDIT_AVATAR);
 
         // verify version
-        if (keys.xml_version < 1)
+        if (keys.xml_version < keybindings_xml_version)
         {
-            // updating from a version that was not aware of LMouse bindings
-            for (S32 i = 0; i < MODE_COUNT; i++)
+            if (keys.xml_version < 1)
             {
-                mLMouseDefaultHandling[i] = true;
+                // updating from a version that was not aware of LMouse bindings
+                for (S32 i = 0; i < MODE_COUNT; i++)
+                {
+                    mLMouseDefaultHandling[i] = true;
+                }
+
+                // fix missing values
+                KeyBinding mouse_binding;
+                mouse_binding.key = "";
+                mouse_binding.mask = "NONE";
+                mouse_binding.mouse = "LMB";
+                mouse_binding.command = script_mouse_handler_name;
+
+                if (keys.third_person.isProvided())
+                {
+                    keys.third_person.bindings.add(mouse_binding);
+                }
+
+                if (keys.first_person.isProvided())
+                {
+                    keys.first_person.bindings.add(mouse_binding);
+                }
+
+                if (keys.sitting.isProvided())
+                {
+                    keys.sitting.bindings.add(mouse_binding);
+                }
+
+                if (keys.edit_avatar.isProvided())
+                {
+                    keys.edit_avatar.bindings.add(mouse_binding);
+                }
             }
 
-            // fix missing values
-            KeyBinding mouse_binding;
-            mouse_binding.key = "";
-            mouse_binding.mask = "NONE";
-            mouse_binding.mouse = "LMB";
-            mouse_binding.command = script_mouse_handler_name;
-
-            if (keys.third_person.isProvided())
+            if (keys.xml_version < 3)
             {
-                keys.third_person.bindings.add(mouse_binding);
+                KeyBinding spectator_binding;
+                spectator_binding.key = "P";
+                spectator_binding.mask = "NONE";
+                spectator_binding.command = "toggle_spectator_mode";
+                keys.first_person.bindings.add(spectator_binding);
+                keys.third_person.bindings.add(spectator_binding);
+                keys.sitting.bindings.add(spectator_binding);
+                keys.edit_avatar.bindings.add(spectator_binding);
+                for (S32 mode = 0; mode < MODE_COUNT; ++mode)
+                {
+                    bindKey(mode, 'P', MASK_NONE, "toggle_spectator_mode");
+                }
             }
 
-            if (keys.first_person.isProvided())
+            if (keys.xml_version < 4)
             {
-                keys.first_person.bindings.add(mouse_binding);
-            }
-
-            if (keys.sitting.isProvided())
-            {
-                keys.sitting.bindings.add(mouse_binding);
-            }
-
-            if (keys.edit_avatar.isProvided())
-            {
-                keys.edit_avatar.bindings.add(mouse_binding);
+                KeyBinding spectator_mouse_binding;
+                spectator_mouse_binding.key = "";
+                spectator_mouse_binding.mouse = "MB5";
+                spectator_mouse_binding.mask = "NONE";
+                spectator_mouse_binding.command = "toggle_spectator_mouse_mode";
+                keys.first_person.bindings.add(spectator_mouse_binding);
+                keys.third_person.bindings.add(spectator_mouse_binding);
+                keys.sitting.bindings.add(spectator_mouse_binding);
+                keys.edit_avatar.bindings.add(spectator_mouse_binding);
+                for (S32 mode = 0; mode < MODE_COUNT; ++mode)
+                {
+                    bindMouse(mode, CLICK_BUTTON5, MASK_NONE, "toggle_spectator_mouse_mode");
+                }
             }
 
             // fix version

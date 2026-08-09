@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater title="AI 诊断与修复助手">
+  <string name="scan_complete">扫描已更新。请先检查采集的数据，然后运行 AI 诊断。</string>
+  <string name="api_not_configured">请先在“翻译设置”中配置 OpenAI 兼容的 API 地址、Key 和模型。API Key 不会写入快照或报告。</string>
+  <string name="analyzing">正在分析当前快照…</string>
+  <string name="select_object_first">请先选择一个物体或附件。</string>
+  <string name="request_failed">AI 请求失败</string>
+  <text name="snapshot_label" value="当前客户端快照" />
+  <text name="analysis_label" value="AI 诊断报告" />
+  <check_box label="启用本地 MCP 桥接" name="mcp_enabled" />
+  <text name="question_label" value="需要诊断的问题（可选）" />
+  <button label="扫描当前状态" name="scan_btn" />
+  <button label="运行 AI 诊断" name="analyze_btn" />
+  <button label="聚焦选中物体" name="focus_btn" />
+  <button label="打开物体编辑器" name="build_btn" />
+  <text name="safety_note" value="服务端修改会检查权限，并在执行前要求确认。" />
+</floater>

@@ -7160,6 +7160,24 @@ Are you sure you want to clear your web browser cache (Requires Restart)?
      yestext="OK"/>
   </notification>
 
+  <notification name="FSLocalizationBackupExported" type="notifytip">
+Local label backup exported successfully.
+  </notification>
+
+  <notification name="FSLocalizationBackupImported" type="notifytip">
+Local labels and manually corrected menu translations were restored successfully.
+  </notification>
+
+  <notification name="FSLocalizationBackupInvalid" type="alertmodal">
+This file is not a valid Firestorm local label backup, or its version is not supported.
+    <usetemplate name="okbutton" yestext="OK"/>
+  </notification>
+
+  <notification name="FSLocalizationBackupFailed" type="alertmodal">
+The local label backup could not be read or written. Check the file location and permissions.
+    <usetemplate name="okbutton" yestext="OK"/>
+  </notification>
+
   <notification
    icon="alertmodal.tga"
    name="ConfirmClearCookies"

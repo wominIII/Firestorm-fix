@@ -115,8 +115,11 @@ set(viewer_SOURCE_FILES
     fsdroptarget.cpp
     fsexportperms.cpp
     fsfloateraddtocontactset.cpp
+    fsfloateriaassistant.cpp
     fsfavoritegroups.cpp
     fsinventorycustomtabs.cpp
+    fsmcpbridge.cpp
+    fsspectatormode.cpp
     fsfloaterassetblacklist.cpp
     fsfloateravataralign.cpp
     fsfloateravatarrendersettings.cpp
@@ -975,8 +978,11 @@ set(viewer_HEADER_FILES
     fsdroptarget.h
     fsexportperms.h
     fsfloateraddtocontactset.h
+    fsfloateriaassistant.h
     fsfavoritegroups.h
     fsinventorycustomtabs.h
+    fsmcpbridge.h
+    fsspectatormode.h
     fsfloaterassetblacklist.h
     fsfloateravatarrendersettings.h
     fsfloaterbigpreview.h

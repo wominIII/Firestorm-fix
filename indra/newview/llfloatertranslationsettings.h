@@ -28,6 +28,7 @@
 #define LL_LLFLOATERTRANSLATIONSETTINGS_H
 
 #include "llfloater.h"
+#include "llfilepicker.h"
 
 class LLButton;
 class LLCheckBoxCtrl;
@@ -63,6 +64,14 @@ private:
     void onBtnAzureVerify();
     void onBtnGoogleVerify();
     void onBtnDeepLVerify();
+    void onExportLocalizationBackup();
+    void onImportLocalizationBackup();
+    static void saveLocalizationBackup(const std::vector<std::string>& filenames,
+                                       LLFilePicker::ELoadFilter load_filter,
+                                       LLFilePicker::ESaveFilter save_filter);
+    static void loadLocalizationBackup(const std::vector<std::string>& filenames,
+                                       LLFilePicker::ELoadFilter load_filter,
+                                       LLFilePicker::ESaveFilter save_filter);
     void onBtnOK();
 
     static void setVerificationStatus(int service, bool alert, bool ok, S32 status);

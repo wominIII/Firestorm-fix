@@ -176,6 +176,28 @@
          value="Fly/Stop flying" />
     </rows>
     <rows
+     name="toggle_spectator_mode"
+     value="toggle_spectator_mode">
+        <columns
+         column="lst_action"
+         font="SansSerif"
+         halign="left"
+         name="lst_action"
+         tool_tip="Enter or exit the first-person spectator ghost camera"
+         value="Spectator ghost camera" />
+    </rows>
+    <rows
+     name="toggle_spectator_mouse_mode"
+     value="toggle_spectator_mouse_mode">
+        <columns
+         column="lst_action"
+         font="SansSerif"
+         halign="left"
+         name="lst_action"
+         tool_tip="Switch between ghost mouse-look and Firestorm's native free camera while spectator mode is active"
+         value="Spectator mouse mode" />
+    </rows>
+    <rows
      name="toggle_sit"
      value="toggle_sit">
         <columns

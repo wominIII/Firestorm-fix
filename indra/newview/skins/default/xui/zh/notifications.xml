@@ -2799,6 +2799,16 @@ URL:[UNTRUSTED_URL]
 		您真的要清空您的网页浏览器缓存吗？（需要重启）
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="确定"/>
 	</notification>
+	<notification name="FSLocalizationBackupExported">便签备份已成功导出。</notification>
+	<notification name="FSLocalizationBackupImported">物品栏中文标签和人工固定的菜单翻译已成功恢复。</notification>
+	<notification name="FSLocalizationBackupInvalid">
+		该文件不是有效的 Firestorm 便签备份，或备份版本不受支持。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
+	<notification name="FSLocalizationBackupFailed">
+		无法读取或写入便签备份，请检查文件位置和权限。
+		<usetemplate name="okbutton" yestext="确定"/>
+	</notification>
 	<notification name="ConfirmClearCookies">
 		你确定要清除你的 cookies 吗？
 		<usetemplate name="okcancelbuttons" notext="取消" yestext="是"/>

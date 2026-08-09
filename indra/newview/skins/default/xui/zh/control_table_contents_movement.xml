@@ -51,6 +51,12 @@
 	<rows name="toggle_fly">
 		<columns name="lst_action" value="开始/停止飞行" />
 	</rows>
+	<rows name="toggle_spectator_mode">
+		<columns name="lst_action" tool_tip="进入或退出第一人称旁观者幽灵相机" value="旁观者幽灵相机" />
+	</rows>
+	<rows name="toggle_spectator_mouse_mode">
+		<columns name="lst_action" tool_tip="在旁观者模式中切换幽灵鼠标视角和原生自由相机" value="切换旁观者鼠标模式" />
+	</rows>
 	<rows name="toggle_sit">
 		<columns name="lst_action" value="坐下/站起" />
 	</rows>

@@ -57,6 +57,8 @@ public:
     std::string get(const LLUUID& id);
     void set(const LLUUID& id, const std::string& label);
     void edit(const LLUUID& id);
+    LLSD exportLabels();
+    bool importLabels(const LLSD& labels);
 
 private:
     FSInventoryLocalLabels() = default;

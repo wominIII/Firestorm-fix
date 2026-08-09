@@ -193,6 +193,38 @@ void FSInventoryLocalLabels::edit(const LLUUID& id)
         });
 }
 
+LLSD FSInventoryLocalLabels::exportLabels()
+{
+    load();
+    return mLabels;
+}
+
+bool FSInventoryLocalLabels::importLabels(const LLSD& labels)
+{
+    if (!labels.isMap())
+    {
+        return false;
+    }
+
+    load();
+    for (LLSD::map_const_iterator it = labels.beginMap(); it != labels.endMap(); ++it)
+    {
+        LLUUID id(it->first);
+        const std::string label = it->second.asString();
+        if (id.notNull() && !label.empty())
+        {
+            mLabels[it->first] = label;
+            if (gInventory.getObject(id))
+            {
+                gInventory.addChangedMask(LLInventoryObserver::LABEL, id);
+            }
+        }
+    }
+    save();
+    gInventory.notifyObservers();
+    return true;
+}
+
 void FSInventoryLocalLabels::save() const
 {
     llofstream file(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,

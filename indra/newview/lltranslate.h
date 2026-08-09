@@ -112,6 +112,8 @@ public :
     static std::string getScriptDialogTranslation(const std::string& context_key,
                                                   const std::string& source);
     static void clearScriptDialogTranslations();
+    static LLSD exportManualScriptDialogTranslations();
+    static bool importManualScriptDialogTranslations(const LLSD& translations);
 
     /**
      * Verify given API key of a translation service.
