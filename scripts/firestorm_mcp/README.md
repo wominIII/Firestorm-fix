@@ -13,4 +13,12 @@ a confirmation dialog. Firestorm still requires the target UUID to match the onl
 selected root object and enforces simulator move/modify permissions.
 `set_object_face_material` can change diffuse/PBR asset UUIDs, RGBA color, and texture
 scale, offset, and rotation for one face. Script source is intentionally excluded;
-only metadata already available to the viewer is returned.
+only metadata already available to the viewer is returned by snapshots.
+
+Protocol version 3 also provides object-script management for the single selected
+root object: `create_object_script`, `read_object_script`, `update_object_script`,
+`delete_object_script`, `set_object_script_running`, and `reset_object_script`.
+Source reads require copy and modify permission; all mutations require object and
+script modify permission. Creating a script keeps a backup copy in the agent's
+Scripts inventory folder. The simulator remains authoritative for compilation,
+permissions, running state, and inventory changes.

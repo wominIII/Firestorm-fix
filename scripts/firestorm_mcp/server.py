@@ -19,7 +19,7 @@ import uuid
 
 
 SERVER_NAME = "firestorm-local"
-SERVER_VERSION = "0.2.0"
+SERVER_VERSION = "0.3.0"
 DEFAULT_PROTOCOL_VERSION = "2024-11-05"
 
 
@@ -170,7 +170,7 @@ class FirestormSnapshot:
             raise RuntimeError("Firestorm has not published a snapshot yet")
         return read_llsd(self.snapshot_path)
 
-    def execute(self, action: str, arguments: dict, timeout: float = 12.0):
+    def execute(self, action: str, arguments: dict, timeout: float = 45.0):
         status = self.status()
         if not status.get("enabled") or not status.get("fresh"):
             raise RuntimeError("Firestorm MCP bridge is not enabled and updating")
@@ -181,7 +181,7 @@ class FirestormSnapshot:
 
         request_id = str(uuid.uuid4())
         request = {
-            "protocol_version": 2,
+            "protocol_version": 3,
             "request_id": request_id,
             "action": action,
             "expires_at": time.time() + timeout,
@@ -317,6 +317,96 @@ TOOLS = [
         },
         "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
     },
+    {
+        "name": "create_object_script",
+        "description": (
+            "Create and compile an LSL script in the single root object currently selected in Firestorm. "
+            "A source backup is retained in the agent Scripts inventory folder."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "name": {"type": "string", "minLength": 1, "maxLength": 63},
+                "source": {"type": "string", "maxLength": 262144},
+                "running": {"type": "boolean", "default": True},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "name", "source"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": True},
+    },
+    {
+        "name": "read_object_script",
+        "description": "Read source for a copy-and-modify LSL script in the single selected root object's loaded inventory.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"object_id": {"type": "string"}, "item_id": {"type": "string"}},
+            "required": ["object_id", "item_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "update_object_script",
+        "description": "Replace and compile source for a modifiable LSL script in the single selected root object.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "item_id": {"type": "string"},
+                "source": {"type": "string", "maxLength": 262144},
+                "running": {"type": "boolean", "default": True},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "item_id", "source"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "delete_object_script",
+        "description": "Permanently remove one modifiable LSL script from the single selected root object.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "item_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "set_object_script_running",
+        "description": "Start or stop one modifiable LSL script in the single selected root object.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "running": {"type": "boolean"}, "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "item_id", "running"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "reset_object_script",
+        "description": "Reset one modifiable LSL script in the single selected root object.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "item_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
 ]
 
 
@@ -399,6 +489,13 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         if not material_fields:
             raise RuntimeError("Provide at least one face material field")
         return store.execute("set_object_face_material", fields)
+    if name in {
+        "create_object_script", "read_object_script", "update_object_script",
+        "delete_object_script", "set_object_script_running", "reset_object_script",
+    }:
+        allowed = ("object_id", "item_id", "name", "source", "running", "reason")
+        fields = {key: arguments[key] for key in allowed if key in arguments}
+        return store.execute(name, fields)
     raise RuntimeError(f"Unknown tool: {name}")
 
 
@@ -436,8 +533,9 @@ def serve(bridge_dir: Path):
                     "capabilities": {"tools": {"listChanged": False}},
                     "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
                     "instructions": (
-                        "Read access to the local Firestorm snapshot plus direct transform writes "
-                        "for the single object currently selected in the viewer."
+                        "Read the local Firestorm snapshot and manage transforms, face materials, "
+                        "and permitted LSL scripts for the single root object selected in the viewer. "
+                        "Read current state before writing and obey viewer permission failures."
                     ),
                 })
             elif method == "ping":
