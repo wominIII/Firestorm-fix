@@ -122,6 +122,7 @@ public:
     void onCommitLine();
     void clearSearchText();
     void onButtonClickedSearch();
+    void onButtonClickedGiftBoxes();
     void onCommitCheckboxRegex();
     bool isSearchableObject(LLViewerObject* objectp, LLViewerRegion* our_region) const;
     void setFindOwnerText(const std::string& value);
@@ -215,6 +216,7 @@ private:
     std::string mSearchGroup;
     std::string mSearchCreator;
     std::string mSearchLastOwner;
+    bool mGiftBoxSearch{ false };
 
     bool mRegexSearch{ false };
     boost::regex mRegexSearchName;
@@ -313,6 +315,7 @@ public:
 
     FSScrollListCtrl* getResultList() { return mResultList; }
     void updateResultListColumns();
+    void setBeaconsEnabled(bool enabled);
 
     void setAgentLastPosition(LLVector3d d) { mAgentLastPosition = d; }
     LLVector3d getAgentLastPosition() { return mAgentLastPosition; }
@@ -376,6 +379,7 @@ private:
     FSAreaSearch* mFSAreaSearch{ nullptr };
 
     LLButton* mSearchButton{ nullptr };
+    LLButton* mGiftBoxButton{ nullptr };
     LLButton* mClearButton{ nullptr };
 };
 

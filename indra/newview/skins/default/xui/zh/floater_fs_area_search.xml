@@ -47,6 +47,7 @@
 			</text>
 			<check_box name="regular_expression" label="使用正则表达式"/>
 			<button name="search" label="搜索"/>
+			<button name="find_gift_boxes" label="查找礼物盒" tool_tip="在当前地块中查找名称或描述含有礼物关键词的已加载物件，并显示世界信标。"/>
 			<button name="clear" label="移除"/>
 			<button name="copy_link" label="复制为链接" tool_tip="复制 secondlife:///app/openfloater/area_search?... 链接，用于重现当前的搜索条件和筛选设置。"/>
 		</panel>

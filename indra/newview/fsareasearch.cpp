@@ -68,6 +68,8 @@
 #include "llclipboard.h"
 #include "lluri.h"
 
+#include <array>
+
 // max number of objects that can be (de-)selected in a single packet.
 constexpr S32 MAX_OBJECTS_PER_PACKET = 255;
 
@@ -235,6 +237,19 @@ namespace
     constexpr S32 RANGE_MAX_DEFAULT = 999999;
     constexpr S32 RANGE_VALUE_CAP = 999999999; // matches spinner max_val in floater_fs_area_search.xml
     constexpr S32 MAX_FIELD_CHARS = 256; // matches line_editor max_length_chars
+
+    bool isGiftBoxText(const std::string& text)
+    {
+        static const std::array<std::string, 13> gift_keywords = {
+            "gift", "present", "freebie", "hunt", "prize", "reward",
+            "礼物", "禮物", "赠品", "贈品", "礼盒", "禮盒", "礼包"
+        };
+
+        return std::any_of(gift_keywords.begin(), gift_keywords.end(), [&text](const std::string& keyword)
+        {
+            return !boost::ifind_first(text, keyword).empty();
+        });
+    }
 }
 
 const FSAreaSearch::SlappBoolEntry FSAreaSearch::sBoolFilters[] = {
@@ -1075,6 +1090,13 @@ void FSAreaSearch::matchObject(FSObjectProperties& details, LLViewerObject* obje
     std::string object_name = details.name;
     std::string object_description = details.description;
 
+    // Gift boxes are creator-defined objects, so the only reliable client-side
+    // signals are the name and description received from the simulator.
+    if (mGiftBoxSearch && !isGiftBoxText(object_name) && !isGiftBoxText(object_description))
+    {
+        return;
+    }
+
     details.name_requested = false;
     getNameFromUUID(details.ownership_id, owner_name, details.group_owned, details.name_requested);
     getNameFromUUID(details.creator_id, creator_name, false, details.name_requested);
@@ -1488,6 +1510,7 @@ void FSAreaSearch::clearSearchText()
     mSearchGroup.erase();
     mSearchCreator.erase();
     mSearchLastOwner.erase();
+    mGiftBoxSearch = false;
 }
 
 void FSAreaSearch::onButtonClickedSearch()
@@ -1498,6 +1521,30 @@ void FSAreaSearch::onButtonClickedSearch()
 
     mTab->selectFirstTab();
     refreshList(false);
+}
+
+void FSAreaSearch::onButtonClickedGiftBoxes()
+{
+    // Keep this separate from the normal text fields: a gift marker may be in
+    // either the object name or its description, rather than necessarily both.
+    mPanelFind->mNameLineEditor->clear();
+    mPanelFind->mDescriptionLineEditor->clear();
+    mPanelFind->mOwnerLineEditor->clear();
+    mPanelFind->mGroupLineEditor->clear();
+    mPanelFind->mCreatorLineEditor->clear();
+    mPanelFind->mLastOwnerLineEditor->clear();
+    mPanelFind->mCheckboxRegex->set(false);
+    clearSearchText();
+    mRegexSearch = false;
+    mGiftBoxSearch = true;
+
+    // The shortcut is deliberately scoped to the parcel the avatar is in and
+    // makes every match visible in-world without requiring an extra click.
+    mPanelFilter->mCheckboxAgentParcelOnly->set(true);
+    setFilterAgentParcelOnly(true);
+    setBeacons(true);
+    mPanelList->setBeaconsEnabled(true);
+    onButtonClickedSearch();
 }
 
 void FSAreaSearch::onCommitCheckboxRegex()
@@ -1652,6 +1699,11 @@ void FSPanelAreaSearchList::onCopyToClipboard()
 void FSPanelAreaSearchList::onCommitCheckboxBeacons()
 {
     mFSAreaSearch->setBeacons(mCheckboxBeacons->get());
+}
+
+void FSPanelAreaSearchList::setBeaconsEnabled(bool enabled)
+{
+    mCheckboxBeacons->set(enabled);
 }
 
 void FSPanelAreaSearchList::setCounterText()
@@ -2357,6 +2409,9 @@ bool FSPanelAreaSearchFind::postBuild()
 
     mSearchButton = getChild<LLButton>("search");
     mSearchButton->setClickedCallback(boost::bind(&FSAreaSearch::onButtonClickedSearch, mFSAreaSearch));
+
+    mGiftBoxButton = getChild<LLButton>("find_gift_boxes");
+    mGiftBoxButton->setClickedCallback(boost::bind(&FSAreaSearch::onButtonClickedGiftBoxes, mFSAreaSearch));
 
     if (LLButton* copy_link = findChild<LLButton>("copy_link"))
     {
