@@ -9,6 +9,7 @@
 #include <string>
 
 class LLEventTimer;
+class LLSD;
 
 class FSMCPBridge
 {
@@ -19,8 +20,11 @@ public:
     static std::string getBridgeDirectory();
 
 private:
+    static void processPendingRequest();
+    static LLSD executeRequest(const LLSD& request);
+    static void writeResult(const LLSD& result);
     static void writeStatus(bool enabled, const std::string& message);
-    static bool writeAtomicXML(const std::string& filename, const class LLSD& data);
+    static bool writeAtomicXML(const std::string& filename, const LLSD& data);
 
     static LLEventTimer* sPublishTimer;
 };

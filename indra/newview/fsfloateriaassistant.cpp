@@ -189,6 +189,7 @@ LLSD FSAIAssistantService::collectSnapshot()
     snapshot["capabilities"]["read_script_source"] = false;
     snapshot["capabilities"]["upload_assets"] = false;
     snapshot["capabilities"]["modify_requires_permission"] = true;
+    snapshot["capabilities"]["direct_transform_write"] = true;
     snapshot["wearables"] = LLSD::emptyArray();
     snapshot["attachments"] = LLSD::emptyArray();
     snapshot["animations"] = LLSD::emptyArray();

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only MCP server for a locally running Firestorm viewer.
+"""Bidirectional MCP server for a locally running Firestorm viewer.
 
 The viewer publishes an atomic LLSD XML snapshot. This process exposes that
 snapshot over MCP stdio and never opens a network socket.
@@ -15,10 +15,11 @@ from pathlib import Path
 import sys
 import time
 import xml.etree.ElementTree as ET
+import uuid
 
 
 SERVER_NAME = "firestorm-local"
-SERVER_VERSION = "0.1.0"
+SERVER_VERSION = "0.2.0"
 DEFAULT_PROTOCOL_VERSION = "2024-11-05"
 
 
@@ -77,6 +78,37 @@ def read_llsd(path: Path):
     raise RuntimeError(f"Unable to read {path}: {last_error}")
 
 
+def append_llsd(parent: ET.Element, value):
+    if isinstance(value, dict):
+        node = ET.SubElement(parent, "map")
+        for key, item in value.items():
+            ET.SubElement(node, "key").text = str(key)
+            append_llsd(node, item)
+    elif isinstance(value, (list, tuple)):
+        node = ET.SubElement(parent, "array")
+        for item in value:
+            append_llsd(node, item)
+    elif isinstance(value, bool):
+        ET.SubElement(parent, "boolean").text = "true" if value else "false"
+    elif isinstance(value, int):
+        ET.SubElement(parent, "integer").text = str(value)
+    elif isinstance(value, float):
+        ET.SubElement(parent, "real").text = repr(value)
+    elif value is None:
+        ET.SubElement(parent, "undef")
+    else:
+        ET.SubElement(parent, "string").text = str(value)
+
+
+def write_llsd_atomic(path: Path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    root = ET.Element("llsd")
+    append_llsd(root, value)
+    temporary = path.with_suffix(path.suffix + ".tmp")
+    ET.ElementTree(root).write(temporary, encoding="utf-8", xml_declaration=True)
+    os.replace(temporary, path)
+
+
 def parse_timestamp(value: str | None) -> dt.datetime | None:
     if not value:
         return None
@@ -98,6 +130,14 @@ class FirestormSnapshot:
     @property
     def snapshot_path(self) -> Path:
         return self.bridge_dir / "snapshot.xml"
+
+    @property
+    def request_path(self) -> Path:
+        return self.bridge_dir / "request.xml"
+
+    @property
+    def result_path(self) -> Path:
+        return self.bridge_dir / "result.xml"
 
     def status(self):
         result = {
@@ -129,6 +169,38 @@ class FirestormSnapshot:
         if not self.snapshot_path.exists():
             raise RuntimeError("Firestorm has not published a snapshot yet")
         return read_llsd(self.snapshot_path)
+
+    def execute(self, action: str, arguments: dict, timeout: float = 12.0):
+        status = self.status()
+        if not status.get("enabled") or not status.get("fresh"):
+            raise RuntimeError("Firestorm MCP bridge is not enabled and updating")
+        if int(status.get("protocol_version", 0)) < 2 or status.get("read_only", True):
+            raise RuntimeError("The running Firestorm viewer does not support MCP write commands")
+        if self.request_path.exists():
+            raise RuntimeError("Another Firestorm MCP write request is already pending")
+
+        request_id = str(uuid.uuid4())
+        request = {
+            "protocol_version": 2,
+            "request_id": request_id,
+            "action": action,
+            "expires_at": time.time() + timeout,
+            **arguments,
+        }
+        if self.result_path.exists():
+            self.result_path.unlink()
+        write_llsd_atomic(self.request_path, request)
+
+        deadline = time.monotonic() + timeout
+        while time.monotonic() < deadline:
+            if self.result_path.exists():
+                result = read_llsd(self.result_path)
+                if result.get("request_id") == request_id:
+                    self.result_path.unlink(missing_ok=True)
+                    return result
+            time.sleep(0.1)
+        self.request_path.unlink(missing_ok=True)
+        raise RuntimeError("Firestorm did not process the MCP write request before it expired")
 
 
 TOOLS = [
@@ -200,6 +272,51 @@ TOOLS = [
         "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
         "annotations": {"readOnlyHint": True, "openWorldHint": False},
     },
+    {
+        "name": "set_object_transform",
+        "description": (
+            "Directly set position, quaternion rotation and/or scale on the single root object "
+            "currently selected in Firestorm. The viewer checks UUID and permissions, then sends "
+            "the update to the simulator without a confirmation dialog."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "position": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+                "rotation_quaternion": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+                "scale": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "set_object_face_material",
+        "description": (
+            "Directly update one face on the single root object currently selected in Firestorm. "
+            "Supports diffuse texture UUID, PBR material UUID, RGBA color and texture transforms."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "face": {"type": "integer", "minimum": 0},
+                "diffuse_texture_id": {"type": "string"},
+                "pbr_material_id": {"type": "string", "description": "Use an empty string to clear PBR material."},
+                "color": {"type": "array", "items": {"type": "number", "minimum": 0, "maximum": 1}, "minItems": 4, "maxItems": 4},
+                "texture_scale": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+                "texture_offset": {"type": "array", "items": {"type": "number"}, "minItems": 2, "maxItems": 2},
+                "texture_rotation_radians": {"type": "number"},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "face"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
 ]
 
 
@@ -265,6 +382,23 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         return {"captured_at": snapshot.get("captured_at"), "animations": snapshot.get("animations", [])}
     if name == "get_full_snapshot":
         return snapshot
+    if name == "set_object_transform":
+        fields = {key: arguments[key] for key in
+                  ("object_id", "position", "rotation_quaternion", "scale", "reason")
+                  if key in arguments}
+        if not any(key in fields for key in ("position", "rotation_quaternion", "scale")):
+            raise RuntimeError("Provide position, rotation_quaternion and/or scale")
+        return store.execute("set_object_transform", fields)
+    if name == "set_object_face_material":
+        allowed = (
+            "object_id", "face", "diffuse_texture_id", "pbr_material_id", "color",
+            "texture_scale", "texture_offset", "texture_rotation_radians", "reason",
+        )
+        fields = {key: arguments[key] for key in allowed if key in arguments}
+        material_fields = set(fields) - {"object_id", "face", "reason"}
+        if not material_fields:
+            raise RuntimeError("Provide at least one face material field")
+        return store.execute("set_object_face_material", fields)
     raise RuntimeError(f"Unknown tool: {name}")
 
 
@@ -302,8 +436,8 @@ def serve(bridge_dir: Path):
                     "capabilities": {"tools": {"listChanged": False}},
                     "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
                     "instructions": (
-                        "Read-only access to the local Firestorm viewer snapshot. "
-                        "The viewer must be running with its local MCP bridge enabled."
+                        "Read access to the local Firestorm snapshot plus direct transform writes "
+                        "for the single object currently selected in the viewer."
                     ),
                 })
             elif method == "ping":
