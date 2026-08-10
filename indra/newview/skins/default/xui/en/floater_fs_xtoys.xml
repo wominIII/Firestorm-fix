@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater can_close="true" can_minimize="true" can_resize="false" height="360" layout="topleft" min_height="360" min_width="550" name="fs_xtoys" save_rect="true" title="XToys Event Bridge" width="580">
+  <text height="34" left="12" name="notice" top="12" width="550" word_wrap="true">Firestorm sends only opt-in collision events to your XToys private webhook. XToys controls devices and defines every effect.</text>
+  <check_box control_name="FSXToysEnabled" height="20" label="Enable XToys event bridge" left="12" name="enabled" top="58" width="250"/>
+  <text height="18" left="12" name="id_label" top="92" width="480">XToys webhook address (https/wss) or ID:</text>
+  <line_editor height="22" left="12" max_length_chars="128" name="webhook_id" top="112" width="550"/>
+  <text height="18" left="12" name="token_label" top="146" width="400">Shared webhook token (optional; private webhook leaves this blank):</text>
+  <line_editor is_password="true" height="22" left="12" max_length_chars="256" name="webhook_token" top="166" width="550"/>
+  <check_box control_name="FSXToysTriggerMeanCollision" height="20" label="Send server-reported avatar/object collisions" left="12" name="mean_collision" top="202" width="330"/>
+  <check_box control_name="FSXToysTriggerCollisionSound" height="20" label="Send nearby material collision sounds (walls/ground)" left="12" name="collision_sound" top="228" width="360"/>
+  <spinner control_name="FSXToysCollisionSoundRange" decimal_digits="1" height="22" increment="0.5" label="Sound range (m)" label_width="120" left="360" max_val="10" min_val="0.5" name="sound_range" top="225" width="200"/>
+  <button height="26" label="Send test event" left="12" name="test_btn" top="278" width="150"/>
+  <button height="26" label="Send stop event" left_pad="8" name="stop_btn" width="150"/>
+  <text height="36" left="330" name="note" top="274" width="232" word_wrap="true">Create XToys actions: firestorm_test, firestorm_stop, sl_avatar_bump and sl_wall_collision.</text>
+</floater>

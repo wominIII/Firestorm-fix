@@ -49,6 +49,7 @@
 #include "llfilesystem.h"
 #include "llxfermanager.h"
 #include "mean_collision_data.h"
+#include "fsxtoysbridge.h"
 
 #include "llagent.h"
 #include "llagentbenefits.h"
@@ -4889,7 +4890,8 @@ void process_sound_trigger(LLMessageSystem *msg, void **)
     // NaCl - Antispam Registry
     static LLCachedControl<U32> _NACL_AntiSpamSoundMulti(gSavedSettings, "_NACL_AntiSpamSoundMulti");
     static LLCachedControl<bool> EnableCollisionSounds(gSavedSettings, "EnableCollisionSounds");
-    if (LLMaterialTable::basic.isCollisionSound(sound_id))
+    const bool is_collision_sound = LLMaterialTable::basic.isCollisionSound(sound_id);
+    if (is_collision_sound)
     {
         if (!EnableCollisionSounds)
         {
@@ -4957,6 +4959,11 @@ void process_sound_trigger(LLMessageSystem *msg, void **)
         && !gSavedSettings.getBOOL("EnableGestureSounds"))
     {
         return;
+    }
+
+    if (is_collision_sound)
+    {
+        FSXToysBridge::notifyCollisionSound(pos_global, gain);
     }
 
     // NaCl - Antispam Registry
@@ -6954,6 +6961,7 @@ void process_mean_collision_alert_message(LLMessageSystem *msgsystem, void **use
         msgsystem->getU8Fast(_PREHASH_MeanCollision, _PREHASH_Type, u8type);
 
         type = (EMeanCollisionType)u8type;
+        FSXToysBridge::notifyMeanCollision(u8type, mag);
 
         // <FS:Ansariel> Nearby Chat Collision Messages
         if (gSavedSettings.getBOOL("FSCollisionMessagesInChat"))

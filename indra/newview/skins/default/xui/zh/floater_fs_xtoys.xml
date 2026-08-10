@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater name="fs_xtoys" title="XToys 事件桥接">
+  <text name="notice">Firestorm 仅向你的 XToys 私人 Webhook 发送已启用的碰撞事件。具体设备和效果完全由 XToys 控制。</text>
+  <check_box name="enabled" label="启用 XToys 事件桥接"/>
+  <text name="id_label">XToys Webhook 地址（https/wss）或 ID：</text>
+  <text name="token_label">共享 Webhook 令牌（可选；私人 Webhook 请留空）：</text>
+  <check_box name="mean_collision" label="发送服务器报告的玩家/物件碰撞"/>
+  <check_box name="collision_sound" label="发送附近的材质碰撞音（墙体/地面）"/>
+  <spinner name="sound_range" label="声音范围（米）"/>
+  <button name="test_btn" label="发送测试事件"/>
+  <button name="stop_btn" label="发送停止事件"/>
+  <text name="note">请在 XToys 建立：firestorm_test、firestorm_stop、sl_avatar_bump、sl_wall_collision。</text>
+</floater>
