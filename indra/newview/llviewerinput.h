@@ -30,7 +30,7 @@
 #include "llkeyboard.h" // For EKeystate
 
 const S32 MAX_KEY_BINDINGS = 128; // was 60
-const S32 keybindings_xml_version = 4;
+const S32 keybindings_xml_version = 7;
 const std::string script_mouse_handler_name = "script_trigger_lbutton";
 
 class LLWindow;

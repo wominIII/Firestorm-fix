@@ -176,6 +176,17 @@
          value="Fly/Stop flying" />
     </rows>
     <rows
+     name="toggle_mouselook_cursor"
+     value="toggle_mouselook_cursor">
+        <columns
+         column="lst_action"
+         font="SansSerif"
+         halign="left"
+         name="lst_action"
+         tool_tip="Show or recapture the cursor without leaving native first-person view"
+         value="Toggle first-person cursor" />
+    </rows>
+    <rows
      name="toggle_spectator_mode"
      value="toggle_spectator_mode">
         <columns

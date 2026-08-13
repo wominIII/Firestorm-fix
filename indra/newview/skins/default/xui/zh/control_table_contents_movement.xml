@@ -51,6 +51,9 @@
 	<rows name="toggle_fly">
 		<columns name="lst_action" value="开始/停止飞行" />
 	</rows>
+	<rows name="toggle_mouselook_cursor">
+		<columns name="lst_action" tool_tip="不退出原生第一人称视角，显示或重新捕获鼠标指针" value="切换第一人称鼠标指针" />
+	</rows>
 	<rows name="toggle_spectator_mode">
 		<columns name="lst_action" tool_tip="进入或退出第一人称旁观者幽灵相机" value="旁观者幽灵相机" />
 	</rows>

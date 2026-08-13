@@ -47,6 +47,7 @@
 #include "lltoolpie.h"
 #include "llviewercontrol.h"
 #include "llviewerwindow.h"
+#include "llwindow.h"
 #include "llvoavatarself.h"
 #include "llfloatercamera.h"
 #include "llinitparam.h"
@@ -994,6 +995,34 @@ bool toggle_voice(EKeystate s)
     return true;
 }
 
+// Release or recapture the cursor without leaving Firestorm's native
+// first-person camera mode.  This is deliberately an input action rather
+// than a camera-mode switch, so the avatar view remains first person.
+bool toggle_mouselook_cursor(EKeystate s)
+{
+    if (KEYSTATE_DOWN != s || !gAgentCamera.cameraMouselook() || !gViewerWindow)
+    {
+        return true;
+    }
+
+    const bool show_cursor = !gSavedSettings.getBOOL("FSMouselookCursorMode");
+    gSavedSettings.setBOOL("FSMouselookCursorMode", show_cursor);
+    gFocusMgr.setMouseCapture(nullptr);
+
+    if (show_cursor)
+    {
+        gViewerWindow->getWindow()->setMouseClipping(false);
+        gViewerWindow->showCursor();
+    }
+    else
+    {
+        gViewerWindow->moveCursorToCenter();
+        gViewerWindow->hideCursor();
+        gViewerWindow->getWindow()->setMouseClipping(true);
+    }
+    return true;
+}
+
 bool voice_follow_key(EKeystate s)
 {
     if (KEYSTATE_DOWN == s)
@@ -1079,6 +1108,7 @@ REGISTER_KEYBOARD_ACTION("push_backward", agent_push_backward);
 REGISTER_KEYBOARD_ACTION("look_up", agent_look_up);
 REGISTER_KEYBOARD_ACTION("look_down", agent_look_down);
 REGISTER_KEYBOARD_ACTION("toggle_fly", agent_toggle_fly);
+REGISTER_KEYBOARD_ACTION("toggle_mouselook_cursor", toggle_mouselook_cursor);
 REGISTER_KEYBOARD_ACTION("toggle_spectator_mode", spectator_mode_cycle);
 REGISTER_KEYBOARD_ACTION("toggle_spectator_mouse_mode", spectator_mouse_mode_toggle);
 REGISTER_KEYBOARD_ACTION("turn_left", agent_turn_left);
@@ -1613,6 +1643,35 @@ S32 LLViewerInput::loadBindingsXML(const std::string& filename)
                 {
                     bindMouse(mode, CLICK_BUTTON5, MASK_NONE, "toggle_spectator_mouse_mode");
                 }
+            }
+
+            // Version 5 introduced the temporary F8 default.  Retain it only
+            // for profiles that already used that version; new upgrades use
+            // the middle-button default introduced in version 7 instead.
+            if (keys.xml_version == 5)
+            {
+                KeyBinding mouselook_cursor_binding;
+                mouselook_cursor_binding.key = "F8";
+                mouselook_cursor_binding.mask = "NONE";
+                mouselook_cursor_binding.command = "toggle_mouselook_cursor";
+                keys.first_person.bindings.add(mouselook_cursor_binding);
+                bindKey(MODE_FIRST_PERSON, KEY_F8, MASK_NONE, "toggle_mouselook_cursor");
+            }
+
+            if (keys.xml_version < 7)
+            {
+                for (S32 mode = 0; mode < MODE_COUNT; ++mode)
+                {
+                    bindMouse(mode, CLICK_BUTTON4, MASK_NONE, "toggle_spectator_mode");
+                }
+
+                KeyBinding mouselook_cursor_binding;
+                mouselook_cursor_binding.key = "";
+                mouselook_cursor_binding.mouse = "MMB";
+                mouselook_cursor_binding.mask = "NONE";
+                mouselook_cursor_binding.command = "toggle_mouselook_cursor";
+                keys.first_person.bindings.add(mouselook_cursor_binding);
+                bindMouse(MODE_FIRST_PERSON, CLICK_MIDDLE, MASK_NONE, "toggle_mouselook_cursor");
             }
 
             // fix version

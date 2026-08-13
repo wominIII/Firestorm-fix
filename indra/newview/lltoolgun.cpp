@@ -63,9 +63,17 @@ void LLToolGun::handleSelect()
     if (gFocusMgr.getAppHasFocus())
     {
 // [/RLVa:KB]
-        gViewerWindow->hideCursor();
-        gViewerWindow->moveCursorToCenter();
-        gViewerWindow->getWindow()->setMouseClipping(true);
+        if (gSavedSettings.getBOOL("FSMouselookCursorMode"))
+        {
+            gViewerWindow->showCursor();
+            gViewerWindow->getWindow()->setMouseClipping(false);
+        }
+        else
+        {
+            gViewerWindow->hideCursor();
+            gViewerWindow->moveCursorToCenter();
+            gViewerWindow->getWindow()->setMouseClipping(true);
+        }
         mIsSelected = true;
 // [RLVa:KB] - Checked: 2014-02-24 (RLVa-1.4.10)
     }
@@ -74,6 +82,8 @@ void LLToolGun::handleSelect()
 
 void LLToolGun::handleDeselect()
 {
+    // Cursor mode only applies to the current native first-person session.
+    gSavedSettings.setBOOL("FSMouselookCursorMode", false);
     gViewerWindow->moveCursorToCenter();
     gViewerWindow->showCursor();
     gViewerWindow->getWindow()->setMouseClipping(false);
@@ -90,7 +100,7 @@ bool LLToolGun::handleMouseDown(S32 x, S32 y, MASK mask)
 
 bool LLToolGun::handleHover(S32 x, S32 y, MASK mask)
 {
-    if( gAgentCamera.cameraMouselook() && mIsSelected )
+    if( gAgentCamera.cameraMouselook() && mIsSelected && !gSavedSettings.getBOOL("FSMouselookCursorMode") )
     {
         const F32 NOMINAL_MOUSE_SENSITIVITY = 0.0025f;
 
