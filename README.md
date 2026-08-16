@@ -40,6 +40,22 @@
 - 翻译内容以只读方式显示，不会覆盖或修改原始便签。
 - 可以随时切换翻译方式，或再次点击按钮返回原文。
 
+![](./1.png)
+
+![](./2.png)
+
+![](./3.png)
+
+
+![](./4.png)
+
+
+![](./5.png)
+
+
+
+
+
 This repository is a customized fork of the Firestorm viewer source code.
 
 ## Open Source
