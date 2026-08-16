@@ -66,17 +66,27 @@ namespace
             }
             if (!data["tones"].isMap()) data["tones"] = LLSD::emptyMap();
             if (!data["conversations"].isMap()) data["conversations"] = LLSD::emptyMap();
-            if (!data["tones"].has("normal"))
+            // Earlier development builds injected two built-in personas on every
+            // launch.  Personas are now entirely user-created, so migrate those
+            // fixed IDs away and clear conversations that still reference them.
+            bool migrated = false;
+            if (data["tones"].has("normal")) { data["tones"].erase("normal"); migrated = true; }
+            if (data["tones"].has("slave"))  { data["tones"].erase("slave");  migrated = true; }
+            for (LLSD::map_iterator it = data["conversations"].beginMap();
+                 it != data["conversations"].endMap(); ++it)
             {
-                data["tones"]["normal"]["name"] = "正常";
-                data["tones"]["normal"]["prompt"] = "";
+                const std::string tone = it->second["tone"].asString();
+                if (tone == "normal" || tone == "slave")
+                {
+                    it->second.erase("tone");
+                    migrated = true;
+                }
             }
-            if (!data["tones"].has("slave"))
+            if (migrated)
             {
-                data["tones"]["slave"]["name"] = "奴隶形态";
-                data["tones"]["slave"]["prompt"] =
-                    "Translate in a submissive, obedient and respectful tone while preserving the original meaning."
-                    " Do not add consent, sexual content, promises or facts that the user did not write.";
+                llofstream output(gDirUtilp->getExpandedFilename(
+                    LL_PATH_USER_SETTINGS, "outgoing_translation_conversations.xml"));
+                if (output.is_open()) LLSDSerialize::toPrettyXML(data, output);
             }
         }
         return data;
@@ -1460,12 +1470,13 @@ void LLTranslate::setOutgoingLanguage(const std::string& conversation_key, const
 std::string LLTranslate::getOutgoingTone(const std::string& conversation_key)
 {
     const std::string tone = outgoingConversation(conversation_key)["tone"].asString();
-    return tone.empty() ? "normal" : tone;
+    return !tone.empty() && getOutgoingTonePresets().has(tone) ? tone : std::string();
 }
 
 void LLTranslate::setOutgoingTone(const std::string& conversation_key, const std::string& tone_id)
 {
-    outgoingConversation(conversation_key)["tone"] = tone_id;
+    if (tone_id.empty()) outgoingConversation(conversation_key).erase("tone");
+    else outgoingConversation(conversation_key)["tone"] = tone_id;
     saveOutgoingConversationSettings();
 }
 
@@ -1496,7 +1507,7 @@ void LLTranslate::setOutgoingTonePreset(const std::string& tone_id, const std::s
 
 void LLTranslate::deleteOutgoingTonePreset(const std::string& tone_id)
 {
-    if (tone_id == "normal") return;
+    if (tone_id.empty()) return;
     outgoingConversationSettings()["tones"].erase(tone_id);
     saveOutgoingConversationSettings();
 }

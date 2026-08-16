@@ -230,6 +230,7 @@ void LLFloaterTranslationSettings::loadLocalizationBackup(const std::vector<std:
 // virtual
 void LLFloaterTranslationSettings::onOpen(const LLSD& key)
 {
+    refreshOutgoingTonePresets();
     mMachineTranslationCB->setValue(gSavedSettings.getBOOL("TranslateChat"));
     mIncomingModeCombo->setSelectedByValue(gSavedSettings.getS32("FSIncomingTranslateMode"), true);
     mOutgoingModeCombo->setSelectedByValue(gSavedSettings.getS32("FSOutgoingTranslateMode"), true);
@@ -575,7 +576,8 @@ void LLFloaterTranslationSettings::loadSelectedOutgoingTonePreset()
     const LLSD preset = LLTranslate::getOutgoingTonePresets()[id];
     mOutgoingToneNameEditor->setText(preset["name"].asString());
     mOutgoingTonePromptEditor->setText(preset["prompt"].asString());
-    getChild<LLButton>("outgoing_tone_delete_btn")->setEnabled(id != "normal");
+    getChild<LLButton>("outgoing_tone_delete_btn")->setEnabled(!id.empty());
+    getChild<LLButton>("outgoing_tone_save_btn")->setEnabled(!id.empty());
 }
 
 void LLFloaterTranslationSettings::saveSelectedOutgoingTonePreset()
@@ -586,7 +588,8 @@ void LLFloaterTranslationSettings::saveSelectedOutgoingTonePreset()
     if (id.empty() || name.empty()) return;
     LLTranslate::setOutgoingTonePreset(id, name, mOutgoingTonePromptEditor->getText());
     refreshOutgoingTonePresets();
-    mOutgoingTonePresetCombo->setValue(id);
+    mOutgoingTonePresetCombo->setSelectedByValue(LLSD(id), true);
+    loadSelectedOutgoingTonePreset();
 }
 
 void LLFloaterTranslationSettings::createOutgoingTonePreset()
@@ -594,7 +597,7 @@ void LLFloaterTranslationSettings::createOutgoingTonePreset()
     const std::string id = LLUUID::generateNewID().asString();
     LLTranslate::setOutgoingTonePreset(id, "新语气", "");
     refreshOutgoingTonePresets();
-    mOutgoingTonePresetCombo->setValue(id);
+    mOutgoingTonePresetCombo->setSelectedByValue(LLSD(id), true);
     loadSelectedOutgoingTonePreset();
     mOutgoingToneNameEditor->setFocus(true);
     mOutgoingToneNameEditor->selectAll();
