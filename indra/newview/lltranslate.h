@@ -31,6 +31,7 @@
 #include "llsingleton.h"
 
 #include <functional>
+#include <boost/signals2.hpp>
 
 class LLTranslationAPIHandler;
 /**
@@ -120,6 +121,9 @@ public :
     static void setOutgoingTonePreset(const std::string& tone_id, const std::string& name,
                                       const std::string& prompt);
     static void deleteOutgoingTonePreset(const std::string& tone_id);
+    typedef boost::signals2::signal<void()> OutgoingTonePresetsChangedSignal;
+    static boost::signals2::connection setOutgoingTonePresetsChangedCallback(
+        const OutgoingTonePresetsChangedSignal::slot_type& callback);
 
     static void translateScriptDialog(const std::string& context_key, const std::string& message,
                                       const LLSD& buttons, ScriptDialogTranslationSuccess_fn success,

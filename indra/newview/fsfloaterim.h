@@ -317,6 +317,7 @@ private:
     boost::signals2::connection mRecentEmojisUpdatedCallbackConnection{};
     boost::signals2::connection mEmojiCloseConn{};
     boost::signals2::connection mOutgoingTranslateModeConnection{};
+    boost::signals2::connection mOutgoingTonePresetsChangedConnection{};
     U32 mEmojiHelperLastCallbackFrame{ 0 };
     std::string mPendingOutgoingText;
 };

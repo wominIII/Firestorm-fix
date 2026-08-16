@@ -543,6 +543,13 @@ void LLFloaterTranslationSettings::onClose(bool app_quitting)
 }
 void LLFloaterTranslationSettings::onBtnOK()
 {
+    // Treat the dialog's OK button as saving the currently edited persona as
+    // well.  Requiring a second, easy-to-miss save button made edits appear to
+    // vanish when the settings floater was closed normally.
+    if (mOutgoingTonePresetCombo && !mOutgoingTonePresetCombo->getValue().asString().empty())
+    {
+        saveSelectedOutgoingTonePreset();
+    }
     gSavedSettings.setBOOL("TranslateChat", mMachineTranslationCB->getValue().asBoolean());
     gSavedSettings.setS32("FSIncomingTranslateMode", mIncomingModeCombo->getSelectedValue().asInteger());
     gSavedSettings.setS32("FSOutgoingTranslateMode", mOutgoingModeCombo->getSelectedValue().asInteger());

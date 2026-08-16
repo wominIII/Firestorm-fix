@@ -51,6 +51,8 @@ static const std::string AZURE_NOTRANSLATE_CLOSING_TAG("</div>");
 
 namespace
 {
+    LLTranslate::OutgoingTonePresetsChangedSignal sOutgoingTonePresetsChangedSignal;
+
     LLSD& outgoingConversationSettings()
     {
         static LLSD data;
@@ -1503,6 +1505,7 @@ void LLTranslate::setOutgoingTonePreset(const std::string& tone_id, const std::s
     outgoingConversationSettings()["tones"][tone_id]["name"] = name;
     outgoingConversationSettings()["tones"][tone_id]["prompt"] = prompt;
     saveOutgoingConversationSettings();
+    sOutgoingTonePresetsChangedSignal();
 }
 
 void LLTranslate::deleteOutgoingTonePreset(const std::string& tone_id)
@@ -1510,6 +1513,13 @@ void LLTranslate::deleteOutgoingTonePreset(const std::string& tone_id)
     if (tone_id.empty()) return;
     outgoingConversationSettings()["tones"].erase(tone_id);
     saveOutgoingConversationSettings();
+    sOutgoingTonePresetsChangedSignal();
+}
+
+boost::signals2::connection LLTranslate::setOutgoingTonePresetsChangedCallback(
+    const OutgoingTonePresetsChangedSignal::slot_type& callback)
+{
+    return sOutgoingTonePresetsChangedSignal.connect(callback);
 }
 
 void LLTranslate::translateOutgoingMessage(const std::string& mesg, const LLSD& context,

@@ -187,6 +187,7 @@ private:
     boost::signals2::connection mEmojiCloseConn{};
     boost::signals2::connection mRlvBehaviorCallbackConnection{};
     boost::signals2::connection mOutgoingTranslateModeConnection{};
+    boost::signals2::connection mOutgoingTonePresetsChangedConnection{};
     U32                         mEmojiHelperLastCallbackFrame{ 0 };
 };
 

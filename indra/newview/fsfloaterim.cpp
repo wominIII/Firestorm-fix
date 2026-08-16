@@ -803,6 +803,7 @@ FSFloaterIM::~FSFloaterIM()
 
     mEmojiCloseConn.disconnect();
     mOutgoingTranslateModeConnection.disconnect();
+    mOutgoingTonePresetsChangedConnection.disconnect();
 
     LLFloaterChatMentionPicker::removeParticipantSource(this);
 }
@@ -1171,6 +1172,8 @@ bool FSFloaterIM::postBuild()
         LLTranslate::setOutgoingTone(getOutgoingTranslationConversationKey(), ctrl->getValue().asString());
     });
     mOutgoingPromptBtn->setClickedCallback(boost::bind(&FSFloaterIM::onOutgoingPromptButtonClicked, this));
+    mOutgoingTonePresetsChangedConnection = LLTranslate::setOutgoingTonePresetsChangedCallback(
+        boost::bind(&FSFloaterIM::updateOutgoingTranslationControls, this));
     updateOutgoingTranslationControls();
     // <FS:TJ> [FIRE-35804] Allow the IM floater to have separate transparency
     mInputEditor->setTransparencyOverrideCallback(boost::bind(&FSFloaterIM::onGetChatEditorOpacityCallback, this, _1, _2));

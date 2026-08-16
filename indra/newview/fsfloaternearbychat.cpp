@@ -126,6 +126,7 @@ FSFloaterNearbyChat::~FSFloaterNearbyChat()
     }
 
     mOutgoingTranslateModeConnection.disconnect();
+    mOutgoingTonePresetsChangedConnection.disconnect();
 
     LLFloaterChatMentionPicker::removeParticipantSource(this);
 }
@@ -190,6 +191,8 @@ bool FSFloaterNearbyChat::postBuild()
         LLTranslate::setOutgoingTone("nearby", ctrl->getValue().asString());
     });
     mOutgoingPromptBtn->setClickedCallback(boost::bind(&FSFloaterNearbyChat::onOutgoingPromptButtonClicked, this));
+    mOutgoingTonePresetsChangedConnection = LLTranslate::setOutgoingTonePresetsChangedCallback(
+        boost::bind(&FSFloaterNearbyChat::updateOutgoingTranslationControls, this));
     updateOutgoingTranslationControls();
 
     mEmojiRecentPanelToggleBtn = getChild<LLButton>("emoji_recent_panel_toggle_btn");
