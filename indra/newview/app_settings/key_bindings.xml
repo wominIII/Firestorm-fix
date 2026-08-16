@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
-<keys xml_version="7">
+<keys xml_version="8">
   <first_person>
     <binding key="A" mask="NONE" command="slide_left"/>
     <binding key="D" mask="NONE" command="slide_right"/>
@@ -10,6 +10,7 @@
     <binding key="F" mask="NONE" command="toggle_fly"/>
     <binding key="" mask="NONE" mouse="MB4" command="toggle_spectator_mode"/>
     <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
+    <binding key="M" mask="CTL_SHIFT" command="reconstruct_cached_mesh"/>
 
     <binding key="LEFT" mask="NONE" command="slide_left"/>
     <binding key="RIGHT" mask="NONE" command="slide_right"/>
@@ -44,6 +45,7 @@
     <binding key="F" mask="NONE" command="toggle_fly"/>
     <binding key="" mask="NONE" mouse="MB4" command="toggle_spectator_mode"/>
     <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
+    <binding key="M" mask="CTL_SHIFT" command="reconstruct_cached_mesh"/>
 
     <binding key="SPACE" mask="NONE" command="stop_moving"/>
     <binding key="ENTER" mask="NONE" command="start_chat"/>
@@ -99,6 +101,7 @@
   <sitting>
     <binding key="" mask="NONE" mouse="MB4" command="toggle_spectator_mode"/>
     <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
+    <binding key="M" mask="CTL_SHIFT" command="reconstruct_cached_mesh"/>
     <binding key="A" mask="ALT" command="spin_around_cw"/>
     <binding key="D" mask="ALT" command="spin_around_ccw"/>
     <binding key="W" mask="ALT" command="move_forward"/>
@@ -179,6 +182,7 @@
   <edit_avatar>
     <binding key="" mask="NONE" mouse="MB4" command="toggle_spectator_mode"/>
     <binding key="" mask="NONE" mouse="MB5" command="toggle_spectator_mouse_mode"/>
+    <binding key="M" mask="CTL_SHIFT" command="reconstruct_cached_mesh"/>
     <!--Avatar editing camera controls-->
     <binding key="A" mask="NONE" command="edit_avatar_spin_cw"/>
     <binding key="D" mask="NONE" command="edit_avatar_spin_ccw"/>

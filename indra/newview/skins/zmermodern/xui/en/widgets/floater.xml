@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater name="floater"
+         bg_alpha_color="floater_bg_color_a"
+         bg_opaque_color="floater_bg_color"
+         header_font="SansSerifBold"
+         header_font_shadow="none"
+         header_height="30"
+         header_vpad="7"
+         background_visible="true"
+         background_opaque="false" />

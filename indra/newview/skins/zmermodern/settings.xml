@@ -1,0 +1,26 @@
+<llsd>
+  <map>
+    <key>FSFontSettingsFile</key>
+    <map>
+      <key>Comment</key>
+      <string>Modern Inter and Microsoft YaHei font preset for Zmer Modern.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string>fonts_zmer_modern.xml</string>
+    </map>
+    <key>FSFontLineSpacingAdjustment</key>
+    <map>
+      <key>Comment</key>
+      <string>Additional UI line spacing for modern Chinese typography.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
+  </map>
+</llsd>

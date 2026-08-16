@@ -91,6 +91,11 @@ public :
     static void translateIncomingMessage(const std::string& from_lang, const std::string& to_lang,
                                          const std::string& mesg, TranslationSuccess_fn success,
                                          TranslationFailure_fn failure);
+    // Translate in-world object hover text without changing the server-backed
+    // text or the source object used for picking/touch handling.
+    static void translateHoverText(const std::string& mesg,
+                                   TranslationSuccess_fn success,
+                                   TranslationFailure_fn failure);
     static EIncomingMode getIncomingMode();
 
     // Translate arbitrary text through the configured GPT-compatible endpoint,
@@ -101,12 +106,29 @@ public :
     // Translate text immediately before it is sent. Context is an array of
     // maps containing "name" and "text" and is used only by GPT mode.
     static void translateOutgoingMessage(const std::string& mesg, const LLSD& context,
+                                         const std::string& conversation_key,
                                          TranslationSuccess_fn success, TranslationFailure_fn failure);
-    static EOutgoingMode getOutgoingMode();
+    static EOutgoingMode getOutgoingMode(const std::string& conversation_key = std::string());
+    static void setOutgoingMode(const std::string& conversation_key, EOutgoingMode mode);
+    static std::string getOutgoingLanguage(const std::string& conversation_key);
+    static void setOutgoingLanguage(const std::string& conversation_key, const std::string& language);
+    static std::string getOutgoingTone(const std::string& conversation_key);
+    static void setOutgoingTone(const std::string& conversation_key, const std::string& tone_id);
+    static std::string getOutgoingExtraPrompt(const std::string& conversation_key);
+    static void setOutgoingExtraPrompt(const std::string& conversation_key, const std::string& prompt);
+    static LLSD getOutgoingTonePresets();
+    static void setOutgoingTonePreset(const std::string& tone_id, const std::string& name,
+                                      const std::string& prompt);
+    static void deleteOutgoingTonePreset(const std::string& tone_id);
 
     static void translateScriptDialog(const std::string& context_key, const std::string& message,
                                       const LLSD& buttons, ScriptDialogTranslationSuccess_fn success,
                                       TranslationFailure_fn failure);
+    // Read all names as one context and generate one concise Chinese local
+    // inventory label for every entry, preserving array order.
+    static void generateInventoryLocalLabels(const LLSD& names,
+                                             ScriptDialogTranslationSuccess_fn success,
+                                             TranslationFailure_fn failure);
     static void setScriptDialogTranslation(const std::string& context_key,
                                            const std::string& source, const std::string& translation);
     static std::string getScriptDialogTranslation(const std::string& context_key,
@@ -144,8 +166,10 @@ public :
     LLSD asLLSD() const;
 private:
     static void translateOutgoingGPT(const std::string& mesg, const LLSD& context,
+                                     const std::string& conversation_key,
                                      TranslationSuccess_fn success, TranslationFailure_fn failure);
     static void translateOutgoingGPTCoro(std::string mesg, LLSD context, S32 context_count, std::string target,
+                                         std::string style_prompt,
                                          TranslationSuccess_fn success, TranslationFailure_fn failure);
     static void translateScriptDialogGPTCoro(std::string context_key, std::string message,
                                              LLSD buttons, ScriptDialogTranslationSuccess_fn success,
@@ -153,6 +177,9 @@ private:
     static void translateScriptDialogGPTIndividually(std::string context_key, std::string message,
                                                       LLSD buttons, ScriptDialogTranslationSuccess_fn success,
                                                       TranslationFailure_fn failure);
+    static void generateInventoryLocalLabelsCoro(LLSD names,
+                                                 ScriptDialogTranslationSuccess_fn success,
+                                                 TranslationFailure_fn failure);
     static LLTranslationAPIHandler& getPreferredHandler();
     static LLTranslationAPIHandler& getHandler(EService service);
 

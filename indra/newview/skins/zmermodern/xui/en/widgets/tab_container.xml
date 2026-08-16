@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<tab_container name="tab_container"
+               font="SansSerifBold"
+               font.size="Small"
+               tab_height="28"
+               tab_min_width="72"
+               label_pad_bottom="2"
+               label_pad_left="8" />

@@ -34,6 +34,7 @@
 #include "fsfloaternearbychat.h"
 // </FS:Ansariel> [FS communication UI]
 #include "lltranslate.h"
+#include "llviewerobjectlist.h"
 #include "llinventorybridge.h"
 #include "llviewercontrol.h" // for gSavedSettings
 #include "llviewermenufile.h"
@@ -48,6 +49,7 @@
 #include "llradiogroup.h"
 #include "llfile.h"
 #include "llsdserialize.h"
+#include "lltexteditor.h"
 
 namespace
 {
@@ -86,6 +88,9 @@ bool LLFloaterTranslationSettings::postBuild()
     mGoogleVerifyBtn = getChild<LLButton>("verify_google_api_key_btn");
     mDeepLVerifyBtn = getChild<LLButton>("verify_deepl_api_key_btn");
     mOKBtn = getChild<LLButton>("ok_btn");
+    mOutgoingTonePresetCombo = getChild<LLComboBox>("outgoing_tone_preset_combo");
+    mOutgoingToneNameEditor = getChild<LLLineEditor>("outgoing_tone_name");
+    mOutgoingTonePromptEditor = getChild<LLTextEditor>("outgoing_tone_prompt");
 
     mMachineTranslationCB->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::updateControlsEnabledState, this));
     mIncomingModeCombo->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::updateControlsEnabledState, this));
@@ -97,6 +102,13 @@ bool LLFloaterTranslationSettings::postBuild()
     {
         gSavedSettings.setS32("FSScriptDialogTranslateMode", mScriptDialogModeCombo->getSelectedValue().asInteger());
     });
+    auto refresh_hover_text = [](LLUICtrl*, const LLSD&)
+    {
+        gObjectList.refreshHoverTextTranslations();
+    };
+    getChild<LLCheckBoxCtrl>("hover_text_translate_enabled")->setCommitCallback(refresh_hover_text);
+    getChild<LLComboBox>("hover_text_translate_mode")->setCommitCallback(refresh_hover_text);
+    getChild<LLComboBox>("hover_text_display_mode")->setCommitCallback(refresh_hover_text);
     mTranslationServiceRadioGroup->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::updateControlsEnabledState, this));
     mOKBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnOK, this));
     getChild<LLButton>("cancel_btn")->setClickedCallback(boost::bind(&LLFloater::closeFloater, this, false));
@@ -116,6 +128,11 @@ bool LLFloaterTranslationSettings::postBuild()
         boost::bind(&LLFloaterTranslationSettings::onExportLocalizationBackup, this));
     getChild<LLButton>("import_localization_backup_btn")->setClickedCallback(
         boost::bind(&LLFloaterTranslationSettings::onImportLocalizationBackup, this));
+    mOutgoingTonePresetCombo->setCommitCallback(boost::bind(&LLFloaterTranslationSettings::loadSelectedOutgoingTonePreset, this));
+    getChild<LLButton>("outgoing_tone_new_btn")->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::createOutgoingTonePreset, this));
+    getChild<LLButton>("outgoing_tone_save_btn")->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::saveSelectedOutgoingTonePreset, this));
+    getChild<LLButton>("outgoing_tone_delete_btn")->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::deleteSelectedOutgoingTonePreset, this));
+    refreshOutgoingTonePresets();
     mAzureVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnAzureVerify, this));
     mGoogleVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnGoogleVerify, this));
     mDeepLVerifyBtn->setClickedCallback(boost::bind(&LLFloaterTranslationSettings::onBtnDeepLVerify, this));
@@ -536,4 +553,55 @@ void LLFloaterTranslationSettings::onBtnOK()
     gSavedSettings.setLLSD("DeepLTranslateAPIKey", getEnteredDeepLKey());
 
     closeFloater(false);
+}
+
+void LLFloaterTranslationSettings::refreshOutgoingTonePresets()
+{
+    if (!mOutgoingTonePresetCombo) return;
+    const std::string selected = mOutgoingTonePresetCombo->getValue().asString();
+    mOutgoingTonePresetCombo->removeall();
+    const LLSD tones = LLTranslate::getOutgoingTonePresets();
+    for (LLSD::map_const_iterator it = tones.beginMap(); it != tones.endMap(); ++it)
+        mOutgoingTonePresetCombo->add(it->second["name"].asString(), LLSD(it->first));
+    if (!selected.empty()) mOutgoingTonePresetCombo->setValue(selected);
+    if (mOutgoingTonePresetCombo->getCurrentIndex() < 0 && mOutgoingTonePresetCombo->getItemCount() > 0)
+        mOutgoingTonePresetCombo->setCurrentByIndex(0);
+    loadSelectedOutgoingTonePreset();
+}
+
+void LLFloaterTranslationSettings::loadSelectedOutgoingTonePreset()
+{
+    const std::string id = mOutgoingTonePresetCombo->getValue().asString();
+    const LLSD preset = LLTranslate::getOutgoingTonePresets()[id];
+    mOutgoingToneNameEditor->setText(preset["name"].asString());
+    mOutgoingTonePromptEditor->setText(preset["prompt"].asString());
+    getChild<LLButton>("outgoing_tone_delete_btn")->setEnabled(id != "normal");
+}
+
+void LLFloaterTranslationSettings::saveSelectedOutgoingTonePreset()
+{
+    const std::string id = mOutgoingTonePresetCombo->getValue().asString();
+    std::string name = mOutgoingToneNameEditor->getText();
+    LLStringUtil::trim(name);
+    if (id.empty() || name.empty()) return;
+    LLTranslate::setOutgoingTonePreset(id, name, mOutgoingTonePromptEditor->getText());
+    refreshOutgoingTonePresets();
+    mOutgoingTonePresetCombo->setValue(id);
+}
+
+void LLFloaterTranslationSettings::createOutgoingTonePreset()
+{
+    const std::string id = LLUUID::generateNewID().asString();
+    LLTranslate::setOutgoingTonePreset(id, "新语气", "");
+    refreshOutgoingTonePresets();
+    mOutgoingTonePresetCombo->setValue(id);
+    loadSelectedOutgoingTonePreset();
+    mOutgoingToneNameEditor->setFocus(true);
+    mOutgoingToneNameEditor->selectAll();
+}
+
+void LLFloaterTranslationSettings::deleteSelectedOutgoingTonePreset()
+{
+    LLTranslate::deleteOutgoingTonePreset(mOutgoingTonePresetCombo->getValue().asString());
+    refreshOutgoingTonePresets();
 }

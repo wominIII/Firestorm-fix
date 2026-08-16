@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
  legacy_header_height="18"
- height="700"
+ height="790"
  layout="topleft"
  name="floater_translation_settings"
  help_topic="translation_settings"
@@ -410,15 +410,23 @@
         [https://www.deepl.com/pro/select-country?cta=header-prices Pricing]
     </text>
 
- <panel
-  border="true"
+ <scroll_container
   follows="top|right|bottom"
-  height="635"
+  height="725"
   layout="topleft"
   left="490"
-  name="outgoing_translation_panel"
+  name="translation_settings_scroll"
   top="28"
   width="400">
+ <panel
+  border="true"
+  follows="top|left|right"
+  height="900"
+  layout="topleft"
+  left="0"
+  name="outgoing_translation_panel"
+  top="0"
+  width="382">
    <text
    font="SansSerifBold"
    height="20"
@@ -569,8 +577,36 @@
     left="12"
     name="script_dialog_translation_note"
     top_pad="4"
-    width="370"
-    wrap="true">AI mode reuses the GPT Base URL, API key and model above. Translations are saved locally.</text>
+   width="370"
+   wrap="true">AI mode reuses the GPT Base URL, API key and model above. Translations are saved locally.</text>
+   <view_border height="1" left="12" right="-12" top_pad="7" />
+   <text font="SansSerifBold" height="20" left="12" name="outgoing_tone_presets_title"
+    top_pad="7" width="350">Custom conversation tone presets</text>
+   <combo_box height="23" left="12" name="outgoing_tone_preset_combo" top_pad="3" width="210" />
+   <button height="23" label="New" left_pad="6" name="outgoing_tone_new_btn" width="65" />
+   <button height="23" label="Delete" left_pad="5" name="outgoing_tone_delete_btn" width="70" />
+   <line_editor height="22" left="12" name="outgoing_tone_name" top_pad="5" width="353" />
+   <text_editor height="72" left="12" max_length="4000" name="outgoing_tone_prompt"
+    right="-17" top_pad="4" wrap="true" />
+   <button height="23" label="Save preset" left="12" name="outgoing_tone_save_btn"
+    top_pad="4" width="120" />
+   <view_border height="1" left="12" right="-12" top_pad="7" />
+   <text font="SansSerifBold" height="20" left="12" name="hover_text_translation_title"
+    top_pad="7" width="360">In-world hover text translation</text>
+   <check_box control_name="FSHoverTextTranslateEnabled" height="20" left="12"
+    label="Translate object hover text within 64 m" name="hover_text_translate_enabled"
+    top_pad="3" width="360" />
+   <combo_box control_name="FSHoverTextTranslateMode" height="23" left="12"
+    name="hover_text_translate_mode" top_pad="3" width="175">
+    <combo_box.item label="Off" name="off" value="0" />
+    <combo_box.item label="Normal API" name="normal" value="1" />
+    <combo_box.item label="AI model" name="gpt" value="2" />
+   </combo_box>
+   <combo_box control_name="FSHoverTextDisplayMode" height="23" left_pad="8"
+    name="hover_text_display_mode" width="180">
+    <combo_box.item label="Translation only" name="translated" value="0" />
+    <combo_box.item label="Translation + original" name="both" value="1" />
+   </combo_box>
    <button
     height="22"
     label="Export backup..."
@@ -587,6 +623,7 @@
     tool_tip="Merge local labels and manual script menu corrections from a backup file."
     width="175" />
  </panel>
+ </scroll_container>
 
  <button
   follows="left|top"

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<search_editor name="search_editor"
+                text_pad_left="9"
+                text_pad_right="8"
+                text_tentative_color="HintText" />

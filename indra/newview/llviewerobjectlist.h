@@ -140,6 +140,7 @@ public:
     void removeFromMap(LLViewerObject *objectp);
 
     void clearDebugText();
+    void refreshHoverTextTranslations();
 
     // <FS:CR> Import
     typedef std::function<bool (LLViewerObject* object)> new_object_callback_t;

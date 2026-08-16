@@ -520,6 +520,9 @@ public:
 
     void updatePositionCaches() const; // Update the global and region position caches from the object (and parent's) xform.
     void updateText(); // update text label position
+    void requestHoverTextTranslation(const std::string& source);
+    void applyHoverTextTranslation(const std::string& source, const std::string& translation);
+    void refreshHoverTextTranslation();
     // <FS:minerjr> [FIRE-35019] Add LLHUDNameTag background to floating text and hover highlights
     // Method that sets the current viewer object's mText to be highlighted or the objects children if there is no mText.
     void setTextIsHighlighted(bool is_highlighted);

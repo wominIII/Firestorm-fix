@@ -67,6 +67,7 @@
 #include "llsidepanelappearance.h"
 #include "lltooldraganddrop.h"
 #include "lltrans.h"
+#include "lltranslate.h"
 #include "llurlaction.h"
 #include "llviewerassettype.h"
 #include "llviewerfoldertype.h"
@@ -1049,6 +1050,10 @@ void LLInvFVBridge::getClipboardEntries(bool show_asset_id,
         if (isAgentInventory() && !isItemInTrash())
         {
             items.push_back(std::string("Edit Local Label"));
+            if (obj->getType() == LLAssetType::AT_CATEGORY)
+            {
+                items.push_back(std::string("AI Auto Label Folder"));
+            }
         }
 
         if (obj->getType() != LLAssetType::AT_CATEGORY)
@@ -2138,6 +2143,81 @@ void LLItemBridge::performAction(LLInventoryModel* model, std::string action)
     else if ("edit_local_label" == action)
     {
         editLocalLabel();
+        return;
+    }
+    else if ("ai_auto_label_folder" == action)
+    {
+        if (!LLTranslate::isGPTTranslationConfigured())
+        {
+            LLNotificationsUtil::add("GenericAlert",
+                LLSD().with("MESSAGE", "请先在翻译设置中配置 AI API 地址、Key 和模型。"));
+            return;
+        }
+
+        LLInventoryModel::cat_array_t categories;
+        LLInventoryModel::item_array_t inventory_items;
+        model->collectDescendents(mUUID, categories, inventory_items, false);
+
+        LLSD names = LLSD::emptyArray();
+        uuid_vec_t ids;
+        for (const LLPointer<LLViewerInventoryCategory>& category : categories)
+        {
+            if (category.notNull())
+            {
+                ids.push_back(category->getUUID());
+                names.append(category->getName());
+            }
+        }
+        for (const LLPointer<LLViewerInventoryItem>& item : inventory_items)
+        {
+            if (item.notNull())
+            {
+                ids.push_back(item->getUUID());
+                names.append(item->getName());
+            }
+        }
+        if (ids.empty())
+        {
+            LLNotificationsUtil::add("GenericAlert",
+                LLSD().with("MESSAGE", "这个文件夹中没有可标注的物品。"));
+            return;
+        }
+
+        LLSD args;
+        args["COUNT"] = static_cast<S32>(ids.size());
+        LLSD payload;
+        payload["folder_id"] = mUUID;
+        LLNotificationsUtil::add("FSConfirmInventoryAIAutoLabel", args, payload,
+            [ids, names](const LLSD& notification, const LLSD& response)
+            {
+                if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
+                {
+                    return false;
+                }
+                LLTranslate::generateInventoryLocalLabels(names,
+                    [ids](LLSD labels)
+                    {
+                        const S32 count = llmin(static_cast<S32>(ids.size()),
+                                                static_cast<S32>(labels.size()));
+                        for (S32 i = 0; i < count; ++i)
+                        {
+                            std::string label = labels[i].asString();
+                            LLStringUtil::trim(label);
+                            if (!label.empty())
+                            {
+                                FSInventoryLocalLabels::instance().set(ids[i], label);
+                            }
+                        }
+                        LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+                            llformat("AI 已为 %d 个物品生成本地标签。", count)));
+                    },
+                    [](int status, std::string error)
+                    {
+                        LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+                            llformat("AI 自动标注失败（%d）：%s", status, error.c_str())));
+                    });
+                return false;
+            });
         return;
     }
     else if ("copy_uuid" == action)
@@ -4068,6 +4148,78 @@ void LLFolderBridge::performAction(LLInventoryModel* model, std::string action)
     else if ("edit_local_label" == action)
     {
         editLocalLabel();
+        return;
+    }
+    else if ("ai_auto_label_folder" == action)
+    {
+        if (!LLTranslate::isGPTTranslationConfigured())
+        {
+            LLNotificationsUtil::add("GenericAlert",
+                LLSD().with("MESSAGE", "请先在翻译设置中配置 AI API 地址、Key 和模型。"));
+            return;
+        }
+
+        LLInventoryModel::cat_array_t categories;
+        LLInventoryModel::item_array_t inventory_items;
+        model->collectDescendents(mUUID, categories, inventory_items, false);
+        LLSD names = LLSD::emptyArray();
+        uuid_vec_t ids;
+        for (const LLPointer<LLViewerInventoryCategory>& category : categories)
+        {
+            if (category.notNull())
+            {
+                ids.push_back(category->getUUID());
+                names.append(category->getName());
+            }
+        }
+        for (const LLPointer<LLViewerInventoryItem>& item : inventory_items)
+        {
+            if (item.notNull())
+            {
+                ids.push_back(item->getUUID());
+                names.append(item->getName());
+            }
+        }
+        if (ids.empty())
+        {
+            LLNotificationsUtil::add("GenericAlert",
+                LLSD().with("MESSAGE", "这个文件夹中没有可标注的物品。"));
+            return;
+        }
+
+        LLSD args;
+        args["COUNT"] = static_cast<S32>(ids.size());
+        LLNotificationsUtil::add("FSConfirmInventoryAIAutoLabel", args, LLSD(),
+            [ids, names](const LLSD& notification, const LLSD& response)
+            {
+                if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
+                {
+                    return false;
+                }
+                LLTranslate::generateInventoryLocalLabels(names,
+                    [ids](LLSD labels)
+                    {
+                        const S32 count = llmin(static_cast<S32>(ids.size()),
+                                                static_cast<S32>(labels.size()));
+                        for (S32 i = 0; i < count; ++i)
+                        {
+                            std::string label = labels[i].asString();
+                            LLStringUtil::trim(label);
+                            if (!label.empty())
+                            {
+                                FSInventoryLocalLabels::instance().set(ids[i], label);
+                            }
+                        }
+                        LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+                            llformat("AI 已为 %d 个物品生成本地标签。", count)));
+                    },
+                    [](int status, std::string error)
+                    {
+                        LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+                            llformat("AI 自动标注失败（%d）：%s", status, error.c_str())));
+                    });
+                return false;
+            });
         return;
     }
     else if ("paste" == action)

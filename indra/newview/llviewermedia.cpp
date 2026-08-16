@@ -1388,6 +1388,19 @@ void LLViewerMedia::getOpenIDCookieCoro(std::string url)
 
                                 media_instance->getMediaPlugin()->storeOpenIDCookie(cefUrl, cookie_name, cookie_value,
                                     cookie_host, cookie_path, httponly, secure);
+
+                                // Marketplace may already have loaded and
+                                // created an anonymous session while OpenID was
+                                // still being fetched. Reload it after the late
+                                // cookie injection so the authenticated session
+                                // is established without a manual login click.
+                                if (mci.floater_name == "marketplace")
+                                {
+                                    const std::string current_url = media_instance->getCurrentNavUrl();
+                                    media_instance->navigateTo(current_url.empty()
+                                        ? gSavedSettings.getString("MarketplaceURL") : current_url,
+                                        HTTP_CONTENT_TEXT_HTML);
+                                }
                             }
                         }
                     }

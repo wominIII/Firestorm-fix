@@ -45,6 +45,7 @@ private:
     static F32 sPitch;
     static F32 sRoll;
     static LLViewerRegion* sEntryRegion;
+    static bool sMouseCaptured;
 };
 
 #endif // FS_FSSPECTATORMODE_H

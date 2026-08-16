@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <notifications>
+  <notification icon="alertmodal.tga" label="Conversation translation prompt"
+   name="FSEditOutgoingConversationPrompt" type="alertmodal">
+Edit the extra AI translation instruction for this conversation. Leave it empty to use only the selected tone preset.
+    <form name="form">
+      <input name="prompt" type="text">[CURRENT]</input>
+      <button default="true" index="0" name="Save" text="Save"/>
+      <button index="1" name="Cancel" text="Cancel"/>
+    </form>
+  </notification>
     <global name="skipnexttime">
 
 		Do not show me this again
@@ -3480,6 +3489,17 @@ See https://wiki.secondlife.com/wiki/Adding_Spelling_Dictionaries
       <button default="true" index="0" name="OK" text="Save"/>
       <button index="1" name="Cancel" text="Cancel"/>
     </form>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
+   label="AI Auto-Label Inventory Folder"
+   name="FSConfirmInventoryAIAutoLabel"
+   type="alertmodal">
+    Send all [COUNT] names in this folder to the configured AI and replace their local labels?
+    Server-side inventory names will not be changed.
+    <tag>confirm</tag>
+    <usetemplate name="okcancelbuttons" notext="Cancel" yestext="Continue"/>
   </notification>
 
   <notification
@@ -14031,6 +14051,38 @@ Export failed unexpectedly. Please see the log for details.
      type="notify">
       <tag>Export</tag>
 		Export of [OBJECT] to [FILENAME] failed.
+    </notification>
+
+    <notification
+     icon="alertmodal.tga"
+     name="FSMeshReconstructNoSelection"
+     type="notify">
+      <tag>Export</tag>
+Select a rendered Mesh object first, then use the cached Mesh DAE shortcut.
+    </notification>
+
+    <notification
+     icon="alertmodal.tga"
+     name="FSMeshReconstructLicenseInvalid"
+     type="notify">
+      <tag>Export</tag>
+Mesh export is locked. Copy a valid mesh_export.license file into the Firestorm user_settings folder.
+    </notification>
+
+    <notification
+     icon="alertmodal.tga"
+     name="FSMeshReconstructNotMesh"
+     type="notify">
+      <tag>Export</tag>
+The selected object is not a Mesh with decoded render data.
+    </notification>
+
+    <notification
+     icon="alertmodal.tga"
+     name="FSMeshReconstructNoPermission"
+     type="notify">
+      <tag>Export</tag>
+This Mesh did not pass Firestorm&apos;s export permission check. In Second Life, you must own and have created the object and Mesh asset.
     </notification>
 
     <notification

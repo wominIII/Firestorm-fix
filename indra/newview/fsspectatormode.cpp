@@ -27,6 +27,7 @@ F32 FSSpectatorMode::sYaw = 0.f;
 F32 FSSpectatorMode::sPitch = 0.f;
 F32 FSSpectatorMode::sRoll = 0.f;
 LLViewerRegion* FSSpectatorMode::sEntryRegion = nullptr;
+bool FSSpectatorMode::sMouseCaptured = false;
 
 void FSSpectatorMode::toggle()
 {
@@ -86,7 +87,8 @@ void FSSpectatorMode::enter()
     gSavedSettings.setS32("FSSpectatorModeState", static_cast<S32>(sState));
 
     gFocusMgr.setKeyboardFocus(nullptr);
-    setMouseCapture(true);
+    setMouseCapture(gFocusMgr.getAppHasFocus());
+    sMouseCaptured = gFocusMgr.getAppHasFocus();
     applyCamera();
 }
 
@@ -99,6 +101,7 @@ void FSSpectatorMode::hold()
     sState = STATE_HELD;
     gSavedSettings.setS32("FSSpectatorModeState", static_cast<S32>(sState));
     setMouseCapture(false);
+    sMouseCaptured = false;
 
     // Hand the exact spectator viewpoint to Firestorm's native free camera.
     gAgentCamera.changeCameraToThirdPerson(false);
@@ -118,13 +121,15 @@ void FSSpectatorMode::resumeMoving()
     sState = STATE_MOVING;
     gSavedSettings.setS32("FSSpectatorModeState", static_cast<S32>(sState));
     gFocusMgr.setKeyboardFocus(nullptr);
-    setMouseCapture(true);
+    setMouseCapture(gFocusMgr.getAppHasFocus());
+    sMouseCaptured = gFocusMgr.getAppHasFocus();
     applyCamera();
 }
 
 void FSSpectatorMode::leave()
 {
     setMouseCapture(false);
+    sMouseCaptured = false;
     sState = STATE_INACTIVE;
     sEntryRegion = nullptr;
     gSavedSettings.setS32("FSSpectatorModeState", static_cast<S32>(sState));
@@ -161,6 +166,26 @@ void FSSpectatorMode::update()
 
     if (sState == STATE_MOVING)
     {
+        const bool app_has_focus = gFocusMgr.getAppHasFocus();
+        if (!app_has_focus)
+        {
+            if (sMouseCaptured)
+            {
+                setMouseCapture(false);
+                sMouseCaptured = false;
+            }
+            // Keep the spectator camera position, but never consume stale
+            // mouse/keyboard input or recenter the OS cursor while another
+            // application owns focus.
+            applyCamera();
+            return;
+        }
+        if (!sMouseCaptured)
+        {
+            setMouseCapture(true);
+            sMouseCaptured = true;
+        }
+
         const F32 nominal_sensitivity = 0.0025f;
         const F32 sensitivity = clamp_rescale(
             gSavedSettings.getF32("MouseSensitivity"), 0.f, 15.f, 0.5f, 2.75f) * nominal_sensitivity;

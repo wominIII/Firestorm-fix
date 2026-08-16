@@ -82,11 +82,17 @@ void LLToolGun::handleSelect()
 
 void LLToolGun::handleDeselect()
 {
-    // Cursor mode only applies to the current native first-person session.
-    gSavedSettings.setBOOL("FSMouselookCursorMode", false);
-    gViewerWindow->moveCursorToCenter();
-    gViewerWindow->showCursor();
-    gViewerWindow->getWindow()->setMouseClipping(false);
+    // A click in released-cursor mode temporarily switches to LLToolGrab.
+    // Preserve the cursor state across that transient tool change; otherwise
+    // every click silently recaptures the mouse.  Reset only when native
+    // first-person mode is actually being left.
+    if (!gAgentCamera.cameraMouselook())
+    {
+        gSavedSettings.setBOOL("FSMouselookCursorMode", false);
+        gViewerWindow->moveCursorToCenter();
+        gViewerWindow->showCursor();
+        gViewerWindow->getWindow()->setMouseClipping(false);
+    }
     mIsSelected = false;
 }
 

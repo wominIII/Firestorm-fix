@@ -98,6 +98,7 @@
 #include "llvowlsky.h"
 #include "llmanip.h"
 #include "lltrans.h"
+#include "lltranslate.h"
 #include "llsdutil.h"
 #include "llmediaentry.h"
 #include "llfloaterperms.h"
@@ -1543,6 +1544,7 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 
                     mHudText = temp_string;
                     mHudTextColor = LLColor4(coloru);
+                    requestHoverTextTranslation(temp_string);
 
                     setChanged(MOVED | SILHOUETTE);
                 }
@@ -1881,6 +1883,7 @@ U32 LLViewerObject::processUpdateMessage(LLMessageSystem *mesgsys,
 
                     mHudText = temp_string;
                     mHudTextColor = LLColor4(coloru);
+                    requestHoverTextTranslation(temp_string);
 
                     setChanged(TEXTURE);
                 }
@@ -6277,6 +6280,68 @@ void LLViewerObject::restoreHudText()
         }
         mText->setColor(mHudTextColor);
         mText->setString(mHudText);
+        requestHoverTextTranslation(mHudText);
+    }
+}
+
+void LLViewerObject::requestHoverTextTranslation(const std::string& source)
+{
+    if (!gSavedSettings.getBOOL("FSHoverTextTranslateEnabled") ||
+        gSavedSettings.getS32("FSHoverTextTranslateMode") == 0 || source.empty() ||
+        isAvatar() || dist_vec(getPositionAgent(), gAgent.getPositionAgent()) > 64.f)
+    {
+        return;
+    }
+
+    const LLUUID object_id = getID();
+    LLTranslate::translateHoverText(source,
+        [object_id, source](std::string translation, std::string)
+        {
+            LLViewerObject* object = gObjectList.findObject(object_id);
+            if (object)
+            {
+                object->applyHoverTextTranslation(source, translation);
+            }
+        },
+        [object_id](int status, std::string error)
+        {
+            LL_DEBUGS("HoverTextTranslate") << "Translation failed for " << object_id
+                << " (" << status << "): " << error << LL_ENDL;
+        });
+}
+
+void LLViewerObject::applyHoverTextTranslation(const std::string& source,
+                                               const std::string& translation)
+{
+    // Ignore stale asynchronous replies after the script has changed its text.
+    if (!mText || mHudText != source || translation.empty() ||
+        !gSavedSettings.getBOOL("FSHoverTextTranslateEnabled"))
+    {
+        return;
+    }
+
+    std::string displayed = translation;
+    if (gSavedSettings.getS32("FSHoverTextDisplayMode") == 1)
+    {
+        displayed += "\n" + source;
+    }
+    // Only the rendered string changes. LLHUDText keeps this Viewer object as
+    // its source, and RLVa object text/picking continues to use the original.
+    mText->setString(displayed);
+}
+
+void LLViewerObject::refreshHoverTextTranslation()
+{
+    if (!mText || mHudText.empty())
+    {
+        return;
+    }
+    // Always restore the authoritative source first. This makes disabling the
+    // feature immediate and also reapplies a changed display-mode cleanly.
+    mText->setString(mHudText);
+    if (gSavedSettings.getBOOL("FSHoverTextTranslateEnabled"))
+    {
+        requestHoverTextTranslation(mHudText);
     }
 }
 
@@ -8193,4 +8258,3 @@ public:
 
 LLHTTPRegistration<ObjectPhysicsProperties>
     gHTTPRegistrationObjectPhysicsProperties("/message/ObjectPhysicsProperties");
-

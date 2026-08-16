@@ -207,5 +207,21 @@
       </array>
     </map>
 
+    <map>
+      <key>name</key>
+      <string>Zmer Modern</string>
+      <key>folder</key>
+      <string>zmermodern</string>
+      <key>themes</key>
+      <array>
+        <map>
+          <key>name</key>
+          <string>Graphite</string>
+          <key>folder</key>
+          <string/>
+        </map>
+      </array>
+    </map>
+
   </array>
 </llsd>

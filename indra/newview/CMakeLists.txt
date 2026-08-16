@@ -114,6 +114,7 @@ set(viewer_SOURCE_FILES
     fsdata.cpp
     fsdroptarget.cpp
     fsexportperms.cpp
+    fsmeshreconstructor.cpp
     fsfloateraddtocontactset.cpp
     fsfloateriaassistant.cpp
     fsfloaterxtoys.cpp
@@ -957,6 +958,7 @@ set(viewer_HEADER_FILES
     aoset.h
     chatbar_as_cmdline.h
     daeexport.h
+    fsmeshreconstructor.h
     dialogstack.h
     exoflickr.h
     exoflickrauth.h

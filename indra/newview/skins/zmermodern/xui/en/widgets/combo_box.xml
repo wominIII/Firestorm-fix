@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<combo_box font="SansSerifSmall"
+           height="26"
+           list_position="below">
+  <combo_box.combo_button name="Combobox Button" hover_glow_amount="0.16" />
+  <combo_box.drop_down_button name="Drop Down Button" hover_glow_amount="0.16" />
+  <combo_box.combo_editor name="Combo Text Entry" text_pad_left="8" />
+</combo_box>

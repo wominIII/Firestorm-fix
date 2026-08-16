@@ -44,6 +44,7 @@ class FSPanelChatControlPanel;
 class LLAvatarName;
 class LLButton;     // support sysinfo button -Zi
 class LLChatEntry;
+class LLComboBox;
 class LLInventoryCategory;
 class LLInventoryItem;
 class LLLayoutPanel;
@@ -128,6 +129,9 @@ public:
     void onOutgoingTranslateButtonClicked();
     bool onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK mask);
     void updateOutgoingTranslateButton();
+    void updateOutgoingTranslationControls();
+    void onOutgoingPromptButtonClicked();
+    std::string getOutgoingTranslationConversationKey() const;
 
     bool handleDragAndDrop(S32 x, S32 y, MASK mask,
                            bool drop, EDragAndDropType cargo_type,
@@ -273,6 +277,9 @@ private:
     LLButton* mEmojiRecentPanelToggleBtn;
     LLButton* mEmojiPickerToggleBtn;
     LLButton* mOutgoingTranslateBtn;
+    LLButton* mOutgoingPromptBtn{ nullptr };
+    LLComboBox* mOutgoingLanguageCombo{ nullptr };
+    LLComboBox* mOutgoingToneCombo{ nullptr };
     LLLayoutPanel* mEmojiRecentPanel;
     LLTextBox* mEmojiRecentEmptyText;
     LLPanelEmojiComplete* mEmojiRecentIconsCtrl;

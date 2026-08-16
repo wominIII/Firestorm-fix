@@ -4,6 +4,7 @@
 	<menu_item_call label="打开" name="Task Open"/>
 	<menu_item_call label="播放" name="Task Play"/>
 	<menu_item_call label="属性" name="Task Properties"/>
+	<menu_item_call label="AI 自动标注文件夹内容…" name="AI Auto Label Folder"/>
 	<menu_item_call label="重命名" name="Task Rename"/>
 	<menu_item_call label="删除" name="Task Remove"/>
 	<menu_item_call label="清空垃圾桶" name="Empty Trash"/>

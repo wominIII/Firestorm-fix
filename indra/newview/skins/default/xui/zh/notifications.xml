@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <notifications>
+  <notification label="会话翻译提示词" name="FSEditOutgoingConversationPrompt">
+编辑当前会话专用的 AI 翻译提示词。留空则仅使用所选语气预设。
+    <form name="form">
+      <input name="prompt" type="text">[CURRENT]</input>
+      <button name="Save" text="保存"/>
+      <button name="Cancel" text="取消"/>
+    </form>
+  </notification>
 	<global name="skipnexttime">
 		不再显示此提醒
 	</global>
@@ -5486,6 +5494,18 @@ switch语句在没有默认标签情况下的行为不正确已被修正。
 	<notification name="ExportColladaFailure">
 		[OBJECT] 导出到 [FILENAME] 失败。
 	</notification>
+	<notification name="FSMeshReconstructNoSelection">
+		请先选中画面中已渲染的 Mesh 物件，然后再按重建 DAE 快捷键。
+	</notification>
+	<notification name="FSMeshReconstructLicenseInvalid">
+		Mesh 导出功能未激活。请将有效的 mesh_export.license 文件复制到 Firestorm 的 user_settings 文件夹。
+	</notification>
+	<notification name="FSMeshReconstructNotMesh">
+		当前选择不是具有已解码渲染数据的 Mesh 物件。
+	</notification>
+	<notification name="FSMeshReconstructNoPermission">
+		该 Mesh 未通过 Firestorm 的导出权限检查。在 Second Life 中，你必须同时拥有并创建该物件和 Mesh 资产。
+	</notification>
 	<notification name="MeshMaxConcurrentReqTooHigh">
 		设置的同时加载网格物件的值 ([VALUE]; 调试设置 [DEBUGNAME]) 高于最大值 [MAX]。它已被重置为默认值 [DEFAULT]。
 	</notification>
@@ -6061,5 +6081,9 @@ https://wiki.firestormviewer.org/antivirus_whitelisting
 			<button name="OK" text="保存"/>
 			<button name="Cancel" text="取消"/>
 		</form>
+	</notification>
+	<notification label="AI 自动标注文件夹" name="FSConfirmInventoryAIAutoLabel">
+		即将把此文件夹中的 [COUNT] 个名称发送给已配置的 AI，并覆盖这些物品现有的本地标签。服务器保存的真实名称不会改变。
+		<usetemplate name="okcancelbuttons" yestext="继续" notext="取消"/>
 	</notification>
 </notifications>

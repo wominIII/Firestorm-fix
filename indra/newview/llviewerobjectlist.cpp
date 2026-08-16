@@ -1446,6 +1446,17 @@ void LLViewerObjectList::clearDebugText()
     }
 }
 
+void LLViewerObjectList::refreshHoverTextTranslations()
+{
+    for (LLViewerObject* object : mObjects)
+    {
+        if (object && !object->isDead())
+        {
+            object->refreshHoverTextTranslation();
+        }
+    }
+}
+
 
 void LLViewerObjectList::cleanupReferences(LLViewerObject *objectp)
 {

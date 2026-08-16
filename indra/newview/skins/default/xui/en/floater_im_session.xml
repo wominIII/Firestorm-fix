@@ -298,8 +298,35 @@
                          tab_group="3"
                          bottom="-3"
                          left_pad="5"
-                         right="-60"
+                         right="-235"
                          wrap="true" />
+                        <combo_box
+                         follows="right|bottom"
+                         bottom="-2"
+                         right="-63"
+                         height="25"
+                         width="74"
+                         name="outgoing_translate_language"
+                         tool_tip="Outgoing translation target language">
+                            <combo_box.item label="中文" name="zh" value="zh" />
+                            <combo_box.item label="English" name="en" value="en" />
+                            <combo_box.item label="日本語" name="ja" value="ja" />
+                            <combo_box.item label="한국어" name="ko" value="ko" />
+                            <combo_box.item label="Français" name="fr" value="fr" />
+                            <combo_box.item label="Deutsch" name="de" value="de" />
+                            <combo_box.item label="Español" name="es" value="es" />
+                            <combo_box.item label="Português" name="pt" value="pt" />
+                            <combo_box.item label="Русский" name="ru" value="ru" />
+                        </combo_box>
+                        <combo_box
+                         follows="right|bottom" bottom="-2" right="-142"
+                         height="25" width="76" name="outgoing_translate_tone"
+                         tool_tip="Conversation translation tone" />
+                        <button
+                         follows="right|bottom" bottom="-2" right="-173"
+                         height="25" width="28" label="P" font="SansSerifSmallBold"
+                         name="outgoing_translate_prompt_btn"
+                         tool_tip="Edit extra translation prompt for this conversation" />
                         <button
                          name="outgoing_translate_btn"
                          handle_right_mouse="true"

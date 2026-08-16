@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<tool_tip name="tooltip"
+          max_width="280"
+          padding="7"
+          font="SansSerifSmall"
+          text_color="TextFgColor" />

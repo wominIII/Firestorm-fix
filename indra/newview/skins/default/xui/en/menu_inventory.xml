@@ -37,6 +37,14 @@
          parameter="task_properties" />
     </menu_item_call>
     <menu_item_call
+     label="AI Auto-Label Folder Contents..."
+     layout="topleft"
+     name="AI Auto Label Folder">
+        <menu_item_call.on_click
+         function="Inventory.DoToSelected"
+         parameter="ai_auto_label_folder" />
+    </menu_item_call>
+    <menu_item_call
      label="Rename"
      layout="topleft"
      name="Task Rename">

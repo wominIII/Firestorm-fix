@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<line_editor name="line_editor"
+             font="SansSerifSmall"
+             text_pad_left="8"
+             text_color="TextFgColor"
+             text_readonly_color="TextFgReadOnlyColor"
+             text_tentative_color="TextFgTentativeColor"
+             cursor_color="TextCursorColor"
+             highlight_color="TextBgHighlightColor"
+             preedit_bg_color="TextBgFocusColor" />

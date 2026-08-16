@@ -83,6 +83,8 @@ public:
     void onOutgoingTranslateButtonClicked();
     bool onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK mask);
     void updateOutgoingTranslateButton();
+    void updateOutgoingTranslationControls();
+    void onOutgoingPromptButtonClicked();
 
     void onSearchButtonClicked();
 
@@ -154,6 +156,9 @@ private:
     LLButton*             mEmojiRecentPanelToggleBtn;
     LLButton*             mEmojiPickerToggleBtn;
     LLButton*             mOutgoingTranslateBtn;
+    LLButton*             mOutgoingPromptBtn{ nullptr };
+    LLComboBox*           mOutgoingLanguageCombo{ nullptr };
+    LLComboBox*           mOutgoingToneCombo{ nullptr };
     LLLayoutPanel*        mEmojiRecentPanel;
     LLTextBox*            mEmojiRecentEmptyText;
     LLPanelEmojiComplete* mEmojiRecentIconsCtrl;

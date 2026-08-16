@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<inventory_list_item name="inventory_item" height="24">
+  <default_style font="SansSerifSmall" font.style="NORMAL" />
+  <worn_style font="SansSerifSmall" font.style="BOLD" color="EmphasisColor" />
+  <mismatch_style font="SansSerifSmall" font.style="BOLD" color="Red" />
+  <item_name name="item_name" height="24" top="4" />
+</inventory_list_item>

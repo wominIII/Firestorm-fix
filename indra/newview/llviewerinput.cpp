@@ -54,6 +54,7 @@
 #include "llselectmgr.h"
 #include "llfloaterwebcontent.h"
 #include "fsfloatersearch.h"
+#include "fsmeshreconstructor.h"
 #include "fsspectatormode.h"
 #include "llvoiceclient.h"
 
@@ -414,6 +415,16 @@ bool spectator_mouse_mode_toggle(EKeystate s)
     if (KEYSTATE_DOWN == s)
     {
         FSSpectatorMode::toggleMouseMode();
+    }
+    return true;
+}
+
+bool reconstruct_cached_mesh(EKeystate s)
+{
+    if (KEYSTATE_DOWN == s)
+    {
+        LL_INFOS("MeshReconstructor") << "Reconstruct cached mesh shortcut received" << LL_ENDL;
+        FSMeshReconstructor::exportSelected();
     }
     return true;
 }
@@ -1109,6 +1120,10 @@ REGISTER_KEYBOARD_ACTION("look_up", agent_look_up);
 REGISTER_KEYBOARD_ACTION("look_down", agent_look_down);
 REGISTER_KEYBOARD_ACTION("toggle_fly", agent_toggle_fly);
 REGISTER_KEYBOARD_ACTION("toggle_mouselook_cursor", toggle_mouselook_cursor);
+// The export shortcut must remain usable while inventory/search/build floaters
+// have keyboard focus.  Registering it as an in-world action made it appear
+// configured while the focused floater silently consumed the keystroke.
+REGISTER_KEYBOARD_GLOBAL_ACTION("reconstruct_cached_mesh", reconstruct_cached_mesh);
 REGISTER_KEYBOARD_ACTION("toggle_spectator_mode", spectator_mode_cycle);
 REGISTER_KEYBOARD_ACTION("toggle_spectator_mouse_mode", spectator_mouse_mode_toggle);
 REGISTER_KEYBOARD_ACTION("turn_left", agent_turn_left);
@@ -1672,6 +1687,22 @@ S32 LLViewerInput::loadBindingsXML(const std::string& filename)
                 mouselook_cursor_binding.command = "toggle_mouselook_cursor";
                 keys.first_person.bindings.add(mouselook_cursor_binding);
                 bindMouse(MODE_FIRST_PERSON, CLICK_MIDDLE, MASK_NONE, "toggle_mouselook_cursor");
+            }
+
+            if (keys.xml_version < 8)
+            {
+                KeyBinding mesh_reconstruct_binding;
+                mesh_reconstruct_binding.key = "M";
+                mesh_reconstruct_binding.mask = "CTL_SHIFT";
+                mesh_reconstruct_binding.command = "reconstruct_cached_mesh";
+                keys.first_person.bindings.add(mesh_reconstruct_binding);
+                keys.third_person.bindings.add(mesh_reconstruct_binding);
+                keys.sitting.bindings.add(mesh_reconstruct_binding);
+                keys.edit_avatar.bindings.add(mesh_reconstruct_binding);
+                for (S32 mode = 0; mode < MODE_COUNT; ++mode)
+                {
+                    bindKey(mode, 'M', MASK_CONTROL | MASK_SHIFT, "reconstruct_cached_mesh");
+                }
             }
 
             // fix version

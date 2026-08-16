@@ -178,7 +178,19 @@ bool FSFloaterNearbyChat::postBuild()
     mOutgoingTranslateBtn->setRightMouseDownCallback(boost::bind(&FSFloaterNearbyChat::onOutgoingTranslateButtonRightClick, this, _2, _3, _4));
     mOutgoingTranslateModeConnection = gSavedSettings.getControl("FSOutgoingTranslateMode")->getSignal()->connect(
         boost::bind(&FSFloaterNearbyChat::onOutgoingTranslateModeChanged, this, _2));
-    updateOutgoingTranslateButton();
+    mOutgoingLanguageCombo = getChild<LLComboBox>("outgoing_translate_language");
+    mOutgoingToneCombo = getChild<LLComboBox>("outgoing_translate_tone");
+    mOutgoingPromptBtn = getChild<LLButton>("outgoing_translate_prompt_btn");
+    mOutgoingLanguageCombo->setCommitCallback([](LLUICtrl* ctrl, const LLSD&)
+    {
+        LLTranslate::setOutgoingLanguage("nearby", ctrl->getValue().asString());
+    });
+    mOutgoingToneCombo->setCommitCallback([](LLUICtrl* ctrl, const LLSD&)
+    {
+        LLTranslate::setOutgoingTone("nearby", ctrl->getValue().asString());
+    });
+    mOutgoingPromptBtn->setClickedCallback(boost::bind(&FSFloaterNearbyChat::onOutgoingPromptButtonClicked, this));
+    updateOutgoingTranslationControls();
 
     mEmojiRecentPanelToggleBtn = getChild<LLButton>("emoji_recent_panel_toggle_btn");
     mEmojiRecentPanelToggleBtn->setClickedCallback([this](LLUICtrl*, const LLSD&) { onEmojiRecentPanelToggleBtnClicked(); });
@@ -420,8 +432,8 @@ void FSFloaterNearbyChat::onHistoryButtonClicked()
 
 void FSFloaterNearbyChat::onOutgoingTranslateButtonClicked()
 {
-    const S32 next = (gSavedSettings.getS32("FSOutgoingTranslateMode") + 1) % 3;
-    gSavedSettings.setS32("FSOutgoingTranslateMode", next);
+    const S32 next = (static_cast<S32>(LLTranslate::getOutgoingMode("nearby")) + 1) % 3;
+    LLTranslate::setOutgoingMode("nearby", static_cast<LLTranslate::EOutgoingMode>(next));
     updateOutgoingTranslateButton();
 }
 
@@ -434,7 +446,7 @@ bool FSFloaterNearbyChat::onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK
 void FSFloaterNearbyChat::updateOutgoingTranslateButton()
 {
     if (!mOutgoingTranslateBtn) return;
-    const LLTranslate::EOutgoingMode mode = LLTranslate::getOutgoingMode();
+    const LLTranslate::EOutgoingMode mode = LLTranslate::getOutgoingMode("nearby");
     mOutgoingTranslateBtn->setLabel(mode == LLTranslate::OUTGOING_GPT ? "AI" : "T");
     mOutgoingTranslateBtn->setToggleState(mode != LLTranslate::OUTGOING_DISABLED);
     mOutgoingTranslateBtn->setToolTip(LLStringExplicit(mode == LLTranslate::OUTGOING_DISABLED
@@ -444,10 +456,39 @@ void FSFloaterNearbyChat::updateOutgoingTranslateButton()
             : "Outgoing translation: Context-aware AI (click to turn off)"));
 }
 
+void FSFloaterNearbyChat::updateOutgoingTranslationControls()
+{
+    updateOutgoingTranslateButton();
+    if (mOutgoingLanguageCombo) mOutgoingLanguageCombo->setValue(LLTranslate::getOutgoingLanguage("nearby"));
+    if (mOutgoingToneCombo)
+    {
+        mOutgoingToneCombo->removeall();
+        const LLSD tones = LLTranslate::getOutgoingTonePresets();
+        for (LLSD::map_const_iterator it = tones.beginMap(); it != tones.endMap(); ++it)
+        {
+            mOutgoingToneCombo->add(it->second["name"].asString(), LLSD(it->first));
+        }
+        mOutgoingToneCombo->setValue(LLTranslate::getOutgoingTone("nearby"));
+    }
+}
+
+void FSFloaterNearbyChat::onOutgoingPromptButtonClicked()
+{
+    LLSD args;
+    args["CURRENT"] = LLTranslate::getOutgoingExtraPrompt("nearby");
+    LLNotificationsUtil::add("FSEditOutgoingConversationPrompt", args, LLSD(),
+        [](const LLSD& notification, const LLSD& response)
+        {
+            if (LLNotificationsUtil::getSelectedOption(notification, response) == 0)
+                LLTranslate::setOutgoingExtraPrompt("nearby", response["prompt"].asString());
+            return false;
+        });
+}
+
 void FSFloaterNearbyChat::onOutgoingTranslateModeChanged(const LLSD&)
 {
     updateOutgoingTranslateButton();
-    if (LLTranslate::getOutgoingMode() != LLTranslate::OUTGOING_DISABLED || mPendingOutgoingText.empty())
+    if (LLTranslate::getOutgoingMode("nearby") != LLTranslate::OUTGOING_DISABLED || mPendingOutgoingText.empty())
     {
         return;
     }
@@ -990,7 +1031,7 @@ void FSFloaterNearbyChat::sendChat( EChatType type )
 
 void FSFloaterNearbyChat::translateAndSendChat(const std::string& text, EChatType type, bool animate)
 {
-    if (LLTranslate::getOutgoingMode() == LLTranslate::OUTGOING_DISABLED)
+    if (LLTranslate::getOutgoingMode("nearby") == LLTranslate::OUTGOING_DISABLED)
     {
         sendChatFromViewer(text, type, animate);
         return;
@@ -1011,7 +1052,7 @@ void FSFloaterNearbyChat::translateAndSendChat(const std::string& text, EChatTyp
         context.append(LLSD().with("name", chat.mFromName).with("text", chat.mText));
     }
 
-    LLTranslate::translateOutgoingMessage(text, context,
+    LLTranslate::translateOutgoingMessage(text, context, "nearby",
         boost::bind(&FSFloaterNearbyChat::onOutgoingTranslationSuccess, this, _1, _2),
         boost::bind(&FSFloaterNearbyChat::onOutgoingTranslationFailure, this, _1, _2));
 }

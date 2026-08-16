@@ -35,6 +35,7 @@ class LLCheckBoxCtrl;
 class LLComboBox;
 class LLLineEditor;
 class LLRadioGroup;
+class LLTextEditor;
 
 class LLFloaterTranslationSettings : public LLFloater
 {
@@ -66,6 +67,11 @@ private:
     void onBtnDeepLVerify();
     void onExportLocalizationBackup();
     void onImportLocalizationBackup();
+    void refreshOutgoingTonePresets();
+    void loadSelectedOutgoingTonePreset();
+    void saveSelectedOutgoingTonePreset();
+    void createOutgoingTonePreset();
+    void deleteSelectedOutgoingTonePreset();
     static void saveLocalizationBackup(const std::vector<std::string>& filenames,
                                        LLFilePicker::ELoadFilter load_filter,
                                        LLFilePicker::ESaveFilter save_filter);
@@ -92,6 +98,9 @@ private:
     LLButton* mGoogleVerifyBtn;
     LLButton* mDeepLVerifyBtn;
     LLButton* mOKBtn;
+    LLComboBox* mOutgoingTonePresetCombo{ nullptr };
+    LLLineEditor* mOutgoingToneNameEditor{ nullptr };
+    LLTextEditor* mOutgoingTonePromptEditor{ nullptr };
 
     bool mAzureKeyVerified;
     bool mGoogleKeyVerified;

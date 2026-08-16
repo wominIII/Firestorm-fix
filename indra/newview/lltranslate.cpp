@@ -51,6 +51,49 @@ static const std::string AZURE_NOTRANSLATE_CLOSING_TAG("</div>");
 
 namespace
 {
+    LLSD& outgoingConversationSettings()
+    {
+        static LLSD data;
+        static bool loaded = false;
+        if (!loaded)
+        {
+            loaded = true;
+            llifstream file(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
+                                                           "outgoing_translation_conversations.xml"));
+            if (!file.is_open() || LLSDSerialize::fromXML(data, file) == LLSDParser::PARSE_FAILURE || !data.isMap())
+            {
+                data = LLSD::emptyMap();
+            }
+            if (!data["tones"].isMap()) data["tones"] = LLSD::emptyMap();
+            if (!data["conversations"].isMap()) data["conversations"] = LLSD::emptyMap();
+            if (!data["tones"].has("normal"))
+            {
+                data["tones"]["normal"]["name"] = "正常";
+                data["tones"]["normal"]["prompt"] = "";
+            }
+            if (!data["tones"].has("slave"))
+            {
+                data["tones"]["slave"]["name"] = "奴隶形态";
+                data["tones"]["slave"]["prompt"] =
+                    "Translate in a submissive, obedient and respectful tone while preserving the original meaning."
+                    " Do not add consent, sexual content, promises or facts that the user did not write.";
+            }
+        }
+        return data;
+    }
+
+    void saveOutgoingConversationSettings()
+    {
+        llofstream file(gDirUtilp->getExpandedFilename(LL_PATH_USER_SETTINGS,
+                                                       "outgoing_translation_conversations.xml"));
+        if (file.is_open()) LLSDSerialize::toPrettyXML(outgoingConversationSettings(), file);
+    }
+
+    LLSD& outgoingConversation(const std::string& key)
+    {
+        return outgoingConversationSettings()["conversations"][key.empty() ? "global" : key];
+    }
+
     struct ScriptDialogCachePattern
     {
         std::string key;
@@ -62,12 +105,23 @@ namespace
         return llformat("[[FS_VALUE_%u]]", static_cast<U32>(index));
     }
 
+    const std::regex& scriptDialogDynamicValueRegex()
+    {
+        // Treat a complete duration as one value.  Its shape can change while
+        // a dialog is open (for example "< 1 min" -> "1 hr 2 min"), so merely
+        // replacing each number would still produce a different cache key.
+        static const std::regex dynamic_value(
+            R"((?:[<>]=?\s*)?(?:(?:[0-9]+(?:\.[0-9]+)?)\s*(?:years?|yrs?|months?|mos?|weeks?|wks?|days?|hrs?|hours?|minutes?|mins?|seconds?|secs?|[ydhms]|年|个月|月|周|天|小时|时|分钟|分|秒)\s*)+|(?:[0-9]+\.[0-9]+|[0-9]+))",
+            std::regex_constants::icase);
+        return dynamic_value;
+    }
+
     ScriptDialogCachePattern makeScriptDialogCachePattern(const std::string& source)
     {
-        static const std::regex dynamic_number(R"((?:[0-9]+\.[0-9]+|[0-9]+))");
         ScriptDialogCachePattern pattern;
         size_t previous = 0;
-        for (std::sregex_iterator it(source.begin(), source.end(), dynamic_number), end; it != end; ++it)
+        for (std::sregex_iterator it(source.begin(), source.end(), scriptDialogDynamicValueRegex()), end;
+             it != end; ++it)
         {
             pattern.key.append(source, previous, static_cast<size_t>(it->position()) - previous);
             pattern.values.push_back(it->str());
@@ -113,9 +167,8 @@ namespace
             return true;
         }
 
-        static const std::regex dynamic_number(R"((?:[0-9]+\.[0-9]+|[0-9]+))");
         std::vector<std::smatch> matches;
-        for (std::sregex_iterator it(translation.begin(), translation.end(), dynamic_number), end;
+        for (std::sregex_iterator it(translation.begin(), translation.end(), scriptDialogDynamicValueRegex()), end;
              it != end; ++it)
         {
             matches.push_back(*it);
@@ -125,15 +178,6 @@ namespace
             translation_template = translation;
             return false;
         }
-        for (size_t i = 0; i < matches.size(); ++i)
-        {
-            if (matches[i].str() != pattern.values[i])
-            {
-                translation_template = translation;
-                return false;
-            }
-        }
-
         translation_template.clear();
         size_t previous = 0;
         for (size_t i = 0; i < matches.size(); ++i)
@@ -174,6 +218,32 @@ namespace
         }
     }
 
+    std::string scriptDialogMessageContext(const std::string& context_key)
+    {
+        return context_key + "|message";
+    }
+
+    std::string scriptDialogButtonContext(const std::string& context_key)
+    {
+        return context_key + "|buttons";
+    }
+
+    std::string getSeparatedScriptDialogTranslation(const std::string& context_key,
+                                                     const std::string& source,
+                                                     bool button)
+    {
+        const std::string separated = button ? scriptDialogButtonContext(context_key)
+                                             : scriptDialogMessageContext(context_key);
+        std::string translated = LLTranslate::getScriptDialogTranslation(separated, source);
+        // Keep older saved translations usable after splitting the cache. New
+        // and edited entries are always written to the separated namespace.
+        if (translated.empty())
+        {
+            translated = LLTranslate::getScriptDialogTranslation(context_key, source);
+        }
+        return translated;
+    }
+
     void cacheScriptDialogTranslation(const std::string& context_key, const std::string& source,
                                       const std::string& translation, bool manual)
     {
@@ -184,7 +254,10 @@ namespace
                                                                             translation_template);
         if (!reusable_template)
         {
-            translation_template = applyScriptDialogCachePattern(translation_template, pattern);
+            // Text without reusable dynamic fields still needs an exact cache
+            // entry.  Do not accidentally replace the translated text with an
+            // empty template.
+            translation_template = translation;
         }
         const std::string& cache_key = (!manual && reusable_template) ? pattern.key : source;
         if (manual)
@@ -1308,6 +1381,39 @@ LLTranslate::EIncomingMode LLTranslate::getIncomingMode()
         : INCOMING_STANDARD;
 }
 
+void LLTranslate::translateHoverText(const std::string& mesg,
+                                     TranslationSuccess_fn success,
+                                     TranslationFailure_fn failure)
+{
+    static const std::string hover_context("hover_text");
+    const std::string cached = getScriptDialogTranslation(hover_context, mesg);
+    if (!cached.empty())
+    {
+        success(cached, std::string());
+        return;
+    }
+
+    auto cache_and_finish = [mesg, success](std::string translation, std::string detected)
+    {
+        cacheScriptDialogTranslation("hover_text", mesg, translation, false);
+        success(getScriptDialogTranslation("hover_text", mesg), detected);
+    };
+    const S32 mode = gSavedSettings.getS32("FSHoverTextTranslateMode");
+    const std::string target = getTranslateLanguage();
+    if (mode == 2)
+    {
+        translateMessageGPT(mesg, target, cache_and_finish, failure);
+    }
+    else if (mode == 1)
+    {
+        translateMessage(std::string(), target, mesg, cache_and_finish, failure);
+    }
+    else
+    {
+        failure(0, "Hover text translation is disabled");
+    }
+}
+
 void LLTranslate::translateIncomingMessage(const std::string& from_lang, const std::string& to_lang,
                                            const std::string& mesg, TranslationSuccess_fn success,
                                            TranslationFailure_fn failure)
@@ -1322,25 +1428,91 @@ void LLTranslate::translateIncomingMessage(const std::string& from_lang, const s
     }
 }
 
-LLTranslate::EOutgoingMode LLTranslate::getOutgoingMode()
+LLTranslate::EOutgoingMode LLTranslate::getOutgoingMode(const std::string& conversation_key)
 {
-    S32 mode = gSavedSettings.getS32("FSOutgoingTranslateMode");
+    const LLSD& conversation = outgoingConversation(conversation_key);
+    S32 mode = conversation.has("mode") ? conversation["mode"].asInteger()
+                                        : gSavedSettings.getS32("FSOutgoingTranslateMode");
     return (mode >= OUTGOING_DISABLED && mode <= OUTGOING_GPT)
         ? static_cast<EOutgoingMode>(mode)
         : OUTGOING_DISABLED;
 }
 
+void LLTranslate::setOutgoingMode(const std::string& conversation_key, EOutgoingMode mode)
+{
+    outgoingConversation(conversation_key)["mode"] = static_cast<S32>(mode);
+    saveOutgoingConversationSettings();
+}
+
+std::string LLTranslate::getOutgoingLanguage(const std::string& conversation_key)
+{
+    const LLSD& conversation = outgoingConversation(conversation_key);
+    const std::string language = conversation["language"].asString();
+    return language.empty() ? gSavedSettings.getString("FSOutgoingTranslateLanguage") : language;
+}
+
+void LLTranslate::setOutgoingLanguage(const std::string& conversation_key, const std::string& language)
+{
+    outgoingConversation(conversation_key)["language"] = language;
+    saveOutgoingConversationSettings();
+}
+
+std::string LLTranslate::getOutgoingTone(const std::string& conversation_key)
+{
+    const std::string tone = outgoingConversation(conversation_key)["tone"].asString();
+    return tone.empty() ? "normal" : tone;
+}
+
+void LLTranslate::setOutgoingTone(const std::string& conversation_key, const std::string& tone_id)
+{
+    outgoingConversation(conversation_key)["tone"] = tone_id;
+    saveOutgoingConversationSettings();
+}
+
+std::string LLTranslate::getOutgoingExtraPrompt(const std::string& conversation_key)
+{
+    return outgoingConversation(conversation_key)["extra_prompt"].asString();
+}
+
+void LLTranslate::setOutgoingExtraPrompt(const std::string& conversation_key, const std::string& prompt)
+{
+    outgoingConversation(conversation_key)["extra_prompt"] = prompt;
+    saveOutgoingConversationSettings();
+}
+
+LLSD LLTranslate::getOutgoingTonePresets()
+{
+    return outgoingConversationSettings()["tones"];
+}
+
+void LLTranslate::setOutgoingTonePreset(const std::string& tone_id, const std::string& name,
+                                        const std::string& prompt)
+{
+    if (tone_id.empty() || name.empty()) return;
+    outgoingConversationSettings()["tones"][tone_id]["name"] = name;
+    outgoingConversationSettings()["tones"][tone_id]["prompt"] = prompt;
+    saveOutgoingConversationSettings();
+}
+
+void LLTranslate::deleteOutgoingTonePreset(const std::string& tone_id)
+{
+    if (tone_id == "normal") return;
+    outgoingConversationSettings()["tones"].erase(tone_id);
+    saveOutgoingConversationSettings();
+}
+
 void LLTranslate::translateOutgoingMessage(const std::string& mesg, const LLSD& context,
+                                           const std::string& conversation_key,
                                            TranslationSuccess_fn success, TranslationFailure_fn failure)
 {
-    switch (getOutgoingMode())
+    switch (getOutgoingMode(conversation_key))
     {
         case OUTGOING_STANDARD:
-            translateMessage(std::string(), gSavedSettings.getString("FSOutgoingTranslateLanguage"),
+            translateMessage(std::string(), getOutgoingLanguage(conversation_key),
                              mesg, success, failure);
             break;
         case OUTGOING_GPT:
-            translateOutgoingGPT(mesg, context, success, failure);
+            translateOutgoingGPT(mesg, context, conversation_key, success, failure);
             break;
         default:
             success(mesg, std::string());
@@ -1349,13 +1521,23 @@ void LLTranslate::translateOutgoingMessage(const std::string& mesg, const LLSD& 
 }
 
 void LLTranslate::translateOutgoingGPT(const std::string& mesg, const LLSD& context,
+                                       const std::string& conversation_key,
                                        TranslationSuccess_fn success, TranslationFailure_fn failure)
 {
-    const std::string target = gSavedSettings.getString("FSOutgoingTranslateLanguage");
+    const std::string target = getOutgoingLanguage(conversation_key);
+    const std::string tone_id = getOutgoingTone(conversation_key);
+    const LLSD tones = getOutgoingTonePresets();
+    std::string extra_prompt = tones[tone_id]["prompt"].asString();
+    const std::string conversation_prompt = getOutgoingExtraPrompt(conversation_key);
+    if (!conversation_prompt.empty())
+    {
+        if (!extra_prompt.empty()) extra_prompt += "\n";
+        extra_prompt += conversation_prompt;
+    }
     const S32 context_count = llclamp(gSavedSettings.getS32("FSOutgoingGPTContextCount"), 0, 30);
     LLCoros::instance().launch("OutgoingGPTTranslation",
         boost::bind(&LLTranslate::translateOutgoingGPTCoro, mesg, context, context_count,
-                    target, success, failure));
+                    target, extra_prompt, success, failure));
 }
 
 void LLTranslate::translateMessageGPT(const std::string& mesg, const std::string& to_lang,
@@ -1363,11 +1545,12 @@ void LLTranslate::translateMessageGPT(const std::string& mesg, const std::string
 {
     LLCoros::instance().launch("GPTTextTranslation",
         boost::bind(&LLTranslate::translateOutgoingGPTCoro, mesg, LLSD::emptyArray(),
-                    0, to_lang, success, failure));
+                    0, to_lang, std::string(), success, failure));
 }
 
 void LLTranslate::translateOutgoingGPTCoro(std::string mesg, LLSD context, S32 context_count,
                                            std::string target,
+                                           std::string style_prompt,
                                            TranslationSuccess_fn success, TranslationFailure_fn failure)
 {
     std::string url = gSavedSettings.getString("FSOutgoingGPTBaseURL");
@@ -1395,6 +1578,10 @@ void LLTranslate::translateOutgoingGPTCoro(std::string mesg, LLSD context, S32 c
 
     std::string prompt = gSavedSettings.getString("FSOutgoingGPTPrompt");
     LLStringUtil::replaceString(prompt, "{target_language}", target);
+    if (!style_prompt.empty())
+    {
+        prompt += "\n\nAdditional style instruction for this conversation:\n" + style_prompt;
+    }
 
     LLSD body;
     body["model"] = model;
@@ -1528,12 +1715,12 @@ void LLTranslate::translateScriptDialog(const std::string& context_key, const st
 {
     const S32 mode = gSavedSettings.getS32("FSScriptDialogTranslateMode");
     LLSD cached;
-    cached["message"] = getScriptDialogTranslation(context_key, message);
+    cached["message"] = getSeparatedScriptDialogTranslation(context_key, message, false);
     cached["buttons"] = LLSD::emptyArray();
     bool complete = message.empty() || !cached["message"].asString().empty();
     for (LLSD::array_const_iterator it = buttons.beginArray(); it != buttons.endArray(); ++it)
     {
-        const std::string translated = getScriptDialogTranslation(context_key, it->asString());
+        const std::string translated = getSeparatedScriptDialogTranslation(context_key, it->asString(), true);
         cached["buttons"].append(translated);
         complete = complete && !translated.empty();
     }
@@ -1545,6 +1732,19 @@ void LLTranslate::translateScriptDialog(const std::string& context_key, const st
     {
         success(cached);
         return;
+    }
+    // Apply every independently cached entry immediately. A changing body may
+    // still need an asynchronous translation, but that must not delay buttons
+    // whose labels are already known.
+    bool has_cached_entry = !cached["message"].asString().empty();
+    for (LLSD::array_const_iterator it = cached["buttons"].beginArray();
+         it != cached["buttons"].endArray() && !has_cached_entry; ++it)
+    {
+        has_cached_entry = !it->asString().empty();
+    }
+    if (has_cached_entry)
+    {
+        success(cached);
     }
     if (mode == 2)
     {
@@ -1603,8 +1803,8 @@ void LLTranslate::translateScriptDialog(const std::string& context_key, const st
         translateMessage(std::string(), target, message,
             [state, finish_one](std::string text, std::string)
             {
-                cacheScriptDialogTranslation(state->context_key, state->message, text, false);
-                state->result["message"] = getScriptDialogTranslation(state->context_key, state->message);
+                cacheScriptDialogTranslation(scriptDialogMessageContext(state->context_key), state->message, text, false);
+                state->result["message"] = getSeparatedScriptDialogTranslation(state->context_key, state->message, false);
                 finish_one();
             }, fail_once);
     }
@@ -1615,10 +1815,104 @@ void LLTranslate::translateScriptDialog(const std::string& context_key, const st
         translateMessage(std::string(), target, source,
             [state, finish_one, source, i](std::string text, std::string)
             {
-                cacheScriptDialogTranslation(state->context_key, source, text, false);
-                state->result["buttons"][i] = getScriptDialogTranslation(state->context_key, source);
+                cacheScriptDialogTranslation(scriptDialogButtonContext(state->context_key), source, text, false);
+                state->result["buttons"][i] = getSeparatedScriptDialogTranslation(state->context_key, source, true);
                 finish_one();
             }, fail_once);
+    }
+}
+
+void LLTranslate::generateInventoryLocalLabels(const LLSD& names,
+                                               ScriptDialogTranslationSuccess_fn success,
+                                               TranslationFailure_fn failure)
+{
+    LLCoros::instance().launch("InventoryLocalLabelGPT",
+        boost::bind(&LLTranslate::generateInventoryLocalLabelsCoro, names, success, failure));
+}
+
+void LLTranslate::generateInventoryLocalLabelsCoro(LLSD names,
+                                                   ScriptDialogTranslationSuccess_fn success,
+                                                   TranslationFailure_fn failure)
+{
+    std::string url = gSavedSettings.getString("FSOutgoingGPTBaseURL");
+    const std::string key = gSavedSettings.getString("FSOutgoingGPTAPIKey");
+    const std::string model = gSavedSettings.getString("FSOutgoingGPTModel");
+    LLStringUtil::trim(url);
+    while (!url.empty() && url.back() == '/') url.pop_back();
+    if (url.size() < 17 || url.substr(url.size() - 17) != "/chat/completions")
+    {
+        const std::string::size_type scheme = url.find("://");
+        if (scheme != std::string::npos && url.find('/', scheme + 3) == std::string::npos) url += "/v1";
+        url += "/chat/completions";
+    }
+    if (url.empty() || key.empty() || model.empty())
+    {
+        failure(0, "AI translation is not configured");
+        return;
+    }
+
+    std::ostringstream inventory_context;
+    S32 index = 0;
+    for (LLSD::array_const_iterator it = names.beginArray(); it != names.endArray(); ++it, ++index)
+    {
+        inventory_context << index << ": " << it->asString() << '\n';
+    }
+
+    LLSD body;
+    body["model"] = model;
+    body["temperature"] = 0.2;
+    body["messages"] = LLSD::emptyArray();
+    body["messages"].append(LLSD().with("role", "system").with("content",
+        "You label Second Life inventory for a Chinese user. Read the complete folder listing first, "
+        "infer product sets, body brands, colors, clothing parts and related items from the surrounding "
+        "names, then produce a concise useful Simplified Chinese label for every entry. Do not translate "
+        "brand names blindly. Return only JSON in exactly this form: {\"labels\":[\"label 0\",\"label 1\"]}. "
+        "The labels array must contain exactly one string per input line and preserve input order."));
+    body["messages"].append(LLSD().with("role", "user").with("content",
+        "[Complete inventory folder listing]\n" + inventory_context.str()));
+
+    LLCore::HttpRequest::policy_t policy(LLCore::HttpRequest::DEFAULT_POLICY_ID);
+    auto adapter = std::make_shared<LLCoreHttpUtil::HttpCoroutineAdapter>("InventoryLocalLabelGPT", policy);
+    auto request = std::make_shared<LLCore::HttpRequest>();
+    auto headers = std::make_shared<LLCore::HttpHeaders>();
+    headers->append("Accept", "application/json");
+    headers->append("Content-Type", "application/json");
+    headers->append("Authorization", "Bearer " + key);
+    LLSD response = adapter->postJsonAndSuspend(request, url, body, headers);
+    LLSD http_results = response[LLCoreHttpUtil::HttpCoroutineAdapter::HTTP_RESULTS];
+    LLCore::HttpStatus status = LLCoreHttpUtil::HttpCoroutineAdapter::getStatusFromLLSD(http_results);
+    if (!status)
+    {
+        failure(status.getType(), status.toString());
+        return;
+    }
+
+    try
+    {
+        std::string content = response["choices"][0]["message"]["content"].asString();
+        const size_t first = content.find('{');
+        const size_t last = content.rfind('}');
+        if (first == std::string::npos || last == std::string::npos)
+        {
+            throw std::runtime_error("No JSON object in response");
+        }
+        const boost::json::object parsed = boost::json::parse(
+            content.substr(first, last - first + 1)).as_object();
+        const boost::json::array labels = parsed.at("labels").as_array();
+        if (labels.size() != names.size())
+        {
+            throw std::runtime_error("Inventory label count mismatch");
+        }
+        LLSD result = LLSD::emptyArray();
+        for (const boost::json::value& value : labels)
+        {
+            result.append(boost::json::value_to<std::string>(value));
+        }
+        success(result);
+    }
+    catch (const std::exception& e)
+    {
+        failure(0, e.what());
     }
 }
 
@@ -1685,15 +1979,25 @@ void LLTranslate::translateScriptDialogGPTCoro(std::string context_key, std::str
         const std::string translated_message = boost::json::value_to<std::string>(parsed.at("message"));
         boost::json::array translated_buttons = parsed.at("buttons").as_array();
         if (translated_buttons.size() != buttons.size()) throw std::runtime_error("Button count mismatch");
-        cacheScriptDialogTranslation(context_key, message, translated_message, false);
+        const std::string cached_message = getSeparatedScriptDialogTranslation(context_key, message, false);
+        if (cached_message.empty())
+        {
+            cacheScriptDialogTranslation(scriptDialogMessageContext(context_key), message, translated_message, false);
+        }
         LLSD result;
-        result["message"] = getScriptDialogTranslation(context_key, message);
+        result["message"] = getSeparatedScriptDialogTranslation(context_key, message, false);
         result["buttons"] = LLSD::emptyArray();
         for (S32 i = 0; i < static_cast<S32>(buttons.size()); ++i)
         {
-            const std::string translated = boost::json::value_to<std::string>(translated_buttons[i]);
-            cacheScriptDialogTranslation(context_key, buttons[i].asString(), translated, false);
-            result["buttons"].append(getScriptDialogTranslation(context_key, buttons[i].asString()));
+            const std::string source = buttons[i].asString();
+            std::string translated = getSeparatedScriptDialogTranslation(context_key, source, true);
+            if (translated.empty())
+            {
+                translated = boost::json::value_to<std::string>(translated_buttons[i]);
+                cacheScriptDialogTranslation(scriptDialogButtonContext(context_key), source, translated, false);
+                translated = getSeparatedScriptDialogTranslation(context_key, source, true);
+            }
+            result["buttons"].append(translated);
         }
         success(result);
     }
@@ -1714,7 +2018,7 @@ void LLTranslate::translateScriptDialogGPTIndividually(std::string context_key, 
     state->context_key = context_key;
     state->message = message;
     state->buttons = buttons;
-    state->result["message"] = getScriptDialogTranslation(context_key, message);
+    state->result["message"] = getSeparatedScriptDialogTranslation(context_key, message, false);
     state->result["buttons"] = LLSD::emptyArray();
     state->success = success;
     state->failure = failure;
@@ -1757,10 +2061,11 @@ void LLTranslate::translateScriptDialogGPTIndividually(std::string context_key, 
         LLCoros::instance().launch("ScriptDialogGPTBodyRetry",
             boost::bind(&LLTranslate::translateOutgoingGPTCoro,
                 makeScriptDialogCachePattern(message).key, full_menu_context, 1, target,
+                std::string(),
             [state, finish_one](std::string text, std::string)
             {
-                cacheScriptDialogTranslation(state->context_key, state->message, text, false);
-                state->result["message"] = getScriptDialogTranslation(state->context_key, state->message);
+                cacheScriptDialogTranslation(scriptDialogMessageContext(state->context_key), state->message, text, false);
+                state->result["message"] = getSeparatedScriptDialogTranslation(state->context_key, state->message, false);
                 finish_one();
             }, fail_once));
     }
@@ -1770,10 +2075,15 @@ void LLTranslate::translateScriptDialogGPTIndividually(std::string context_key, 
         LLCoros::instance().launch("ScriptDialogGPTButtonRetry",
             boost::bind(&LLTranslate::translateOutgoingGPTCoro,
                 makeScriptDialogCachePattern(source).key, full_menu_context, 1, target,
+                std::string(),
             [state, finish_one, source, i](std::string text, std::string)
             {
-                cacheScriptDialogTranslation(state->context_key, source, text, false);
-                state->result["buttons"][i] = getScriptDialogTranslation(state->context_key, source);
+                const std::string cached = getSeparatedScriptDialogTranslation(state->context_key, source, true);
+                if (cached.empty())
+                {
+                    cacheScriptDialogTranslation(scriptDialogButtonContext(state->context_key), source, text, false);
+                }
+                state->result["buttons"][i] = getSeparatedScriptDialogTranslation(state->context_key, source, true);
                 finish_one();
             }, fail_once));
     }

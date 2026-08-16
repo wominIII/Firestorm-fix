@@ -71,12 +71,12 @@ bool LLFloaterMarketplace::postBuild()
         return false;
 
     mWebBrowser->setErrorPageURL(gSavedSettings.getString("GenericErrorPageURL"));
+    // Queue the viewer OpenID cookie before the first Marketplace request.
+    // Navigating first creates an anonymous Marketplace session which can
+    // remain logged out even after the cookie is injected later.
+    LLViewerMedia::getInstance()->getOpenIDCookie(mWebBrowser);
     std::string url = gSavedSettings.getString("MarketplaceURL");
     mWebBrowser->navigateTo(url, HTTP_CONTENT_TEXT_HTML);
-
-    // If cookie is there, will set it now, Otherwise will have to wait for login completion
-    // which will also update marketplace instance if it already exists.
-    LLViewerMedia::getInstance()->getOpenIDCookie(mWebBrowser);
 
     return true;
 }

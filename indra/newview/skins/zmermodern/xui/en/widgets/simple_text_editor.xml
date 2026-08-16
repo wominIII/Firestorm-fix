@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<simple_text_editor font="SansSerifSmall"
+                    h_pad="8"
+                    v_pad="6"
+                    line_spacing.pixels="2"
+                    border_visible="true"
+                    bg_readonly_color="TextBgReadOnlyColor"
+                    bg_writeable_color="TextBgWriteableColor"
+                    bg_highlighted_color="TextBgHighlightColor"
+                    bg_focus_color="TextBgFocusColor" />

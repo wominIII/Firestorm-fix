@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<scroll_list name="scroll_list"
+             column_padding="8"
+             heading_height="27"
+             draw_stripes="false"
+             scroll_bar_bg_visible="false"
+             background_visible="true"
+             draw_border="false" />

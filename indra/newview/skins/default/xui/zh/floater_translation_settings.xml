@@ -118,6 +118,21 @@
 		<text name="script_dialog_target_language_label">目标语言：</text>
 		<text name="script_dialog_gpt_prompt_label">AI 菜单提示词（支持 {target_language}）：</text>
 		<text name="script_dialog_translation_note">AI 模式共用上方的 GPT 接口地址、API 密钥和模型；翻译结果会保存在本地。</text>
+		<text name="outgoing_tone_presets_title">自定义会话语气预设</text>
+		<button label="新建" name="outgoing_tone_new_btn"/>
+		<button label="删除" name="outgoing_tone_delete_btn"/>
+		<button label="保存预设" name="outgoing_tone_save_btn"/>
+		<text name="hover_text_translation_title">场景悬浮文本翻译</text>
+		<check_box label="翻译 64 米内的物体悬浮文本" name="hover_text_translate_enabled"/>
+		<combo_box name="hover_text_translate_mode">
+			<combo_box.item label="关闭" name="off"/>
+			<combo_box.item label="普通 API" name="normal"/>
+			<combo_box.item label="AI 模型" name="gpt"/>
+		</combo_box>
+		<combo_box name="hover_text_display_mode">
+			<combo_box.item label="仅显示译文" name="translated"/>
+			<combo_box.item label="译文 + 原文" name="both"/>
+		</combo_box>
 		<button label="导出便签备份…" name="export_localization_backup_btn" tool_tip="备份物品栏中文标签和人工固定的脚本菜单翻译，不包含 API 密钥。"/>
 		<button label="导入便签备份…" name="import_localization_backup_btn" tool_tip="从备份文件合并恢复中文标签和人工固定翻译。"/>
 	</panel>

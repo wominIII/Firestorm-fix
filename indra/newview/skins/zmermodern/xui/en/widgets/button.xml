@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<button font="SansSerifSmall"
+        font.style="BOLD"
+        height="26"
+        hover_glow_amount="0.16"
+        label_shadow="false"
+        pad_bottom="1"
+        imgoverlay_label_space="3" />

@@ -540,9 +540,15 @@ void LLToastNotifyPanel::applyScriptDialogTranslations(const LLSD& translations)
 
 bool LLToastNotifyPanel::onScriptButtonRightClick(const std::string& source, S32 x, S32 y, MASK mask)
 {
+    const bool is_message = (source == mScriptOriginalMessage);
+    const std::string cache_context = mScriptTranslationContext + (is_message ? "|message" : "|buttons");
     LLSD args;
     args["SOURCE"] = source;
-    args["TRANSLATION"] = LLTranslate::getScriptDialogTranslation(mScriptTranslationContext, source);
+    args["TRANSLATION"] = LLTranslate::getScriptDialogTranslation(cache_context, source);
+    if (args["TRANSLATION"].asString().empty())
+    {
+        args["TRANSLATION"] = LLTranslate::getScriptDialogTranslation(mScriptTranslationContext, source);
+    }
     LLNotificationsUtil::add("FSEditScriptDialogTranslation", args, LLSD(),
         boost::bind(&LLToastNotifyPanel::onEditScriptTranslation, _1, _2, getWeak(), source));
     return true;
@@ -562,8 +568,11 @@ bool LLToastNotifyPanel::onEditScriptTranslation(const LLSD& notification, const
     std::string translation = response["translation"].asString();
     LLStringUtil::trim(translation);
     if (translation.empty()) return false;
-    LLTranslate::setScriptDialogTranslation(panel->mScriptTranslationContext, source, translation);
-    if (source == panel->mScriptOriginalMessage)
+    const bool is_message = (source == panel->mScriptOriginalMessage);
+    LLTranslate::setScriptDialogTranslation(panel->mScriptTranslationContext +
+                                            (is_message ? "|message" : "|buttons"),
+                                            source, translation);
+    if (is_message)
     {
         panel->mTextBox->setValue(translation);
         panel->mTextBox->setToolTip(source);

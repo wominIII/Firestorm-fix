@@ -274,6 +274,42 @@
             <layout_panel
               auto_resize="false"
               user_resize="false"
+              name="outgoing_translate_language_layout_panel"
+              width="82">
+              <combo_box
+               follows="right|bottom"
+               bottom="-1"
+               height="24"
+               left="1"
+               name="outgoing_translate_language"
+               tool_tip="Outgoing translation target language"
+               width="78">
+                <combo_box.item label="中文" name="zh" value="zh" />
+                <combo_box.item label="English" name="en" value="en" />
+                <combo_box.item label="日本語" name="ja" value="ja" />
+                <combo_box.item label="한국어" name="ko" value="ko" />
+                <combo_box.item label="Français" name="fr" value="fr" />
+                <combo_box.item label="Deutsch" name="de" value="de" />
+                <combo_box.item label="Español" name="es" value="es" />
+                <combo_box.item label="Português" name="pt" value="pt" />
+                <combo_box.item label="Русский" name="ru" value="ru" />
+              </combo_box>
+            </layout_panel>
+            <layout_panel auto_resize="false" user_resize="false"
+              name="outgoing_translate_tone_layout_panel" width="88">
+              <combo_box follows="right|bottom" bottom="-1" height="24" left="1"
+               name="outgoing_translate_tone" tool_tip="Conversation translation tone" width="84" />
+            </layout_panel>
+            <layout_panel auto_resize="false" user_resize="false"
+              name="outgoing_translate_prompt_layout_panel" width="32">
+              <button follows="right|bottom" bottom="-1" height="24" width="28"
+               font="SansSerifSmallBold" label="P" left="1"
+               name="outgoing_translate_prompt_btn"
+               tool_tip="Edit extra translation prompt for this conversation" />
+            </layout_panel>
+            <layout_panel
+              auto_resize="false"
+              user_resize="false"
               name="outgoing_translate_layout_panel"
               width="32">
               <button

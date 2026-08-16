@@ -187,6 +187,17 @@
          value="Toggle first-person cursor" />
     </rows>
     <rows
+     name="reconstruct_cached_mesh"
+     value="reconstruct_cached_mesh">
+        <columns
+         column="lst_action"
+         font="SansSerif"
+         halign="left"
+         name="lst_action"
+         tool_tip="Write a DAE from the selected mesh data already decoded by the Viewer"
+         value="Rebuild cached Mesh as DAE" />
+    </rows>
+    <rows
      name="toggle_spectator_mode"
      value="toggle_spectator_mode">
         <columns

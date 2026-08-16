@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<colors>
+  <!-- Neutral graphite surfaces with teal interaction, amber warnings and red danger. -->
+  <color name="DkGray" value="0.071 0.086 0.102 1" />
+  <color name="DkGray2" value="0.102 0.122 0.145 1" />
+  <color name="DkGray_66" value="0.071 0.086 0.102 0.78" />
+  <color name="DkGray_86" value="0.071 0.086 0.102 0.94" />
+  <color name="MouseGray" value="0.145 0.173 0.200 1" />
+  <color name="LtGray" value="0.875 0.910 0.925 1" />
+  <color name="LtGray_50" value="0.660 0.710 0.735 0.62" />
+  <color name="LtGray_75" value="0.760 0.805 0.825 0.82" />
+
+  <color name="EmphasisColor" value="0.153 0.690 0.651 1" />
+  <color name="EmphasisColorLight" value="0.463 0.875 0.827 1" />
+  <color name="EmphasisColor_13" value="0.153 0.690 0.651 0.16" />
+  <color name="EmphasisColor_35" value="0.153 0.690 0.651 0.42" />
+  <color name="AccentColor" value="0.463 0.875 0.827 1" />
+  <color name="SchemeLightest" value="0.255 0.345 0.380 1" />
+  <color name="SchemeLightest_35" value="0.255 0.345 0.380 0.55" />
+  <color name="SchemeDark" value="0.055 0.145 0.157 1" />
+  <color name="FocusColor" value="0.278 0.800 0.745 1" />
+  <color name="BeaconColor" value="0.953 0.651 0.216 1" />
+  <color name="Red" value="0.925 0.310 0.310 1" />
+  <color name="LtYellow" value="1.000 0.812 0.420 1" />
+
+  <color name="SL-Background" value="0.071 0.086 0.102 1" />
+  <color name="SL-Background_Light" value="0.102 0.122 0.145 1" />
+  <color name="SL-Background_50" value="0.071 0.086 0.102 0.72" />
+  <color name="SL-Background_66" value="0.071 0.086 0.102 0.86" />
+  <color name="SL-Foreground" value="0.125 0.153 0.180 1" />
+  <color name="SL-Foreground_50" value="0.125 0.153 0.180 0.72" />
+  <color name="SL-Foreground_66" value="0.125 0.153 0.180 0.88" />
+
+  <color name="PanelDark" value="0.047 0.059 0.071 1" />
+  <color name="PanelGray" value="0.125 0.153 0.180 1" />
+  <color name="PanelDefaultBackgroundColor" value="0.071 0.086 0.102 1" />
+  <color name="PanelFocusBackgroundColor" value="0.102 0.122 0.145 1" />
+  <color name="FloaterDefaultBackgroundColor" value="0.071 0.086 0.102 0.96" />
+  <color name="FloaterFocusBackgroundColor" value="0.071 0.086 0.102 1" />
+  <color name="FloaterFocusBorderColor" value="0.153 0.690 0.651 0.70" />
+  <color name="FloaterUnfocusBorderColor" value="0.255 0.290 0.310 0.60" />
+  <color name="TitleBarFocusColor" value="0.153 0.690 0.651 0.20" />
+  <color name="floater_bg_color" value="0.071 0.086 0.102 1" />
+  <color name="floater_bg_color_a" value="0.071 0.086 0.102 0.96" />
+
+  <color name="TextFgColor" value="0.910 0.937 0.949 1" />
+  <color name="TextFgReadOnlyColor" value="0.660 0.710 0.735 1" />
+  <color name="TextFgTentativeColor" value="0.610 0.665 0.690 1" />
+  <color name="TextDefaultColor" value="0.910 0.937 0.949 1" />
+  <color name="TextCursorColor" value="0.463 0.875 0.827 1" />
+  <color name="TextBgFocusColor" value="0.047 0.059 0.071 1" />
+  <color name="TextBgReadOnlyColor" value="0.071 0.086 0.102 1" />
+  <color name="TextBgWriteableColor" value="0.047 0.059 0.071 1" />
+  <color name="TextBgHighlightColor" value="0.153 0.690 0.651 0.48" />
+  <color name="LabelTextColor" value="0.835 0.875 0.894 1" />
+  <color name="LabelDisabledColor" value="0.470 0.510 0.530 1" />
+  <color name="LabelSelectedColor" value="1 1 1 1" />
+  <color name="HintText" value="0.560 0.615 0.640 1" />
+
+  <color name="ButtonLabelColor" value="0.910 0.937 0.949 1" />
+  <color name="ButtonLabelSelectedColor" value="1 1 1 1" />
+  <color name="ButtonLabelDisabledColor" value="0.470 0.510 0.530 1" />
+  <color name="ButtonImageColor" value="0.875 0.910 0.925 1" />
+  <color name="ButtonCautionImageColor" value="0.953 0.651 0.216 1" />
+  <color name="ButtonFlashBgColor" value="0.153 0.690 0.651 1" />
+
+  <color name="MenuBarBgColor" value="0.047 0.059 0.071 1" />
+  <color name="MenuDefaultBgColor" value="0.086 0.106 0.125 1" />
+  <color name="MenuPopupBgColor" value="0.086 0.106 0.125 1" />
+  <color name="MenuItemEnabledColor" value="0.875 0.910 0.925 1" />
+  <color name="MenuItemDisabledColor" value="0.470 0.510 0.530 1" />
+  <color name="MenuItemHighlightBgColor" value="0.153 0.690 0.651 0.38" />
+  <color name="MenuItemHighlightFgColor" value="1 1 1 1" />
+
+  <color name="InventoryBackgroundColor" value="0.047 0.059 0.071 0.72" />
+  <color name="InventoryItemEnabledColor" value="0.875 0.910 0.925 1" />
+  <color name="InventoryItemLinkColor" value="0.610 0.665 0.690 1" />
+  <color name="InventoryItemSuffixColor" value="0.560 0.615 0.640 1" />
+  <color name="InventoryItemHighlightBgColor" value="0.153 0.690 0.651 0.30" />
+  <color name="InventoryItemHighlightFgColor" value="1 1 1 1" />
+  <color name="InventoryMouseOverColor" value="0.255 0.345 0.380 0.48" />
+  <color name="InventoryFocusOutlineColor" value="0.278 0.800 0.745 0.65" />
+  <color name="InventoryProtectedColor" value="0.953 0.651 0.216 1" />
+
+  <color name="ScrollBgWriteableColor" value="0.047 0.059 0.071 1" />
+  <color name="ScrollBgReadOnlyColor" value="0.071 0.086 0.102 1" />
+  <color name="ScrollUnselectedColor" value="0.835 0.875 0.894 1" />
+  <color name="ScrollHoveredColor" value="0.153 0.690 0.651 0.18" />
+  <color name="ScrollSelectedBGColor" value="0.153 0.690 0.651 0.42" />
+  <color name="ScrollSelectedFGColor" value="1 1 1 1" />
+  <color name="ScrollbarTrackColor" value="0.047 0.059 0.071 1" />
+  <color name="ScrollbarThumbColor" value="0.330 0.390 0.420 1" />
+
+  <color name="BackgroundChatColor" value="0.047 0.059 0.071 0.90" />
+  <color name="ChatHistoryBgColor" value="0.047 0.059 0.071 0.78" />
+  <color name="FSChatHistoryBackground" value="0.047 0.059 0.071 0.66" />
+  <color name="ChatHistoryTextColor" value="0.875 0.910 0.925 1" />
+  <color name="ChatTimestampColor" value="0.560 0.615 0.640 1" />
+  <color name="ChatNameColor" value="0.463 0.875 0.827 1" />
+  <color name="ObjectChatColor" value="0.953 0.651 0.216 1" />
+
+  <color name="ComboListBgColor" value="0.086 0.106 0.125 1" />
+  <color name="FilterBackgroundColor" value="0.047 0.059 0.071 1" />
+  <color name="FilterTextColor" value="0.463 0.875 0.827 1" />
+  <color name="NotecardBackgroundColor" value="0.047 0.059 0.071 1" />
+  <color name="NotecardTextColor" value="0.910 0.937 0.949 1" />
+  <color name="ScriptBackground" value="0.047 0.059 0.071 1" />
+  <color name="ScriptText" value="0.910 0.937 0.949 1" />
+</colors>

@@ -45,6 +45,7 @@
 #include "llavataractions.h"
 #include "llavatarnamecache.h"
 #include "llbutton.h"
+#include "llcombobox.h"
 #include "llchannelmanager.h"
 #include "llchatentry.h"
 #include "llcheckboxctrl.h"
@@ -559,7 +560,7 @@ void FSFloaterIM::sendMsgFromInputEditor(EChatType type)
 
 void FSFloaterIM::translateAndSendMsg(const std::string& msg)
 {
-    if (LLTranslate::getOutgoingMode() == LLTranslate::OUTGOING_DISABLED)
+    if (LLTranslate::getOutgoingMode(getOutgoingTranslationConversationKey()) == LLTranslate::OUTGOING_DISABLED)
     {
         sendMsg(msg);
         return;
@@ -585,7 +586,7 @@ void FSFloaterIM::translateAndSendMsg(const std::string& msg)
         }
     }
 
-    LLTranslate::translateOutgoingMessage(msg, context,
+    LLTranslate::translateOutgoingMessage(msg, context, getOutgoingTranslationConversationKey(),
         boost::bind(&FSFloaterIM::onOutgoingTranslationSuccess, this, _1, _2),
         boost::bind(&FSFloaterIM::onOutgoingTranslationFailure, this, _1, _2));
 }
@@ -626,8 +627,9 @@ void FSFloaterIM::onChatSearchButtonClicked()
 
 void FSFloaterIM::onOutgoingTranslateButtonClicked()
 {
-    const S32 next = (gSavedSettings.getS32("FSOutgoingTranslateMode") + 1) % 3;
-    gSavedSettings.setS32("FSOutgoingTranslateMode", next);
+    const std::string key = getOutgoingTranslationConversationKey();
+    const S32 next = (static_cast<S32>(LLTranslate::getOutgoingMode(key)) + 1) % 3;
+    LLTranslate::setOutgoingMode(key, static_cast<LLTranslate::EOutgoingMode>(next));
     updateOutgoingTranslateButton();
 }
 
@@ -640,7 +642,7 @@ bool FSFloaterIM::onOutgoingTranslateButtonRightClick(S32 x, S32 y, MASK mask)
 void FSFloaterIM::updateOutgoingTranslateButton()
 {
     if (!mOutgoingTranslateBtn) return;
-    const LLTranslate::EOutgoingMode mode = LLTranslate::getOutgoingMode();
+    const LLTranslate::EOutgoingMode mode = LLTranslate::getOutgoingMode(getOutgoingTranslationConversationKey());
     mOutgoingTranslateBtn->setLabel(mode == LLTranslate::OUTGOING_GPT ? "AI" : "T");
     mOutgoingTranslateBtn->setToggleState(mode != LLTranslate::OUTGOING_DISABLED);
     mOutgoingTranslateBtn->setToolTip(LLStringExplicit(mode == LLTranslate::OUTGOING_DISABLED
@@ -650,10 +652,41 @@ void FSFloaterIM::updateOutgoingTranslateButton()
             : "Outgoing translation: Context-aware AI (click to turn off)"));
 }
 
+void FSFloaterIM::updateOutgoingTranslationControls()
+{
+    updateOutgoingTranslateButton();
+    const std::string key = getOutgoingTranslationConversationKey();
+    if (mOutgoingLanguageCombo) mOutgoingLanguageCombo->setValue(LLTranslate::getOutgoingLanguage(key));
+    if (mOutgoingToneCombo)
+    {
+        mOutgoingToneCombo->removeall();
+        const LLSD tones = LLTranslate::getOutgoingTonePresets();
+        for (LLSD::map_const_iterator it = tones.beginMap(); it != tones.endMap(); ++it)
+        {
+            mOutgoingToneCombo->add(it->second["name"].asString(), LLSD(it->first));
+        }
+        mOutgoingToneCombo->setValue(LLTranslate::getOutgoingTone(key));
+    }
+}
+
+void FSFloaterIM::onOutgoingPromptButtonClicked()
+{
+    const std::string key = getOutgoingTranslationConversationKey();
+    LLSD args;
+    args["CURRENT"] = LLTranslate::getOutgoingExtraPrompt(key);
+    LLNotificationsUtil::add("FSEditOutgoingConversationPrompt", args, LLSD(),
+        [key](const LLSD& notification, const LLSD& response)
+        {
+            if (LLNotificationsUtil::getSelectedOption(notification, response) == 0)
+                LLTranslate::setOutgoingExtraPrompt(key, response["prompt"].asString());
+            return false;
+        });
+}
+
 void FSFloaterIM::onOutgoingTranslateModeChanged(const LLSD&)
 {
     updateOutgoingTranslateButton();
-    if (LLTranslate::getOutgoingMode() != LLTranslate::OUTGOING_DISABLED || mPendingOutgoingText.empty())
+    if (LLTranslate::getOutgoingMode(getOutgoingTranslationConversationKey()) != LLTranslate::OUTGOING_DISABLED || mPendingOutgoingText.empty())
     {
         return;
     }
@@ -662,6 +695,12 @@ void FSFloaterIM::onOutgoingTranslateModeChanged(const LLSD&)
     mPendingOutgoingText.clear();
     if (mInputEditor) mInputEditor->setEnabled(true);
     sendMsg(text);
+}
+
+std::string FSFloaterIM::getOutgoingTranslationConversationKey() const
+{
+    return mOtherParticipantUUID.notNull() ? "agent:" + mOtherParticipantUUID.asString()
+                                           : "session:" + mSessionID.asString();
 }
 
 void FSFloaterIM::sendMsg(const std::string& msg)
@@ -1120,7 +1159,19 @@ bool FSFloaterIM::postBuild()
     mOutgoingTranslateBtn->setRightMouseDownCallback(boost::bind(&FSFloaterIM::onOutgoingTranslateButtonRightClick, this, _2, _3, _4));
     mOutgoingTranslateModeConnection = gSavedSettings.getControl("FSOutgoingTranslateMode")->getSignal()->connect(
         boost::bind(&FSFloaterIM::onOutgoingTranslateModeChanged, this, _2));
-    updateOutgoingTranslateButton();
+    mOutgoingLanguageCombo = getChild<LLComboBox>("outgoing_translate_language");
+    mOutgoingToneCombo = getChild<LLComboBox>("outgoing_translate_tone");
+    mOutgoingPromptBtn = getChild<LLButton>("outgoing_translate_prompt_btn");
+    mOutgoingLanguageCombo->setCommitCallback([this](LLUICtrl* ctrl, const LLSD&)
+    {
+        LLTranslate::setOutgoingLanguage(getOutgoingTranslationConversationKey(), ctrl->getValue().asString());
+    });
+    mOutgoingToneCombo->setCommitCallback([this](LLUICtrl* ctrl, const LLSD&)
+    {
+        LLTranslate::setOutgoingTone(getOutgoingTranslationConversationKey(), ctrl->getValue().asString());
+    });
+    mOutgoingPromptBtn->setClickedCallback(boost::bind(&FSFloaterIM::onOutgoingPromptButtonClicked, this));
+    updateOutgoingTranslationControls();
     // <FS:TJ> [FIRE-35804] Allow the IM floater to have separate transparency
     mInputEditor->setTransparencyOverrideCallback(boost::bind(&FSFloaterIM::onGetChatEditorOpacityCallback, this, _1, _2));
     // </FS:TJ>

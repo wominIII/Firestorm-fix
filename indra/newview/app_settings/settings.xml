@@ -16220,7 +16220,7 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <real>90.0</real>
     </map>
-    <key>FSScriptDialogTranslateMode</key>
+  <key>FSScriptDialogTranslateMode</key>
     <map>
       <key>Comment</key>
       <string>Script dialog translation mode: 0 disabled, 1 configured translation API, 2 GPT-compatible API</string>
@@ -17712,6 +17712,27 @@ Change of this parameter will affect the layout of buttons in notification toast
     <string>Boolean</string>
     <key>Value</key>
     <integer>1</integer>
+  </map>
+  <key>FSHoverTextTranslateEnabled</key>
+  <map>
+    <key>Comment</key><string>Translate in-world object hover text locally</string>
+    <key>Persist</key><integer>1</integer>
+    <key>Type</key><string>Boolean</string>
+    <key>Value</key><integer>0</integer>
+  </map>
+  <key>FSHoverTextTranslateMode</key>
+  <map>
+    <key>Comment</key><string>Hover text translator: 0 off, 1 normal API, 2 AI</string>
+    <key>Persist</key><integer>1</integer>
+    <key>Type</key><string>S32</string>
+    <key>Value</key><integer>2</integer>
+  </map>
+  <key>FSHoverTextDisplayMode</key>
+  <map>
+    <key>Comment</key><string>Hover text display: 0 translation only, 1 translation and original</string>
+    <key>Persist</key><integer>1</integer>
+    <key>Type</key><string>S32</string>
+    <key>Value</key><integer>0</integer>
   </map>
     <key>UseEnergy</key>
     <map>
