@@ -19,7 +19,7 @@ import uuid
 
 
 SERVER_NAME = "firestorm-local"
-SERVER_VERSION = "0.3.0"
+SERVER_VERSION = "0.4.0"
 DEFAULT_PROTOCOL_VERSION = "2024-11-05"
 
 
@@ -181,7 +181,7 @@ class FirestormSnapshot:
 
         request_id = str(uuid.uuid4())
         request = {
-            "protocol_version": 3,
+            "protocol_version": 4,
             "request_id": request_id,
             "action": action,
             "expires_at": time.time() + timeout,
@@ -273,6 +273,122 @@ TOOLS = [
         "annotations": {"readOnlyHint": True, "openWorldHint": False},
     },
     {
+        "name": "inspect_object",
+        "description": (
+            "Inspect any currently loaded object UUID in detail, optionally requesting its task inventory "
+            "and returning every prim in its linkset. Reading does not require ownership; unavailable "
+            "inventory remains permission- and simulator-gated."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "include_inventory": {"type": "boolean", "default": True},
+                "include_linkset": {"type": "boolean", "default": True},
+            },
+            "required": ["object_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "get_inventory_entry",
+        "description": "Get detailed metadata, permissions and full path for one agent-inventory item or folder UUID.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"entry_id": {"type": "string"}},
+            "required": ["entry_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "list_inventory_folder",
+        "description": "List a folder in the agent inventory, optionally recursively. Retry if fetch_requested is returned.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "folder_id": {"type": "string", "description": "Omit or use an empty string for inventory root."},
+                "recursive": {"type": "boolean", "default": False},
+                "include_trash": {"type": "boolean", "default": False},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 1000, "default": 200},
+            },
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "search_inventory",
+        "description": "Search names and descriptions across an agent-inventory subtree. Retry if fetch_requested is returned.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string"},
+                "folder_id": {"type": "string", "description": "Omit or use an empty string for inventory root."},
+                "include_trash": {"type": "boolean", "default": False},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 1000, "default": 200},
+            },
+            "required": ["query"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "create_inventory_folder",
+        "description": "Create a normal folder in the agent inventory.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "parent_id": {"type": "string", "description": "Omit or use an empty string for inventory root."},
+                "name": {"type": "string", "minLength": 1, "maxLength": 63},
+            },
+            "required": ["name"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": True},
+    },
+    {
+        "name": "rename_inventory_entry",
+        "description": "Rename one ordinary agent-inventory item or folder; protected system folders are rejected.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "entry_id": {"type": "string"},
+                "name": {"type": "string", "minLength": 1, "maxLength": 63},
+            },
+            "required": ["entry_id", "name"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "move_inventory_entries",
+        "description": "Move up to 100 agent-inventory items or ordinary folders into another folder.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "entry_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 100},
+                "destination_folder_id": {"type": "string"},
+            },
+            "required": ["entry_ids", "destination_folder_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "trash_inventory_entries",
+        "description": "Move up to 100 agent-inventory entries to Trash. This is recoverable and does not purge them.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "entry_ids": {"type": "array", "items": {"type": "string"}, "minItems": 1, "maxItems": 100},
+            },
+            "required": ["entry_ids"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
         "name": "set_object_transform",
         "description": (
             "Directly set position, quaternion rotation and/or scale on the single root object "
@@ -296,7 +412,7 @@ TOOLS = [
     {
         "name": "set_object_face_material",
         "description": (
-            "Directly update one face on the single root object currently selected in Firestorm. "
+            "Directly update one face on a prim in the single linkset currently selected in Firestorm. "
             "Supports diffuse texture UUID, PBR material UUID, RGBA color and texture transforms."
         ),
         "inputSchema": {
@@ -320,7 +436,7 @@ TOOLS = [
     {
         "name": "create_object_script",
         "description": (
-            "Create and compile an LSL script in the single root object currently selected in Firestorm. "
+            "Create and compile an LSL script in a prim of the single linkset currently selected in Firestorm. "
             "A source backup is retained in the agent Scripts inventory folder."
         ),
         "inputSchema": {
@@ -339,7 +455,10 @@ TOOLS = [
     },
     {
         "name": "read_object_script",
-        "description": "Read source for a copy-and-modify LSL script in the single selected root object's loaded inventory.",
+        "description": (
+            "Read source for an LSL script in the selected linkset. Viewer-standard effective copy and modify "
+            "permissions are required, including permissions granted through the active group; ownership itself is not required."
+        ),
         "inputSchema": {
             "type": "object",
             "properties": {"object_id": {"type": "string"}, "item_id": {"type": "string"}},
@@ -350,7 +469,10 @@ TOOLS = [
     },
     {
         "name": "update_object_script",
-        "description": "Replace and compile source for a modifiable LSL script in the single selected root object.",
+        "description": (
+            "Replace and compile the same modifiable LSL script item in the selected linkset. This updates in place "
+            "and preserves its item UUID; it does not delete and recreate the script."
+        ),
         "inputSchema": {
             "type": "object",
             "properties": {
@@ -361,6 +483,39 @@ TOOLS = [
                 "reason": {"type": "string", "maxLength": 500},
             },
             "required": ["object_id", "item_id", "source"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "patch_object_script",
+        "description": (
+            "Read a copy-and-modify LSL script, verify exact old text, apply one or more replacements, then compile "
+            "back into the same item UUID. Use this for safe read-before-edit changes without deleting the script."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "item_id": {"type": "string"},
+                "edits": {
+                    "type": "array", "minItems": 1, "maxItems": 100,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "old_text": {"type": "string", "minLength": 1},
+                            "new_text": {"type": "string"},
+                            "replace_all": {"type": "boolean", "default": False},
+                            "expected_matches": {"type": "integer", "minimum": 1},
+                        },
+                        "required": ["old_text", "new_text"],
+                        "additionalProperties": False,
+                    },
+                },
+                "running": {"type": "boolean", "default": True},
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["object_id", "item_id", "edits"],
             "additionalProperties": False,
         },
         "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
@@ -472,6 +627,34 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         return {"captured_at": snapshot.get("captured_at"), "animations": snapshot.get("animations", [])}
     if name == "get_full_snapshot":
         return snapshot
+    if name == "inspect_object":
+        fields = {key: arguments[key] for key in
+                  ("object_id", "include_inventory", "include_linkset") if key in arguments}
+        return store.execute("inspect_object", fields)
+    if name == "get_inventory_entry":
+        return store.execute("inventory_get", {"entry_id": arguments["entry_id"]})
+    if name == "list_inventory_folder":
+        fields = {key: arguments[key] for key in
+                  ("folder_id", "recursive", "include_trash", "limit") if key in arguments}
+        return store.execute("inventory_list", fields)
+    if name == "search_inventory":
+        fields = {key: arguments[key] for key in
+                  ("query", "folder_id", "include_trash", "limit") if key in arguments}
+        return store.execute("inventory_search", fields)
+    if name == "create_inventory_folder":
+        fields = {key: arguments[key] for key in ("parent_id", "name") if key in arguments}
+        return store.execute("inventory_create_folder", fields)
+    if name == "rename_inventory_entry":
+        return store.execute("inventory_rename", {
+            "entry_id": arguments["entry_id"], "name": arguments["name"]
+        })
+    if name == "move_inventory_entries":
+        return store.execute("inventory_move", {
+            "entry_ids": arguments["entry_ids"],
+            "destination_folder_id": arguments["destination_folder_id"],
+        })
+    if name == "trash_inventory_entries":
+        return store.execute("inventory_trash", {"entry_ids": arguments["entry_ids"]})
     if name == "set_object_transform":
         fields = {key: arguments[key] for key in
                   ("object_id", "position", "rotation_quaternion", "scale", "reason")
@@ -490,10 +673,10 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
             raise RuntimeError("Provide at least one face material field")
         return store.execute("set_object_face_material", fields)
     if name in {
-        "create_object_script", "read_object_script", "update_object_script",
+        "create_object_script", "read_object_script", "update_object_script", "patch_object_script",
         "delete_object_script", "set_object_script_running", "reset_object_script",
     }:
-        allowed = ("object_id", "item_id", "name", "source", "running", "reason")
+        allowed = ("object_id", "item_id", "name", "source", "edits", "running", "reason")
         fields = {key: arguments[key] for key in allowed if key in arguments}
         return store.execute(name, fields)
     raise RuntimeError(f"Unknown tool: {name}")
@@ -533,9 +716,9 @@ def serve(bridge_dir: Path):
                     "capabilities": {"tools": {"listChanged": False}},
                     "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
                     "instructions": (
-                        "Read the local Firestorm snapshot and manage transforms, face materials, "
-                        "and permitted LSL scripts for the single root object selected in the viewer. "
-                        "Read current state before writing and obey viewer permission failures."
+                        "Read detailed local Firestorm state, inspect loaded linksets, organize the agent "
+                        "inventory, and manage permitted LSL scripts in the single selected linkset. "
+                        "Read current state before writing and obey viewer and simulator permission failures."
                     ),
                 })
             elif method == "ping":

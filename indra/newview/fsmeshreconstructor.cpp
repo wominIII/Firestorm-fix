@@ -11,6 +11,7 @@
 #include "llfilepicker.h"
 #include "llfile.h"
 #include "llimagepng.h"
+#include "lljoint.h"
 #include "llmaterial.h"
 #include "llkeyframemotion.h"
 #include "llmodel.h"
@@ -28,6 +29,7 @@
 
 #include <cmath>
 #include <fstream>
+#include <functional>
 #include <iomanip>
 #include <map>
 #include <openssl/evp.h>
@@ -157,6 +159,28 @@ void write_matrix(std::ostream& out, const LLMatrix4a& matrix)
     {
         for (S32 row = 0; row < 4; ++row) out << values[row * 4 + column] << ' ';
     }
+}
+
+F32 get_skin_unit_meter(const LLMeshSkinInfo& skin)
+{
+    if (skin.mInvBindMatrix.empty()) return 1.f;
+
+    U32 matrix_index = 0;
+    const auto pelvis = std::find(skin.mJointNames.begin(), skin.mJointNames.end(), "mPelvis");
+    if (pelvis != skin.mJointNames.end())
+    {
+        matrix_index = static_cast<U32>(std::distance(skin.mJointNames.begin(), pelvis));
+    }
+    if (matrix_index >= skin.mInvBindMatrix.size()) return 1.f;
+
+    // The linear part of an inverse bind matrix retains the source DAE unit.
+    // A mesh authored in centimetres, for example, has basis lengths near 0.01.
+    const F32* matrix = skin.mInvBindMatrix[matrix_index].getF32ptr();
+    const F32 basis_x = std::sqrt(matrix[0] * matrix[0] + matrix[1] * matrix[1] + matrix[2] * matrix[2]);
+    const F32 basis_y = std::sqrt(matrix[4] * matrix[4] + matrix[5] * matrix[5] + matrix[6] * matrix[6]);
+    const F32 basis_z = std::sqrt(matrix[8] * matrix[8] + matrix[9] * matrix[9] + matrix[10] * matrix[10]);
+    const F32 unit_meter = (basis_x + basis_y + basis_z) / 3.f;
+    return std::isfinite(unit_meter) && unit_meter >= 0.000001f && unit_meter <= 1000.f ? unit_meter : 1.f;
 }
 
 bool face_has_render_data(const LLVolumeFace& face)
@@ -415,7 +439,7 @@ void write_materials(std::ostream& out, const LLViewerObject& object,
     out << "  </library_materials>\n";
 }
 
-bool write_skin_controller(std::ostream& out, const LLVolume& volume, const LLMeshSkinInfo& skin)
+bool write_skin_controller(std::ostream& out, const LLVolume& volume, const LLMeshSkinInfo& skin, F32 unit_meter)
 {
     if (skin.mJointNames.empty() || skin.mJointNames.size() != skin.mInvBindMatrix.size()) return false;
     const std::string id("viewer-cache-high-skin");
@@ -452,8 +476,14 @@ bool write_skin_controller(std::ostream& out, const LLVolume& volume, const LLMe
     }
     if (vertices == 0 || weights.empty()) return false;
 
+    LLMatrix4 unit_scale;
+    unit_scale.initScale(LLVector3(unit_meter, unit_meter, unit_meter));
+    LLMatrix4 bind_shape(skin.mBindShapeMatrix.getF32ptr());
+    bind_shape *= unit_scale;
+    const LLMatrix4a bind_shape_meters(bind_shape);
+
     out << "  <library_controllers><controller id=\"" << id << "\"><skin source=\"#viewer-cache-high\"><bind_shape_matrix>";
-    write_matrix(out, skin.mBindShapeMatrix);
+    write_matrix(out, bind_shape_meters);
     out << "</bind_shape_matrix>\n    <source id=\"" << id << "-joints\"><Name_array id=\"" << id
         << "-joints-array\" count=\"" << skin.mJointNames.size() << "\">";
     for (const std::string& name : skin.mJointNames) out << escape_xml(name) << ' ';
@@ -461,7 +491,15 @@ bool write_skin_controller(std::ostream& out, const LLVolume& volume, const LLMe
         << "\" stride=\"1\"><param name=\"JOINT\" type=\"Name\"/></accessor></technique_common></source>\n";
     out << "    <source id=\"" << id << "-bindposes\"><float_array id=\"" << id << "-bindposes-array\" count=\""
         << skin.mInvBindMatrix.size() * 16 << "\">";
-    for (const LLMatrix4a& matrix : skin.mInvBindMatrix) write_matrix(out, matrix);
+    LLMatrix4 inverse_unit_scale;
+    const F32 inverse_unit = 1.f / unit_meter;
+    inverse_unit_scale.initScale(LLVector3(inverse_unit, inverse_unit, inverse_unit));
+    for (const LLMatrix4a& matrix : skin.mInvBindMatrix)
+    {
+        LLMatrix4 inverse_bind_meters(inverse_unit_scale);
+        inverse_bind_meters *= LLMatrix4(matrix.getF32ptr());
+        write_matrix(out, LLMatrix4a(inverse_bind_meters));
+    }
     out << "</float_array><technique_common><accessor source=\"#" << id << "-bindposes-array\" count=\""
         << skin.mInvBindMatrix.size() << "\" stride=\"16\"><param name=\"TRANSFORM\" type=\"float4x4\"/>"
         << "</accessor></technique_common></source>\n";
@@ -491,22 +529,94 @@ void write_object_scale(std::ostream& out, const LLViewerObject& object)
         << " 0 0 0 0 " << scale.mV[VZ] << " 0 0 0 0 1</matrix>";
 }
 
+S32 write_joint_hierarchy(std::ostream& out, const LLMeshSkinInfo& skin, F32 unit_meter)
+{
+    const S32 joint_count = static_cast<S32>(skin.mJointNames.size());
+    std::map<std::string, S32> joint_indices;
+    for (S32 index = 0; index < joint_count; ++index)
+    {
+        joint_indices[skin.mJointNames[index]] = index;
+    }
+
+    S32 root_index = 0;
+    const auto pelvis = joint_indices.find("mPelvis");
+    if (pelvis != joint_indices.end()) root_index = pelvis->second;
+
+    std::vector<S32> parents(joint_count, -1);
+    for (S32 index = 0; index < joint_count; ++index)
+    {
+        LLJoint* joint = gAgentAvatarp ? gAgentAvatarp->getJoint(skin.mJointNames[index]) : nullptr;
+        for (LLJoint* parent = joint ? joint->getParent() : nullptr; parent; parent = parent->getParent())
+        {
+            const auto found = joint_indices.find(parent->getName());
+            if (found != joint_indices.end())
+            {
+                parents[index] = found->second;
+                break;
+            }
+        }
+        // Keep a single COLLADA skeleton even if a legacy/custom joint cannot
+        // be found in the current avatar hierarchy.  Its global bind pose still
+        // produces the correct local transform relative to mPelvis.
+        if (index != root_index && parents[index] < 0) parents[index] = root_index;
+    }
+    parents[root_index] = -1;
+
+    std::vector<std::vector<S32>> children(joint_count);
+    for (S32 index = 0; index < joint_count; ++index)
+    {
+        if (parents[index] >= 0) children[parents[index]].push_back(index);
+    }
+
+    std::function<void(S32, S32)> write_joint = [&](S32 index, S32 indent)
+    {
+        const std::string padding(indent, ' ');
+        const std::string& name = skin.mJointNames[index];
+        LLMatrix4 local_bind(skin.mInvBindMatrix[index].getF32ptr());
+        local_bind.invert();
+        if (parents[index] >= 0)
+        {
+            // LLMatrix4 uses row-vector transforms: global = local * parent.
+            // Multiplying by the parent's inverse bind recovers the local pose.
+            LLMatrix4 parent_inverse(skin.mInvBindMatrix[parents[index]].getF32ptr());
+            local_bind *= parent_inverse;
+        }
+        else
+        {
+            // Bake the source length unit into the skeleton root.  Some DAE
+            // importers (including Blender's current importer) ignore the
+            // COLLADA asset unit metadata.
+            LLMatrix4 unit_scale;
+            unit_scale.initScale(LLVector3(unit_meter, unit_meter, unit_meter));
+            local_bind *= unit_scale;
+        }
+        const LLMatrix4a local_bind_aligned(local_bind);
+
+        out << padding << "<node id=\"joint-" << escape_xml(name) << "\" sid=\"" << escape_xml(name)
+            << "\" name=\"" << escape_xml(name) << "\" type=\"JOINT\"><matrix sid=\"transform\">";
+        write_matrix(out, local_bind_aligned);
+        out << "</matrix>\n";
+        for (S32 child : children[index]) write_joint(child, indent + 2);
+        out << padding << "</node>\n";
+    };
+    write_joint(root_index, 4);
+    return root_index;
+}
+
 void write_scene(std::ostream& out, const std::vector<S32>& lods, const LLMeshSkinInfo* skin,
-                 const LLViewerObject& object, S32 material_count)
+                 const LLViewerObject& object, S32 material_count, F32 unit_meter)
 {
     out << "  <library_visual_scenes><visual_scene id=\"Scene\" name=\"Scene\">\n";
     const bool high_loaded = std::find(lods.begin(), lods.end(), LLModel::LOD_HIGH) != lods.end();
     if (skin && high_loaded)
     {
-        for (const std::string& name : skin->mJointNames)
-        {
-            out << "    <node id=\"joint-" << escape_xml(name) << "\" sid=\"" << escape_xml(name) << "\" name=\""
-                << escape_xml(name) << "\" type=\"JOINT\"/>\n";
-        }
+        const S32 root_joint = write_joint_hierarchy(out, *skin, unit_meter);
         out << "    <node id=\"viewer-cache-high-node\">";
-        write_object_scale(out, object);
+        // Rigged mesh vertices are positioned by bind shape + joint matrices.
+        // Applying the in-world prim scale here would scale the garment twice.
+        out << "<matrix sid=\"transform\">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>";
         out << "<instance_controller url=\"#viewer-cache-high-skin\"><skeleton>#joint-"
-            << escape_xml(skin->mJointNames.front()) << "</skeleton><bind_material><technique_common>";
+            << escape_xml(skin->mJointNames[root_joint]) << "</skeleton><bind_material><technique_common>";
     }
     else if (high_loaded)
     {
@@ -546,6 +656,10 @@ void save_reconstructed_mesh(const std::vector<std::string>& filenames, LLUUID o
     }
 
     LLVolumeLODGroup* group = LLPrimitive::getVolumeManager()->getGroup(mesh->getVolume()->getParams());
+    const LLMeshSkinInfo* mesh_skin = mesh->getSkinInfo();
+    const bool valid_skin = mesh_skin && !mesh_skin->mJointNames.empty() &&
+        mesh_skin->mJointNames.size() == mesh_skin->mInvBindMatrix.size();
+    const F32 skin_unit_meter = valid_skin ? get_skin_unit_meter(*mesh_skin) : 1.f;
     std::ofstream out(dae_filename, std::ios::out | std::ios::binary | std::ios::trunc);
     if (!out.is_open())
     {
@@ -555,7 +669,8 @@ void save_reconstructed_mesh(const std::vector<std::string>& filenames, LLUUID o
     out << std::setprecision(9);
     out << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<COLLADA version=\"1.4.1\" xmlns=\"http://www.collada.org/2005/11/COLLADASchema\">\n"
         << "  <asset><contributor><authoring_tool>Firestorm viewer cached mesh reconstructor</authoring_tool></contributor>"
-        << "<unit name=\"meter\" meter=\"1\"/><up_axis>Z_UP</up_axis><extra><technique profile=\"FIRESTORM_VIEWER_CACHE\"><mesh_uuid>"
+        << "<unit name=\"meter\" meter=\"1\"/><up_axis>Z_UP</up_axis>"
+        << "<extra><technique profile=\"FIRESTORM_VIEWER_CACHE\"><mesh_uuid>"
         << mesh->getMeshID() << "</mesh_uuid><note>Only LODs already decoded by this Viewer session are present.</note>"
         << "</technique></extra></asset>\n";
     texture_map_t textures;
@@ -584,19 +699,21 @@ void save_reconstructed_mesh(const std::vector<std::string>& filenames, LLUUID o
     if (std::find(lods.begin(), lods.end(), LLModel::LOD_HIGH) != lods.end())
     {
         LLVolume* high = group ? group->refLOD(LLModel::LOD_HIGH) : nullptr;
-        if (high && high->isMeshAssetLoaded() && mesh->getSkinInfo() && write_skin_controller(out, *high, *mesh->getSkinInfo()))
+        if (high && high->isMeshAssetLoaded() && mesh->getSkinInfo() &&
+            write_skin_controller(out, *high, *mesh->getSkinInfo(), skin_unit_meter))
         {
             skin = mesh->getSkinInfo();
         }
         if (group) group->derefLOD(high);
     }
-    write_scene(out, lods, skin, *object, object->getNumTEs());
+    write_scene(out, lods, skin, *object, object->getNumTEs(), skin_unit_meter);
     out << "</COLLADA>\n";
     out.close();
     if (triangles > 0 && out.good())
     {
         export_active_animations(dae_filename);
-        LL_INFOS("MeshReconstructor") << "Wrote " << triangles << " cached mesh triangles to " << dae_filename << LL_ENDL;
+        LL_INFOS("MeshReconstructor") << "Wrote " << triangles << " cached mesh triangles to " << dae_filename
+            << "; skin unit meter=" << skin_unit_meter << LL_ENDL;
         notify_export("ExportColladaSuccess", object_name, dae_filename);
     }
     else

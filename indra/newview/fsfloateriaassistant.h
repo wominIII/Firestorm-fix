@@ -12,6 +12,7 @@
 
 class LLButton;
 class LLTextEditor;
+class LLViewerObject;
 
 class FSAIAssistantService
 {
@@ -20,6 +21,8 @@ public:
     using failure_callback_t = std::function<void(S32, const std::string&)>;
 
     static LLSD collectSnapshot();
+    static LLSD collectObjectSnapshot(LLViewerObject* object, const std::string& name,
+                                      const std::string& description, bool include_inventory);
     static std::string formatSnapshot(const LLSD& snapshot);
     static bool isConfigured();
     static void analyze(const LLSD& snapshot, const std::string& question,

@@ -29,7 +29,9 @@
 #include "llviewerjointattachment.h"
 #include "llviewerobject.h"
 #include "llviewerobjectlist.h"
+#include "llviewerregion.h"
 #include "llvoavatarself.h"
+#include "roles_constants.h"
 
 namespace
 {
@@ -39,6 +41,15 @@ LLSD vectorToLLSD(const LLVector3& value)
     result.append(value.mV[VX]);
     result.append(value.mV[VY]);
     result.append(value.mV[VZ]);
+    return result;
+}
+
+LLSD vectorToLLSD(const LLVector3d& value)
+{
+    LLSD result = LLSD::emptyArray();
+    result.append(value.mdV[VX]);
+    result.append(value.mdV[VY]);
+    result.append(value.mdV[VZ]);
     return result;
 }
 
@@ -73,10 +84,13 @@ LLSD inventoryPermissions(const LLInventoryItem* item)
 
     const LLPermissions& permissions = item->getPermissions();
     result["known"] = true;
-    result["modify"] = permissions.allowModifyBy(gAgentID, gAgent.getGroupID());
-    result["copy"] = permissions.allowCopyBy(gAgentID, gAgent.getGroupID());
+    result["modify"] = gAgent.allowOperation(PERM_MODIFY, permissions, GP_OBJECT_MANIPULATE);
+    result["copy"] = gAgent.allowOperation(PERM_COPY, permissions, GP_OBJECT_MANIPULATE);
     result["transfer"] = permissions.allowOperationBy(
         PERM_TRANSFER, gAgentID, gAgent.getGroupID());
+    result["owner_id"] = permissions.getOwner();
+    result["creator_id"] = permissions.getCreator();
+    result["group_id"] = permissions.getGroup();
     return result;
 }
 
@@ -84,9 +98,28 @@ LLSD inventoryItemToLLSD(const LLInventoryObject* object)
 {
     LLSD result;
     result["item_id"] = object->getUUID();
+    result["parent_id"] = object->getParentUUID();
     result["name"] = object->getName();
     result["asset_type"] = LLAssetType::lookup(object->getType());
-    result["permissions"] = inventoryPermissions(dynamic_cast<const LLInventoryItem*>(object));
+    result["actual_asset_type"] = LLAssetType::lookup(object->getActualType());
+    result["is_link"] = object->getIsLinkType();
+    result["linked_id"] = object->getLinkedUUID();
+    if (const LLInventoryItem* item = dynamic_cast<const LLInventoryItem*>(object))
+    {
+        result["description"] = item->getDescription();
+        result["inventory_type"] = LLInventoryType::lookup(item->getInventoryType());
+        result["creation_date"] = LLDate(static_cast<F64>(item->getCreationDate()));
+        result["flags"] = static_cast<S32>(item->getFlags());
+        result["permissions"] = inventoryPermissions(item);
+        result["can_read_script_source"] = item->getType() == LLAssetType::AT_LSL_TEXT &&
+            result["permissions"]["copy"].asBoolean() && result["permissions"]["modify"].asBoolean();
+        result["can_update_script_source"] = item->getType() == LLAssetType::AT_LSL_TEXT &&
+            result["permissions"]["modify"].asBoolean();
+    }
+    else
+    {
+        result["permissions"] = inventoryPermissions(nullptr);
+    }
     return result;
 }
 
@@ -102,20 +135,30 @@ LLSD objectToLLSD(LLViewerObject* object, const std::string& name,
 
     result["available"] = true;
     result["object_id"] = object->getID();
+    result["local_id"] = static_cast<S32>(object->getLocalID());
     result["name"] = name;
     result["description"] = description;
     result["position"] = vectorToLLSD(object->getPositionEdit());
+    result["global_position"] = vectorToLLSD(object->getPositionGlobal());
     result["rotation_quaternion"] = quaternionToLLSD(object->getRotationEdit());
     result["scale"] = vectorToLLSD(object->getScale());
     result["is_attachment"] = object->isAttachment();
     result["is_mesh"] = object->isMesh();
     result["is_rigged_mesh"] = object->isRiggedMesh();
     result["is_root"] = object->isRootEdit();
+    result["root_id"] = object->getRootEdit() ? object->getRootEdit()->getID() : object->getID();
+    if (LLViewerObject* parent = static_cast<LLViewerObject*>(object->getParent()))
+    {
+        result["parent_id"] = parent->getID();
+    }
     result["link_children"] = object->numChildren();
     result["face_count"] = object->getNumTEs();
     result["permissions"]["modify"] = object->permModify();
     result["permissions"]["move"] = object->permMove();
     result["permissions"]["permanent"] = object->isPermanentEnforced();
+    result["flags"] = static_cast<S32>(object->getFlags());
+    result["click_action"] = static_cast<S32>(object->getClickAction());
+    if (object->getRegion()) result["region_name"] = object->getRegion()->getName();
 
     result["faces"] = LLSD::emptyArray();
     for (U8 face = 0; face < object->getNumTEs(); ++face)
@@ -182,15 +225,25 @@ std::string normalizeChatCompletionsURL(std::string url)
 }
 }
 
+LLSD FSAIAssistantService::collectObjectSnapshot(LLViewerObject* object, const std::string& name,
+                                                 const std::string& description, bool include_inventory)
+{
+    return objectToLLSD(object, name, description, include_inventory);
+}
+
 LLSD FSAIAssistantService::collectSnapshot()
 {
     LLSD snapshot;
     snapshot["schema"] = "firestorm-ai-assistant-snapshot-v1";
-    snapshot["capabilities"]["read_script_source"] = false;
+    snapshot["capabilities"]["read_script_source"] = true;
+    snapshot["capabilities"]["script_source_read_requires_copy_modify"] = true;
     snapshot["capabilities"]["upload_assets"] = false;
     snapshot["capabilities"]["modify_requires_permission"] = true;
     snapshot["capabilities"]["direct_transform_write"] = true;
     snapshot["capabilities"]["script_management"] = true;
+    snapshot["capabilities"]["script_patch_in_place"] = true;
+    snapshot["capabilities"]["inventory_management"] = true;
+    snapshot["capabilities"]["detailed_object_reads"] = true;
     snapshot["wearables"] = LLSD::emptyArray();
     snapshot["attachments"] = LLSD::emptyArray();
     snapshot["animations"] = LLSD::emptyArray();

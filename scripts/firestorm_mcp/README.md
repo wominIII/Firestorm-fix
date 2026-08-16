@@ -1,24 +1,32 @@
 # Firestorm Local MCP
 
-This stdio MCP server exposes the snapshot published by the custom Firestorm
-viewer and can directly update the transform of the single selected root object.
-It uses no network listener and sends no data by itself.
+This stdio MCP server exposes detailed local state published by the custom
+Firestorm viewer. It can inspect loaded objects and linksets, organize the
+agent inventory, and perform permission-gated edits. It uses no network listener
+and sends no data by itself.
 
 Enable **Local MCP Bridge** in **World > AI Diagnostics and Repair Assistant**,
 then register `server.py` as a stdio MCP server. The viewer refreshes
 `snapshot.xml` once per second under its user settings directory.
 
-`set_object_transform` can change position, quaternion rotation, and scale without
-a confirmation dialog. Firestorm still requires the target UUID to match the only
-selected root object and enforces simulator move/modify permissions.
-`set_object_face_material` can change diffuse/PBR asset UUIDs, RGBA color, and texture
-scale, offset, and rotation for one face. Script source is intentionally excluded;
-only metadata already available to the viewer is returned by snapshots.
+Protocol version 4 adds `inspect_object`, detailed object-inventory metadata,
+`get_inventory_entry`, `list_inventory_folder`, `search_inventory`,
+`create_inventory_folder`, `rename_inventory_entry`, `move_inventory_entries`,
+and recoverable `trash_inventory_entries`. Inventory search covers the loaded
+agent inventory tree; when a folder is incomplete the Viewer requests it from the
+simulator and the caller should retry after a `fetch_requested` result.
 
-Protocol version 3 also provides object-script management for the single selected
-root object: `create_object_script`, `read_object_script`, `update_object_script`,
-`delete_object_script`, `set_object_script_running`, and `reset_object_script`.
-Source reads require copy and modify permission; all mutations require object and
-script modify permission. Creating a script keeps a backup copy in the agent's
-Scripts inventory folder. The simulator remains authoritative for compilation,
-permissions, running state, and inventory changes.
+`set_object_transform` changes position, quaternion rotation, and scale on the
+selected linkset root. `set_object_face_material` can target an individual prim in
+that linkset and update diffuse/PBR asset UUIDs, RGBA color, and texture transforms.
+Firestorm checks target UUIDs and effective move/modify permissions.
+
+Object-script tools can target any prim in the single selected linkset. Ownership
+is not required: effective personal or active-group permissions are used. Source
+reads require both copy and modify permission, matching the Viewer's normal script
+editor. `update_object_script` and `patch_object_script` compile back into the same
+item UUID; the latter first downloads the source and applies exact-match edits, so
+the script is not deleted and recreated. A modify-only script may accept a complete
+source replacement, but its existing source cannot be read first. Creating a script
+keeps a backup in the agent's Scripts folder. The simulator remains authoritative
+for compilation, permissions, running state, and inventory changes.
