@@ -65,6 +65,28 @@
 				</layout_panel>
 				<layout_panel name="chat_layout_panel">
 					<layout_stack name="input_panels">
+						<layout_panel name="outgoing_translate_language_layout_panel">
+							<combo_box name="outgoing_translate_language" tool_tip="发送翻译目标语言">
+								<combo_box.item label="中文" name="zh" value="zh"/>
+								<combo_box.item label="英语" name="en" value="en"/>
+								<combo_box.item label="日语" name="ja" value="ja"/>
+								<combo_box.item label="韩语" name="ko" value="ko"/>
+								<combo_box.item label="法语" name="fr" value="fr"/>
+								<combo_box.item label="德语" name="de" value="de"/>
+								<combo_box.item label="西班牙语" name="es" value="es"/>
+								<combo_box.item label="葡萄牙语" name="pt" value="pt"/>
+								<combo_box.item label="俄语" name="ru" value="ru"/>
+							</combo_box>
+						</layout_panel>
+						<layout_panel name="outgoing_translate_tone_layout_panel">
+							<combo_box name="outgoing_translate_tone" tool_tip="当前会话翻译人格"/>
+						</layout_panel>
+						<layout_panel name="outgoing_translate_prompt_layout_panel">
+							<button name="outgoing_translate_prompt_btn" label="P" tool_tip="编辑当前会话的额外翻译提示词"/>
+						</layout_panel>
+						<layout_panel name="outgoing_translate_layout_panel">
+							<button name="outgoing_translate_btn" label="T" tool_tip="发送消息翻译模式"/>
+						</layout_panel>
 						<layout_panel name="emoji_button_layout_panel" >
 							<button name="emoji_picker_toggle_btn" tool_tip="显示表情符号面板"/>
 							<button name="emoji_recent_panel_toggle_btn" tool_tip="显示/隐藏最近使用的表情符号"/>
