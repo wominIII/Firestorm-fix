@@ -8,6 +8,7 @@
 
 #include "v3dmath.h"
 #include "llsd.h"
+#include "lluuid.h"
 
 #include <string>
 
@@ -16,6 +17,10 @@ class FSXToysBridge
 public:
     static void notifyMeanCollision(U8 type, F32 magnitude);
     static void notifyCollisionSound(const LLVector3d& position, F32 gain);
+    static void notifyAvatarSound(const LLUUID& sound_id, const LLUUID& object_id,
+                                  F32 gain, const std::string& source_type);
+    static void refreshAvatarSoundCandidates();
+    static LLSD getAvatarSoundCandidates();
     static void sendTest();
     static void sendStop();
 

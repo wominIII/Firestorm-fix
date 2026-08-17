@@ -7,7 +7,19 @@
   <check_box name="mean_collision" label="发送服务器报告的玩家/物件碰撞"/>
   <check_box name="collision_sound" label="发送附近的材质碰撞音（墙体/地面）"/>
   <spinner name="sound_range" label="声音范围（米）"/>
+  <check_box name="selected_sound_enabled" label="我的附件播放所选声音时触发"/>
+  <spinner name="sound_duration" label="持续时间（秒）"/>
+  <spinner name="sound_cooldown" label="冷却时间（秒）"/>
+  <text name="sound_list_label">选择附件内容中可读取的声音，或本次登录期间实际播放过的声音。佩戴新物品或声音播放后请刷新。</text>
+  <scroll_list name="sound_list">
+    <scroll_list.columns label="启用" name="enabled"/>
+    <scroll_list.columns label="声音" name="sound_name"/>
+    <scroll_list.columns label="附件" name="attachment_name"/>
+    <scroll_list.columns label="声音 UUID" name="sound_id"/>
+  </scroll_list>
+  <button name="refresh_sounds_btn" label="刷新声音列表"/>
+  <button name="preview_sound_btn" label="试听选中声音"/>
   <button name="test_btn" label="发送测试事件"/>
   <button name="stop_btn" label="发送停止事件"/>
-  <text name="note">请在 XToys 建立：firestorm_test、firestorm_stop、sl_avatar_bump、sl_wall_collision。</text>
+  <text name="note">所选声音复用现有 sl_wall_collision 动作，无需在 XToys 新建触发器。</text>
 </floater>

@@ -27661,6 +27661,50 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <real>2.0</real>
     </map>
+    <key>FSXToysTriggerSelectedSound</key>
+    <map>
+      <key>Comment</key>
+      <string>Send XToys events for selected sounds emitted by the agent's attachments.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>0</integer>
+    </map>
+    <key>FSXToysSelectedSoundIds</key>
+    <map>
+      <key>Comment</key>
+      <string>Comma-separated sound asset UUIDs selected for XToys triggering.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>String</string>
+      <key>Value</key>
+      <string />
+    </map>
+    <key>FSXToysSoundTriggerDuration</key>
+    <map>
+      <key>Comment</key>
+      <string>Seconds before the selected-sound XToys event sends an automatic stop.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>5.0</real>
+    </map>
+    <key>FSXToysSoundTriggerCooldown</key>
+    <map>
+      <key>Comment</key>
+      <string>Minimum seconds between XToys triggers for the same selected sound.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>F32</string>
+      <key>Value</key>
+      <real>1.0</real>
+    </map>
     <!-- <FS:Zi> Area Search Defaults -->
     <key>FSAreaSearch_ExcludeAttachments</key>
     <map>

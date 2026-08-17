@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater can_close="true" can_minimize="true" can_resize="false" height="360" layout="topleft" min_height="360" min_width="550" name="fs_xtoys" save_rect="true" title="XToys Event Bridge" width="580">
+<floater can_close="true" can_minimize="true" can_resize="false" height="610" layout="topleft" min_height="610" min_width="680" name="fs_xtoys" save_rect="true" title="XToys Event Bridge" width="700">
   <text height="34" left="12" name="notice" top="12" width="550" word_wrap="true">Firestorm sends only opt-in collision events to your XToys private webhook. XToys controls devices and defines every effect.</text>
   <check_box control_name="FSXToysEnabled" height="20" label="Enable XToys event bridge" left="12" name="enabled" top="58" width="250"/>
   <text height="18" left="12" name="id_label" top="92" width="480">XToys webhook address (https/wss) or ID:</text>
@@ -9,7 +9,19 @@
   <check_box control_name="FSXToysTriggerMeanCollision" height="20" label="Send server-reported avatar/object collisions" left="12" name="mean_collision" top="202" width="330"/>
   <check_box control_name="FSXToysTriggerCollisionSound" height="20" label="Send nearby material collision sounds (walls/ground)" left="12" name="collision_sound" top="228" width="360"/>
   <spinner control_name="FSXToysCollisionSoundRange" decimal_digits="1" height="22" increment="0.5" label="Sound range (m)" label_width="120" left="360" max_val="10" min_val="0.5" name="sound_range" top="225" width="200"/>
-  <button height="26" label="Send test event" left="12" name="test_btn" top="278" width="150"/>
+  <check_box control_name="FSXToysTriggerSelectedSound" height="20" label="Trigger when selected sounds play from my attachments" left="12" name="selected_sound_enabled" top="260" width="420"/>
+  <spinner control_name="FSXToysSoundTriggerDuration" decimal_digits="1" height="22" increment="0.5" label="Duration (s)" label_width="90" left="12" max_val="60" min_val="0.5" name="sound_duration" top="286" width="190"/>
+  <spinner control_name="FSXToysSoundTriggerCooldown" decimal_digits="1" height="22" increment="0.5" label="Cooldown (s)" label_width="95" left="220" max_val="60" min_val="0.1" name="sound_cooldown" top="286" width="200"/>
+  <text height="32" left="12" name="sound_list_label" top="318" width="676" word_wrap="true">Select sounds found in readable attachment contents or observed during this login. Refresh after wearing an item or after it plays a sound.</text>
+  <scroll_list draw_heading="true" draw_stripes="true" follows="left|top" height="178" left="12" name="sound_list" top="352" width="676">
+    <scroll_list.columns label="On" name="enabled" width="38"/>
+    <scroll_list.columns label="Sound" name="sound_name" width="190"/>
+    <scroll_list.columns label="Attachment" name="attachment_name" width="190"/>
+    <scroll_list.columns label="Sound UUID" name="sound_id" width="238"/>
+  </scroll_list>
+  <button height="26" label="Refresh sound list" left="12" name="refresh_sounds_btn" top="538" width="150"/>
+  <button height="26" label="Preview selected" left="170" name="preview_sound_btn" top="538" width="150"/>
+  <text height="38" left="332" name="note" top="536" width="356" word_wrap="true">Selected sounds use the existing sl_wall_collision action. No additional XToys trigger is required.</text>
+  <button height="26" label="Send test event" left="12" name="test_btn" top="574" width="150"/>
   <button height="26" label="Send stop event" left_pad="8" name="stop_btn" width="150"/>
-  <text height="36" left="330" name="note" top="274" width="232" word_wrap="true">Create XToys actions: firestorm_test, firestorm_stop, sl_avatar_bump and sl_wall_collision.</text>
 </floater>

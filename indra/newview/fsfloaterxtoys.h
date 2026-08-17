@@ -7,6 +7,7 @@
 class LLButton;
 class LLFloaterReg;
 class LLLineEditor;
+class LLScrollListCtrl;
 
 class FSFloaterXToys final : public LLFloater
 {
@@ -14,12 +15,18 @@ class FSFloaterXToys final : public LLFloater
 public:
     explicit FSFloaterXToys(const LLSD& key);
     bool postBuild() override;
+    void onOpen(const LLSD& key) override;
 private:
     void saveSettings();
+    void refreshSounds();
+    void saveSoundSelection();
+    void previewSelectedSound();
     void sendTest();
     void sendStop();
     LLLineEditor* mWebhookId{ nullptr };
     LLLineEditor* mWebhookToken{ nullptr };
+    LLScrollListCtrl* mSoundList{ nullptr };
+    LLUUID mPreviewAudioSourceId;
 };
 
 #endif // FS_FSFLOATERXTOYS_H

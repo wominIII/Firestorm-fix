@@ -12,15 +12,97 @@
 #include "llcoros.h"
 #include "llcorehttputil.h"
 #include "lleventcoro.h"
+#include "llframetimer.h"
+#include "llinventorymodel.h"
 #include "llviewercontrol.h"
+#include "llviewerinventory.h"
+#include "llviewerjointattachment.h"
+#include "llviewerobject.h"
+#include "llviewerobjectlist.h"
+#include "llvoavatarself.h"
 
 #include <algorithm>
 #include <cctype>
+#include <map>
+#include <set>
 #include <string_view>
 
 namespace
 {
 U64 s_auto_stop_generation = 0;
+std::map<LLUUID, LLSD> s_avatar_sound_candidates;
+std::map<LLUUID, F64> s_last_sound_trigger;
+
+std::set<LLUUID> selectedSoundIds()
+{
+    std::set<LLUUID> result;
+    std::string value = gSavedSettings.getString("FSXToysSelectedSoundIds");
+    std::string::size_type start = 0;
+    while (start <= value.size())
+    {
+        const std::string::size_type comma = value.find(',', start);
+        std::string token = value.substr(start, comma == std::string::npos ? std::string::npos : comma - start);
+        LLStringUtil::trim(token);
+        LLUUID id(token);
+        if (id.notNull()) result.insert(id);
+        if (comma == std::string::npos) break;
+        start = comma + 1;
+    }
+    return result;
+}
+
+std::string attachmentName(LLViewerObject* object)
+{
+    if (!object) return std::string();
+    LLViewerObject* root = object->getRootEdit();
+    if (!root) root = object;
+    if (const LLViewerInventoryItem* item = gInventory.getItem(root->getAttachmentItemID()))
+    {
+        return item->getName();
+    }
+    return std::string();
+}
+
+void rememberSound(const LLUUID& sound_id, LLViewerObject* object,
+                   const std::string& sound_name, const std::string& source_type)
+{
+    if (sound_id.isNull() || !object) return;
+    LLSD& candidate = s_avatar_sound_candidates[sound_id];
+    candidate["sound_id"] = sound_id;
+    if (!sound_name.empty()) candidate["sound_name"] = sound_name;
+    if (!candidate.has("sound_name")) candidate["sound_name"] = sound_id.asString();
+    candidate["object_id"] = object->getID();
+    candidate["attachment_name"] = attachmentName(object);
+    candidate["source_type"] = source_type;
+    candidate["last_seen"] = LLDate::now();
+}
+
+void scanAttachmentPrim(LLViewerObject* object)
+{
+    if (!object) return;
+    if (!object->getInventoryRoot())
+    {
+        object->requestInventory();
+    }
+    else
+    {
+        LLInventoryObject::object_list_t contents;
+        object->getInventoryContents(contents);
+        for (const LLPointer<LLInventoryObject>& entry : contents)
+        {
+            const LLInventoryItem* item = entry.notNull()
+                ? dynamic_cast<const LLInventoryItem*>(entry.get()) : nullptr;
+            if (item && item->getActualType() == LLAssetType::AT_SOUND && item->getAssetUUID().notNull())
+            {
+                rememberSound(item->getAssetUUID(), object, item->getName(), "attachment_inventory");
+            }
+        }
+    }
+    for (const LLPointer<LLViewerObject>& child : object->getChildren())
+    {
+        if (child.notNull()) scanAttachmentPrim(child.get());
+    }
+}
 
 bool normalizeWebhookAddress(std::string& webhook_id)
 {
@@ -101,6 +183,79 @@ void FSXToysBridge::notifyCollisionSound(const LLVector3d& position, F32 gain)
     data["distance"] = (F32)distance;
     sendEvent("sl_wall_collision", data);
     scheduleStop(5.f);
+}
+
+void FSXToysBridge::notifyAvatarSound(const LLUUID& sound_id, const LLUUID& object_id,
+                                      F32 gain, const std::string& source_type)
+{
+    if (sound_id.isNull() || object_id.isNull() || !gAgentAvatarp) return;
+    LLViewerObject* object = gObjectList.findObject(object_id);
+    if (!object || object->getAvatar() != gAgentAvatarp) return;
+
+    std::string sound_name;
+    LLInventoryObject::object_list_t contents;
+    object->getInventoryContents(contents);
+    for (const LLPointer<LLInventoryObject>& entry : contents)
+    {
+        const LLInventoryItem* item = entry.notNull()
+            ? dynamic_cast<const LLInventoryItem*>(entry.get()) : nullptr;
+        if (item && item->getActualType() == LLAssetType::AT_SOUND && item->getAssetUUID() == sound_id)
+        {
+            sound_name = item->getName();
+            break;
+        }
+    }
+    rememberSound(sound_id, object, sound_name, source_type);
+
+    if (!gSavedSettings.getBOOL("FSXToysEnabled") ||
+        !gSavedSettings.getBOOL("FSXToysTriggerSelectedSound") ||
+        selectedSoundIds().count(sound_id) == 0)
+    {
+        return;
+    }
+
+    const F64 now = LLFrameTimer::getTotalSeconds();
+    const F32 cooldown = llclamp(gSavedSettings.getF32("FSXToysSoundTriggerCooldown"), 0.1f, 60.f);
+    const auto last = s_last_sound_trigger.find(sound_id);
+    if (last != s_last_sound_trigger.end() && now - last->second < cooldown) return;
+    s_last_sound_trigger[sound_id] = now;
+
+    const LLSD& candidate = s_avatar_sound_candidates[sound_id];
+    LLSD data;
+    data["sound_id"] = sound_id;
+    data["sound_name"] = candidate["sound_name"];
+    data["attachment_name"] = candidate["attachment_name"];
+    data["event_kind"] = "selected_sound";
+    data["gain"] = llclampf(gain);
+    data["source_type"] = source_type;
+    // Reuse the established wall-collision action so existing XToys front-end
+    // scripts react without requiring another global trigger to be wired.
+    sendEvent("sl_wall_collision", data);
+    scheduleStop(llclamp(gSavedSettings.getF32("FSXToysSoundTriggerDuration"), 0.5f, 60.f));
+}
+
+void FSXToysBridge::refreshAvatarSoundCandidates()
+{
+    if (!gAgentAvatarp) return;
+    for (const auto& attachment_entry : gAgentAvatarp->mAttachmentPoints)
+    {
+        const LLViewerJointAttachment* point = attachment_entry.second;
+        if (!point) continue;
+        for (const LLPointer<LLViewerObject>& object : point->mAttachedObjects)
+        {
+            if (object.notNull()) scanAttachmentPrim(object.get());
+        }
+    }
+}
+
+LLSD FSXToysBridge::getAvatarSoundCandidates()
+{
+    LLSD result = LLSD::emptyArray();
+    for (const auto& candidate : s_avatar_sound_candidates)
+    {
+        result.append(candidate.second);
+    }
+    return result;
 }
 
 void FSXToysBridge::sendTest()

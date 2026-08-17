@@ -4491,6 +4491,10 @@ void set_attached_sound(LLViewerObject *objectp, const LLUUID &object_id, const 
     }
 
     objectp->setAttachedSound(sound_id, owner_id, gain, flags);
+    if (sound_id.notNull())
+    {
+        FSXToysBridge::notifyAvatarSound(sound_id, object_id, gain, "attached");
+    }
 }
 
 PostponedSoundData::PostponedSoundData(const LLUUID &object_id, const LLUUID &sound_id, const LLUUID& owner_id, const F32 gain, const U8 flags)
@@ -4965,6 +4969,7 @@ void process_sound_trigger(LLMessageSystem *msg, void **)
     {
         FSXToysBridge::notifyCollisionSound(pos_global, gain);
     }
+    FSXToysBridge::notifyAvatarSound(sound_id, object_id, gain, "triggered");
 
     // NaCl - Antispam Registry
     //if (LLMaterialTable::basic.isCollisionSound(sound_id) && !gSavedSettings.getBOOL("EnableCollisionSounds"))
