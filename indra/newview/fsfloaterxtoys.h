@@ -8,6 +8,7 @@ class LLButton;
 class LLFloaterReg;
 class LLLineEditor;
 class LLScrollListCtrl;
+class LLTextEditor;
 
 class FSFloaterXToys final : public LLFloater
 {
@@ -25,6 +26,8 @@ private:
     void sendStop();
     LLLineEditor* mWebhookId{ nullptr };
     LLLineEditor* mWebhookToken{ nullptr };
+    LLTextEditor* mChatKeywords{ nullptr };
+    LLTextEditor* mChatAllowedSenders{ nullptr };
     LLScrollListCtrl* mSoundList{ nullptr };
     LLUUID mPreviewAudioSourceId;
 };

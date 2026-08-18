@@ -52,6 +52,8 @@ public:
     virtual LLTool* getOverrideTool(MASK mask) override { return NULL; }
 
     void setClickPickPending() { mClickPickPending = true; }
+    void setGlobalMiddleMouseOrbit(bool enabled) { mGlobalMiddleMouseOrbit = enabled; }
+    bool isGlobalMiddleMouseOrbit() const { return mGlobalMiddleMouseOrbit; }
     static void pickCallback(const LLPickInfo& pick_info);
     bool mouseSteerMode() { return mMouseSteering; }
 
@@ -71,6 +73,7 @@ protected:
     bool    mClickPickPending;
     bool    mValidSelection;
     bool    mMouseSteering;
+    bool    mGlobalMiddleMouseOrbit;
     S32     mMouseUpX;  // needed for releaseMouse()
     S32     mMouseUpY;
     MASK    mMouseUpMask;

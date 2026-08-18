@@ -1,25 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater name="fs_xtoys" title="XToys 事件桥接">
-  <text name="notice">Firestorm 仅向你的 XToys 私人 Webhook 发送已启用的碰撞事件。具体设备和效果完全由 XToys 控制。</text>
-  <check_box name="enabled" label="启用 XToys 事件桥接"/>
-  <text name="id_label">XToys Webhook 地址（https/wss）或 ID：</text>
-  <text name="token_label">共享 Webhook 令牌（可选；私人 Webhook 请留空）：</text>
-  <check_box name="mean_collision" label="发送服务器报告的玩家/物件碰撞"/>
-  <check_box name="collision_sound" label="发送附近的材质碰撞音（墙体/地面）"/>
-  <spinner name="sound_range" label="声音范围（米）"/>
-  <check_box name="selected_sound_enabled" label="我的附件播放所选声音时触发"/>
-  <spinner name="sound_duration" label="持续时间（秒）"/>
-  <spinner name="sound_cooldown" label="冷却时间（秒）"/>
-  <text name="sound_list_label">选择附件内容中可读取的声音，或本次登录期间实际播放过的声音。佩戴新物品或声音播放后请刷新。</text>
-  <scroll_list name="sound_list">
-    <scroll_list.columns label="启用" name="enabled"/>
-    <scroll_list.columns label="声音" name="sound_name"/>
-    <scroll_list.columns label="附件" name="attachment_name"/>
-    <scroll_list.columns label="声音 UUID" name="sound_id"/>
-  </scroll_list>
-  <button name="refresh_sounds_btn" label="刷新声音列表"/>
-  <button name="preview_sound_btn" label="试听选中声音"/>
-  <button name="test_btn" label="发送测试事件"/>
-  <button name="stop_btn" label="发送停止事件"/>
-  <text name="note">所选声音复用现有 sl_wall_collision 动作，无需在 XToys 新建触发器。</text>
+<floater can_close="true" can_minimize="true" can_resize="false" height="700" layout="topleft" min_height="700" min_width="720" name="fs_xtoys" save_rect="true" title="XToys 事件桥接" width="720">
+  <tab_container follows="all" height="646" left="8" name="xtoys_tabs" tab_position="top" top="8" width="704">
+    <panel border="true" label="连接与事件" layout="topleft" name="connection_panel">
+      <text height="34" left="12" name="notice" top="12" width="676" word_wrap="true">Firestorm 仅向你的 XToys 私人 Webhook 发送已启用的事件。具体设备和效果完全由 XToys 控制。</text>
+      <check_box control_name="FSXToysEnabled" height="20" label="启用 XToys 事件桥接" left="12" name="enabled" top="58" width="300"/>
+      <text height="18" left="12" name="id_label" top="92" width="620">XToys Webhook 地址（https/wss）或 ID：</text>
+      <line_editor height="22" left="12" max_length_chars="128" name="webhook_id" top="112" width="676"/>
+      <text height="18" left="12" name="token_label" top="146" width="620">共享 Webhook 令牌（可选；私人 Webhook 请留空）：</text>
+      <line_editor is_password="true" height="22" left="12" max_length_chars="256" name="webhook_token" top="166" width="676"/>
+      <check_box control_name="FSXToysTriggerMeanCollision" height="20" label="发送服务器报告的玩家/物件碰撞" left="12" name="mean_collision" top="208" width="420"/>
+      <check_box control_name="FSXToysTriggerCollisionSound" height="20" label="发送附近的材质碰撞音（墙体/地面）" left="12" name="collision_sound" top="238" width="440"/>
+      <spinner control_name="FSXToysCollisionSoundRange" decimal_digits="1" height="22" increment="0.5" label="声音范围（米）" label_width="120" left="12" max_val="10" min_val="0.5" name="sound_range" top="270" width="210"/>
+      <text height="48" left="12" name="event_note" top="316" width="676" word_wrap="true">碰撞和附件声音继续使用现有的 XToys 动作。聊天规则与实验性 Caeil HUD V2 适配位于“聊天触发”分页。</text>
+      <button height="26" label="发送测试事件" left="12" name="test_btn" top="382" width="160"/>
+      <button height="26" label="发送停止事件" left="184" name="stop_btn" top="382" width="160"/>
+    </panel>
+    <panel border="true" label="附件声音" layout="topleft" name="sounds_panel">
+      <check_box control_name="FSXToysTriggerSelectedSound" height="20" label="我的附件播放所选声音时触发" left="12" name="selected_sound_enabled" top="18" width="500"/>
+      <spinner control_name="FSXToysSoundTriggerDuration" decimal_digits="1" height="22" increment="0.5" label="持续时间（秒）" label_width="100" left="12" max_val="60" min_val="0.5" name="sound_duration" top="50" width="210"/>
+      <spinner control_name="FSXToysSoundTriggerCooldown" decimal_digits="1" height="22" increment="0.5" label="冷却时间（秒）" label_width="105" left="242" max_val="60" min_val="0.1" name="sound_cooldown" top="50" width="220"/>
+      <text height="36" left="12" name="sound_list_label" top="88" width="676" word_wrap="true">选择附件内容中可读取的声音，或本次登录期间实际播放过的声音。佩戴新物品或声音播放后请刷新。</text>
+      <scroll_list draw_heading="true" draw_stripes="true" follows="left|top" height="384" left="12" name="sound_list" top="130" width="676">
+        <scroll_list.columns label="启用" name="enabled" width="38"/>
+        <scroll_list.columns label="声音" name="sound_name" width="190"/>
+        <scroll_list.columns label="附件" name="attachment_name" width="190"/>
+        <scroll_list.columns label="声音 UUID" name="sound_id" width="238"/>
+      </scroll_list>
+      <button height="26" label="刷新声音列表" left="12" name="refresh_sounds_btn" top="526" width="160"/>
+      <button height="26" label="试听选中声音" left="184" name="preview_sound_btn" top="526" width="160"/>
+      <text height="40" left="356" name="note" top="522" width="332" word_wrap="true">所选声音复用现有 sl_wall_collision 动作。</text>
+    </panel>
+    <panel border="true" label="聊天触发" layout="topleft" name="chat_panel">
+      <check_box control_name="FSXToysChatEnabled" height="20" label="启用聊天关键词触发" left="12" name="chat_enabled" top="16" width="310"/>
+      <check_box control_name="FSXToysChatNearby" height="20" label="附近聊天" left="32" name="chat_nearby" top="46" width="150"/>
+      <check_box control_name="FSXToysChatIM" height="20" label="私聊/群聊" left="190" name="chat_im" top="46" width="170"/>
+      <check_box control_name="FSXToysChatObject" height="20" label="物件消息" left="370" name="chat_object" top="46" width="180"/>
+      <check_box control_name="FSXToysChatIgnoreCase" height="20" label="忽略英文字母大小写" left="32" name="chat_ignore_case" top="76" width="190"/>
+      <combo_box control_name="FSXToysChatMatchMode" height="22" label="默认匹配方式" left="242" name="chat_match_mode" top="74" width="190">
+        <combo_box.item label="包含" name="contains" value="contains"/>
+        <combo_box.item label="完全相同" name="exact" value="exact"/>
+      </combo_box>
+      <spinner control_name="FSXToysChatTriggerDuration" decimal_digits="1" height="22" increment="0.5" label="持续时间（秒）" label_width="92" left="12" max_val="60" min_val="0.5" name="chat_duration" top="108" width="190"/>
+      <spinner control_name="FSXToysChatTriggerCooldown" decimal_digits="1" height="22" increment="0.5" label="冷却时间（秒）" label_width="98" left="220" max_val="60" min_val="0.1" name="chat_cooldown" top="108" width="200"/>
+      <text height="34" left="12" name="chat_keywords_label" top="146" width="676" word_wrap="true">每行一个关键词。可以在单行开头使用 exact: 或 contains: 覆盖默认匹配方式。</text>
+      <text_editor height="128" left="12" name="chat_keywords" top="182" width="676" word_wrap="true"/>
+      <text height="34" left="12" name="chat_allowed_senders_label" top="320" width="676" word_wrap="true">每行一个允许的发送者 UUID 或完整显示名。留空表示允许所有人。</text>
+      <text_editor height="76" left="12" name="chat_allowed_senders" top="356" width="676" word_wrap="true"/>
+      <check_box control_name="FSXToysCaeilsHudV2Enabled" height="20" label="实验性 Caeil HUD V2 可见文本适配" left="12" name="caeils_enabled" top="448" width="430"/>
+      <text height="34" left="12" name="caeils_marker_label" top="478" width="676" word_wrap="true">填写 HUD 可见物件消息中的唯一标记。消息里第一个 0-100 数字将转换为 XToys 1-10 档。</text>
+      <line_editor control_name="FSXToysCaeilsHudV2Marker" height="22" left="12" max_length_chars="128" name="caeils_marker" top="514" width="676"/>
+      <text height="44" left="12" name="chat_note" top="548" width="676" word_wrap="true">忽略自己发送的消息、RLV 指令、翻译副本和聊天历史回放。Caeil 适配只能处理 Viewer 实际收到的文本。</text>
+    </panel>
+  </tab_container>
 </floater>

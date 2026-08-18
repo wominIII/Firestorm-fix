@@ -3027,6 +3027,17 @@
       <key>Value</key>
       <integer>5</integer>
     </map>
+    <key>FSGlobalMiddleMouseCameraOrbit</key>
+    <map>
+      <key>Comment</key>
+      <string>Hold middle mouse button to orbit the camera globally in third-person view, including over UI and world objects.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Boolean</string>
+      <key>Value</key>
+      <integer>1</integer>
+    </map>
     <key>CameraAngle</key>
     <map>
       <key>Comment</key>
@@ -27705,6 +27716,36 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <real>1.0</real>
     </map>
+    <key>FSXToysChatEnabled</key>
+    <map>
+      <key>Comment</key>
+      <string>Enable configurable XToys chat keyword triggers.</string>
+      <key>Persist</key><integer>1</integer>
+      <key>Type</key><string>Boolean</string>
+      <key>Value</key><integer>0</integer>
+    </map>
+    <key>FSXToysChatNearby</key>
+    <map><key>Comment</key><string>Allow nearby chat keyword triggers.</string><key>Persist</key><integer>1</integer><key>Type</key><string>Boolean</string><key>Value</key><integer>1</integer></map>
+    <key>FSXToysChatIM</key>
+    <map><key>Comment</key><string>Allow private and group IM keyword triggers.</string><key>Persist</key><integer>1</integer><key>Type</key><string>Boolean</string><key>Value</key><integer>1</integer></map>
+    <key>FSXToysChatObject</key>
+    <map><key>Comment</key><string>Allow object chat and object IM keyword triggers.</string><key>Persist</key><integer>1</integer><key>Type</key><string>Boolean</string><key>Value</key><integer>1</integer></map>
+    <key>FSXToysChatIgnoreCase</key>
+    <map><key>Comment</key><string>Match XToys chat keywords without case sensitivity.</string><key>Persist</key><integer>1</integer><key>Type</key><string>Boolean</string><key>Value</key><integer>1</integer></map>
+    <key>FSXToysChatMatchMode</key>
+    <map><key>Comment</key><string>Default keyword matching mode: contains or exact.</string><key>Persist</key><integer>1</integer><key>Type</key><string>String</string><key>Value</key><string>contains</string></map>
+    <key>FSXToysChatKeywords</key>
+    <map><key>Comment</key><string>One XToys chat keyword per line. Prefix a line with exact: or contains: to override the default mode.</string><key>Persist</key><integer>1</integer><key>Type</key><string>String</string><key>Value</key><string /></map>
+    <key>FSXToysChatAllowedSenders</key>
+    <map><key>Comment</key><string>Optional sender UUIDs or exact names separated by commas or lines. Blank allows all senders.</string><key>Persist</key><integer>1</integer><key>Type</key><string>String</string><key>Value</key><string /></map>
+    <key>FSXToysChatTriggerDuration</key>
+    <map><key>Comment</key><string>Seconds before a chat keyword event sends an automatic stop.</string><key>Persist</key><integer>1</integer><key>Type</key><string>F32</string><key>Value</key><real>5.0</real></map>
+    <key>FSXToysChatTriggerCooldown</key>
+    <map><key>Comment</key><string>Minimum seconds between matching chat keyword events from the same sender.</string><key>Persist</key><integer>1</integer><key>Type</key><string>F32</string><key>Value</key><real>2.0</real></map>
+    <key>FSXToysCaeilsHudV2Enabled</key>
+    <map><key>Comment</key><string>Experimental compatibility with Caeil HUD V2 messages visible as object chat.</string><key>Persist</key><integer>1</integer><key>Type</key><string>Boolean</string><key>Value</key><integer>0</integer></map>
+    <key>FSXToysCaeilsHudV2Marker</key>
+    <map><key>Comment</key><string>User-defined marker in visible Caeil HUD V2 object chat, used to extract a 0-100 progress value.</string><key>Persist</key><integer>1</integer><key>Type</key><string>String</string><key>Value</key><string /></map>
     <!-- <FS:Zi> Area Search Defaults -->
     <key>FSAreaSearch_ExcludeAttachments</key>
     <map>

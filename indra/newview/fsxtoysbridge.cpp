@@ -26,12 +26,120 @@
 #include <map>
 #include <set>
 #include <string_view>
+#include <vector>
 
 namespace
 {
 U64 s_auto_stop_generation = 0;
 std::map<LLUUID, LLSD> s_avatar_sound_candidates;
 std::map<LLUUID, F64> s_last_sound_trigger;
+std::map<std::string, F64> s_last_chat_trigger;
+
+std::string trimmedLower(std::string value)
+{
+    LLStringUtil::trim(value);
+    LLStringUtil::toLower(value);
+    return value;
+}
+
+std::vector<std::string> splitLines(const std::string& value)
+{
+    std::vector<std::string> result;
+    std::string current;
+    for (const char c : value)
+    {
+        if (c == '\n' || c == '\r' || c == ',' || c == ';')
+        {
+            LLStringUtil::trim(current);
+            if (!current.empty()) result.push_back(current);
+            current.clear();
+        }
+        else
+        {
+            current.push_back(c);
+        }
+    }
+    LLStringUtil::trim(current);
+    if (!current.empty()) result.push_back(current);
+    return result;
+}
+
+bool senderAllowed(const LLUUID& sender_id, const std::string& sender_name)
+{
+    const std::vector<std::string> allowed = splitLines(gSavedSettings.getString("FSXToysChatAllowedSenders"));
+    if (allowed.empty()) return true;
+
+    const std::string id = trimmedLower(sender_id.asString());
+    const std::string name = trimmedLower(sender_name);
+    for (const std::string& entry : allowed)
+    {
+        const std::string normalized = trimmedLower(entry);
+        if (normalized == id || normalized == name) return true;
+    }
+    return false;
+}
+
+bool sourceEnabled(const std::string& source_scope)
+{
+    if (source_scope == "nearby") return gSavedSettings.getBOOL("FSXToysChatNearby");
+    if (source_scope == "im") return gSavedSettings.getBOOL("FSXToysChatIM");
+    if (source_scope == "object") return gSavedSettings.getBOOL("FSXToysChatObject");
+    return false;
+}
+
+bool findKeyword(const std::string& message, std::string& matched_keyword)
+{
+    const bool ignore_case = gSavedSettings.getBOOL("FSXToysChatIgnoreCase");
+    const bool default_exact = gSavedSettings.getString("FSXToysChatMatchMode") == "exact";
+    std::string haystack = message;
+    LLStringUtil::trim(haystack);
+    if (ignore_case) LLStringUtil::toLower(haystack);
+
+    for (std::string rule : splitLines(gSavedSettings.getString("FSXToysChatKeywords")))
+    {
+        if (rule.empty() || rule[0] == '#') continue;
+        bool exact = default_exact;
+        if (rule.rfind("exact:", 0) == 0)
+        {
+            exact = true;
+            rule.erase(0, 6);
+        }
+        else if (rule.rfind("contains:", 0) == 0)
+        {
+            exact = false;
+            rule.erase(0, 9);
+        }
+        LLStringUtil::trim(rule);
+        if (rule.empty()) continue;
+
+        std::string needle = rule;
+        if (ignore_case) LLStringUtil::toLower(needle);
+        if ((exact && haystack == needle) || (!exact && haystack.find(needle) != std::string::npos))
+        {
+            matched_keyword = rule;
+            return true;
+        }
+    }
+    return false;
+}
+
+S32 extractPercent(const std::string& message)
+{
+    for (std::string::size_type i = 0; i < message.size(); ++i)
+    {
+        if (!std::isdigit(static_cast<unsigned char>(message[i]))) continue;
+        S32 value = 0;
+        std::string::size_type j = i;
+        while (j < message.size() && std::isdigit(static_cast<unsigned char>(message[j])))
+        {
+            value = value * 10 + (message[j] - '0');
+            ++j;
+        }
+        if (value >= 0 && value <= 100) return value;
+        i = j;
+    }
+    return -1;
+}
 
 std::set<LLUUID> selectedSoundIds()
 {
@@ -232,6 +340,62 @@ void FSXToysBridge::notifyAvatarSound(const LLUUID& sound_id, const LLUUID& obje
     // scripts react without requiring another global trigger to be wired.
     sendEvent("sl_wall_collision", data);
     scheduleStop(llclamp(gSavedSettings.getF32("FSXToysSoundTriggerDuration"), 0.5f, 60.f));
+}
+
+void FSXToysBridge::notifyChatMessage(const std::string& message, const LLUUID& sender_id,
+                                      const std::string& sender_name, const std::string& source_scope)
+{
+    if (!gSavedSettings.getBOOL("FSXToysEnabled") ||
+        !gSavedSettings.getBOOL("FSXToysChatEnabled") ||
+        message.empty() || sender_id == gAgentID || !sourceEnabled(source_scope) ||
+        !senderAllowed(sender_id, sender_name))
+    {
+        return;
+    }
+
+    std::string trimmed = message;
+    LLStringUtil::trim(trimmed);
+    if (trimmed.empty() || trimmed[0] == '@') return;
+
+    std::string matched_keyword;
+    bool caeils_hud = false;
+    S32 hud_percent = -1;
+    if (source_scope == "object" && gSavedSettings.getBOOL("FSXToysCaeilsHudV2Enabled"))
+    {
+        const std::string marker = trimmedLower(gSavedSettings.getString("FSXToysCaeilsHudV2Marker"));
+        std::string normalized_message = trimmedLower(trimmed);
+        if (!marker.empty() && normalized_message.find(marker) != std::string::npos)
+        {
+            caeils_hud = true;
+            matched_keyword = "caeils_hud_v2";
+            hud_percent = extractPercent(trimmed);
+        }
+    }
+
+    if (!caeils_hud && !findKeyword(trimmed, matched_keyword)) return;
+
+    const F64 now = LLFrameTimer::getTotalSeconds();
+    const F32 cooldown = llclamp(gSavedSettings.getF32("FSXToysChatTriggerCooldown"), 0.1f, 60.f);
+    const std::string cooldown_key = sender_id.asString() + "|" + source_scope + "|" + trimmedLower(matched_keyword);
+    const auto last = s_last_chat_trigger.find(cooldown_key);
+    if (last != s_last_chat_trigger.end() && now - last->second < cooldown) return;
+    s_last_chat_trigger[cooldown_key] = now;
+
+    const F32 duration = llclamp(gSavedSettings.getF32("FSXToysChatTriggerDuration"), 0.5f, 60.f);
+    LLSD data;
+    data["event_kind"] = caeils_hud ? "caeils_hud_v2" : "chat_keyword";
+    data["keyword"] = matched_keyword;
+    data["source_scope"] = source_scope;
+    data["sender_id"] = sender_id;
+    data["sender_name"] = sender_name;
+    data["duration"] = duration;
+    if (hud_percent >= 0)
+    {
+        data["hud_percent"] = hud_percent;
+        data["level"] = llclamp((hud_percent + 9) / 10, 1, 10);
+    }
+    sendEvent("sl_chat_keyword", data);
+    scheduleStop(duration);
 }
 
 void FSXToysBridge::refreshAvatarSoundCandidates()

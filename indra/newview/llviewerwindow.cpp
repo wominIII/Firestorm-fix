@@ -1317,6 +1317,30 @@ bool LLViewerWindow::handleRightMouseUp(LLWindow *window,  LLCoordGL pos, MASK m
 
 bool LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
+    // Older per-user/runtime settings files may not contain this newly added
+    // control yet. Treat a missing control as enabled so the feature works
+    // immediately after an incremental update; once registered, users can
+    // disable it through the normal settings system.
+    const bool global_middle_mouse_orbit =
+        !gSavedSettings.controlExists("FSGlobalMiddleMouseCameraOrbit") ||
+        gSavedSettings.getBOOL("FSGlobalMiddleMouseCameraOrbit");
+
+    if (global_middle_mouse_orbit &&
+        !gAgentCamera.cameraMouselook() &&
+        !mGlobalMiddleMouseOrbit &&
+        !LLToolCamera::getInstance()->hasMouseCapture())
+    {
+        const S32 x = ll_round((F32)pos.mX / mDisplayScale.mV[VX]);
+        const S32 y = ll_round((F32)pos.mY / mDisplayScale.mV[VY]);
+
+        mMiddleMouseDown = true;
+        mGlobalMiddleMouseOrbit = true;
+        LLToolMgr::getInstance()->setTransientTool(LLToolCamera::getInstance());
+        LLToolCamera::getInstance()->setGlobalMiddleMouseOrbit(true);
+        LLToolCamera::getInstance()->handleMouseDown(x, y, mask | MASK_ORBIT);
+        return true;
+    }
+
     bool down = true;
     gViewerInput.handleMouse(window, pos, mask, CLICK_MIDDLE, down);
 
@@ -1471,6 +1495,18 @@ LLWindowCallbacks::DragNDropResult LLViewerWindow::handleDragNDrop( LLWindow *wi
 
 bool LLViewerWindow::handleMiddleMouseUp(LLWindow *window,  LLCoordGL pos, MASK mask)
 {
+    if (mGlobalMiddleMouseOrbit)
+    {
+        const S32 x = ll_round((F32)pos.mX / mDisplayScale.mV[VX]);
+        const S32 y = ll_round((F32)pos.mY / mDisplayScale.mV[VY]);
+
+        mMiddleMouseDown = false;
+        LLToolCamera::getInstance()->handleMouseUp(x, y, mask);
+        LLToolCamera::getInstance()->setGlobalMiddleMouseOrbit(false);
+        mGlobalMiddleMouseOrbit = false;
+        return true;
+    }
+
     bool down = false;
     gViewerInput.handleMouse(window, pos, mask, CLICK_MIDDLE, down);
 
@@ -1980,6 +2016,7 @@ LLViewerWindow::LLViewerWindow(const Params& p)
     mWorldViewRectRaw(0, p.height, p.width, 0),
     mLeftMouseDown(false),
     mMiddleMouseDown(false),
+    mGlobalMiddleMouseOrbit(false),
     mRightMouseDown(false),
     mMouseInWindow( false ),
     mAllowMouseDragging(true),

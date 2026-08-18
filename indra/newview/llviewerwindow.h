@@ -525,6 +525,7 @@ private:
     LLCoordGL       mCurrentMouseDelta;     //amount mouse moved this frame
     bool            mLeftMouseDown;
     bool            mMiddleMouseDown;
+    bool            mGlobalMiddleMouseOrbit;
     bool            mRightMouseDown;
 
     LLProgressView  *mProgressView;

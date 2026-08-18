@@ -26,6 +26,8 @@
 
 #include "llviewerprecompiledheaders.h"
 
+#include "fsxtoysbridge.h"
+
 #include "llimprocessing.h"
 
 #include "llagent.h"
@@ -903,6 +905,26 @@ void LLIMProcessing::processNewMessage(LLUUID from_id,
     if (chat.mSourceType == CHAT_SOURCE_SYSTEM)
     { // Translate server message if required (MAINT-6109)
         translate_if_needed(message);
+    }
+
+    // Run the XToys keyword matcher once at the raw IM receive point. This
+    // avoids retriggering on translated text, chat-history replay, or local
+    // echo messages.
+    if (!is_muted && from_id != gAgentID)
+    {
+        std::string source_scope;
+        if (dialog == IM_NOTHING_SPECIAL || dialog == IM_SESSION_SEND || dialog == IM_SESSION_INVITE)
+        {
+            source_scope = "im";
+        }
+        else if (dialog == IM_FROM_TASK)
+        {
+            source_scope = "object";
+        }
+        if (!source_scope.empty())
+        {
+            FSXToysBridge::notifyChatMessage(message, from_id, name, source_scope);
+        }
     }
 
     LLViewerObject *source = gObjectList.findObject(session_id); //Session ID is probably the wrong thing.

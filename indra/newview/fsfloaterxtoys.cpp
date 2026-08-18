@@ -8,6 +8,7 @@
 #include "lllineeditor.h"
 #include "llscrolllistctrl.h"
 #include "llscrolllistitem.h"
+#include "lltexteditor.h"
 #include "llviewercontrol.h"
 
 #include <set>
@@ -39,11 +40,17 @@ bool FSFloaterXToys::postBuild()
 {
     mWebhookId = getChild<LLLineEditor>("webhook_id");
     mWebhookToken = getChild<LLLineEditor>("webhook_token");
+    mChatKeywords = getChild<LLTextEditor>("chat_keywords");
+    mChatAllowedSenders = getChild<LLTextEditor>("chat_allowed_senders");
     mSoundList = getChild<LLScrollListCtrl>("sound_list");
     mWebhookId->setText(gSavedSettings.getString("FSXToysWebhookId"));
     mWebhookToken->setText(gSavedSettings.getString("FSXToysWebhookToken"));
+    mChatKeywords->setText(gSavedSettings.getString("FSXToysChatKeywords"));
+    mChatAllowedSenders->setText(gSavedSettings.getString("FSXToysChatAllowedSenders"));
     mWebhookId->setCommitCallback(boost::bind(&FSFloaterXToys::saveSettings, this));
     mWebhookToken->setCommitCallback(boost::bind(&FSFloaterXToys::saveSettings, this));
+    mChatKeywords->setCommitCallback(boost::bind(&FSFloaterXToys::saveSettings, this));
+    mChatAllowedSenders->setCommitCallback(boost::bind(&FSFloaterXToys::saveSettings, this));
     getChild<LLButton>("test_btn")->setClickedCallback(boost::bind(&FSFloaterXToys::sendTest, this));
     getChild<LLButton>("stop_btn")->setClickedCallback(boost::bind(&FSFloaterXToys::sendStop, this));
     getChild<LLButton>("refresh_sounds_btn")->setClickedCallback(boost::bind(&FSFloaterXToys::refreshSounds, this));
@@ -63,6 +70,8 @@ void FSFloaterXToys::saveSettings()
 {
     gSavedSettings.setString("FSXToysWebhookId", mWebhookId->getText());
     gSavedSettings.setString("FSXToysWebhookToken", mWebhookToken->getText());
+    gSavedSettings.setString("FSXToysChatKeywords", mChatKeywords->getText());
+    gSavedSettings.setString("FSXToysChatAllowedSenders", mChatAllowedSenders->getText());
 }
 
 void FSFloaterXToys::refreshSounds()

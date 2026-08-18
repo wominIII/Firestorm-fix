@@ -3327,6 +3327,12 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
         }
         // </FS:Zi>
 
+        if (chat.mSourceType == CHAT_SOURCE_AGENT || chat.mSourceType == CHAT_SOURCE_OBJECT)
+        {
+            FSXToysBridge::notifyChatMessage(chat.mText, chat.mFromID, chat.mFromName,
+                chat.mSourceType == CHAT_SOURCE_OBJECT ? "object" : "nearby");
+        }
+
         // We have a real utterance now, so can stop showing "..." and proceed.
         if (chatter && chatter->isAvatar())
         {

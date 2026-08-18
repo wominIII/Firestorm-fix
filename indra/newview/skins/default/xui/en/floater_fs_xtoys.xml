@@ -1,27 +1,55 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<floater can_close="true" can_minimize="true" can_resize="false" height="610" layout="topleft" min_height="610" min_width="680" name="fs_xtoys" save_rect="true" title="XToys Event Bridge" width="700">
-  <text height="34" left="12" name="notice" top="12" width="550" word_wrap="true">Firestorm sends only opt-in collision events to your XToys private webhook. XToys controls devices and defines every effect.</text>
-  <check_box control_name="FSXToysEnabled" height="20" label="Enable XToys event bridge" left="12" name="enabled" top="58" width="250"/>
-  <text height="18" left="12" name="id_label" top="92" width="480">XToys webhook address (https/wss) or ID:</text>
-  <line_editor height="22" left="12" max_length_chars="128" name="webhook_id" top="112" width="550"/>
-  <text height="18" left="12" name="token_label" top="146" width="400">Shared webhook token (optional; private webhook leaves this blank):</text>
-  <line_editor is_password="true" height="22" left="12" max_length_chars="256" name="webhook_token" top="166" width="550"/>
-  <check_box control_name="FSXToysTriggerMeanCollision" height="20" label="Send server-reported avatar/object collisions" left="12" name="mean_collision" top="202" width="330"/>
-  <check_box control_name="FSXToysTriggerCollisionSound" height="20" label="Send nearby material collision sounds (walls/ground)" left="12" name="collision_sound" top="228" width="360"/>
-  <spinner control_name="FSXToysCollisionSoundRange" decimal_digits="1" height="22" increment="0.5" label="Sound range (m)" label_width="120" left="360" max_val="10" min_val="0.5" name="sound_range" top="225" width="200"/>
-  <check_box control_name="FSXToysTriggerSelectedSound" height="20" label="Trigger when selected sounds play from my attachments" left="12" name="selected_sound_enabled" top="260" width="420"/>
-  <spinner control_name="FSXToysSoundTriggerDuration" decimal_digits="1" height="22" increment="0.5" label="Duration (s)" label_width="90" left="12" max_val="60" min_val="0.5" name="sound_duration" top="286" width="190"/>
-  <spinner control_name="FSXToysSoundTriggerCooldown" decimal_digits="1" height="22" increment="0.5" label="Cooldown (s)" label_width="95" left="220" max_val="60" min_val="0.1" name="sound_cooldown" top="286" width="200"/>
-  <text height="32" left="12" name="sound_list_label" top="318" width="676" word_wrap="true">Select sounds found in readable attachment contents or observed during this login. Refresh after wearing an item or after it plays a sound.</text>
-  <scroll_list draw_heading="true" draw_stripes="true" follows="left|top" height="178" left="12" name="sound_list" top="352" width="676">
-    <scroll_list.columns label="On" name="enabled" width="38"/>
-    <scroll_list.columns label="Sound" name="sound_name" width="190"/>
-    <scroll_list.columns label="Attachment" name="attachment_name" width="190"/>
-    <scroll_list.columns label="Sound UUID" name="sound_id" width="238"/>
-  </scroll_list>
-  <button height="26" label="Refresh sound list" left="12" name="refresh_sounds_btn" top="538" width="150"/>
-  <button height="26" label="Preview selected" left="170" name="preview_sound_btn" top="538" width="150"/>
-  <text height="38" left="332" name="note" top="536" width="356" word_wrap="true">Selected sounds use the existing sl_wall_collision action. No additional XToys trigger is required.</text>
-  <button height="26" label="Send test event" left="12" name="test_btn" top="574" width="150"/>
-  <button height="26" label="Send stop event" left_pad="8" name="stop_btn" width="150"/>
+<floater can_close="true" can_minimize="true" can_resize="false" height="700" layout="topleft" min_height="700" min_width="720" name="fs_xtoys" save_rect="true" title="XToys Event Bridge" width="720">
+  <tab_container follows="all" height="646" left="8" name="xtoys_tabs" tab_position="top" top="8" width="704">
+    <panel border="true" label="Connection &amp; Events" layout="topleft" name="connection_panel">
+      <text height="34" left="12" name="notice" top="12" width="676" word_wrap="true">Firestorm sends only enabled events to your XToys private webhook. XToys controls devices and defines every effect.</text>
+      <check_box control_name="FSXToysEnabled" height="20" label="Enable XToys event bridge" left="12" name="enabled" top="58" width="300"/>
+      <text height="18" left="12" name="id_label" top="92" width="620">XToys webhook address (https/wss) or ID:</text>
+      <line_editor height="22" left="12" max_length_chars="128" name="webhook_id" top="112" width="676"/>
+      <text height="18" left="12" name="token_label" top="146" width="620">Shared webhook token (optional; private webhook leaves this blank):</text>
+      <line_editor is_password="true" height="22" left="12" max_length_chars="256" name="webhook_token" top="166" width="676"/>
+      <check_box control_name="FSXToysTriggerMeanCollision" height="20" label="Send server-reported avatar/object collisions" left="12" name="mean_collision" top="208" width="420"/>
+      <check_box control_name="FSXToysTriggerCollisionSound" height="20" label="Send nearby material collision sounds (walls/ground)" left="12" name="collision_sound" top="238" width="440"/>
+      <spinner control_name="FSXToysCollisionSoundRange" decimal_digits="1" height="22" increment="0.5" label="Sound range (m)" label_width="120" left="12" max_val="10" min_val="0.5" name="sound_range" top="270" width="210"/>
+      <text height="48" left="12" name="event_note" top="316" width="676" word_wrap="true">Collision and attachment events keep their existing XToys actions. Chat rules and the experimental Caeil HUD V2 adapter are configured on the Chat Triggers tab.</text>
+      <button height="26" label="Send test event" left="12" name="test_btn" top="382" width="160"/>
+      <button height="26" label="Send stop event" left="184" name="stop_btn" top="382" width="160"/>
+    </panel>
+    <panel border="true" label="Attachment Sounds" layout="topleft" name="sounds_panel">
+      <check_box control_name="FSXToysTriggerSelectedSound" height="20" label="Trigger when selected sounds play from my attachments" left="12" name="selected_sound_enabled" top="18" width="500"/>
+      <spinner control_name="FSXToysSoundTriggerDuration" decimal_digits="1" height="22" increment="0.5" label="Duration (s)" label_width="100" left="12" max_val="60" min_val="0.5" name="sound_duration" top="50" width="210"/>
+      <spinner control_name="FSXToysSoundTriggerCooldown" decimal_digits="1" height="22" increment="0.5" label="Cooldown (s)" label_width="105" left="242" max_val="60" min_val="0.1" name="sound_cooldown" top="50" width="220"/>
+      <text height="36" left="12" name="sound_list_label" top="88" width="676" word_wrap="true">Select sounds found in readable attachment contents or observed during this login. Refresh after wearing an item or after it plays a sound.</text>
+      <scroll_list draw_heading="true" draw_stripes="true" follows="left|top" height="384" left="12" name="sound_list" top="130" width="676">
+        <scroll_list.columns label="On" name="enabled" width="38"/>
+        <scroll_list.columns label="Sound" name="sound_name" width="190"/>
+        <scroll_list.columns label="Attachment" name="attachment_name" width="190"/>
+        <scroll_list.columns label="Sound UUID" name="sound_id" width="238"/>
+      </scroll_list>
+      <button height="26" label="Refresh sound list" left="12" name="refresh_sounds_btn" top="526" width="160"/>
+      <button height="26" label="Preview selected" left="184" name="preview_sound_btn" top="526" width="160"/>
+      <text height="40" left="356" name="note" top="522" width="332" word_wrap="true">Selected sounds use the existing sl_wall_collision action.</text>
+    </panel>
+    <panel border="true" label="Chat Triggers" layout="topleft" name="chat_panel">
+      <check_box control_name="FSXToysChatEnabled" height="20" label="Enable chat keyword triggers" left="12" name="chat_enabled" top="16" width="310"/>
+      <check_box control_name="FSXToysChatNearby" height="20" label="Nearby chat" left="32" name="chat_nearby" top="46" width="150"/>
+      <check_box control_name="FSXToysChatIM" height="20" label="Private/group IM" left="190" name="chat_im" top="46" width="170"/>
+      <check_box control_name="FSXToysChatObject" height="20" label="Object messages" left="370" name="chat_object" top="46" width="180"/>
+      <check_box control_name="FSXToysChatIgnoreCase" height="20" label="Ignore letter case" left="32" name="chat_ignore_case" top="76" width="190"/>
+      <combo_box control_name="FSXToysChatMatchMode" height="22" label="Default match" left="242" name="chat_match_mode" top="74" width="190">
+        <combo_box.item label="Contains" name="contains" value="contains"/>
+        <combo_box.item label="Exact" name="exact" value="exact"/>
+      </combo_box>
+      <spinner control_name="FSXToysChatTriggerDuration" decimal_digits="1" height="22" increment="0.5" label="Duration (s)" label_width="92" left="12" max_val="60" min_val="0.5" name="chat_duration" top="108" width="190"/>
+      <spinner control_name="FSXToysChatTriggerCooldown" decimal_digits="1" height="22" increment="0.5" label="Cooldown (s)" label_width="98" left="220" max_val="60" min_val="0.1" name="chat_cooldown" top="108" width="200"/>
+      <text height="34" left="12" name="chat_keywords_label" top="146" width="676" word_wrap="true">Keywords, one per line. Prefix a rule with exact: or contains: to override the default.</text>
+      <text_editor height="128" left="12" name="chat_keywords" top="182" width="676" word_wrap="true"/>
+      <text height="34" left="12" name="chat_allowed_senders_label" top="320" width="676" word_wrap="true">Allowed sender UUIDs or exact display names, one per line. Leave blank to allow everyone.</text>
+      <text_editor height="76" left="12" name="chat_allowed_senders" top="356" width="676" word_wrap="true"/>
+      <check_box control_name="FSXToysCaeilsHudV2Enabled" height="20" label="Experimental Caeil HUD V2 visible-text adapter" left="12" name="caeils_enabled" top="448" width="430"/>
+      <text height="34" left="12" name="caeils_marker_label" top="478" width="676" word_wrap="true">Unique marker found in the HUD's visible object message. The first 0-100 number becomes XToys level 1-10.</text>
+      <line_editor control_name="FSXToysCaeilsHudV2Marker" height="22" left="12" max_length_chars="128" name="caeils_marker" top="514" width="676"/>
+      <text height="44" left="12" name="chat_note" top="548" width="676" word_wrap="true">Messages sent by you, RLV commands, translated copies, and chat-history replay are ignored. Caeil compatibility requires text the Viewer can actually receive.</text>
+    </panel>
+  </tab_container>
 </floater>

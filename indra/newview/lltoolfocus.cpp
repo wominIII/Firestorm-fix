@@ -79,6 +79,7 @@ LLToolCamera::LLToolCamera()
     mClickPickPending(false),
     mValidSelection(false),
     mMouseSteering(false),
+    mGlobalMiddleMouseOrbit(false),
     mMouseUpX(0),
     mMouseUpY(0),
     mMouseUpMask(MASK_NONE)
@@ -132,7 +133,11 @@ bool LLToolCamera::handleMouseDown(S32 x, S32 y, MASK mask)
     // Sometimes Windows issues down and up events near simultaneously
     // without giving async pick a chance to trigged
     // Ex: mouse from numlock emulation
-    mClickPickPending = true;
+    // Global middle-button orbit is deliberately independent of world/UI
+    // picking. This prevents a click on an avatar, attachment, or floater
+    // from cancelling camera rotation or triggering an object action.
+    mClickPickPending = !mGlobalMiddleMouseOrbit;
+    mValidClickPoint = mGlobalMiddleMouseOrbit;
 
     // If mouse capture gets ripped away, claim we moused up
     // at the point we moused down. JC
@@ -142,7 +147,10 @@ bool LLToolCamera::handleMouseDown(S32 x, S32 y, MASK mask)
 
     gViewerWindow->hideCursor();
 
-    gViewerWindow->pickAsync(x, y, mask, pickCallback, /*bool pick_transparent*/ false, /*bool pick_rigged*/ false, /*bool pick_unselectable*/ true);
+    if (!mGlobalMiddleMouseOrbit)
+    {
+        gViewerWindow->pickAsync(x, y, mask, pickCallback, /*bool pick_transparent*/ false, /*bool pick_rigged*/ false, /*bool pick_unselectable*/ true);
+    }
 
     return true;
 }
@@ -284,6 +292,7 @@ void LLToolCamera::releaseMouse()
     }
 
     mMouseSteering = false;
+    mGlobalMiddleMouseOrbit = false;
     mValidClickPoint = false;
     mOutsideSlopX = false;
     mOutsideSlopY = false;
@@ -381,7 +390,8 @@ bool LLToolCamera::handleHover(S32 x, S32 y, MASK mask)
             return true;
         }
 
-        if (gCameraBtnOrbit ||
+        if (mGlobalMiddleMouseOrbit ||
+            gCameraBtnOrbit ||
             mask == MASK_ORBIT ||
             mask == (MASK_ALT | MASK_ORBIT))
         {
