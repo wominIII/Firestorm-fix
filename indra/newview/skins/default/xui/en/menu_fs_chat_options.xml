@@ -32,6 +32,16 @@
 	</menu_item_check>
 	<menu_item_separator/>
 	<menu_item_check
+		label="Immersive transparent chat"
+		name="immersive_transparent_chat">
+		<menu_item_check.on_check
+			function="CheckControl"
+			parameter="FSImmersiveTransparentChat"/>
+		<menu_item_check.on_click
+			function="ToggleControl"
+			parameter="FSImmersiveTransparentChat"/>
+	</menu_item_check>
+	<menu_item_check
 		label="Use V1 style chat headers"
 		name="plain_text_chat_history">
 		<menu_item_check.on_check

@@ -115,6 +115,7 @@ protected:
     S32                         mLocalIndentation;
     S32                         mIndentation;
     S32                         mItemHeight;
+    bool                        mLastModernInventoryView;
 //  S32                         mDragStartX,
 //                              mDragStartY;
 
@@ -174,6 +175,7 @@ protected:
     virtual bool isHighlightAllowed();
     virtual bool isHighlightActive();
     virtual bool isFadeItem();
+    bool useModernInventoryView() const;
     virtual bool isFlashing() { return false; }
     virtual void setFlashState(bool, bool) { }
 

@@ -52,6 +52,7 @@
 #include "llsdparam.h"
 #include "llspinctrl.h"
 #include "lltoggleablemenu.h"
+#include "lltextbox.h"
 #include "lltooldraganddrop.h"
 #include "lltrans.h"
 #include "llviewermenu.h"
@@ -282,6 +283,7 @@ bool LLPanelMainInventory::postBuild()
     mFilterTabs->setCommitCallback(boost::bind(&LLPanelMainInventory::onFilterSelected, this));
 
     mCounterCtrl = getChild<LLUICtrl>("ItemcountText");
+    mModernPathBar = getChild<LLTextBox>("modern_inventory_path");
 
     //panel->getFilter().markDefault();
 
@@ -1168,7 +1170,7 @@ void LLPanelMainInventory::onFilterTypeSelected(const std::string& filter_type_n
 
         return;
     }
-    // <FS:minerjr> [FIRE-35042] Inventory - Only Coalesced Filter - More accessible 
+    // <FS:minerjr> [FIRE-35042] Inventory - Only Coalesced Filter - More accessible
     // Special treatment for "coalesced" filter
     else if (filter_type_name == "filter_type_coalesced")
     {
@@ -1399,6 +1401,7 @@ void LLPanelMainInventory::setFocusOnFilterEditor()
 // virtual
 void LLPanelMainInventory::draw()
 {
+    updateModernPathBar();
     if (mActivePanel && mFilterEditor)
     {
         // <FS:Ansariel> Separate search for inventory tabs from Satomi Ahn (FIRE-913 & FIRE-6862)
@@ -1430,6 +1433,72 @@ void LLPanelMainInventory::draw()
     LLPanel::draw();
     updateItemcountText();
     updateCombinationVisibility();
+}
+
+void LLPanelMainInventory::updateModernPathBar()
+{
+    if (!mModernPathBar || !mDefaultViewPanel || !mCombinationViewPanel)
+    {
+        return;
+    }
+
+    static LLCachedControl<bool> modern_inventory_view(gSavedSettings, "FSModernInventoryView", true);
+    const bool modern = modern_inventory_view;
+
+    if (modern != mModernPathLayoutApplied)
+    {
+        constexpr S32 PATH_HEIGHT = 28;
+        LLPanel* inventory_views[] = { mDefaultViewPanel, mCombinationViewPanel };
+        for (LLPanel* panel : inventory_views)
+        {
+            LLRect rect = panel->getRect();
+            rect.mTop += modern ? -PATH_HEIGHT : PATH_HEIGHT;
+            panel->setShape(rect);
+        }
+
+        mModernPathLayoutApplied = modern;
+    }
+
+    mModernPathBar->setVisible(modern);
+    if (!modern)
+    {
+        return;
+    }
+
+    LLFolderViewItem* selected = nullptr;
+    if (mActivePanel && mActivePanel->getRootFolder())
+    {
+        selected = mActivePanel->getRootFolder()->getCurSelectedItem();
+    }
+
+    std::vector<std::string> components;
+    for (LLFolderViewItem* item = selected; item; item = item->getParentFolder())
+    {
+        if (item == item->getRoot())
+        {
+            continue;
+        }
+        const LLFolderViewModelItem* model_item = item->getViewModelItem();
+        if (!model_item)
+        {
+            continue;
+        }
+        const std::string& local_label = model_item->getLocalLabel();
+        const std::string& name = local_label.empty() ? model_item->getName() : local_label;
+        if (!name.empty())
+        {
+            components.push_back(name);
+        }
+    }
+    std::reverse(components.begin(), components.end());
+
+    std::string path = getString("inventory_title");
+    for (const std::string& component : components)
+    {
+        path += "  >  " + component;
+    }
+    mModernPathBar->setValue(path);
+    mModernPathBar->setToolTip(path);
 }
 
 void LLPanelMainInventory::updateItemcountText()
@@ -2046,7 +2115,7 @@ void LLFloaterInventoryFinder::onOnlyCoalescedFilterCommit()
     if (mOnlyCoalescedFilterCheck && mFilter)
     {
         // Set the mFilter's Filter Coalesced Objects value to the Only Coalesced Filter Checkbox value
-        mFilter->setFilterCoalescedObjects(mOnlyCoalescedFilterCheck->getValue());        
+        mFilter->setFilterCoalescedObjects(mOnlyCoalescedFilterCheck->getValue());
     }
     FSInventoryCustomTabs::notifyFilterStateChanged(mPanelMainInventory); // <FS:PP> FIRE-35598: Custom filters in inventory (feature idea: Catznip)
 }

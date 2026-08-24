@@ -187,6 +187,28 @@
          value="Toggle first-person cursor" />
     </rows>
     <rows
+     name="toggle_avatar_name_tags"
+     value="toggle_avatar_name_tags">
+        <columns
+         column="lst_action"
+         font="SansSerif"
+         halign="left"
+         name="lst_action"
+         tool_tip="Hide all avatar name tags or restore the previous name-tag mode"
+         value="Toggle avatar name tags" />
+    </rows>
+    <rows
+     name="toggle_ui_rendering"
+     value="toggle_ui_rendering">
+        <columns
+         column="lst_action"
+         font="SansSerif"
+         halign="left"
+         name="lst_action"
+         tool_tip="Stop or resume rendering the complete viewer user interface"
+         value="Toggle complete UI rendering" />
+    </rows>
+    <rows
      name="reconstruct_cached_mesh"
      value="reconstruct_cached_mesh">
         <columns

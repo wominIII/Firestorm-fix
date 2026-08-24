@@ -98,8 +98,19 @@ LLToolPie::LLToolPie()
     mClickAction(0),
     mClickActionBuyEnabled( true ),
     mClickActionPayEnabled( true ),
+    mHoverAvatarID(),
+    mHoverAvatarTimer(),
     mDoubleClickTimer()
 {
+}
+
+bool LLToolPie::isHoveringAvatar(const LLUUID& avatar_id) const
+{
+    // UI controls can consume hover events before the world tool sees them. A
+    // short freshness window prevents the last world pick remaining active.
+    return avatar_id.notNull()
+        && avatar_id == mHoverAvatarID
+        && mHoverAvatarTimer.getElapsedTimeF32() < 0.25f;
 }
 
 bool LLToolPie::handleAnyMouseClick(S32 x, S32 y, MASK mask, EMouseClickType clicktype, bool down)
@@ -849,11 +860,11 @@ void LLToolPie::selectionPropertiesReceived()
 bool LLToolPie::handleHover(S32 x, S32 y, MASK mask)
 {
     bool pick_rigged = false; //gSavedSettings.getBOOL("AnimatedObjectsAllowLeftClick");
-    // <FS:minerjr> [FIRE-35019] Add LLHUDNameTag background to floating text and hover highlights 
+    // <FS:minerjr> [FIRE-35019] Add LLHUDNameTag background to floating text and hover highlights
     // We want to unhighlight the previous hover object's parent before we get the next hover pick and lose the reference
     // (Possible optimization - check if the current object and previous ones are the same, and if so, don't set the text is highlighed flag to false)
     LLViewerObject* oldObject = NULL;
-    LLViewerObject* oldParent = NULL; 
+    LLViewerObject* oldParent = NULL;
     // If the previous mHoverPick object is valid, then try to set the Text Is Highlighted flag to false to clear it.
     if (mHoverPick.isValid())
     {
@@ -865,13 +876,27 @@ bool LLToolPie::handleHover(S32 x, S32 y, MASK mask)
             {
                 // We want to set the parent object's flag to false, and it will recursively change until it finds a valid mText object.
                 oldParent->setTextIsHighlighted(false);
-            } 
+            }
         }
     }
     // <FS:minerjr> [FIRE-35019]
     mHoverPick = gViewerWindow->pickImmediate(x, y, false, pick_rigged);
     LLViewerObject *parent = NULL;
     LLViewerObject *object = mHoverPick.getObject();
+    LLVOAvatar* hovered_avatar = object ? object->asAvatar() : nullptr;
+    if (!hovered_avatar && object)
+    {
+        hovered_avatar = object->getAvatarAncestor();
+    }
+    if (hovered_avatar)
+    {
+        mHoverAvatarID = hovered_avatar->getID();
+        mHoverAvatarTimer.reset();
+    }
+    else
+    {
+        mHoverAvatarID.setNull();
+    }
 // [RLVa:KB] - Checked: RLVa-1.1.0
     // Blanket block all left-click special actions on objects the user can't interact with
     if ( (RlvActions::isRlvEnabled()) && (!RlvActions::canInteract(object, mHoverPick.mObjectOffset)) )
@@ -970,7 +995,7 @@ bool LLToolPie::handleHover(S32 x, S32 y, MASK mask)
         {
             parent->setTextIsHighlighted(true);
         }
-    }    
+    }
     // </FS:minerjr> [FIRE-35019]
 
     return true;

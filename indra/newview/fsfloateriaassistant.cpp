@@ -1,6 +1,17 @@
 /**
  * @file fsfloateriaassistant.cpp
  * @brief AI-assisted diagnostics for avatar attachments and selected objects.
+ *
+ * $LicenseInfo:firstyear=2026&license=viewerlgpl$
+ * Firestorm Viewer Source Code
+ * Copyright (C) 2026, Firestorm contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 2.1.
+ * This library is distributed without any warranty; without even the implied
+ * warranty of merchantability or fitness for a particular purpose.
+ * See <https://www.gnu.org/licenses/> for the full license text.
+ * $/LicenseInfo$
  */
 
 #include "llviewerprecompiledheaders.h"
@@ -244,10 +255,16 @@ LLSD FSAIAssistantService::collectSnapshot()
     snapshot["capabilities"]["script_patch_in_place"] = true;
     snapshot["capabilities"]["inventory_management"] = true;
     snapshot["capabilities"]["detailed_object_reads"] = true;
+    snapshot["capabilities"]["settings_management"] = true;
+    snapshot["capabilities"]["mesh_upload_diagnostics"] = true;
+    snapshot["capabilities"]["event_stream"] = true;
+    snapshot["capabilities"]["dry_run_plans"] = true;
+    snapshot["capabilities"]["audited_undo"] = true;
     snapshot["wearables"] = LLSD::emptyArray();
     snapshot["attachments"] = LLSD::emptyArray();
     snapshot["animations"] = LLSD::emptyArray();
     snapshot["selected_objects"] = LLSD::emptyArray();
+    snapshot["selection_context"]["nodes"] = LLSD::emptyArray();
 
     uuid_vec_t wearable_ids;
     gAgentWearables.getWearableItemIDs(wearable_ids);
@@ -313,6 +330,15 @@ LLSD FSAIAssistantService::collectSnapshot()
     }
 
     LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+    LLViewerObject* primary_object = selection ? selection->getPrimaryObject() : nullptr;
+    snapshot["selection_context"]["object_count"] = selection ? selection->getObjectCount() : 0;
+    snapshot["selection_context"]["root_count"] = selection ? selection->getRootObjectCount() : 0;
+    if (primary_object)
+    {
+        snapshot["selection_context"]["primary_object_id"] = primary_object->getID();
+        snapshot["selection_context"]["primary_root_id"] = primary_object->getRootEdit()
+            ? primary_object->getRootEdit()->getID() : primary_object->getID();
+    }
     for (LLObjectSelection::iterator it = selection->begin(); it != selection->end(); ++it)
     {
         LLSelectNode* node = *it;
@@ -322,7 +348,24 @@ LLSD FSAIAssistantService::collectSnapshot()
         }
         LLSD object = objectToLLSD(node->getObject(), node->mName, node->mDescription, true);
         object["individual_selection"] = node->mIndividualSelection;
+        object["is_primary_selection"] = node->getObject() == primary_object;
+        object["selected_faces"] = LLSD::emptyArray();
+        for (S32 face = 0; face < node->getObject()->getNumTEs(); ++face)
+        {
+            if (node->isTESelected(face)) object["selected_faces"].append(face);
+        }
+        object["last_selected_face"] = node->getLastSelectedTE();
         snapshot["selected_objects"].append(object);
+
+        LLSD selection_node;
+        selection_node["object_id"] = node->getObject()->getID();
+        selection_node["root_id"] = node->getObject()->getRootEdit()
+            ? node->getObject()->getRootEdit()->getID() : node->getObject()->getID();
+        selection_node["is_primary"] = node->getObject() == primary_object;
+        selection_node["individual_selection"] = node->mIndividualSelection;
+        selection_node["selected_faces"] = object["selected_faces"];
+        selection_node["last_selected_face"] = object["last_selected_face"];
+        snapshot["selection_context"]["nodes"].append(selection_node);
     }
 
     return snapshot;

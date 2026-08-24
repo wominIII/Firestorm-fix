@@ -50,6 +50,7 @@ class LLMenuButton;
 class LLMenuGL;
 class LLSidepanelInventory;
 class LLToggleableMenu;
+class LLTextBox;
 class LLFloater;
 class LLFloaterSidePanelContainer;
 class LLSidepanelInventory;
@@ -206,6 +207,7 @@ protected:
     void saveTexture(const LLSD& userdata);
     bool isSaveTextureEnabled(const LLSD& userdata);
     void updateItemcountText();
+    void updateModernPathBar();
 
     void updatePanelVisibility();
     void updateCombinationVisibility();
@@ -234,6 +236,7 @@ private:
     LLFilterEditor*             mFilterEditor;
     LLTabContainer*             mFilterTabs;
     LLUICtrl*                   mCounterCtrl;
+    LLTextBox*                  mModernPathBar = nullptr;
     LLHandle<LLFloater>         mFinderHandle;
     LLInventoryPanel*           mActivePanel;
     LLInventoryPanel*           mAllItemsPanel = nullptr;
@@ -251,6 +254,8 @@ private:
     std::string                 mCategoryCountString;
     LLComboBox*                 mSearchTypeCombo;
     EFetchState                 mLastFetchState{ EFetchState::Unknown };
+    // The base XUI reserves the breadcrumb row by default.
+    bool                        mModernPathLayoutApplied = true;
 
     LLButton* mBackBtn;
     LLButton* mForwardBtn;
@@ -358,6 +363,4 @@ private:
 };
 
 #endif // LL_LLPANELMAININVENTORY_H
-
-
 

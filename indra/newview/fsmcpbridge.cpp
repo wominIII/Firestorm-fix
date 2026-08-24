@@ -1,6 +1,17 @@
 /**
  * @file fsmcpbridge.cpp
  * @brief Local file bridge used by the Firestorm MCP server.
+ *
+ * $LicenseInfo:firstyear=2026&license=viewerlgpl$
+ * Firestorm Viewer Source Code
+ * Copyright (C) 2026, Firestorm contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 2.1.
+ * This library is distributed without any warranty; without even the implied
+ * warranty of merchantability or fitness for a particular purpose.
+ * See <https://www.gnu.org/licenses/> for the full license text.
+ * $/LicenseInfo$
  */
 
 #include "llviewerprecompiledheaders.h"
@@ -8,6 +19,7 @@
 #include "fsmcpbridge.h"
 
 #include "fsfloateriaassistant.h"
+#include "llfloatermodelpreview.h"
 #include "llagent.h"
 #include "llassetstorage.h"
 #include "lldir.h"
@@ -43,6 +55,7 @@ const char* MCP_RESULT_FILE = "result.xml";
 constexpr S32 MCP_MAX_SCRIPT_SOURCE_BYTES = 256 * 1024;
 constexpr S32 MCP_MAX_INVENTORY_RESULTS = 1000;
 constexpr S32 MCP_MAX_BATCH_ENTRIES = 100;
+constexpr S32 MCP_MAX_SETTINGS_RESULTS = 1000;
 
 struct ScriptReadContext
 {
@@ -236,6 +249,109 @@ bool validInventoryName(std::string& name)
     return !name.empty() && name.size() <= 63 && name.find('\n') == std::string::npos &&
         name.find('\r') == std::string::npos;
 }
+
+bool isSensitiveSettingName(std::string name)
+{
+    LLStringUtil::toLower(name);
+    static const std::vector<std::string> sensitive_markers = {
+        "password", "passwd", "apikey", "api_key", "accesskey", "access_key",
+        "secret", "token", "credential", "oauth", "authorization", "cookie",
+        "sessionid", "session_id"
+    };
+    for (const std::string& marker : sensitive_markers)
+    {
+        if (name.find(marker) != std::string::npos) return true;
+    }
+    return false;
+}
+
+LLSD settingToLLSD(const std::string& group_name, const std::string& name,
+                   LLControlVariable* control, bool include_value)
+{
+    LLSD result;
+    if (!control) return result;
+    const bool sensitive = isSensitiveSettingName(name);
+    result["group"] = group_name;
+    result["name"] = name;
+    result["type"] = LLControlGroup::typeEnumToString(control->type());
+    result["comment"] = control->getComment();
+    result["persisted"] = control->isPersisted();
+    result["hidden"] = control->isHiddenFromSettingsEditor();
+    result["is_default"] = control->isDefault();
+    result["sensitive"] = sensitive;
+    result["writable"] = control->isPersisted() && !control->isHiddenFromSettingsEditor() && !sensitive;
+    if (include_value)
+    {
+        if (sensitive)
+        {
+            result["value_redacted"] = true;
+        }
+        else
+        {
+            result["value"] = control->getValue();
+            result["default"] = control->getDefault();
+        }
+    }
+    return result;
+}
+
+LLControlGroup* findSettingGroup(const std::string& group_name)
+{
+    if (group_name == "viewer") return &gSavedSettings;
+    if (group_name == "account") return &gSavedPerAccountSettings;
+    return nullptr;
+}
+
+class MCPSettingsCollector final : public LLControlGroup::ApplyFunctor
+{
+public:
+    MCPSettingsCollector(const std::string& group_name, std::string query, bool changed_only,
+                         bool include_values)
+        : mGroupName(group_name), mQuery(std::move(query)), mChangedOnly(changed_only),
+          mIncludeValues(include_values)
+    {
+        LLStringUtil::toLower(mQuery);
+    }
+
+    void apply(const std::string& name, LLControlVariable* control) override
+    {
+        if (!control || (mChangedOnly && control->isDefault())) return;
+        if (!mQuery.empty())
+        {
+            std::string searchable = name + "\n" + control->getComment();
+            LLStringUtil::toLower(searchable);
+            if (searchable.find(mQuery) == std::string::npos) return;
+        }
+        mEntries.append(settingToLLSD(mGroupName, name, control, mIncludeValues));
+    }
+
+    LLSD mEntries = LLSD::emptyArray();
+private:
+    std::string mGroupName;
+    std::string mQuery;
+    bool mChangedOnly;
+    bool mIncludeValues;
+};
+
+bool validSettingValue(eControlType type, const LLSD& value)
+{
+    switch (type)
+    {
+        case TYPE_U32:
+        case TYPE_S32: return value.isInteger();
+        case TYPE_F32: return value.isInteger() || value.isReal();
+        case TYPE_BOOLEAN: return value.isBoolean();
+        case TYPE_STRING: return value.isString();
+        case TYPE_VEC3:
+        case TYPE_VEC3D:
+        case TYPE_COL3: return value.isArray() && value.size() == 3;
+        case TYPE_QUAT:
+        case TYPE_RECT:
+        case TYPE_COL4: return value.isArray() && value.size() == 4;
+        case TYPE_LLSD: return true;
+        default: return false;
+    }
+}
 }
 
 LLEventTimer* FSMCPBridge::sPublishTimer = nullptr;
@@ -301,13 +417,25 @@ void FSMCPBridge::publishNow()
         snapshot["selected_objects"] = LLSD::emptyArray();
     }
     snapshot["captured_at"] = LLDate::now();
-    snapshot["mcp_bridge"]["protocol_version"] = 4;
+    snapshot["mcp_bridge"]["protocol_version"] = 7;
     snapshot["mcp_bridge"]["read_only"] = false;
     snapshot["mcp_bridge"]["direct_transform_write"] = true;
     snapshot["mcp_bridge"]["script_management"] = true;
     snapshot["mcp_bridge"]["inventory_management"] = true;
     snapshot["mcp_bridge"]["detailed_object_reads"] = true;
     snapshot["mcp_bridge"]["viewer_logged_in"] = gAgent.isInitialized();
+    snapshot["mcp_bridge"]["event_stream"] = true;
+    snapshot["mcp_bridge"]["dry_run_plans"] = true;
+    snapshot["mcp_bridge"]["audited_undo"] = true;
+    if (LLFloaterModelPreview::sInstance && LLFloaterModelPreview::sInstance->getVisible())
+    {
+        snapshot["mesh_upload"] = LLFloaterModelPreview::sInstance->getMCPUploadState();
+    }
+    else
+    {
+        snapshot["mesh_upload"]["open"] = false;
+        snapshot["mesh_upload"]["phase"] = "closed";
+    }
 
     const std::string snapshot_path = gDirUtilp->add(getBridgeDirectory(), MCP_SNAPSHOT_FILE);
     if (writeAtomicXML(snapshot_path, snapshot))
@@ -349,7 +477,7 @@ void FSMCPBridge::processPendingRequest()
 
 LLSD FSMCPBridge::executeRequest(const LLSD& request)
 {
-    if (request["protocol_version"].asInteger() < 2 || request["protocol_version"].asInteger() > 4)
+    if (request["protocol_version"].asInteger() < 2 || request["protocol_version"].asInteger() > 7)
     {
         return failureResult(request, "Unsupported MCP write protocol version");
     }
@@ -366,7 +494,10 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         action != "inventory_get" && action != "inventory_list" &&
         action != "inventory_search" && action != "inventory_create_folder" &&
         action != "inventory_rename" && action != "inventory_move" &&
-        action != "inventory_trash")
+        action != "inventory_trash" && action != "settings_list" &&
+        action != "settings_get" && action != "settings_set" && action != "settings_reset" &&
+        action != "mesh_upload_state" && action != "mesh_upload_configure" &&
+        action != "mesh_upload_calculate")
     {
         return failureResult(request, "Unsupported MCP action");
     }
@@ -563,7 +694,113 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         }
     }
 
-    const LLUUID object_id(request["object_id"].asString());
+    const bool settings_action = action.rfind("settings_", 0) == 0;
+    if (settings_action)
+    {
+        const std::string group_name = request["group"].asString();
+        if (action == "settings_list")
+        {
+            const std::string query = request["query"].asString();
+            const bool changed_only = request["changed_only"].asBoolean();
+            const bool include_values = request["include_values"].asBoolean();
+            const S32 offset = llmax(0, request["offset"].asInteger());
+            const S32 limit = llclamp(request.has("limit") ? request["limit"].asInteger() : 200,
+                                      1, MCP_MAX_SETTINGS_RESULTS);
+            std::vector<LLSD> matches;
+            auto collect_group = [&](const std::string& current_name, LLControlGroup& group)
+            {
+                MCPSettingsCollector collector(current_name, query, changed_only, include_values);
+                group.applyToAll(&collector);
+                for (LLSD::array_const_iterator it = collector.mEntries.beginArray();
+                     it != collector.mEntries.endArray(); ++it) matches.push_back(*it);
+            };
+            if (group_name.empty() || group_name == "all" || group_name == "viewer")
+                collect_group("viewer", gSavedSettings);
+            if (group_name.empty() || group_name == "all" || group_name == "account")
+                collect_group("account", gSavedPerAccountSettings);
+            if (!group_name.empty() && group_name != "all" && group_name != "viewer" && group_name != "account")
+                return failureResult(request, "group must be viewer, account, or all");
+            std::sort(matches.begin(), matches.end(), [](const LLSD& left, const LLSD& right)
+            {
+                const std::string left_key = left["group"].asString() + "\n" + left["name"].asString();
+                const std::string right_key = right["group"].asString() + "\n" + right["name"].asString();
+                return left_key < right_key;
+            });
+            LLSD entries = LLSD::emptyArray();
+            const S32 matched = static_cast<S32>(matches.size());
+            const S32 end = llmin(matched, offset + limit);
+            for (S32 index = offset; index < end; ++index) entries.append(matches[index]);
+            LLSD result = scriptResult(request, true, "loaded", "Viewer settings listed");
+            result["entries"] = entries;
+            result["returned"] = static_cast<S32>(entries.size());
+            result["matched"] = matched;
+            result["offset"] = offset;
+            result["next_offset"] = offset + static_cast<S32>(entries.size());
+            result["truncated"] = result["next_offset"].asInteger() < matched;
+            return result;
+        }
+
+        LLControlGroup* group = findSettingGroup(group_name);
+        if (!group) return failureResult(request, "group must be viewer or account");
+        const std::string name = request["name"].asString();
+        LLControlVariable* control = group->getControl(name);
+        if (!control) return failureResult(request, "Viewer setting was not found");
+        if (action == "settings_get")
+        {
+            LLSD result = scriptResult(request, true, "loaded", "Viewer setting loaded");
+            result["setting"] = settingToLLSD(group_name, name, control, true);
+            return result;
+        }
+        if (isSensitiveSettingName(name))
+            return failureResult(request, "Sensitive credential settings cannot be changed through MCP");
+        if (!control->isPersisted() || control->isHiddenFromSettingsEditor())
+            return failureResult(request, "Only persisted, user-visible settings can be changed through MCP");
+        if (action == "settings_reset")
+        {
+            control->resetToDefault(true);
+        }
+        else
+        {
+            const LLSD& value = request["value"];
+            if (!validSettingValue(control->type(), value))
+                return failureResult(request, "Setting value does not match its declared type");
+            control->setValue(value);
+        }
+        LLSD result = scriptResult(request, true, "applied",
+            action == "settings_reset" ? "Viewer setting restored to default" : "Viewer setting updated");
+        result["setting"] = settingToLLSD(group_name, name, control, true);
+        return result;
+    }
+
+    if (action.rfind("mesh_upload_", 0) == 0)
+    {
+        LLFloaterModelPreview* floater = LLFloaterModelPreview::sInstance;
+        if (!floater || !floater->getVisible())
+            return failureResult(request, "Mesh upload floater is not open");
+
+        if (action == "mesh_upload_configure")
+        {
+            std::string error;
+            if (!floater->applyMCPUploadSettings(request["settings"], error))
+                return failureResult(request, error);
+        }
+        else if (action == "mesh_upload_calculate")
+        {
+            std::string error;
+            if (!floater->requestMCPFeeCalculation(error))
+                return failureResult(request, error);
+        }
+
+        LLSD result = scriptResult(request, true,
+            action == "mesh_upload_calculate" ? "accepted" :
+            (action == "mesh_upload_configure" ? "applied" : "loaded"),
+            action == "mesh_upload_calculate" ? "Mesh upload fee calculation started" :
+            (action == "mesh_upload_configure" ? "Mesh upload settings updated" : "Mesh upload state loaded"));
+        result["upload"] = floater->getMCPUploadState();
+        return result;
+    }
+
+    LLUUID object_id(request["object_id"].asString());
     LLViewerObject* object = gObjectList.findObject(object_id);
     if (object_id.isNull() || !object)
     {
@@ -605,6 +842,20 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         action == "set_object_script_running" || action == "reset_object_script";
     if (script_action)
     {
+        const std::string target_scope = request.has("target_scope")
+            ? request["target_scope"].asString()
+            : (action == "create_object_script" ? "linkset_root" : "exact_prim");
+        if (target_scope != "exact_prim" && target_scope != "linkset_root")
+        {
+            return failureResult(request, "target_scope must be exact_prim or linkset_root");
+        }
+        if (target_scope == "linkset_root")
+        {
+            object = object->getRootEdit();
+            if (!object) return failureResult(request, "Selected linkset root is unavailable");
+            object_id = object->getID();
+        }
+
         if (!object->getRegion())
         {
             return failureResult(request, "Object is not in an active simulator region");
@@ -804,7 +1055,28 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         {
             return failureResult(request, "Object does not grant modify permission");
         }
-        const S32 face = request["face"].asInteger();
+        S32 face = request.has("face") ? request["face"].asInteger() : -1;
+        if (!request.has("face"))
+        {
+            LLSelectNode* node = LLSelectMgr::getInstance()->getSelection()->findNode(object);
+            S32 selected_face_count = 0;
+            if (node)
+            {
+                for (S32 candidate = 0; candidate < object->getNumTEs(); ++candidate)
+                {
+                    if (node->isTESelected(candidate))
+                    {
+                        face = candidate;
+                        ++selected_face_count;
+                    }
+                }
+            }
+            if (selected_face_count != 1)
+            {
+                return failureResult(request,
+                    "No face was supplied and the target prim does not have exactly one selected face");
+            }
+        }
         if (face < 0 || face >= object->getNumTEs())
         {
             return failureResult(request, "Face index is outside the object's face range");
@@ -1144,7 +1416,7 @@ void FSMCPBridge::writeResult(const LLSD& result)
 void FSMCPBridge::writeStatus(bool enabled, const std::string& message)
 {
     LLSD status;
-    status["protocol_version"] = 4;
+    status["protocol_version"] = 7;
     status["enabled"] = enabled;
     status["state"] = message;
     status["updated_at"] = LLDate::now();
@@ -1155,6 +1427,11 @@ void FSMCPBridge::writeStatus(bool enabled, const std::string& message)
     status["script_patch_in_place"] = true;
     status["inventory_management"] = true;
     status["detailed_object_reads"] = true;
+    status["settings_management"] = true;
+    status["mesh_upload_diagnostics"] = true;
+    status["event_stream"] = true;
+    status["dry_run_plans"] = true;
+    status["audited_undo"] = true;
     writeAtomicXML(gDirUtilp->add(getBridgeDirectory(), MCP_STATUS_FILE), status);
 }
 

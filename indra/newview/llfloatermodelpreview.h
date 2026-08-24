@@ -135,6 +135,12 @@ public:
 
     bool isModelUploadAllowed();
 
+    // Local MCP integration. These expose the uploader's backing model rather
+    // than attempting to infer state from a screenshot of the floater.
+    LLSD getMCPUploadState();
+    bool applyMCPUploadSettings(const LLSD& settings, std::string& error);
+    bool requestMCPFeeCalculation(std::string& error);
+
 protected:
     friend class LLModelPreview;
     friend class LLMeshFilePicker;

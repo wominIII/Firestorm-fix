@@ -56,6 +56,13 @@
      layout="topleft"
      name="edit_outfit_separator" />
     <menu_item_call
+     label="AI Label Current Outfit..."
+     layout="topleft"
+     name="ai_label_current">
+        <on_click
+         function="Wearing.AILabelCurrent" />
+    </menu_item_call>
+    <menu_item_call
      label="Show Original"
      layout="topleft"
      name="show_original">

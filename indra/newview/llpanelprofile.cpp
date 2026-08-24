@@ -74,6 +74,7 @@
 #include "llpanelprofilepicks.h"
 #include "llthumbnailctrl.h"
 #include "lltrans.h"
+#include "lltranslate.h"
 #include "llviewercontrol.h"
 #include "llviewermenu.h" //is_agent_mappable
 #include "llviewermenufile.h"
@@ -2188,6 +2189,18 @@ void LLPanelProfileSecondLife::onCommitMenu(const LLSD& userdata)
     {
         LLAvatarActions::report(agent_id);
     }
+    else if (item_name == "translate_profile_machine")
+    {
+        onTranslateDescription(false);
+    }
+    else if (item_name == "translate_profile_ai")
+    {
+        onTranslateDescription(true);
+    }
+    else if (item_name == "show_profile_original")
+    {
+        showOriginalDescription();
+    }
     // </FS:Ansariel>
     // <AS:Chanayane> Preview button
     else if (item_name == "preview")
@@ -2330,7 +2343,109 @@ void LLPanelProfileSecondLife::setDescriptionText(const std::string &text)
     mHasUnsavedDescriptionChanges = false;
 
     mDescriptionText = text;
+    ++mDescriptionTranslationRequestSerial;
+    mDescriptionTranslationInProgress = false;
+    mDescriptionTranslationView = 0;
+    mMachineTranslatedDescription.clear();
+    mAITranslatedDescription.clear();
     mDescriptionEdit->setValue(mDescriptionText);
+}
+
+void LLPanelProfileSecondLife::showOriginalDescription()
+{
+    mDescriptionTranslationView = 0;
+    mDescriptionEdit->setValue(mDescriptionText);
+}
+
+void LLPanelProfileSecondLife::showTranslatedDescription(bool use_ai,
+                                                         const std::string& translation)
+{
+    mDescriptionTranslationView = use_ai ? 2 : 1;
+    mDescriptionEdit->setValue(translation);
+}
+
+void LLPanelProfileSecondLife::onTranslateDescription(bool use_ai)
+{
+    if (mDescriptionTranslationInProgress || mDescriptionText.empty())
+    {
+        return;
+    }
+    const S32 requested_view = use_ai ? 2 : 1;
+    if (mDescriptionTranslationView == requested_view)
+    {
+        showOriginalDescription();
+        return;
+    }
+
+    std::string& cached = use_ai ? mAITranslatedDescription : mMachineTranslatedDescription;
+    if (!cached.empty())
+    {
+        showTranslatedDescription(use_ai, cached);
+        return;
+    }
+    if (use_ai && !LLTranslate::isGPTTranslationConfigured())
+    {
+        LLNotificationsUtil::add("GenericAlert",
+            LLSD().with("MESSAGE", "请先在翻译设置中配置 AI API 地址、Key 和模型。"));
+        return;
+    }
+
+    mDescriptionTranslationInProgress = true;
+    const U32 request_serial = ++mDescriptionTranslationRequestSerial;
+    const std::string source = mDescriptionText;
+    LLHandle<LLPanel> handle = getHandle();
+    auto success = [handle, use_ai, request_serial, source](std::string translation, std::string)
+    {
+        LLPanelProfileSecondLife* self = dynamic_cast<LLPanelProfileSecondLife*>(handle.get());
+        if (!self || request_serial != self->mDescriptionTranslationRequestSerial ||
+            source != self->mDescriptionText)
+        {
+            return;
+        }
+        self->mDescriptionTranslationInProgress = false;
+        if (translation.empty())
+        {
+            self->showOriginalDescription();
+            return;
+        }
+        std::string& destination = use_ai
+            ? self->mAITranslatedDescription
+            : self->mMachineTranslatedDescription;
+        destination = translation;
+        self->showTranslatedDescription(use_ai, destination);
+    };
+    auto failure = [handle, request_serial](int status, std::string reason)
+    {
+        LLPanelProfileSecondLife* self = dynamic_cast<LLPanelProfileSecondLife*>(handle.get());
+        if (self)
+        {
+            self->onDescriptionTranslationFailure(request_serial, status, reason);
+        }
+    };
+
+    const std::string target = LLTranslate::getTranslateLanguage();
+    if (use_ai)
+    {
+        LLTranslate::translateMessageGPT(source, target, success, failure);
+    }
+    else
+    {
+        LLTranslate::translateMessageChunked(std::string(), target, source, success, failure);
+    }
+}
+
+void LLPanelProfileSecondLife::onDescriptionTranslationFailure(U32 request_serial,
+                                                               int status,
+                                                               const std::string& reason)
+{
+    if (request_serial != mDescriptionTranslationRequestSerial)
+    {
+        return;
+    }
+    mDescriptionTranslationInProgress = false;
+    showOriginalDescription();
+    LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+        llformat("个人简介翻译失败（%d）：%s", status, reason.c_str())));
 }
 
 // <AS:Chanayane> Preview button

@@ -1377,6 +1377,87 @@ LLTranslate::~LLTranslate()
 {
 }
 
+namespace
+{
+    constexpr size_t STANDARD_TRANSLATION_CHUNK_BYTES = 1800;
+
+    std::vector<std::string> splitStandardTranslationText(const std::string& text)
+    {
+        std::vector<std::string> chunks;
+        size_t start = 0;
+        while (start < text.size())
+        {
+            size_t cut = llmin(text.size(), start + STANDARD_TRANSLATION_CHUNK_BYTES);
+            if (cut < text.size())
+            {
+                const size_t minimum_boundary = start + STANDARD_TRANSLATION_CHUNK_BYTES / 2;
+                size_t boundary = text.rfind('\n', cut);
+                if (boundary == std::string::npos || boundary < minimum_boundary)
+                {
+                    boundary = text.rfind(' ', cut);
+                }
+                if (boundary != std::string::npos && boundary >= minimum_boundary)
+                {
+                    cut = boundary + 1;
+                }
+                else
+                {
+                    // Do not split in the middle of a UTF-8 continuation byte.
+                    while (cut > start &&
+                           (static_cast<unsigned char>(text[cut]) & 0xC0) == 0x80)
+                    {
+                        --cut;
+                    }
+                }
+            }
+            if (cut <= start)
+            {
+                cut = llmin(text.size(), start + STANDARD_TRANSLATION_CHUNK_BYTES);
+            }
+            chunks.emplace_back(text.substr(start, cut - start));
+            start = cut;
+        }
+        return chunks;
+    }
+
+    struct ChunkedTranslationState
+    {
+        std::string from_lang;
+        std::string to_lang;
+        std::vector<std::string> chunks;
+        size_t next{0};
+        std::string result;
+        std::string detected_lang;
+        LLTranslate::TranslationSuccess_fn success;
+        LLTranslate::TranslationFailure_fn failure;
+    };
+
+    void translateNextStandardChunk(const std::shared_ptr<ChunkedTranslationState>& state)
+    {
+        if (state->next >= state->chunks.size())
+        {
+            state->success(state->result, state->detected_lang);
+            return;
+        }
+
+        const std::string chunk = state->chunks[state->next++];
+        LLTranslate::translateMessage(state->from_lang, state->to_lang, chunk,
+            [state](std::string translated, std::string detected)
+            {
+                state->result += translated;
+                if (state->detected_lang.empty())
+                {
+                    state->detected_lang = detected;
+                }
+                translateNextStandardChunk(state);
+            },
+            [state](int status, std::string reason)
+            {
+                state->failure(status, reason);
+            });
+    }
+}
+
 /*static*/
 void LLTranslate::translateMessage(const std::string &from_lang, const std::string &to_lang,
     const std::string &mesg, TranslationSuccess_fn success, TranslationFailure_fn failure)
@@ -1384,6 +1465,28 @@ void LLTranslate::translateMessage(const std::string &from_lang, const std::stri
     LLTranslationAPIHandler& handler = getPreferredHandler();
 
     handler.translateMessage(LLTranslationAPIHandler::LanguagePair_t(from_lang, to_lang), addNoTranslateTags(mesg), success, failure);
+}
+
+/*static*/
+void LLTranslate::translateMessageChunked(const std::string& from_lang,
+                                          const std::string& to_lang,
+                                          const std::string& mesg,
+                                          TranslationSuccess_fn success,
+                                          TranslationFailure_fn failure)
+{
+    if (mesg.size() <= STANDARD_TRANSLATION_CHUNK_BYTES)
+    {
+        translateMessage(from_lang, to_lang, mesg, success, failure);
+        return;
+    }
+
+    auto state = std::make_shared<ChunkedTranslationState>();
+    state->from_lang = from_lang;
+    state->to_lang = to_lang;
+    state->chunks = splitStandardTranslationText(mesg);
+    state->success = std::move(success);
+    state->failure = std::move(failure);
+    translateNextStandardChunk(state);
 }
 
 LLTranslate::EIncomingMode LLTranslate::getIncomingMode()

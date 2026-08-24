@@ -282,6 +282,7 @@ Second Life 查看器默认 0。V1 默认 2。
 				像素（需要重新启动）
 Second Life 查看器默认 20。V1 默认 18。
 			</text>
+			<check_box name="FSModernInventoryView" label="使用现代物品栏视图" tool_tip="增加舒适行距、文件夹分层和交替行背景，并将本地中文标签显示在英文原名上方。关闭即可恢复原始物品栏样式。"/>
 			<text name="text_box_notecard_font" >
 				记事卡字体：
 			</text>

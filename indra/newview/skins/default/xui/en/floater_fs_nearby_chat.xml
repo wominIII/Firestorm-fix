@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <floater
-  background_visible="true"
+  background_visible="false"
   default_tab_group="1"
   follows="all"
   height="332"
@@ -230,6 +230,9 @@
         </layout_panel>
         <layout_panel
           visibility_control="FSNearbyChatbar"
+          background_visible="true"
+          background_opaque="false"
+          bg_alpha_color="0 0 0 0.72"
           tab_group="2"
           top_delta="0"
           height="26"

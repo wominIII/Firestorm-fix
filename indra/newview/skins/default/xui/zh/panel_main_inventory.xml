@@ -51,6 +51,9 @@
 			<menu_button name="options_visibility_btn" tool_tip="显示搜索结果的可见性设置"/>
 		</layout_panel>
 	</layout_stack>
+	<text name="modern_inventory_path">
+		库存
+	</text>
 	<panel name="default_inventory_panel">
 		<tab_container name="inventory filter tabs">
 			<inventory_panel label="库存" name="All Items" sort_order_setting="InventorySortOrder"/>

@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+# $LicenseInfo:firstyear=2026&license=viewerlgpl$
+# Firestorm Viewer Source Code
+# Copyright (C) 2026, Firestorm contributors.
+# Distributed under the GNU Lesser General Public License, version 2.1.
+# $/LicenseInfo$
 """Bidirectional MCP server for a locally running Firestorm viewer.
 
 The viewer publishes an atomic LLSD XML snapshot. This process exposes that
@@ -13,13 +18,14 @@ import json
 import os
 from pathlib import Path
 import sys
+import threading
 import time
 import xml.etree.ElementTree as ET
 import uuid
 
 
 SERVER_NAME = "firestorm-local"
-SERVER_VERSION = "0.4.0"
+SERVER_VERSION = "0.8.0"
 DEFAULT_PROTOCOL_VERSION = "2024-11-05"
 
 
@@ -119,9 +125,224 @@ def parse_timestamp(value: str | None) -> dt.datetime | None:
         return None
 
 
-class FirestormSnapshot:
+def _safe_log_value(value, depth=0):
+    """Keep audit records useful without retaining credentials or full script bodies."""
+    if depth > 5:
+        return "<depth-limit>"
+    if isinstance(value, dict):
+        result = {}
+        for key, item in value.items():
+            lowered = str(key).lower()
+            if any(marker in lowered for marker in ("password", "secret", "token", "api_key", "apikey", "source")):
+                result[str(key)] = "<redacted>"
+            else:
+                result[str(key)] = _safe_log_value(item, depth + 1)
+        return result
+    if isinstance(value, list):
+        return [_safe_log_value(item, depth + 1) for item in value[:100]]
+    if isinstance(value, str) and len(value) > 1000:
+        return value[:1000] + "…<truncated>"
+    return value
+
+
+class MCPActivityJournal:
+    """Persistent audit/undo data plus a lightweight snapshot-difference event feed."""
+
     def __init__(self, bridge_dir: Path):
         self.bridge_dir = bridge_dir
+        self.events_path = bridge_dir / "events.jsonl"
+        self.audit_path = bridge_dir / "audit.jsonl"
+        self.undo_path = bridge_dir / "undo.json"
+        self.lock = threading.RLock()
+        self.stop_event = threading.Event()
+        self.thread = None
+        self.cursor = 0
+        self.previous = None
+        self._load_cursor()
+
+    def _load_cursor(self):
+        if not self.events_path.exists():
+            return
+        try:
+            lines = self.events_path.read_text(encoding="utf-8").splitlines()
+            if lines:
+                self.cursor = int(json.loads(lines[-1]).get("cursor", 0))
+        except (OSError, ValueError, json.JSONDecodeError):
+            self.cursor = 0
+
+    @staticmethod
+    def _append(path: Path, value: dict):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8") as stream:
+            stream.write(json.dumps(value, ensure_ascii=False, separators=(",", ":")) + "\n")
+
+    def add_event(self, event_type: str, data: dict | None = None):
+        with self.lock:
+            self.cursor += 1
+            event = {
+                "cursor": self.cursor,
+                "time": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "type": event_type,
+                "data": _safe_log_value(data or {}),
+            }
+            self._append(self.events_path, event)
+            return event
+
+    def audit(self, action: str, arguments: dict, result: dict | None = None, error: str | None = None):
+        entry = {
+            "time": dt.datetime.now(dt.timezone.utc).isoformat(),
+            "action": action,
+            "arguments": _safe_log_value(arguments),
+            "success": error is None and bool((result or {}).get("success", True)),
+            "state": (result or {}).get("state", "failed" if error else "completed"),
+            "message": error or (result or {}).get("message", ""),
+            "request_id": (result or {}).get("request_id"),
+        }
+        with self.lock:
+            self._append(self.audit_path, entry)
+
+    def read_lines(self, path: Path, limit: int):
+        if not path.exists():
+            return []
+        with self.lock:
+            lines = path.read_text(encoding="utf-8").splitlines()[-limit:]
+        result = []
+        for line in lines:
+            try:
+                result.append(json.loads(line))
+            except json.JSONDecodeError:
+                pass
+        return result
+
+    def events(self, after_cursor=0, limit=100, event_types=None):
+        entries = self.read_lines(self.events_path, 2000)
+        allowed = set(event_types or [])
+        entries = [entry for entry in entries if int(entry.get("cursor", 0)) > after_cursor]
+        if allowed:
+            entries = [entry for entry in entries if entry.get("type") in allowed]
+        entries = entries[:limit]
+        return {
+            "events": entries,
+            "next_cursor": entries[-1]["cursor"] if entries else after_cursor,
+            "latest_cursor": self.cursor,
+        }
+
+    def _load_undo(self):
+        try:
+            value = json.loads(self.undo_path.read_text(encoding="utf-8"))
+            return value if isinstance(value, list) else []
+        except (OSError, ValueError, json.JSONDecodeError):
+            return []
+
+    def _save_undo(self, entries):
+        temporary = self.undo_path.with_suffix(".tmp")
+        temporary.write_text(json.dumps(entries[-100:], ensure_ascii=False, indent=2), encoding="utf-8")
+        os.replace(temporary, self.undo_path)
+
+    def push_undo(self, action: str, arguments: dict, description: str):
+        with self.lock:
+            entries = self._load_undo()
+            entry = {
+                "id": str(uuid.uuid4()),
+                "created_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+                "description": description,
+                "action": action,
+                "arguments": arguments,
+            }
+            entries.append(entry)
+            self._save_undo(entries)
+            return entry
+
+    def list_undo(self, limit=20):
+        with self.lock:
+            return [{k: v for k, v in entry.items() if k != "arguments"}
+                    for entry in reversed(self._load_undo()[-limit:])]
+
+    def peek_undo(self, undo_id=None):
+        with self.lock:
+            entries = self._load_undo()
+            for entry in reversed(entries):
+                if undo_id is None or entry.get("id") == undo_id:
+                    return entry
+        raise RuntimeError("No matching undoable MCP change is available")
+
+    def consume_undo(self, undo_id):
+        with self.lock:
+            entries = self._load_undo()
+            entries = [entry for entry in entries if entry.get("id") != undo_id]
+            self._save_undo(entries)
+
+    @staticmethod
+    def _signature(status, snapshot):
+        context = snapshot.get("selection_context", {}) if snapshot else {}
+        return {
+            "connected": bool(status.get("enabled") and status.get("fresh")),
+            "logged_in": bool((snapshot or {}).get("mcp_bridge", {}).get("viewer_logged_in")),
+            "selection": {
+                "primary_object_id": context.get("primary_object_id"),
+                "primary_root_id": context.get("primary_root_id"),
+                "object_count": context.get("object_count", 0),
+            },
+            "attachments": sorted(str(item.get("object_id")) for item in (snapshot or {}).get("attachments", [])),
+            "wearables": sorted(str(item.get("item_id", item.get("name", ""))) for item in (snapshot or {}).get("wearables", [])),
+            "animations": sorted(str(item.get("animation_id", item.get("id", item))) for item in (snapshot or {}).get("animations", [])),
+            "mesh_upload": {
+                key: (snapshot or {}).get("mesh_upload", {}).get(key)
+                for key in ("open", "phase", "status_text", "fee_calculated", "upload_allowed", "locally_feasible")
+            },
+        }
+
+    def observe(self):
+        status = {"enabled": False, "fresh": False}
+        snapshot = {}
+        try:
+            status_path = self.bridge_dir / "status.xml"
+            if status_path.exists():
+                status.update(read_llsd(status_path))
+                updated = parse_timestamp(status.get("updated_at"))
+                status["fresh"] = bool(updated and (dt.datetime.now(dt.timezone.utc) - updated).total_seconds() <= 5)
+            snapshot_path = self.bridge_dir / "snapshot.xml"
+            if status.get("fresh") and snapshot_path.exists():
+                snapshot = read_llsd(snapshot_path)
+        except Exception:
+            pass
+        current = self._signature(status, snapshot)
+        previous = self.previous
+        self.previous = current
+        if previous is None:
+            self.add_event("monitor_started", current)
+            return
+        for key, event_type in (
+            ("connected", "viewer_connection_changed"),
+            ("logged_in", "login_state_changed"),
+            ("selection", "selection_changed"),
+            ("attachments", "attachments_changed"),
+            ("wearables", "wearables_changed"),
+            ("animations", "animations_changed"),
+            ("mesh_upload", "mesh_upload_state_changed"),
+        ):
+            if previous.get(key) != current.get(key):
+                self.add_event(event_type, {"before": previous.get(key), "after": current.get(key)})
+
+    def start(self):
+        self.thread = threading.Thread(target=self._watch, name="firestorm-mcp-events", daemon=True)
+        self.thread.start()
+
+    def _watch(self):
+        while not self.stop_event.is_set():
+            self.observe()
+            self.stop_event.wait(1.0)
+
+    def stop(self):
+        self.stop_event.set()
+        if self.thread:
+            self.thread.join(timeout=2.0)
+
+
+class FirestormSnapshot:
+    def __init__(self, bridge_dir: Path, journal: MCPActivityJournal | None = None):
+        self.bridge_dir = bridge_dir
+        self.journal = journal
 
     @property
     def status_path(self) -> Path:
@@ -181,7 +402,7 @@ class FirestormSnapshot:
 
         request_id = str(uuid.uuid4())
         request = {
-            "protocol_version": 4,
+            "protocol_version": 7,
             "request_id": request_id,
             "action": action,
             "expires_at": time.time() + timeout,
@@ -197,10 +418,15 @@ class FirestormSnapshot:
                 result = read_llsd(self.result_path)
                 if result.get("request_id") == request_id:
                     self.result_path.unlink(missing_ok=True)
+                    if self.journal:
+                        self.journal.audit(action, arguments, result=result)
                     return result
             time.sleep(0.1)
         self.request_path.unlink(missing_ok=True)
-        raise RuntimeError("Firestorm did not process the MCP write request before it expired")
+        message = "Firestorm did not process the MCP write request before it expired"
+        if self.journal:
+            self.journal.audit(action, arguments, error=message)
+        raise RuntimeError(message)
 
 
 TOOLS = [
@@ -209,6 +435,192 @@ TOOLS = [
         "description": "Check whether the local Firestorm viewer MCP bridge is enabled and fresh.",
         "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
         "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "get_recent_events",
+        "description": (
+            "Read viewer connection, login, selection, attachment, wearable and animation changes from "
+            "the persistent event feed. Pass next_cursor back as after_cursor on the next call."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "after_cursor": {"type": "integer", "minimum": 0, "default": 0},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 500, "default": 100},
+                "types": {"type": "array", "items": {"type": "string"}, "maxItems": 20},
+            },
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "get_mcp_audit_log",
+        "description": "Read the latest redacted MCP command audit records. Script bodies and credentials are never retained.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"limit": {"type": "integer", "minimum": 1, "maximum": 500, "default": 100}},
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "preview_mcp_change",
+        "description": (
+            "Dry-run a supported change without mutating Firestorm. Returns current and proposed values, "
+            "permission/selection checks, warnings and whether the operation can later be undone."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "operation": {
+                    "type": "string",
+                    "enum": ["set_viewer_setting", "reset_viewer_setting", "set_object_transform",
+                             "set_object_face_material", "configure_mesh_upload"],
+                },
+                "arguments": {"type": "object"},
+            },
+            "required": ["operation", "arguments"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "list_undoable_mcp_changes",
+        "description": "List recent MCP changes that have an exact inverse operation available.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"limit": {"type": "integer", "minimum": 1, "maximum": 100, "default": 20}},
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "undo_mcp_change",
+        "description": (
+            "Undo the newest undoable MCP setting, object-transform, face-material or Mesh-uploader configuration change. "
+            "Optionally supply an exact undo ID from list_undoable_mcp_changes."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {"undo_id": {"type": "string"}},
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "get_selection_context",
+        "description": (
+            "Return the exact current Firestorm selection: primary child prim, linkset root, "
+            "individually selected prims, and selected face indices. Read this before editing a linked object."
+        ),
+        "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "list_viewer_settings",
+        "description": (
+            "List Firestorm viewer and per-account settings with names, declared types, comments and metadata. "
+            "Sensitive credential settings are listed but their values are always redacted."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "group": {"type": "string", "enum": ["all", "viewer", "account"], "default": "all"},
+                "query": {"type": "string", "description": "Case-insensitive name/comment search."},
+                "changed_only": {"type": "boolean", "default": False},
+                "include_values": {"type": "boolean", "default": False},
+                "offset": {"type": "integer", "minimum": 0, "default": 0},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 1000, "default": 200},
+            },
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "get_viewer_setting",
+        "description": "Read one exact Firestorm setting and its default value; credentials remain redacted.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "group": {"type": "string", "enum": ["viewer", "account"]},
+                "name": {"type": "string"},
+            },
+            "required": ["group", "name"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "set_viewer_setting",
+        "description": (
+            "Change one persisted, user-visible Firestorm setting using its declared value type. "
+            "Sensitive credentials and internal/hidden controls are rejected."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "group": {"type": "string", "enum": ["viewer", "account"]},
+                "name": {"type": "string"},
+                "value": {},
+            },
+            "required": ["group", "name", "value"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "reset_viewer_setting",
+        "description": "Restore one persisted, user-visible Firestorm setting to its declared default.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "group": {"type": "string", "enum": ["viewer", "account"]},
+                "name": {"type": "string"},
+            },
+            "required": ["group", "name"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "get_mesh_upload_state",
+        "description": (
+            "Inspect the currently open Mesh upload floater: files, per-LOD model/face/vertex/triangle counts, "
+            "rig validity, upload options, validation issues, logs, fee results and overall feasibility."
+        ),
+        "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
+        "annotations": {"readOnlyHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "configure_mesh_upload",
+        "description": (
+            "Safely change common options in the currently open Mesh upload floater. This never selects a local file, "
+            "calculates a fee, spends L$, or performs the final upload."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "model_name": {"type": "string", "minLength": 1, "maxLength": 63},
+                "upload_textures": {"type": "boolean"},
+                "upload_skin": {"type": "boolean"},
+                "upload_joints": {"type": "boolean"},
+                "lock_scale_if_joint_position": {"type": "boolean"},
+                "import_scale": {"type": "number", "exclusiveMinimum": 0},
+                "pelvis_offset": {"type": "number"},
+            },
+            "minProperties": 1,
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": True},
+    },
+    {
+        "name": "calculate_mesh_upload_fee",
+        "description": (
+            "Start the uploader's standard server-side weights and fee calculation after local validation passes. "
+            "Poll get_mesh_upload_state for completion. This does not perform the final paid upload."
+        ),
+        "inputSchema": {"type": "object", "properties": {}, "additionalProperties": False},
+        "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": True},
     },
     {
         "name": "get_avatar_wearables",
@@ -413,6 +825,7 @@ TOOLS = [
         "name": "set_object_face_material",
         "description": (
             "Directly update one face on a prim in the single linkset currently selected in Firestorm. "
+            "Omit face to use the one uniquely selected face in Firestorm. "
             "Supports diffuse texture UUID, PBR material UUID, RGBA color and texture transforms."
         ),
         "inputSchema": {
@@ -428,7 +841,7 @@ TOOLS = [
                 "texture_rotation_radians": {"type": "number"},
                 "reason": {"type": "string", "maxLength": 500},
             },
-            "required": ["object_id", "face"],
+            "required": ["object_id"],
             "additionalProperties": False,
         },
         "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
@@ -443,6 +856,10 @@ TOOLS = [
             "type": "object",
             "properties": {
                 "object_id": {"type": "string"},
+                "target_scope": {
+                    "type": "string", "enum": ["linkset_root", "exact_prim"], "default": "linkset_root",
+                    "description": "Write to the parent/root prim by default; use exact_prim to write to the selected child."
+                },
                 "name": {"type": "string", "minLength": 1, "maxLength": 63},
                 "source": {"type": "string", "maxLength": 262144},
                 "running": {"type": "boolean", "default": True},
@@ -461,7 +878,10 @@ TOOLS = [
         ),
         "inputSchema": {
             "type": "object",
-            "properties": {"object_id": {"type": "string"}, "item_id": {"type": "string"}},
+            "properties": {
+                "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "target_scope": {"type": "string", "enum": ["exact_prim", "linkset_root"], "default": "exact_prim"},
+            },
             "required": ["object_id", "item_id"],
             "additionalProperties": False,
         },
@@ -478,6 +898,7 @@ TOOLS = [
             "properties": {
                 "object_id": {"type": "string"},
                 "item_id": {"type": "string"},
+                "target_scope": {"type": "string", "enum": ["exact_prim", "linkset_root"], "default": "exact_prim"},
                 "source": {"type": "string", "maxLength": 262144},
                 "running": {"type": "boolean", "default": True},
                 "reason": {"type": "string", "maxLength": 500},
@@ -498,6 +919,7 @@ TOOLS = [
             "properties": {
                 "object_id": {"type": "string"},
                 "item_id": {"type": "string"},
+                "target_scope": {"type": "string", "enum": ["exact_prim", "linkset_root"], "default": "exact_prim"},
                 "edits": {
                     "type": "array", "minItems": 1, "maxItems": 100,
                     "items": {
@@ -527,6 +949,7 @@ TOOLS = [
             "type": "object",
             "properties": {
                 "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "target_scope": {"type": "string", "enum": ["exact_prim", "linkset_root"], "default": "exact_prim"},
                 "reason": {"type": "string", "maxLength": 500},
             },
             "required": ["object_id", "item_id"],
@@ -541,6 +964,7 @@ TOOLS = [
             "type": "object",
             "properties": {
                 "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "target_scope": {"type": "string", "enum": ["exact_prim", "linkset_root"], "default": "exact_prim"},
                 "running": {"type": "boolean"}, "reason": {"type": "string", "maxLength": 500},
             },
             "required": ["object_id", "item_id", "running"],
@@ -555,6 +979,7 @@ TOOLS = [
             "type": "object",
             "properties": {
                 "object_id": {"type": "string"}, "item_id": {"type": "string"},
+                "target_scope": {"type": "string", "enum": ["exact_prim", "linkset_root"], "default": "exact_prim"},
                 "reason": {"type": "string", "maxLength": 500},
             },
             "required": ["object_id", "item_id"],
@@ -577,11 +1002,199 @@ def find_object(snapshot, object_id: str):
     raise RuntimeError(f"Object {object_id} is not a current attachment or selected object")
 
 
+def preview_change(store: FirestormSnapshot, snapshot: dict, operation: str, arguments: dict):
+    plan = {
+        "dry_run": True,
+        "operation": operation,
+        "feasible": True,
+        "changes": [],
+        "warnings": [],
+        "reversible": operation in {
+            "set_viewer_setting", "reset_viewer_setting", "set_object_transform",
+            "set_object_face_material", "configure_mesh_upload",
+        },
+    }
+    if operation in {"set_viewer_setting", "reset_viewer_setting"}:
+        current = store.execute("settings_get", {
+            "group": arguments.get("group", ""), "name": arguments.get("name", "")
+        }).get("setting", {})
+        target = current.get("default") if operation == "reset_viewer_setting" else arguments.get("value")
+        plan["changes"].append({"field": "value", "before": current.get("value"), "after": target})
+        plan["setting"] = {key: current.get(key) for key in ("group", "name", "type", "writable", "sensitive")}
+        plan["feasible"] = bool(current.get("writable"))
+        if not plan["feasible"]:
+            plan["warnings"].append("The viewer reports that this setting is not MCP-writable")
+        return plan
+
+    if operation == "set_object_transform":
+        obj = find_object(snapshot, str(arguments.get("object_id", "")))
+        context = snapshot.get("selection_context", {})
+        selected_root = str(context.get("primary_root_id", "")).lower()
+        object_id = str(obj.get("object_id", ""))
+        for key in ("position", "rotation_quaternion", "scale"):
+            if key in arguments:
+                plan["changes"].append({"field": key, "before": obj.get(key), "after": arguments[key]})
+        permissions = obj.get("permissions", {})
+        plan["checks"] = {
+            "selected_root_matches": selected_root == object_id.lower() and bool(obj.get("is_root")),
+            "move_permission": bool(permissions.get("move")),
+            "modify_permission": bool(permissions.get("modify")),
+        }
+        plan["feasible"] = all(plan["checks"].values()) and bool(plan["changes"])
+        if not plan["checks"]["selected_root_matches"]:
+            plan["warnings"].append("Transform writes require this exact linkset root to be selected")
+        return plan
+
+    if operation == "set_object_face_material":
+        obj = find_object(snapshot, str(arguments.get("object_id", "")))
+        face_index = arguments.get("face")
+        if face_index is None:
+            selected = obj.get("selected_faces", [])
+            if len(selected) == 1:
+                face_index = selected[0]
+        face = next((item for item in obj.get("faces", []) if item.get("face") == face_index), None)
+        mapping = {
+            "diffuse_texture_id": "diffuse_texture_id", "pbr_material_id": "pbr_material_id",
+            "color": "color", "texture_scale": "scale", "texture_offset": "offset",
+            "texture_rotation_radians": "rotation_radians",
+        }
+        if face:
+            for supplied, current_key in mapping.items():
+                if supplied in arguments:
+                    before = face.get(current_key)
+                    if supplied in {"texture_scale", "texture_offset"} and isinstance(before, list):
+                        before = before[:2]
+                    plan["changes"].append({"field": supplied, "before": before, "after": arguments[supplied]})
+        plan["face"] = face_index
+        plan["checks"] = {
+            "face_resolved": face is not None,
+            "modify_permission": bool(obj.get("permissions", {}).get("modify")),
+        }
+        plan["feasible"] = all(plan["checks"].values()) and bool(plan["changes"])
+        if face is None:
+            plan["warnings"].append("Supply a valid face or select exactly one face in Firestorm")
+        return plan
+
+    if operation == "configure_mesh_upload":
+        state = store.execute("mesh_upload_state", {}).get("upload", {})
+        current = dict(state.get("options", {}))
+        current["model_name"] = state.get("model_name")
+        for key, target in arguments.items():
+            if key in current:
+                plan["changes"].append({"field": key, "before": current.get(key), "after": target})
+        plan["phase"] = state.get("phase")
+        plan["issues"] = state.get("issues", [])
+        plan["feasible"] = bool(state.get("open")) and bool(plan["changes"])
+        if not state.get("open"):
+            plan["warnings"].append("Open the Mesh upload floater before applying this plan")
+        return plan
+
+    raise RuntimeError(f"Unsupported preview operation: {operation}")
+
+
+def face_undo_arguments(snapshot: dict, arguments: dict):
+    obj = find_object(snapshot, str(arguments["object_id"]))
+    face_index = arguments.get("face")
+    if face_index is None and len(obj.get("selected_faces", [])) == 1:
+        face_index = obj["selected_faces"][0]
+    face = next((item for item in obj.get("faces", []) if item.get("face") == face_index), None)
+    if face is None:
+        return None
+    undo = {"object_id": arguments["object_id"], "face": face_index}
+    mapping = {
+        "diffuse_texture_id": ("diffuse_texture_id", None),
+        "pbr_material_id": ("pbr_material_id", None),
+        "color": ("color", None),
+        "texture_scale": ("scale", 2),
+        "texture_offset": ("offset", 2),
+        "texture_rotation_radians": ("rotation_radians", None),
+    }
+    for supplied, (current_key, length) in mapping.items():
+        if supplied in arguments:
+            value = face.get(current_key)
+            undo[supplied] = value[:length] if length and isinstance(value, list) else value
+    return undo
+
+
 def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
     if name == "firestorm_status":
         return store.status()
 
+    journal = store.journal
+    if name == "get_recent_events":
+        return journal.events(
+            int(arguments.get("after_cursor", 0)), int(arguments.get("limit", 100)), arguments.get("types")
+        )
+    if name == "get_mcp_audit_log":
+        return {"entries": journal.read_lines(journal.audit_path, int(arguments.get("limit", 100)))}
+    if name == "preview_mcp_change":
+        return preview_change(store, store.load(), arguments["operation"], arguments["arguments"])
+    if name == "list_undoable_mcp_changes":
+        return {"changes": journal.list_undo(int(arguments.get("limit", 20)))}
+
     snapshot = store.load()
+    if name == "undo_mcp_change":
+        entry = journal.peek_undo(arguments.get("undo_id"))
+        result = store.execute(entry["action"], entry["arguments"])
+        if result.get("success"):
+            journal.consume_undo(entry["id"])
+            journal.add_event("mcp_change_undone", {"undo_id": entry["id"], "description": entry["description"]})
+        result["undone"] = {key: value for key, value in entry.items() if key != "arguments"}
+        return result
+    if name == "get_selection_context":
+        return {
+            "captured_at": snapshot.get("captured_at"),
+            "selection_context": snapshot.get("selection_context", {}),
+            "selected_objects": snapshot.get("selected_objects", []),
+        }
+    if name == "list_viewer_settings":
+        fields = {key: arguments[key] for key in
+                  ("group", "query", "changed_only", "include_values", "offset", "limit")
+                  if key in arguments}
+        return store.execute("settings_list", fields)
+    if name == "get_viewer_setting":
+        return store.execute("settings_get", {
+            "group": arguments["group"], "name": arguments["name"]
+        })
+    if name == "set_viewer_setting":
+        fields = {
+            "group": arguments["group"], "name": arguments["name"], "value": arguments["value"]
+        }
+        previous = store.execute("settings_get", {
+            "group": arguments["group"], "name": arguments["name"]
+        }).get("setting", {})
+        result = store.execute("settings_set", fields)
+        if result.get("success") and "value" in previous:
+            journal.push_undo("settings_set", {
+                "group": arguments["group"], "name": arguments["name"], "value": previous["value"]
+            }, f"Restore setting {arguments['group']}:{arguments['name']}")
+        return result
+    if name == "reset_viewer_setting":
+        previous = store.execute("settings_get", {
+            "group": arguments["group"], "name": arguments["name"]
+        }).get("setting", {})
+        result = store.execute("settings_reset", {
+            "group": arguments["group"], "name": arguments["name"]
+        })
+        if result.get("success") and "value" in previous:
+            journal.push_undo("settings_set", {
+                "group": arguments["group"], "name": arguments["name"], "value": previous["value"]
+            }, f"Restore setting {arguments['group']}:{arguments['name']}")
+        return result
+    if name == "get_mesh_upload_state":
+        return store.execute("mesh_upload_state", {})
+    if name == "configure_mesh_upload":
+        previous_state = store.execute("mesh_upload_state", {}).get("upload", {})
+        previous = dict(previous_state.get("options", {}))
+        previous["model_name"] = previous_state.get("model_name")
+        undo_settings = {key: previous[key] for key in arguments if key in previous and previous[key] is not None}
+        result = store.execute("mesh_upload_configure", {"settings": arguments})
+        if result.get("success") and undo_settings:
+            journal.push_undo("mesh_upload_configure", {"settings": undo_settings},
+                              "Restore Mesh uploader configuration")
+        return result
+    if name == "calculate_mesh_upload_fee":
+        return store.execute("mesh_upload_calculate", {})
     if name == "get_avatar_wearables":
         return {"captured_at": snapshot.get("captured_at"), "wearables": snapshot.get("wearables", [])}
     if name == "get_avatar_attachments":
@@ -661,7 +1274,16 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
                   if key in arguments}
         if not any(key in fields for key in ("position", "rotation_quaternion", "scale")):
             raise RuntimeError("Provide position, rotation_quaternion and/or scale")
-        return store.execute("set_object_transform", fields)
+        obj = find_object(snapshot, str(arguments["object_id"]))
+        undo = {"object_id": arguments["object_id"]}
+        for key in ("position", "rotation_quaternion", "scale"):
+            if key in fields and key in obj:
+                undo[key] = obj[key]
+        result = store.execute("set_object_transform", fields)
+        if result.get("success"):
+            journal.push_undo("set_object_transform", undo,
+                              f"Restore transform of {obj.get('name') or obj.get('object_id')}")
+        return result
     if name == "set_object_face_material":
         allowed = (
             "object_id", "face", "diffuse_texture_id", "pbr_material_id", "color",
@@ -671,12 +1293,17 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         material_fields = set(fields) - {"object_id", "face", "reason"}
         if not material_fields:
             raise RuntimeError("Provide at least one face material field")
-        return store.execute("set_object_face_material", fields)
+        undo = face_undo_arguments(snapshot, fields)
+        result = store.execute("set_object_face_material", fields)
+        if result.get("success") and undo:
+            journal.push_undo("set_object_face_material", undo,
+                              f"Restore face {undo.get('face')} material on {arguments['object_id']}")
+        return result
     if name in {
         "create_object_script", "read_object_script", "update_object_script", "patch_object_script",
         "delete_object_script", "set_object_script_running", "reset_object_script",
     }:
-        allowed = ("object_id", "item_id", "name", "source", "edits", "running", "reason")
+        allowed = ("object_id", "item_id", "name", "source", "edits", "running", "reason", "target_scope")
         fields = {key: arguments[key] for key in allowed if key in arguments}
         return store.execute(name, fields)
     raise RuntimeError(f"Unknown tool: {name}")
@@ -701,45 +1328,50 @@ def response(request_id, result=None, error=None):
 
 
 def serve(bridge_dir: Path):
-    store = FirestormSnapshot(bridge_dir)
-    for raw_line in sys.stdin.buffer:
-        try:
-            request = json.loads(raw_line)
-            method = request.get("method")
-            request_id = request.get("id")
-            if request_id is None:
-                continue
-            if method == "initialize":
-                requested = request.get("params", {}).get("protocolVersion")
-                response(request_id, {
-                    "protocolVersion": requested or DEFAULT_PROTOCOL_VERSION,
-                    "capabilities": {"tools": {"listChanged": False}},
-                    "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
-                    "instructions": (
-                        "Read detailed local Firestorm state, inspect loaded linksets, organize the agent "
-                        "inventory, and manage permitted LSL scripts in the single selected linkset. "
-                        "Read current state before writing and obey viewer and simulator permission failures."
-                    ),
-                })
-            elif method == "ping":
-                response(request_id, {})
-            elif method == "tools/list":
-                response(request_id, {"tools": TOOLS})
-            elif method == "tools/call":
-                params = request.get("params", {})
-                try:
-                    value = call_tool(store, params.get("name", ""), params.get("arguments") or {})
-                    response(request_id, tool_result(value))
-                except Exception as exc:
-                    response(request_id, tool_result(str(exc), is_error=True))
-            elif method in {"resources/list", "prompts/list"}:
-                response(request_id, {"resources": []} if method == "resources/list" else {"prompts": []})
-            else:
-                response(request_id, error={"code": -32601, "message": f"Method not found: {method}"})
-        except Exception as exc:
-            request_id = request.get("id") if isinstance(locals().get("request"), dict) else None
-            if request_id is not None:
-                response(request_id, error={"code": -32603, "message": str(exc)})
+    journal = MCPActivityJournal(bridge_dir)
+    store = FirestormSnapshot(bridge_dir, journal)
+    journal.start()
+    try:
+        for raw_line in sys.stdin.buffer:
+            try:
+                request = json.loads(raw_line)
+                method = request.get("method")
+                request_id = request.get("id")
+                if request_id is None:
+                    continue
+                if method == "initialize":
+                    requested = request.get("params", {}).get("protocolVersion")
+                    response(request_id, {
+                        "protocolVersion": requested or DEFAULT_PROTOCOL_VERSION,
+                        "capabilities": {"tools": {"listChanged": False}},
+                        "serverInfo": {"name": SERVER_NAME, "version": SERVER_VERSION},
+                        "instructions": (
+                            "Read detailed local Firestorm state, inspect loaded linksets, organize inventory, "
+                            "preview changes before writing, follow the incremental event cursor, and use the "
+                            "undo/audit tools for reversible operations. Obey viewer and simulator permissions."
+                        ),
+                    })
+                elif method == "ping":
+                    response(request_id, {})
+                elif method == "tools/list":
+                    response(request_id, {"tools": TOOLS})
+                elif method == "tools/call":
+                    params = request.get("params", {})
+                    try:
+                        value = call_tool(store, params.get("name", ""), params.get("arguments") or {})
+                        response(request_id, tool_result(value))
+                    except Exception as exc:
+                        response(request_id, tool_result(str(exc), is_error=True))
+                elif method in {"resources/list", "prompts/list"}:
+                    response(request_id, {"resources": []} if method == "resources/list" else {"prompts": []})
+                else:
+                    response(request_id, error={"code": -32601, "message": f"Method not found: {method}"})
+            except Exception as exc:
+                request_id = request.get("id") if isinstance(locals().get("request"), dict) else None
+                if request_id is not None:
+                    response(request_id, error={"code": -32603, "message": str(exc)})
+    finally:
+        journal.stop()
 
 
 def main():

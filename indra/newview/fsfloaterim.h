@@ -69,6 +69,8 @@ public:
 
     // LLView overrides
     bool postBuild() override;
+    void draw() override;
+    F32 getCurrentTransparency() override;
     void setVisible(bool visible) override;
     bool getVisible();
     void setMinimized(bool b) override;

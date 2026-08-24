@@ -383,7 +383,7 @@ void LLPreviewNotecard::onTranslateClicked(ETranslationView mode)
     }
     else
     {
-        LLTranslate::translateMessage(std::string(), target, source, success, failure);
+        LLTranslate::translateMessageChunked(std::string(), target, source, success, failure);
     }
 }
 

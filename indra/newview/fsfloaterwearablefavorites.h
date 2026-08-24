@@ -29,11 +29,13 @@
 #define FS_FLOATERWEARABLEFAVORITES_H
 
 #include "llfloater.h"
+#include "llframetimer.h"
 #include "llviewerinventory.h"
 #include "llwearableitemslist.h"
 #include <optional>
 
 class LLButton;
+class LLCheckBoxCtrl;
 class LLFilterEditor;
 class LLMenuButton;
 class LLInventoryCategoriesObserver;
@@ -79,6 +81,11 @@ public:
     bool postBuild() override;
     void onOpen(const LLSD& info) override;
     void draw() override;
+    bool handleHover(S32 x, S32 y, MASK mask) override;
+    bool handleDragAndDrop(S32 x, S32 y, MASK mask, bool drop,
+                           EDragAndDropType cargo_type, void* cargo_data,
+                           EAcceptance* accept, std::string& tooltip_msg) override;
+    void onMouseLeave(S32 x, S32 y, MASK mask) override;
     bool handleKeyHere(KEY key, MASK mask) override;
     bool hasAccelerators() const override { return true; }
 
@@ -95,7 +102,9 @@ private:
     void onItemDAD(const LLUUID& item_id);
     void handleRemove();
     void onFilterEdit(const std::string& search_string);
-    void onDoubleClick();
+    void onItemClicked();
+    void toggleItem(const LLUUID& link_id);
+    void setShelfCollapsed(bool collapsed);
 
     void onOptionsMenuItemClicked(const LLSD& userdata);
     bool onOptionsMenuItemChecked(const LLSD& userdata);
@@ -112,7 +121,15 @@ private:
     LLButton*                       mRemoveItemBtn;
     LLFilterEditor*                 mFilterEditor;
     LLMenuButton*                   mOptionsButton;
+    LLCheckBoxCtrl*                 mAutoHideCheck;
     LLHandle<LLView>                mOptionsMenuHandle;
+    LLUUID                          mLastActivatedItem;
+    bool                            mHandlingClick;
+    bool                            mShelfCollapsed;
+    bool                            mCollapsePending;
+    S32                             mExpandedWidth;
+    S32                             mExpandedHeight;
+    LLFrameTimer                    mCollapseTimer;
 };
 
 #endif // FS_FLOATERWEARABLEFAVORITES_H

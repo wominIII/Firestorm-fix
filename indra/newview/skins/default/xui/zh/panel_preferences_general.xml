@@ -45,6 +45,7 @@
 		<radio_item label="关闭" name="radio"/>
 		<radio_item label="启用" name="radio2"/>
 		<radio_item label="简短显示" name="radio3"/>
+		<radio_item label="鼠标悬停显示" name="radio4"/>
 	</radio_group>
 	<text name="RenderNameShowTime_LabelPrefix">(</text>
 	<text name="RenderNameShowTime_LabelSuffix">秒)</text>
@@ -98,4 +99,3 @@
 	</combo_box>
 	<text name="text_box3">自动回复可以在 [secondlife:///app/openfloater/preferences?tab=im&amp;subtab=tab-autoresponse-1 隐私 ＞ 自动回复] 选项中设置</text>
 </panel>
-

@@ -119,7 +119,7 @@ FSFloaterNearbyChat::~FSFloaterNearbyChat()
     }
 
     mEmojiCloseConn.disconnect();
-    
+
     if (mRlvBehaviorCallbackConnection.connected())
     {
         mRlvBehaviorCallbackConnection.disconnect();
@@ -129,6 +129,29 @@ FSFloaterNearbyChat::~FSFloaterNearbyChat()
     mOutgoingTonePresetsChangedConnection.disconnect();
 
     LLFloaterChatMentionPicker::removeParticipantSource(this);
+}
+
+void FSFloaterNearbyChat::draw()
+{
+    const bool immersive_chat = gSavedSettings.getBOOL("FSImmersiveTransparentChat");
+    setBackgroundVisible(!immersive_chat);
+    if (LLView* toolbar_fill = findChildView("dummy_icon"))
+    {
+        toolbar_fill->setVisible(!immersive_chat);
+    }
+    LLFloater::draw();
+}
+
+F32 FSFloaterNearbyChat::getCurrentTransparency()
+{
+    // Floater backgrounds use this independent opacity path instead of the
+    // text editor's background flag.  Returning zero here removes the outer
+    // chat sheet while child controls keep their own opacity.
+    if (gSavedSettings.getBOOL("FSImmersiveTransparentChat"))
+    {
+        return 0.f;
+    }
+    return LLFloater::getCurrentTransparency();
 }
 
 void FSFloaterNearbyChat::updateFSUseNearbyChatConsole(const LLSD &data)
@@ -1023,7 +1046,7 @@ void FSFloaterNearbyChat::sendChat( EChatType type )
     // If the user wants to stop chatting on hitting return, lose focus
     // and go out of chat mode.
     const bool in_mouselook = gAgentCamera.cameraMouselook();
-    const bool closeChatOnReturn = gSavedSettings.getBOOL("CloseChatOnReturn") 
+    const bool closeChatOnReturn = gSavedSettings.getBOOL("CloseChatOnReturn")
                          && !(!in_mouselook && gSavedSettings.getBOOL("FSCloseChatOnReturnInMouselook"))
                          && !gSavedSettings.getBOOL("FSCloseChatOnReturnOnlyBar");
     if (closeChatOnReturn && gSavedSettings.getBOOL("FSUnfocusChatHistoryOnReturn"))

@@ -202,6 +202,7 @@ LLFolderViewItem::LLFolderViewItem(const LLFolderViewItem::Params& p)
     mLocalIndentation(p.folder_indentation),
     mIndentation(0),
     mItemHeight(p.item_height),
+    mLastModernInventoryView(false),
     mControlLabelRotation(0.f),
     mDragAndDropTarget(false),
     mLabel(utf8str_to_wstring(p.name)),
@@ -524,7 +525,18 @@ S32 LLFolderViewItem::arrange( S32* width, S32* height )
 
 S32 LLFolderViewItem::getItemHeight() const
 {
-    return mItemHeight;
+    if (!useModernInventoryView())
+    {
+        return mItemHeight;
+    }
+    const bool is_folder = dynamic_cast<const LLFolderViewFolder*>(this) != nullptr;
+    return llmax(mItemHeight, is_folder ? 38 : 34);
+}
+
+bool LLFolderViewItem::useModernInventoryView() const
+{
+    static LLUICachedControl<bool> modern_inventory_view("FSModernInventoryView", true);
+    return mForInventory && modern_inventory_view;
 }
 
 S32 LLFolderViewItem::getLabelXPos()
@@ -715,7 +727,7 @@ bool LLFolderViewItem::handleMouseDown( S32 x, S32 y, MASK mask )
 
 bool LLFolderViewItem::handleHover( S32 x, S32 y, MASK mask )
 {
-    mIsMouseOverTitle = (y > (getRect().getHeight() - mItemHeight));
+    mIsMouseOverTitle = (y > (getRect().getHeight() - getItemHeight()));
 
     if( hasMouseCapture() && isMovable() )
     {
@@ -879,9 +891,12 @@ void LLFolderViewItem::drawOpenFolderArrow()
 
     if (hasVisibleChildren() || !isFolderComplete())
     {
+        const S32 arrow_y = useModernInventoryView()
+            ? getRect().getHeight() - getItemHeight() + (getItemHeight() - mArrowSize) / 2
+            : getRect().getHeight() - mArrowSize - mArrowPadTop - mItemTopPad;
         gl_draw_scaled_rotated_image(
             // <FS:Ansariel> Inventory specials
-            mIndentation, getRect().getHeight() - mArrowSize - mArrowPadTop - mItemTopPad,
+            mIndentation, arrow_y,
             mArrowSize, mArrowSize, mControlLabelRotation, sFolderArrowImg->getImage(), sFgColor);
     }
 }
@@ -917,7 +932,7 @@ void LLFolderViewItem::drawFavoriteIcon()
         }
         gl_draw_scaled_image(
             x_offset - FAVORITE_IMAGE_SIZE - FAVORITE_IMAGE_PAD,
-            getRect().getHeight() - mItemHeight + FAVORITE_IMAGE_PAD,
+            getRect().getHeight() - getItemHeight() + FAVORITE_IMAGE_PAD,
             FAVORITE_IMAGE_SIZE,
             FAVORITE_IMAGE_SIZE,
             favorite_image->getImage(),
@@ -953,8 +968,9 @@ void LLFolderViewItem::drawHighlight(bool showContent, bool hasKeyboardFocus,
     const LLUIColor& focusOutlineColor, const LLUIColor& mouseOverColor)
 {
     const S32 focus_top = getRect().getHeight();
-    const S32 focus_bottom = getRect().getHeight() - mItemHeight;
-    const bool folder_open = (getRect().getHeight() > mItemHeight + 4);
+    const S32 item_height = getItemHeight();
+    const S32 focus_bottom = getRect().getHeight() - item_height;
+    const bool folder_open = (getRect().getHeight() > item_height + 4);
     const S32 FOCUS_LEFT = 1;
 
     // Determine which background color to use for highlighting
@@ -1070,6 +1086,16 @@ void LLFolderViewItem::drawLabel(const LLFontGL * font, const F32 x, const F32 y
 
 void LLFolderViewItem::draw()
 {
+    const bool modern_view = useModernInventoryView();
+    if (modern_view != mLastModernInventoryView)
+    {
+        mLastModernInventoryView = modern_view;
+        if (mParentFolder)
+        {
+            mParentFolder->requestArrange();
+        }
+    }
+
     const bool show_context = (getRoot() ? getRoot()->getShowSelectionContext() : false);
     const bool filled = show_context || (getRoot() ? getRoot()->getParentPanel()->hasFocus() : false); // If we have keyboard focus, draw selection filled
 
@@ -1077,6 +1103,73 @@ void LLFolderViewItem::draw()
     S32 line_height = font->getLineHeight();
 
     getViewModelItem()->update();
+
+    const S32 item_height = getItemHeight();
+    const S32 row_top = getRect().getHeight();
+    const S32 row_bottom = row_top - item_height;
+    const bool is_folder = dynamic_cast<LLFolderViewFolder*>(this) != nullptr;
+
+    S32 hierarchy_depth = 0;
+    for (const LLFolderViewFolder* parent = mParentFolder;
+         parent && parent->getParentFolder();
+         parent = parent->getParentFolder())
+    {
+        ++hierarchy_depth;
+    }
+
+    static const LLColor4 depth_colors[] =
+    {
+        LLColor4(0.10f, 0.62f, 0.94f, 1.f),
+        LLColor4(0.12f, 0.82f, 0.72f, 1.f),
+        LLColor4(0.62f, 0.42f, 0.96f, 1.f)
+    };
+    LLColor4 depth_color = depth_colors[hierarchy_depth % 3];
+
+    // Modern inventory mode separates dense rows without touching inventory
+    // data, selection, drag/drop, or context-menu behavior.
+    if (modern_view)
+    {
+        LLColor4 guide_color = depth_color;
+        guide_color.mV[VALPHA] = 0.34f;
+
+        // Each expanded folder draws its own single descendant rail. Rows
+        // only add the short elbow to their immediate parent, avoiding the
+        // dense stack of repeatedly overdrawn ancestor lines.
+        if (mParentFolder && mParentFolder->getParentFolder())
+        {
+            const S32 parent_x = mParentFolder->getIndentation() + mArrowSize / 2;
+            const S32 child_x = mIndentation - 2;
+            const S32 mid_y = row_bottom + item_height / 2;
+            gl_line_2d(parent_x, mid_y, child_x, mid_y, guide_color);
+            gl_rect_2d(parent_x - 1, mid_y + 1, parent_x + 1, mid_y - 1, guide_color, true);
+        }
+
+        const LLRect screen_rect = calcScreenRect();
+        const bool alternate_row = ((screen_rect.mBottom / llmax(1, item_height)) & 1) != 0;
+        if (is_folder)
+        {
+            LLColor4 card_color = depth_color;
+            card_color.mV[VALPHA] = 0.105f;
+            const S32 card_left = llmax(1, mIndentation - 5);
+            gl_rect_2d(card_left, row_top - 2, getRect().getWidth() - 2, row_bottom + 2, card_color, true);
+
+            LLColor4 card_edge = depth_color;
+            card_edge.mV[VALPHA] = 0.42f;
+            gl_line_2d(card_left + 4, row_bottom + 2, getRect().getWidth() - 4, row_bottom + 2, card_edge);
+        }
+        else if (alternate_row)
+        {
+            LLColor4 row_color = sMouseOverColor.get();
+            row_color.mV[VALPHA] = 0.022f;
+            gl_rect_2d(mIndentation - 2, row_top, getRect().getWidth(), row_bottom, row_color, true);
+        }
+        if (is_folder)
+        {
+            LLColor4 accent = depth_color;
+            accent.mV[VALPHA] = 0.86f;
+            gl_rect_2d(mIndentation, row_top - 6, mIndentation + 4, row_bottom + 6, accent, true);
+        }
+    }
 
     if (!mSingleFolderMode)
     {
@@ -1091,18 +1184,24 @@ void LLFolderViewItem::draw()
     //
     const S32 icon_x = mIndentation + mArrowSize + mTextPad;
     const S32 rect_height = getRect().getHeight();
+    const S32 icon_y = modern_view
+        ? row_bottom + (item_height - (mIcon ? mIcon->getHeight() : 0)) / 2
+        : rect_height - (mIcon ? mIcon->getHeight() : 0) - mItemTopPad + 1;
     if (!mIconOpen.isNull() && (llabs(mControlLabelRotation) > 80)) // For open folders
     {
-        mIconOpen->draw(icon_x, rect_height - mIconOpen->getHeight() - mItemTopPad + 1);
+        const S32 open_icon_y = modern_view
+            ? row_bottom + (item_height - mIconOpen->getHeight()) / 2
+            : rect_height - mIconOpen->getHeight() - mItemTopPad + 1;
+        mIconOpen->draw(icon_x, open_icon_y);
     }
     else if (mIcon)
     {
-        mIcon->draw(icon_x, rect_height - mIcon->getHeight() - mItemTopPad + 1);
+        mIcon->draw(icon_x, icon_y);
     }
 
     if (mIconOverlay && getRoot()->showItemLinkOverlays())
     {
-        mIconOverlay->draw(icon_x, rect_height - mIcon->getHeight() - mItemTopPad + 1);
+        mIconOverlay->draw(icon_x, icon_y);
     }
 
     //--------------------------------------------------------------------------------//
@@ -1115,11 +1214,14 @@ void LLFolderViewItem::draw()
 
     S32 filter_string_length = mViewModelItem->hasFilterStringMatch() ? (S32)mViewModelItem->getFilterStringSize() : 0;
     F32 right_x  = 0;
-    F32 y = (F32)rect_height - line_height - (F32)mTextPadTop - (F32)mItemTopPad;
+    F32 y = modern_view
+        ? (F32)row_bottom + ((F32)item_height - (F32)line_height) * 0.5f
+        : (F32)rect_height - line_height - (F32)mTextPadTop - (F32)mItemTopPad;
     F32 text_left = (F32)getLabelXPos();
     LLWString combined_string = mLabel + mLabelSuffix;
     const LLWString local_label = utf8str_to_wstring(mViewModelItem->getLocalLabel());
     F32 local_label_x = -1.f;
+    F32 local_label_y = y;
     S32 local_label_max_width = 0;
 
     S32 filter_offset = static_cast<S32>(mViewModelItem->getFilterStringOffset());
@@ -1186,7 +1288,34 @@ void LLFolderViewItem::draw()
     }
     if (local_label.empty())
     {
-        drawLabel(font, text_left, y, color, right_x);
+        if (modern_view && is_folder)
+        {
+            mLabelFontBuffer.render(font, mLabel, 0, text_left, y, color,
+                LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::BOLD, LLFontGL::NO_SHADOW,
+                S32_MAX, getRect().getWidth() - (S32)text_left - mLabelPaddingRight,
+                &right_x, /*use_ellipses*/true);
+        }
+        else
+        {
+            drawLabel(font, text_left, y, color, right_x);
+        }
+    }
+    else if (modern_view)
+    {
+        // Local label is the primary title; retain the server-backed name as
+        // a quieter second line so users can still identify the original.
+        y = (F32)row_bottom + 2.f;
+        local_label_x = text_left;
+        local_label_y = y + (F32)line_height;
+        local_label_max_width = llmax(0, getRect().getWidth() - (S32)text_left - mLabelPaddingRight);
+        LLColor4 english_color = color;
+        if (!mIsSelected)
+        {
+            english_color.mV[VALPHA] *= 0.62f;
+        }
+        mLabelFontBuffer.render(font, mLabel, 0, text_left, y, english_color,
+            LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::NORMAL, LLFontGL::NO_SHADOW,
+            S32_MAX, local_label_max_width, &right_x, /*use_ellipses*/true);
     }
     else
     {
@@ -1240,7 +1369,7 @@ void LLFolderViewItem::draw()
     // retains visual priority even when the server-backed text is very long.
     if (!local_label.empty())
     {
-        font->render(local_label, 0, local_label_x, y, color,
+        font->render(local_label, 0, local_label_x, local_label_y, color,
             LLFontGL::LEFT, LLFontGL::BOTTOM, LLFontGL::BOLD, LLFontGL::NO_SHADOW,
             S32_MAX, local_label_max_width, nullptr, true);
     }
@@ -2466,7 +2595,7 @@ bool LLFolderViewFolder::handleRightMouseDown( S32 x, S32 y, MASK mask )
 
 bool LLFolderViewFolder::handleHover(S32 x, S32 y, MASK mask)
 {
-    mIsMouseOverTitle = (y > (getRect().getHeight() - mItemHeight));
+    mIsMouseOverTitle = (y > (getRect().getHeight() - getItemHeight()));
 
     bool handled = LLView::handleHover(x, y, mask);
 
@@ -2566,6 +2695,32 @@ bool LLFolderViewFolder::handleDoubleClick( S32 x, S32 y, MASK mask )
 void LLFolderViewFolder::draw()
 {
     updateLabelRotation();
+
+    // A restrained bracket marks the extent of an expanded folder without
+    // tinting the whole descendant area. Nested folders therefore remain
+    // readable without accumulating large translucent colour blocks.
+    if (useModernInventoryView() && getRect().getHeight() > getItemHeight() + 1)
+    {
+        const S32 content_top = getRect().getHeight() - getItemHeight();
+        const S32 rail_x = mIndentation + mArrowSize / 2;
+
+        S32 hierarchy_depth = 0;
+        for (const LLFolderViewFolder* parent = mParentFolder;
+             parent && parent->getParentFolder();
+             parent = parent->getParentFolder())
+        {
+            ++hierarchy_depth;
+        }
+        static const LLColor4 rail_colors[] =
+        {
+            LLColor4(0.10f, 0.62f, 0.94f, 0.40f),
+            LLColor4(0.12f, 0.82f, 0.72f, 0.40f),
+            LLColor4(0.62f, 0.42f, 0.96f, 0.40f)
+        };
+        const LLColor4& edge_color = rail_colors[hierarchy_depth % 3];
+        gl_rect_2d(rail_x - 1, content_top, rail_x + 1, 2, edge_color, true);
+        gl_rect_2d(rail_x, 4, rail_x + 8, 2, edge_color, true);
+    }
 
     LLFolderViewItem::draw();
 

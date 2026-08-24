@@ -30,6 +30,7 @@
 #include "pipeline.h"
 
 #include "aoengine.h"           // ## Zi: Animation Overrider
+#include "fsspectatormode.h"
 #include "llagent.h"
 #include "llanimationstates.h"
 #include "llfloatercamera.h"
@@ -41,6 +42,7 @@
 #include "llselectmgr.h"
 #include "llsmoothstep.h"
 #include "lltoolmgr.h"
+#include "lltoolfocus.h"
 #include "llviewercamera.h"
 #include "llviewercontrol.h"
 #include "llviewerjoystick.h"
@@ -900,6 +902,15 @@ F32 LLAgentCamera::getAgentHUDTargetZoom()
 //-----------------------------------------------------------------------------
 void LLAgentCamera::cameraOrbitAround(const F32 radians)
 {
+    // Global middle-button orbit is a local camera operation. Detach before
+    // choosing the normal orbit branch so it never yaws the avatar itself.
+    // Repeat this check because RLVa camera constraints may reattach focus
+    // between mouse-move events.
+    if (LLToolCamera::getInstance()->isGlobalMiddleMouseOrbit() && mFocusOnAvatar)
+    {
+        setFocusOnAvatar(false, false);
+    }
+
     LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
     if (selection->getObjectCount() && selection->getSelectType() == SELECT_TYPE_HUD)
     {
@@ -924,6 +935,12 @@ void LLAgentCamera::cameraOrbitAround(const F32 radians)
 //-----------------------------------------------------------------------------
 void LLAgentCamera::cameraOrbitOver(const F32 angle)
 {
+    // See cameraOrbitAround(): pitch the private camera, not the avatar.
+    if (LLToolCamera::getInstance()->isGlobalMiddleMouseOrbit() && mFocusOnAvatar)
+    {
+        setFocusOnAvatar(false, false);
+    }
+
     LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
     if (selection->getObjectCount() && selection->getSelectType() == SELECT_TYPE_HUD)
     {
@@ -1231,6 +1248,17 @@ void LLAgentCamera::updateLookAt(const S32 mouse_x, const S32 mouse_y)
     static LLVector3 last_at_axis;
 
     if (!isAgentAvatarValid()) return;
+
+    // A spectator/free-camera direction is private local state. Publishing it
+    // as a freelook target makes the avatar's head and eyes reveal where the
+    // user is observing. Clear the viewer effect while detached, and also for
+    // both moving and held spectator states.
+    if (FSSpectatorMode::isEngaged() ||
+        (cameraThirdPerson() && !getFocusOnAvatar()))
+    {
+        setLookAt(LOOKAT_TARGET_NONE, gAgentAvatarp, LLVector3::zero);
+        return;
+    }
 
     LLQuaternion av_inv_rot = ~gAgentAvatarp->mRoot->getWorldRotation();
     LLVector3 root_at = LLVector3::x_axis * gAgentAvatarp->mRoot->getWorldRotation();

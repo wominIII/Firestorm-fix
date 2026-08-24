@@ -1335,6 +1335,9 @@ bool LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MAS
 
         mMiddleMouseDown = true;
         mGlobalMiddleMouseOrbit = true;
+        // Convert avatar-follow camera into a free camera before orbiting.
+        // Otherwise LLAgentCamera's normal orbit path rotates the avatar body.
+        gAgentCamera.setFocusOnAvatar(false, false);
         LLToolMgr::getInstance()->setTransientTool(LLToolCamera::getInstance());
         LLToolCamera::getInstance()->setGlobalMiddleMouseOrbit(true);
         LLToolCamera::getInstance()->handleMouseDown(x, y, mask | MASK_ORBIT);
@@ -1516,6 +1519,26 @@ bool LLViewerWindow::handleMiddleMouseUp(LLWindow *window,  LLCoordGL pos, MASK 
 
 bool LLViewerWindow::handleOtherMouse(LLWindow *window, LLCoordGL pos, MASK mask, S32 button, bool down)
 {
+    // Spectator side buttons must work even when a seated object, HUD, or UI
+    // control would consume the normal mouse binding first. Handle their down
+    // edges at the viewer window boundary and do not enqueue a second action.
+    if (button == 4)
+    {
+        if (down)
+        {
+            FSSpectatorMode::toggle();
+        }
+        return true;
+    }
+    if (button == 5 && FSSpectatorMode::isEngaged())
+    {
+        if (down)
+        {
+            FSSpectatorMode::toggleMouseMode();
+        }
+        return true;
+    }
+
     switch (button)
     {
     case 4:
@@ -1925,7 +1948,7 @@ bool LLViewerWindow::handleTimerEvent(LLWindow *window)
 // }
 // </FS>
 
-bool LLViewerWindow::handleDeviceChange(LLWindow *window, bool deviceRemoved) 
+bool LLViewerWindow::handleDeviceChange(LLWindow *window, bool deviceRemoved)
 {
     // give a chance to use a joystick after startup (hot-plugging)
     if (!deviceRemoved && !LLViewerJoystick::getInstance()->isJoystickInitialized())
@@ -6035,7 +6058,7 @@ void LLViewerWindow::saveImageLocal(LLImageFormatted *image, const snapshot_save
         filepath = sSnapshotDir;
         filepath += gDirUtilp->getDirDelimiter();
         filepath += sSnapshotBaseName;
-// <FS:Beq> FIRE-35391 - Restore ability for snapshots saving with simple index number        
+// <FS:Beq> FIRE-35391 - Restore ability for snapshots saving with simple index number
 // filepath += now.toLocalDateString("_%Y-%m-%d_%H%M%S");
 // filepath += llformat("%.2d", i);
         if (gSavedSettings.getBOOL("FSSnapshotLocalNamesWithTimestamps"))

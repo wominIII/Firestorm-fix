@@ -2199,6 +2199,202 @@ bool LLFloaterModelPreview::isModelUploadAllowed()
     return allow_upload;
 }
 
+LLSD LLFloaterModelPreview::getMCPUploadState()
+{
+    LLSD state;
+    state["open"] = getVisible();
+    state["available"] = mModelPreview != nullptr;
+    if (!mModelPreview)
+    {
+        state["phase"] = "unavailable";
+        return state;
+    }
+
+    state["loading"] = mModelPreview->mLoading;
+    state["lods_ready"] = mModelPreview->lodsReady();
+    state["textures_ready"] = mModelPreview->areTexturesReady();
+    state["model_has_errors"] = !mModelPreview->mModelNoErrors;
+    state["has_degenerate_geometry"] = mModelPreview->mHasDegenerate;
+    state["rig_valid_for_joint_upload"] = mModelPreview->isRigValidForJointPositionUpload();
+    state["legacy_rig_valid"] = mModelPreview->isLegacyRigValid();
+    state["legacy_rig_flags"] = static_cast<S32>(mModelPreview->getLegacyRigFlags());
+    state["has_upload_permission"] = mHasUploadPerm;
+    state["fee_calculated"] = !mUploadModelUrl.empty();
+    state["upload_allowed"] = isModelUploadAllowed();
+    state["calculate_enabled"] = mCalculateBtn && mCalculateBtn->getEnabled();
+    state["upload_button_enabled"] = mUploadBtn && mUploadBtn->getEnabled();
+    state["status_text"] = childGetValue("status");
+    state["model_name"] = childGetValue("description_form");
+    state["display_name"] = childGetValue("model_name");
+    state["options"]["upload_textures"] = childGetValue("upload_textures");
+    state["options"]["upload_skin"] = childGetValue("upload_skin");
+    state["options"]["upload_joints"] = childGetValue("upload_joints");
+    state["options"]["lock_scale_if_joint_position"] = childGetValue("lock_scale_if_joint_position");
+    state["options"]["import_scale"] = childGetValue("import_scale");
+    state["options"]["pelvis_offset"] = childGetValue("pelvis_offset");
+
+    state["preview_scale"] = LLSD::emptyArray();
+    state["preview_scale"].append(mModelPreview->mPreviewScale.mV[VX]);
+    state["preview_scale"].append(mModelPreview->mPreviewScale.mV[VY]);
+    state["preview_scale"].append(mModelPreview->mPreviewScale.mV[VZ]);
+    state["lods"] = LLSD::emptyArray();
+    static const char* lod_names[LLModel::NUM_LODS] = { "lowest", "low", "medium", "high", "physics" };
+    for (S32 lod = 0; lod < LLModel::NUM_LODS; ++lod)
+    {
+        LLSD lod_state;
+        lod_state["lod"] = lod_names[lod];
+        lod_state["file"] = mModelPreview->mLODFile[lod];
+        lod_state["model_count"] = static_cast<S32>(mModelPreview->mModel[lod].size());
+        S32 vertices = 0;
+        S32 triangles = 0;
+        S32 faces = 0;
+        for (const LLPointer<LLModel>& model : mModelPreview->mModel[lod])
+        {
+            if (model.isNull()) continue;
+            faces += model->getNumVolumeFaces();
+            for (S32 face = 0; face < model->getNumVolumeFaces(); ++face)
+            {
+                const LLVolumeFace& volume_face = model->getVolumeFace(face);
+                vertices += volume_face.mNumVertices;
+                triangles += volume_face.mNumIndices / 3;
+            }
+        }
+        lod_state["face_count"] = faces;
+        lod_state["vertices"] = vertices;
+        lod_state["triangles"] = triangles;
+        lod_state["parsing_error"] = std::find(mModelPreview->mLodsWithParsingError.begin(),
+            mModelPreview->mLodsWithParsingError.end(), lod) != mModelPreview->mLodsWithParsingError.end();
+        state["lods"].append(lod_state);
+    }
+
+    LLSD issues = LLSD::emptyArray();
+    if (mModelPreview->mModel[LLModel::LOD_HIGH].empty()) issues.append("No High LOD model is loaded");
+    if (mModelPreview->mLoading) issues.append("Model or texture data is still loading");
+    if (!mModelPreview->lodsReady()) issues.append("Generated LOD data is not ready");
+    if (!mModelPreview->areTexturesReady()) issues.append("Referenced textures are still loading");
+    if (!mModelPreview->mModelNoErrors) issues.append("The uploader reports model validation errors; inspect log_text");
+    if (mModelPreview->mHasDegenerate) issues.append("Degenerate geometry was detected");
+    if (!mModelPreview->mLodsWithParsingError.empty()) issues.append("One or more LOD files failed to parse");
+    if (childGetValue("upload_joints").asBoolean() && !mModelPreview->isRigValidForJointPositionUpload())
+        issues.append("Joint-position upload is enabled but the rig is not valid for joint upload");
+    if (!mHasUploadPerm) issues.append("The current account or region has not granted Mesh upload permission");
+    state["issues"] = issues;
+    state["locally_feasible"] = mModelPreview->mModelNoErrors &&
+        !mModelPreview->mLoading && mModelPreview->lodsReady() &&
+        !mModelPreview->mModel[LLModel::LOD_HIGH].empty() &&
+        mModelPreview->mLodsWithParsingError.empty();
+
+    if (!mModelPhysicsFee.isUndefined())
+    {
+        state["fee"] = mModelPhysicsFee;
+        state["fee"].erase("url");
+    }
+    state["log_text"] = mUploadLogText ? mUploadLogText->getValue().asString() : std::string();
+
+    if (mModelPreview->mLoading) state["phase"] = "loading";
+    else if (!state["locally_feasible"].asBoolean()) state["phase"] = "invalid";
+    else if (isModelUploadAllowed()) state["phase"] = "ready_to_upload";
+    else if (mCalculateBtn && !mCalculateBtn->getVisible()) state["phase"] = "calculating_fee";
+    else state["phase"] = "ready_to_calculate";
+    return state;
+}
+
+bool LLFloaterModelPreview::applyMCPUploadSettings(const LLSD& settings, std::string& error)
+{
+    if (!mModelPreview || !getVisible())
+    {
+        error = "Mesh upload floater is not open";
+        return false;
+    }
+    if (!settings.isMap())
+    {
+        error = "settings must be a map";
+        return false;
+    }
+
+    const std::vector<std::string> boolean_options = {
+        "upload_textures", "upload_skin", "upload_joints", "lock_scale_if_joint_position"
+    };
+    for (const std::string& name : boolean_options)
+    {
+        if (!settings.has(name)) continue;
+        if (!settings[name].isBoolean())
+        {
+            error = name + " must be boolean";
+            return false;
+        }
+        LLUICtrl* control = findChild<LLUICtrl>(name);
+        if (!control || !control->getEnabled())
+        {
+            error = name + " is not currently available for this model";
+            return false;
+        }
+        control->setValue(settings[name]);
+        onUploadOptionChecked(control);
+    }
+
+    if (settings.has("model_name"))
+    {
+        const std::string name = settings["model_name"].asString();
+        if (name.empty() || name.size() > 63)
+        {
+            error = "model_name must contain 1 to 63 bytes";
+            return false;
+        }
+        childSetValue("description_form", name);
+        toggleCalculateButton(true);
+    }
+    if (settings.has("import_scale"))
+    {
+        const F64 value = settings["import_scale"].asReal();
+        if (!std::isfinite(value) || value <= 0.0)
+        {
+            error = "import_scale must be a finite positive number";
+            return false;
+        }
+        childSetValue("import_scale", value);
+        onImportScaleCommit(nullptr, this);
+    }
+    if (settings.has("pelvis_offset"))
+    {
+        const F64 value = settings["pelvis_offset"].asReal();
+        if (!std::isfinite(value))
+        {
+            error = "pelvis_offset must be finite";
+            return false;
+        }
+        childSetValue("pelvis_offset", value);
+        onPelvisOffsetCommit(nullptr, this);
+    }
+    return true;
+}
+
+bool LLFloaterModelPreview::requestMCPFeeCalculation(std::string& error)
+{
+    if (!mModelPreview || !getVisible())
+    {
+        error = "Mesh upload floater is not open";
+        return false;
+    }
+    if (mModelPreview->mLoading || !mModelPreview->lodsReady())
+    {
+        error = "Model LOD data is still loading or generating";
+        return false;
+    }
+    if (!mModelPreview->mModelNoErrors || mModelPreview->mModel[LLModel::LOD_HIGH].empty())
+    {
+        error = "Model is not locally valid enough to calculate upload fee";
+        return false;
+    }
+    if (!mCalculateBtn || !mCalculateBtn->getEnabled() || !mCalculateBtn->getVisible())
+    {
+        error = "Fee calculation is not currently available or is already running";
+        return false;
+    }
+    onClickCalculateBtn();
+    return true;
+}
+
 S32 LLFloaterModelPreview::DecompRequest::statusCallback(const char* status, S32 p1, S32 p2)
 {
     if (mContinue)
@@ -2278,4 +2474,3 @@ bool LLFloaterModelPreview::isModelLoading()
     }
     return false;
 }
-

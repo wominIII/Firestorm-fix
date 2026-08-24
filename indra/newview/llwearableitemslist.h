@@ -63,6 +63,10 @@ public:
 
 protected:
 
+    void updateItem(const std::string& name,
+                    bool favorite,
+                    EItemState item_state = IS_DEFAULT) override;
+
     LLPanelWearableListItem(LLViewerInventoryItem* item, const Params& params);
 };
 

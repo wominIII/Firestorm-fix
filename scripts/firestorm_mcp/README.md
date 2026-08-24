@@ -9,7 +9,17 @@ Enable **Local MCP Bridge** in **World > AI Diagnostics and Repair Assistant**,
 then register `server.py` as a stdio MCP server. The viewer refreshes
 `snapshot.xml` once per second under its user settings directory.
 
-Protocol version 4 adds `inspect_object`, detailed object-inventory metadata,
+Server version 0.8 adds a persistent, cursor-based event feed for Viewer connection,
+login, selection, attachment, wearable, and animation changes. It also adds dry-run
+change plans, redacted command auditing, and exact undo records for settings, object
+transforms, face materials, and Mesh uploader configuration. Script source and credential
+values are never retained in the audit log. Protocol version 7 adds direct Mesh uploader diagnostics, typed configuration of common
+upload options, local feasibility reporting, server-side fee calculation status, and
+safe fee calculation without triggering the final paid upload. Protocol version 6 added searchable, paginated viewer/per-account setting discovery,
+typed setting reads and writes, and reset-to-default operations. Credential values
+are always redacted and cannot be changed through MCP. Protocol version 5 added exact selection context (primary child prim, linkset root,
+and selected faces), root-versus-child script targeting, and selected-face material
+targeting. Protocol version 4 added `inspect_object`, detailed object-inventory metadata,
 `get_inventory_entry`, `list_inventory_folder`, `search_inventory`,
 `create_inventory_folder`, `rename_inventory_entry`, `move_inventory_entries`,
 and recoverable `trash_inventory_entries`. Inventory search covers the loaded

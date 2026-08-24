@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <floater
- background_visible="true"
+ background_visible="false"
  height="355"
  help_topic="floater_im_box"
  layout="topleft"
@@ -239,6 +239,9 @@
             </layout_panel>
             <layout_panel
              height="30"
+             background_visible="true"
+             background_opaque="false"
+             bg_alpha_color="0 0 0 0.72"
              auto_resize="false"
              name="chat_layout_panel">
                 <layout_stack

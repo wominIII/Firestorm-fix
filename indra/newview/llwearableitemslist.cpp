@@ -34,6 +34,7 @@
 #include "llagentwearables.h"
 #include "llappearancemgr.h"
 #include "llinventoryicon.h"
+#include "llinventorybridge.h"
 #include "llgesturemgr.h"
 #include "lltransutil.h"
 #include "llviewerattachmenu.h"
@@ -83,6 +84,26 @@ void LLPanelWearableListItem::onMouseLeave(S32 x, S32 y, MASK mask)
 LLPanelWearableListItem::LLPanelWearableListItem(LLViewerInventoryItem* item, const LLPanelWearableListItem::Params& params)
 : LLPanelInventoryListItemBase(item, params)
 {
+}
+
+void LLPanelWearableListItem::updateItem(const std::string& name,
+                                         bool favorite,
+                                         EItemState item_state)
+{
+    std::string display_name = name;
+    if (LLViewerInventoryItem* item = getItem())
+    {
+        // COF and saved-outfit rows are normally links. Local labels belong
+        // to the original inventory item so every inventory-backed view uses
+        // exactly the same UUID and persisted value.
+        const LLUUID label_id = item->getLinkedUUID();
+        const std::string local_label = FSInventoryLocalLabels::instance().get(label_id);
+        if (!local_label.empty())
+        {
+            display_name = local_label + "  ·  " + name;
+        }
+    }
+    LLPanelInventoryListItemBase::updateItem(display_name, favorite, item_state);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -255,7 +276,7 @@ void LLPanelWearableOutfitItem::updateItem(const std::string& name,
         }
     }
 
-    LLPanelInventoryListItemBase::updateItem(search_label, favorite, item_state);
+    LLPanelWearableListItem::updateItem(search_label, favorite, item_state);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -500,7 +521,7 @@ void LLPanelAttachmentListItem::updateItem(const std::string& name,
         title_joint =  title_joint + " (" + trans_name + ")";
     }
 
-    LLPanelInventoryListItemBase::updateItem(title_joint, favorite, item_state);
+    LLPanelWearableListItem::updateItem(title_joint, favorite, item_state);
 }
 
 // <FS:Ansariel> Show per-item complexity in COF

@@ -8,6 +8,9 @@
 	<menu_item_call label="复制名称" name="copy_name_to_clipboard"/>
 	<menu_item_call label="复制URI" name="copy_uri_to_clipboard"/>
 	<menu_item_call label="复制UUID/用户标识码" name="copy_key_to_clipboard"/>
+	<menu_item_call label="普通翻译个人简介" name="translate_profile_machine"/>
+	<menu_item_call label="AI 翻译个人简介" name="translate_profile_ai"/>
+	<menu_item_call label="显示个人简介原文" name="show_profile_original"/>
 	<menu_item_call label="踢出" name="kick"/>
 	<menu_item_call label="冻结" name="freeze"/>
 	<menu_item_call label="解冻" name="unfreeze"/>

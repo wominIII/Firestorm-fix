@@ -3504,6 +3504,17 @@ See https://wiki.secondlife.com/wiki/Adding_Spelling_Dictionaries
 
   <notification
    icon="alertmodal.tga"
+   label="AI Label Current Outfit"
+   name="FSConfirmWearingAIAutoLabel"
+   type="alertmodal">
+    Send the names of all [COUNT] currently worn inventory items to the configured AI and replace their local labels?
+    The labels are shared with Inventory; server-side names will not be changed.
+    <tag>confirm</tag>
+    <usetemplate name="okcancelbuttons" notext="Cancel" yestext="Continue"/>
+  </notification>
+
+  <notification
+   icon="alertmodal.tga"
    label="Rename Outfit"
    name="RenameOutfit"
    type="alertmodal">

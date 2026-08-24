@@ -204,15 +204,35 @@
     </layout_panel>
   </layout_stack>
 
+  <text
+   follows="left|top|right"
+   bg_readonly_color="DkGray2"
+   bg_visible="true"
+   border_visible="true"
+   font="SansSerifBold"
+   height="26"
+   h_pad="10"
+   layout="topleft"
+   left="10"
+   name="modern_inventory_path"
+   right="-6"
+   text_color="White"
+   top_pad="4"
+   use_ellipses="true"
+   valign="center"
+   visible="false">
+    Inventory
+  </text>
+
   <panel
    follows="all"
    halign="center"
-   height="338"
+   height="310"
    layout="topleft"
    left="3"
    right="-3"
    name="default_inventory_panel"
-   top_pad="4">
+   top_pad="2">
     <tab_container
        bg_alpha_color="DkGray"
        bg_opaque_color="DkGray"
@@ -220,7 +240,7 @@
        background_opaque="false"
        follows="all"
        halign="center"
-       height="338"
+       height="310"
        layout="topleft"
        left="0"
        name="inventory filter tabs"
@@ -286,7 +306,7 @@
     <panel
      follows="all"
      halign="center"
-     height="338"
+     height="310"
      layout="topleft"
      left="4"
      name="combination_view_inventory"
@@ -294,7 +314,7 @@
      visible="false">
      <layout_stack
       follows="all"
-      height="338"
+      height="310"
       name="combination_view_stack"
       animate="false"
       drag_handle_thickness="6"

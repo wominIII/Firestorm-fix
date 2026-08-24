@@ -381,19 +381,25 @@ bool LLFloaterCamera::inFreeCameraMode()
 void LLFloaterCamera::resetCameraMode()
 {
     LLFloaterCamera* floater_camera = LLFloaterCamera::findInstance();
-    if (!floater_camera) return;
-    floater_camera->switchMode(CAMERA_CTRL_MODE_PAN);
+    if (floater_camera)
+    {
+        floater_camera->switchMode(CAMERA_CTRL_MODE_PAN);
+    }
 
     // <FS:Ansariel> Phototools camera
     floater_camera = LLFloaterCamera::findPhototoolsInstance();
-    if (!floater_camera) return;
-    floater_camera->switchMode(CAMERA_CTRL_MODE_PAN);
+    if (floater_camera)
+    {
+        floater_camera->switchMode(CAMERA_CTRL_MODE_PAN);
+    }
     // <FS:Ansariel>
 
     // <FS:Ansariel> Optional small camera floater
     floater_camera = LLFloaterCamera::findSmallInstance();
-    if (!floater_camera) return;
-    floater_camera->switchMode(CAMERA_CTRL_MODE_PAN);
+    if (floater_camera)
+    {
+        floater_camera->switchMode(CAMERA_CTRL_MODE_PAN);
+    }
     // </FS:Ansariel>
 }
 

@@ -52,6 +52,8 @@ public:
     ~FSFloaterNearbyChat();
 
     bool postBuild() override;
+    void draw() override;
+    F32 getCurrentTransparency() override;
 
     /** @param archive true - to save a message to the chat history log */
     void addMessage(const LLChat& message, bool archive = true, const LLSD& args = LLSD());

@@ -1,6 +1,17 @@
 /**
  * @file fsfloateriaassistant.h
  * @brief AI-assisted diagnostics for avatar attachments and selected objects.
+ *
+ * $LicenseInfo:firstyear=2026&license=viewerlgpl$
+ * Firestorm Viewer Source Code
+ * Copyright (C) 2026, Firestorm contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 2.1.
+ * This library is distributed without any warranty; without even the implied
+ * warranty of merchantability or fitness for a particular purpose.
+ * See <https://www.gnu.org/licenses/> for the full license text.
+ * $/LicenseInfo$
  */
 
 #ifndef FS_FSFLOATERIAIASSISTANT_H

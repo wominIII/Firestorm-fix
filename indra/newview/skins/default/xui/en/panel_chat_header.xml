@@ -3,7 +3,7 @@
      background_visible="true"
      bevel_style="in"
      bg_opaque_color="ChatHeaderOpaqueBackground" 
-     bg_alpha_color="ChatHeaderAlphaBackground"
+     bg_alpha_color="0 0 0 0.62"
      follows="top|left|right"
      height="24"
      label="im_header"

@@ -57,6 +57,7 @@
 #include "fsmeshreconstructor.h"
 #include "fsspectatormode.h"
 #include "llvoiceclient.h"
+#include "pipeline.h"
 
 //
 // Constants
@@ -1034,6 +1035,50 @@ bool toggle_mouselook_cursor(EKeystate s)
     return true;
 }
 
+// Hide all avatar name tags globally, or restore the exact display mode that
+// was active before hiding (always, briefly, or hover-only).
+bool toggle_avatar_name_tags(EKeystate s)
+{
+    if (KEYSTATE_DOWN != s)
+    {
+        return true;
+    }
+
+    constexpr S32 NAME_TAG_MODE_HIDDEN = 0;
+    constexpr S32 NAME_TAG_MODE_ALWAYS = 1;
+    constexpr S32 NAME_TAG_MODE_HOVER = 3;
+    const S32 current_mode = gSavedSettings.getS32("AvatarNameTagMode");
+
+    if (current_mode == NAME_TAG_MODE_HIDDEN)
+    {
+        S32 restore_mode = gSavedSettings.getS32("FSAvatarNameTagLastVisibleMode");
+        if (restore_mode < NAME_TAG_MODE_ALWAYS || restore_mode > NAME_TAG_MODE_HOVER)
+        {
+            restore_mode = NAME_TAG_MODE_HOVER;
+        }
+        gSavedSettings.setS32("AvatarNameTagMode", restore_mode);
+    }
+    else
+    {
+        gSavedSettings.setS32("FSAvatarNameTagLastVisibleMode", current_mode);
+        gSavedSettings.setS32("AvatarNameTagMode", NAME_TAG_MODE_HIDDEN);
+    }
+
+    LLVOAvatar::invalidateNameTags();
+    return true;
+}
+
+// Toggle the same UI render feature exposed by Develop > Rendering Features > UI.
+// This is global so the key remains available while the UI itself is not rendered.
+bool toggle_ui_rendering(EKeystate s)
+{
+    if (KEYSTATE_DOWN == s)
+    {
+        LLPipeline::toggleRenderDebugFeature(LLPipeline::RENDER_DEBUG_FEATURE_UI);
+    }
+    return true;
+}
+
 bool voice_follow_key(EKeystate s)
 {
     if (KEYSTATE_DOWN == s)
@@ -1120,6 +1165,8 @@ REGISTER_KEYBOARD_ACTION("look_up", agent_look_up);
 REGISTER_KEYBOARD_ACTION("look_down", agent_look_down);
 REGISTER_KEYBOARD_ACTION("toggle_fly", agent_toggle_fly);
 REGISTER_KEYBOARD_ACTION("toggle_mouselook_cursor", toggle_mouselook_cursor);
+REGISTER_KEYBOARD_GLOBAL_ACTION("toggle_avatar_name_tags", toggle_avatar_name_tags);
+REGISTER_KEYBOARD_GLOBAL_ACTION("toggle_ui_rendering", toggle_ui_rendering);
 // The export shortcut must remain usable while inventory/search/build floaters
 // have keyboard focus.  Registering it as an in-world action made it appear
 // configured while the focused floater silently consumed the keystroke.
@@ -1702,6 +1749,38 @@ S32 LLViewerInput::loadBindingsXML(const std::string& filename)
                 for (S32 mode = 0; mode < MODE_COUNT; ++mode)
                 {
                     bindKey(mode, 'M', MASK_CONTROL | MASK_SHIFT, "reconstruct_cached_mesh");
+                }
+            }
+
+            if (keys.xml_version < 9)
+            {
+                KeyBinding name_tags_binding;
+                name_tags_binding.key = "H";
+                name_tags_binding.mask = "CTL_SHIFT";
+                name_tags_binding.command = "toggle_avatar_name_tags";
+                keys.first_person.bindings.add(name_tags_binding);
+                keys.third_person.bindings.add(name_tags_binding);
+                keys.sitting.bindings.add(name_tags_binding);
+                keys.edit_avatar.bindings.add(name_tags_binding);
+                for (S32 mode = 0; mode < MODE_COUNT; ++mode)
+                {
+                    bindKey(mode, 'H', MASK_CONTROL | MASK_SHIFT, "toggle_avatar_name_tags");
+                }
+            }
+
+            if (keys.xml_version < 10)
+            {
+                KeyBinding ui_rendering_binding;
+                ui_rendering_binding.key = "F1";
+                ui_rendering_binding.mask = "CTL_SHIFT";
+                ui_rendering_binding.command = "toggle_ui_rendering";
+                keys.first_person.bindings.add(ui_rendering_binding);
+                keys.third_person.bindings.add(ui_rendering_binding);
+                keys.sitting.bindings.add(ui_rendering_binding);
+                keys.edit_avatar.bindings.add(ui_rendering_binding);
+                for (S32 mode = 0; mode < MODE_COUNT; ++mode)
+                {
+                    bindKey(mode, KEY_F1, MASK_CONTROL | MASK_SHIFT, "toggle_ui_rendering");
                 }
             }
 

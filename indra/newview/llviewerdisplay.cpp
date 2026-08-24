@@ -664,8 +664,12 @@ void display(bool rebuild, F32 zoom_factor, int subfield, bool for_snapshot)
     //LLVOAvatar::sRenderName = avatar_name_tag_mode;
     //LLVOAvatar::sRenderGroupTitles = avatar_name_tag_mode > 0 ? name_tag_show_group_titles : 0;;
     auto& world_instance = LLWorld::instance();
-    LLVOAvatar::sRenderName = avatar_name_tag_mode > world_instance.getAllowRenderName() ? world_instance.getAllowRenderName() : avatar_name_tag_mode;
-    LLVOAvatar::sRenderGroupTitles = LLVOAvatar::sRenderName > 0 ? name_tag_show_group_titles : 0;
+    constexpr S32 NAME_TAG_MODE_HOVER = 3;
+    const bool hover_only = avatar_name_tag_mode == NAME_TAG_MODE_HOVER;
+    LLVOAvatar::sRenderName = hover_only
+        ? 0
+        : (avatar_name_tag_mode > world_instance.getAllowRenderName() ? world_instance.getAllowRenderName() : avatar_name_tag_mode);
+    LLVOAvatar::sRenderGroupTitles = (hover_only || LLVOAvatar::sRenderName > 0) ? name_tag_show_group_titles : 0;
 // <FS:CR> Aurora sim
 
     gPipeline.mBackfaceCull = true;

@@ -1505,6 +1505,19 @@ void FSChatHistory::appendMessage(const LLChat& chat, const LLSD &args, const LL
     LLStyle::Params name_params(body_message_params);
     name_params.color(name_color);
     name_params.readonly_color(name_color);
+
+    // zmer: Keep the expanded chat readable without covering the world with a
+    // full opaque floater.  Highlight backgrounds are part of the text
+    // segments themselves, so wrapped messages keep a compact dark backing
+    // while the unused history area remains transparent.
+    if (gSavedSettings.getBOOL("FSImmersiveTransparentChat"))
+    {
+        const LLColor4 message_backing(0.f, 0.f, 0.f, 0.62f);
+        body_message_params.draw_highlight_bg = true;
+        body_message_params.highlight_bg_color = message_backing;
+        name_params.draw_highlight_bg = true;
+        name_params.highlight_bg_color = message_backing;
+    }
     std::string name_font_style_postfix = use_plain_text_chat_history ? "UNDERLINE" : "";
     name_params.font.style = name_font_style_postfix; // This will be used when hovering the name (LLTextBase::appendAndHighlightTextImpl() will filter it out)
     std::string delimiter_style = "NORMAL";
@@ -1987,6 +2000,9 @@ bool FSChatHistory::handleUnicodeCharHere(llwchar uni_char)
 
 void FSChatHistory::draw()
 {
+    // This is evaluated every frame so the option also restores the original
+    // history background immediately, without rebuilding the floater.
+    mBGVisible = !gSavedSettings.getBOOL("FSImmersiveTransparentChat");
     LLTextEditor::draw();
     // Ansa: FIRE-12754: Hack around a weird issue where the doc size magically increases by 1px
     //       during draw if the doc exceeds the visible space and the scrollbar is getting visible.

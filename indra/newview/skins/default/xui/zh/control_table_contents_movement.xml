@@ -54,6 +54,12 @@
 	<rows name="toggle_mouselook_cursor">
 		<columns name="lst_action" tool_tip="不退出原生第一人称视角，显示或重新捕获鼠标指针" value="切换第一人称鼠标指针" />
 	</rows>
+	<rows name="toggle_avatar_name_tags">
+		<columns name="lst_action" tool_tip="隐藏全部人物名称标签，或恢复上一次使用的显示模式" value="切换人物名称标签" />
+	</rows>
+	<rows name="toggle_ui_rendering">
+		<columns name="lst_action" tool_tip="停止或恢复整个查看器用户界面的渲染" value="切换整个 UI 渲染" />
+	</rows>
 	<rows name="reconstruct_cached_mesh">
 		<columns name="lst_action" tool_tip="从当前选中 Mesh 已被 Viewer 解码的数据重建 DAE" value="重建已缓存 Mesh 为 DAE" />
 	</rows>

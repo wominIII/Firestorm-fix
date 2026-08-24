@@ -89,6 +89,31 @@
      function="Profile.Commit"
      parameter="copy_user_id"/>
   </menu_item_call>
+  <menu_item_separator name="profile_translation_separator" />
+  <menu_item_call
+   label="Translate About"
+   layout="topleft"
+   name="translate_profile_machine">
+    <menu_item_call.on_click
+     function="Profile.Commit"
+     parameter="translate_profile_machine"/>
+  </menu_item_call>
+  <menu_item_call
+   label="AI Translate About"
+   layout="topleft"
+   name="translate_profile_ai">
+    <menu_item_call.on_click
+     function="Profile.Commit"
+     parameter="translate_profile_ai"/>
+  </menu_item_call>
+  <menu_item_call
+   label="Show Original About"
+   layout="topleft"
+   name="show_profile_original">
+    <menu_item_call.on_click
+     function="Profile.Commit"
+     parameter="show_profile_original"/>
+  </menu_item_call>
   <menu_item_call
    label="Kick"
    layout="topleft"

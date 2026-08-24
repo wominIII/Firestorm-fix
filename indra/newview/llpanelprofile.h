@@ -216,6 +216,11 @@ private:
     void onHideAgeCallback();
     void onSaveDescriptionChanges();
     void onDiscardDescriptionChanges();
+    void onTranslateDescription(bool use_ai);
+    void showOriginalDescription();
+    void showTranslatedDescription(bool use_ai, const std::string& translation);
+    void onDescriptionTranslationFailure(U32 request_serial, int status,
+                                         const std::string& reason);
     void onShowAgentPermissionsDialog();
     void onShowAgentProfileTexture();
     void onShowTexturePicker();
@@ -290,6 +295,11 @@ private:
     bool                mAllowEdit;
     std::string         mDescriptionText;
     std::string         mOriginalDescriptionText; // <AS:Chanayane> Preview button
+    std::string         mMachineTranslatedDescription;
+    std::string         mAITranslatedDescription;
+    S32                 mDescriptionTranslationView = 0;
+    U32                 mDescriptionTranslationRequestSerial = 0;
+    bool                mDescriptionTranslationInProgress = false;
     LLUUID              mImageId;
 
     boost::signals2::connection mAvatarNameCacheConnection;

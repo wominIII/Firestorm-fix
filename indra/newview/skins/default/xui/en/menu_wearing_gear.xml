@@ -48,4 +48,11 @@
         <on_click
          function="Gear.Copy" />
     </menu_item_call>
+    <menu_item_call
+     label="AI Label Current Outfit..."
+     layout="topleft"
+     name="ai_label_current">
+        <on_click
+         function="Gear.AILabelCurrent" />
+    </menu_item_call>
 </toggleable_menu>

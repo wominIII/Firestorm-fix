@@ -482,6 +482,10 @@ FSFloaterIMContainer* FSFloaterIMContainer::getInstance()
 // <FS:TJ> [FIRE-35804] Allow the IM floater to have separate transparency
 F32 FSFloaterIMContainer::getCurrentTransparency()
 {
+    if (gSavedSettings.getBOOL("FSImmersiveTransparentChat"))
+    {
+        return 0.f;
+    }
     static LLCachedControl<F32> im_opacity(gSavedSettings, "FSIMOpacity", 1.0f);
     static LLCachedControl<bool> im_active_opacity_override(gSavedSettings, "FSImActiveOpacityOverride", false);
 
@@ -586,6 +590,7 @@ void FSFloaterIMContainer::onVoiceStateIndicatorChanged(const LLSD& data)
 // virtual
 void FSFloaterIMContainer::draw()
 {
+    setBackgroundVisible(!gSavedSettings.getBOOL("FSImmersiveTransparentChat"));
     static LLCachedControl<bool> fsShowConversationVoiceStateIndicator(gSavedSettings, "FSShowConversationVoiceStateIndicator");
     if (fsShowConversationVoiceStateIndicator && (mActiveVoiceUpdateTimer.hasExpired() || mForceVoiceStateUpdate))
     {

@@ -6086,4 +6086,8 @@ https://wiki.firestormviewer.org/antivirus_whitelisting
 		即将把此文件夹中的 [COUNT] 个名称发送给已配置的 AI，并覆盖这些物品现有的本地标签。服务器保存的真实名称不会改变。
 		<usetemplate name="okcancelbuttons" yestext="继续" notext="取消"/>
 	</notification>
+	<notification label="AI 标注当前穿着" name="FSConfirmWearingAIAutoLabel">
+		即将把当前穿着的 [COUNT] 个库存物品名称发送给已配置的 AI，并覆盖它们现有的本地标签。标签与物品栏共享，服务器真实名称不会改变。
+		<usetemplate name="okcancelbuttons" yestext="继续" notext="取消"/>
+	</notification>
 </notifications>

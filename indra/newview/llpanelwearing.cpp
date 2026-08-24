@@ -36,15 +36,18 @@
 #include "llappearancemgr.h"
 #include "llfloatersidepanelcontainer.h"
 #include "llinventoryfunctions.h"
+#include "llinventorybridge.h"
 #include "llinventoryicon.h"
 #include "llinventorymodel.h"
 #include "llinventoryobserver.h"
 #include "llmenubutton.h"
 #include "lloutfitobserver.h"
+#include "llnotificationsutil.h"
 #include "llscrolllistctrl.h"
 #include "llviewermenu.h"
 #include "llviewerregion.h"
 #include "llwearableitemslist.h"
+#include "lltranslate.h"
 #include "llsdserialize.h"
 #include "llclipboard.h"
 // [RLVa:KB] - Checked: 2012-07-28 (RLVa-1.4.7)
@@ -60,6 +63,95 @@
 static void edit_outfit()
 {
     LLFloaterSidePanelContainer::showPanel("appearance", LLSD().with("type", "edit_outfit"));
+}
+
+static void ai_label_current_wearing()
+{
+    if (!LLTranslate::isGPTTranslationConfigured())
+    {
+        LLNotificationsUtil::add("GenericAlert",
+            LLSD().with("MESSAGE", "请先在翻译设置中配置 AI API 地址、Key 和模型。"));
+        return;
+    }
+
+    const LLUUID cof = gInventory.findCategoryUUIDForType(LLFolderType::FT_CURRENT_OUTFIT);
+    LLInventoryModel::cat_array_t* categories = nullptr;
+    LLInventoryModel::item_array_t* links = nullptr;
+    gInventory.getDirectDescendentsOf(cof, categories, links);
+
+    LLSD names = LLSD::emptyArray();
+    uuid_vec_t ids;
+    std::set<LLUUID> seen;
+    if (!links)
+    {
+        LLNotificationsUtil::add("GenericAlert",
+            LLSD().with("MESSAGE", "当前穿着数据尚未加载完成，请稍后再试。"));
+        return;
+    }
+    for (const LLPointer<LLViewerInventoryItem>& link : *links)
+    {
+        if (link.isNull())
+        {
+            continue;
+        }
+        const LLUUID original_id = link->getLinkedUUID();
+        LLViewerInventoryItem* original = gInventory.getItem(original_id);
+        if (!original || !seen.insert(original_id).second)
+        {
+            continue;
+        }
+        const LLAssetType::EType type = original->getType();
+        if (type != LLAssetType::AT_CLOTHING && type != LLAssetType::AT_BODYPART &&
+            type != LLAssetType::AT_OBJECT && type != LLAssetType::AT_GESTURE)
+        {
+            continue;
+        }
+        ids.push_back(original_id);
+        names.append(original->getName());
+    }
+
+    if (ids.empty())
+    {
+        LLNotificationsUtil::add("GenericAlert",
+            LLSD().with("MESSAGE", "当前穿着中没有可标注的库存物品。"));
+        return;
+    }
+
+    LLSD args;
+    args["COUNT"] = static_cast<S32>(ids.size());
+    LLNotificationsUtil::add("FSConfirmWearingAIAutoLabel", args, LLSD(),
+        [ids, names](const LLSD& notification, const LLSD& response)
+        {
+            if (LLNotificationsUtil::getSelectedOption(notification, response) != 0)
+            {
+                return false;
+            }
+            LLTranslate::generateInventoryLocalLabels(names,
+                [ids](LLSD labels)
+                {
+                    S32 saved = 0;
+                    const S32 count = llmin(static_cast<S32>(ids.size()),
+                                            static_cast<S32>(labels.size()));
+                    for (S32 i = 0; i < count; ++i)
+                    {
+                        std::string label = labels[i].asString();
+                        LLStringUtil::trim(label);
+                        if (!label.empty())
+                        {
+                            FSInventoryLocalLabels::instance().set(ids[i], label);
+                            ++saved;
+                        }
+                    }
+                    LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+                        llformat("AI 已为当前穿着的 %d 个物品生成本地标签。", saved)));
+                },
+                [](int status, std::string error)
+                {
+                    LLNotificationsUtil::add("GenericAlert", LLSD().with("MESSAGE",
+                        llformat("AI 标注当前穿着失败（%d）：%s", status, error.c_str())));
+                });
+            return false;
+        });
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,6 +170,7 @@ public:
         registrar.add("Gear.EditOutfit", boost::bind(&edit_outfit));
         registrar.add("Gear.TakeOff", boost::bind(&LLPanelWearing::onRemoveItem, mPanelWearing));
         registrar.add("Gear.Copy", boost::bind(&LLPanelWearing::copyToClipboard, mPanelWearing));
+        registrar.add("Gear.AILabelCurrent", boost::bind(&ai_label_current_wearing));
 
         enable_registrar.add("Gear.OnEnable", boost::bind(&LLPanelWearing::isActionEnabled, mPanelWearing, _2));
 
@@ -128,6 +221,7 @@ protected:
                       boost::bind(&LLAppearanceMgr::removeItemsFromAvatar, LLAppearanceMgr::getInstance(), mUUIDs));
 // [/SL:KB]
         registrar.add("Wearing.Favorite", boost::bind(toggle_favorites, mUUIDs));
+        registrar.add("Wearing.AILabelCurrent", boost::bind(&ai_label_current_wearing));
         LLContextMenu* menu = createFromFile("menu_wearing_tab.xml");
 
         updateMenuItemsVisibility(menu);
@@ -227,6 +321,7 @@ protected:
 
         registrar.add("Wearing.EditItem", boost::bind(&LLPanelWearing::onEditAttachment, mPanelWearing));
         registrar.add("Wearing.Detach", boost::bind(&LLPanelWearing::onRemoveAttachment, mPanelWearing));
+        registrar.add("Wearing.AILabelCurrent", boost::bind(&ai_label_current_wearing));
         LLContextMenu* menu = createFromFile("menu_wearing_tab.xml");
 
         updateMenuItemsVisibility(menu);

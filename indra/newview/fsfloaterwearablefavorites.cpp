@@ -31,7 +31,9 @@
 #include "fscommon.h"
 #include "llappearancemgr.h"
 #include "llbutton.h"
+#include "llcheckboxctrl.h"
 #include "llfiltereditor.h"
+#include "llgesturemgr.h"
 #include "llinventoryfunctions.h"
 #include "llinventoryobserver.h"
 #include "llmenugl.h"
@@ -47,6 +49,29 @@
 #define FS_WEARABLE_FAVORITES_FOLDER "#Wearable Favorites"
 
 static LLDefaultChildRegistry::Register<FSWearableFavoritesItemsList> r("fs_wearable_favorites_items_list");
+
+static bool isQuickShelfCargo(EDragAndDropType cargo_type, void* cargo_data)
+{
+    if (cargo_type == DAD_BODYPART || cargo_type == DAD_CLOTHING ||
+        cargo_type == DAD_OBJECT || cargo_type == DAD_GESTURE)
+    {
+        return true;
+    }
+
+    if (cargo_type == DAD_LINK && cargo_data)
+    {
+        LLInventoryItem* dropped_item = static_cast<LLInventoryItem*>(cargo_data);
+        LLViewerInventoryItem* linked_item = gInventory.getItem(dropped_item->getLinkedUUID());
+        if (linked_item)
+        {
+            const LLAssetType::EType type = linked_item->getType();
+            return type == LLAssetType::AT_BODYPART || type == LLAssetType::AT_CLOTHING ||
+                   type == LLAssetType::AT_OBJECT || type == LLAssetType::AT_GESTURE;
+        }
+    }
+
+    return false;
+}
 
 FSWearableFavoritesItemsList::FSWearableFavoritesItemsList(const Params& p)
 :   LLWearableItemsList(p)
@@ -64,7 +89,7 @@ bool FSWearableFavoritesItemsList::handleDragAndDrop(S32 x, S32 y, MASK mask,
     *accept = ACCEPT_NO;
     autoScroll(x, y);
 
-    if (cargo_type == DAD_BODYPART || cargo_type == DAD_CLOTHING || cargo_type == DAD_OBJECT)
+    if (isQuickShelfCargo(cargo_type, cargo_data))
     {
         if (drop)
         {
@@ -89,7 +114,13 @@ FSFloaterWearableFavorites::FSFloaterWearableFavorites(const LLSD& key)
     : LLFloater(key),
     mItemsList(nullptr),
     mInitialized(false),
-    mDADCallbackConnection()
+    mDADCallbackConnection(),
+    mAutoHideCheck(nullptr),
+    mHandlingClick(false),
+    mShelfCollapsed(false),
+    mCollapsePending(false),
+    mExpandedWidth(360),
+    mExpandedHeight(340)
 {
     mCategoriesObserver = new LLInventoryCategoriesObserver();
 }
@@ -118,7 +149,8 @@ bool FSFloaterWearableFavorites::postBuild()
 {
     mItemsList = getChild<FSWearableFavoritesItemsList>("favorites_list");
     mItemsList->setNoFilteredItemsMsg(getString("search_no_items"));
-    mItemsList->setDoubleClickCallback(boost::bind(&FSFloaterWearableFavorites::onDoubleClick, this));
+    mItemsList->setCommitCallback(boost::bind(&FSFloaterWearableFavorites::onItemClicked, this));
+    mDADCallbackConnection = mItemsList->setDADCallback(boost::bind(&FSFloaterWearableFavorites::onItemDAD, this, _1));
 
     mRemoveItemBtn = getChild<LLButton>("remove_btn");
     mRemoveItemBtn->setCommitCallback(boost::bind(&FSFloaterWearableFavorites::handleRemove, this));
@@ -134,6 +166,9 @@ bool FSFloaterWearableFavorites::postBuild()
     enable_registrar.add("FavWearables.CheckAction",    boost::bind(&FSFloaterWearableFavorites::onOptionsMenuItemChecked, this, _2));
 
     mOptionsButton = getChild<LLMenuButton>("options_btn");
+    mAutoHideCheck = getChild<LLCheckBoxCtrl>("auto_hide_check");
+    mExpandedWidth = getRect().getWidth();
+    mExpandedHeight = getRect().getHeight();
 
     if (LLToggleableMenu* options_menu = LLUICtrlFactory::getInstance()->createFromFile<LLToggleableMenu>("menu_fs_wearable_favorites.xml", gMenuHolder, LLViewerMenuHolderGL::child_registry_t::instance()); options_menu)
     {
@@ -158,6 +193,8 @@ void FSFloaterWearableFavorites::onOpen(const LLSD& /*info*/)
             initialize();
         }
     }
+
+    setShelfCollapsed(true);
 }
 
 void FSFloaterWearableFavorites::initialize()
@@ -182,7 +219,6 @@ void FSFloaterWearableFavorites::initialize()
 
     mItemsList->setSortOrder((LLWearableItemsList::ESortOrder)gSavedSettings.getU32("FSWearableFavoritesSortOrder"));
     updateList(sFolderID);
-    mItemsList->setDADCallback(boost::bind(&FSFloaterWearableFavorites::onItemDAD, this, _1));
 
     mInitialized = true;
 }
@@ -190,9 +226,95 @@ void FSFloaterWearableFavorites::initialize()
 //virtual
 void FSFloaterWearableFavorites::draw()
 {
+    // Floaters can be repositioned by screen-fit/layout passes after a display
+    // mode, UI scale or toolbar change.  Keep the shelf bottom-centred even
+    // when its expanded/collapsed state itself did not change.
+    setShelfCollapsed(mShelfCollapsed);
+
+    if (mCollapsePending && mCollapseTimer.getElapsedTimeF32() >= 0.45f)
+    {
+        mCollapsePending = false;
+        if (mAutoHideCheck && mAutoHideCheck->getValue().asBoolean())
+        {
+            setShelfCollapsed(true);
+        }
+    }
+
     LLFloater::draw();
 
-    mRemoveItemBtn->setEnabled(mItemsList->numSelected() > 0);
+    mRemoveItemBtn->setEnabled(mLastActivatedItem.notNull());
+}
+
+bool FSFloaterWearableFavorites::handleHover(S32 x, S32 y, MASK mask)
+{
+    mCollapsePending = false;
+    if (mShelfCollapsed)
+    {
+        setShelfCollapsed(false);
+    }
+    return LLFloater::handleHover(x, y, mask);
+}
+
+bool FSFloaterWearableFavorites::handleDragAndDrop(S32 x, S32 y, MASK mask, bool drop,
+                                                   EDragAndDropType cargo_type, void* cargo_data,
+                                                   EAcceptance* accept, std::string& tooltip_msg)
+{
+    if (!isQuickShelfCargo(cargo_type, cargo_data))
+    {
+        return LLFloater::handleDragAndDrop(x, y, mask, drop, cargo_type, cargo_data, accept, tooltip_msg);
+    }
+
+    // Dragging from inventory makes the drawer lose hover and collapse. Treat
+    // the home indicator itself as a drop target and expand as soon as cargo
+    // reaches it, so users never need to hit the inner list precisely.
+    mCollapsePending = false;
+    if (mShelfCollapsed)
+    {
+        setShelfCollapsed(false);
+    }
+
+    *accept = ACCEPT_YES_SINGLE;
+    if (drop && cargo_data)
+    {
+        LLInventoryItem* item = static_cast<LLInventoryItem*>(cargo_data);
+        onItemDAD(item->getUUID());
+    }
+    return true;
+}
+
+void FSFloaterWearableFavorites::onMouseLeave(S32 x, S32 y, MASK mask)
+{
+    LLFloater::onMouseLeave(x, y, mask);
+    if (mAutoHideCheck && mAutoHideCheck->getValue().asBoolean() && !mShelfCollapsed)
+    {
+        mCollapsePending = true;
+        mCollapseTimer.reset();
+    }
+}
+
+void FSFloaterWearableFavorites::setShelfCollapsed(bool collapsed)
+{
+    const LLRect parent_rect = getParent() ? getParent()->getRect() : getRect();
+    const S32 width = collapsed ? 132 : mExpandedWidth;
+    // UI scaling can make a fixed 340px floater taller than the usable view.
+    // Leave a generous top margin so this drawer never displaces top bars.
+    const S32 maximum_expanded_height = llmax(180, parent_rect.getHeight() - 110);
+    const S32 height = collapsed ? 12 : llmin(mExpandedHeight, maximum_expanded_height);
+    const S32 left = llmax(0, (parent_rect.getWidth() - width) / 2);
+    const S32 bottom = 8;
+    LLRect rect(left, bottom + height, left + width, bottom);
+
+    if (collapsed != mShelfCollapsed)
+    {
+        getChildView("drawer_panel")->setVisible(!collapsed);
+        getChildView("home_indicator")->setVisible(collapsed);
+    }
+
+    if (getRect() != rect)
+    {
+        setShape(rect, true);
+    }
+    mShelfCollapsed = collapsed;
 }
 
 //virtual
@@ -295,17 +417,32 @@ void FSFloaterWearableFavorites::updateList(const LLUUID& folder_id)
 
 void FSFloaterWearableFavorites::onItemDAD(const LLUUID& item_id)
 {
-    link_inventory_object(sFolderID, item_id, LLPointer<LLInventoryCallback>(nullptr));
+    LLViewerInventoryItem* dropped_item = gInventory.getItem(item_id);
+    const LLUUID target_id = dropped_item ? dropped_item->getLinkedUUID() : item_id;
+
+    if (sFolderID.notNull())
+    {
+        link_inventory_object(sFolderID, target_id, LLPointer<LLInventoryCallback>(nullptr));
+        return;
+    }
+
+    // The first opening creates the backing category asynchronously. The old
+    // code accepted a drop before its callback was connected and then lost it.
+    initCategory([target_id](const LLUUID& folder_id)
+    {
+        if (folder_id.notNull())
+        {
+            link_inventory_object(folder_id, target_id, LLPointer<LLInventoryCallback>(nullptr));
+        }
+    });
 }
 
 void FSFloaterWearableFavorites::handleRemove()
 {
-    uuid_vec_t selected_item_ids;
-    mItemsList->getSelectedUUIDs(selected_item_ids);
-
-    for (const auto& id : selected_item_ids)
+    if (mLastActivatedItem.notNull())
     {
-        remove_inventory_item(id, LLPointer<LLInventoryCallback>(nullptr));
+        remove_inventory_item(mLastActivatedItem, LLPointer<LLInventoryCallback>(nullptr));
+        mLastActivatedItem.setNull();
     }
 }
 
@@ -357,36 +494,76 @@ bool FSFloaterWearableFavorites::onOptionsMenuItemChecked(const LLSD& userdata)
     return false;
 }
 
-void FSFloaterWearableFavorites::onDoubleClick()
+void FSFloaterWearableFavorites::onItemClicked()
 {
-    if (LLUUID selected_item_id = mItemsList->getSelectedUUID(); selected_item_id.notNull())
+    if (mHandlingClick)
     {
-        uuid_vec_t ids;
-        ids.push_back(selected_item_id);
-        LLViewerInventoryItem* item = gInventory.getItem(selected_item_id);
+        return;
+    }
 
-        if (get_is_item_worn(selected_item_id))
+    const LLUUID selected_item_id = mItemsList->getSelectedUUID();
+    if (selected_item_id.isNull())
+    {
+        return;
+    }
+
+    mHandlingClick = true;
+    mLastActivatedItem = selected_item_id;
+    toggleItem(selected_item_id);
+    // Clear selection so clicking the same shortcut again emits another commit.
+    mItemsList->resetSelection();
+    mHandlingClick = false;
+}
+
+void FSFloaterWearableFavorites::toggleItem(const LLUUID& link_id)
+{
+    LLViewerInventoryItem* link_item = gInventory.getItem(link_id);
+    LLViewerInventoryItem* item = link_item ? gInventory.getItem(link_item->getLinkedUUID()) : nullptr;
+    if (!item)
+    {
+        return;
+    }
+
+    const LLUUID item_id = item->getUUID();
+    const LLAssetType::EType asset_type = item->getType();
+
+    if (asset_type == LLAssetType::AT_GESTURE)
+    {
+        if (LLGestureMgr::instance().isGestureActive(item_id))
         {
-            if ((item->getType() == LLAssetType::AT_CLOTHING && (!RlvActions::isRlvEnabled() || gRlvWearableLocks.canRemove(item))) ||
-                ((item->getType() == LLAssetType::AT_OBJECT) && (!RlvActions::isRlvEnabled() || gRlvAttachmentLocks.canDetach(item))))
-            {
-                LLAppearanceMgr::instance().removeItemsFromAvatar(ids);
-            }
+            LLGestureMgr::instance().deactivateGesture(item_id);
         }
         else
         {
-            if (item->getType() == LLAssetType::AT_BODYPART && (!RlvActions::isRlvEnabled() || (gRlvWearableLocks.canWear(item) & RLV_WEAR_REPLACE) == RLV_WEAR_REPLACE))
-            {
-                wear_multiple(ids, true);
-            }
-            else if (item->getType() == LLAssetType::AT_CLOTHING && LLAppearanceMgr::instance().canAddWearables(ids) && (!RlvActions::isRlvEnabled() || (gRlvWearableLocks.canWear(item) & RLV_WEAR_ADD) == RLV_WEAR_ADD))
-            {
-                wear_multiple(ids, false);
-            }
-            else if (item->getType() == LLAssetType::AT_OBJECT && LLAppearanceMgr::instance().canAddWearables(ids) && (!RlvActions::isRlvEnabled() || (gRlvAttachmentLocks.canAttach(item) & RLV_WEAR_ADD) == RLV_WEAR_ADD))
-            {
-                wear_multiple(ids, false);
-            }
+            LLGestureMgr::instance().activateGesture(item_id);
+        }
+        return;
+    }
+
+    uuid_vec_t ids;
+    ids.push_back(item_id);
+
+    if (get_is_item_worn(item_id))
+    {
+        if ((asset_type == LLAssetType::AT_CLOTHING && (!RlvActions::isRlvEnabled() || gRlvWearableLocks.canRemove(item))) ||
+            (asset_type == LLAssetType::AT_OBJECT && (!RlvActions::isRlvEnabled() || gRlvAttachmentLocks.canDetach(item))))
+        {
+            LLAppearanceMgr::instance().removeItemsFromAvatar(ids);
+        }
+    }
+    else
+    {
+        if (asset_type == LLAssetType::AT_BODYPART && (!RlvActions::isRlvEnabled() || (gRlvWearableLocks.canWear(item) & RLV_WEAR_REPLACE) == RLV_WEAR_REPLACE))
+        {
+            wear_multiple(ids, true);
+        }
+        else if (asset_type == LLAssetType::AT_CLOTHING && LLAppearanceMgr::instance().canAddWearables(ids) && (!RlvActions::isRlvEnabled() || (gRlvWearableLocks.canWear(item) & RLV_WEAR_ADD) == RLV_WEAR_ADD))
+        {
+            wear_multiple(ids, false);
+        }
+        else if (asset_type == LLAssetType::AT_OBJECT && LLAppearanceMgr::instance().canAddWearables(ids) && (!RlvActions::isRlvEnabled() || (gRlvAttachmentLocks.canAttach(item) & RLV_WEAR_ADD) == RLV_WEAR_ADD))
+        {
+            wear_multiple(ids, false);
         }
     }
 }

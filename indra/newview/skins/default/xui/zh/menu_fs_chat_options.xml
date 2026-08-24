@@ -3,6 +3,7 @@
 	<menu_item_check label="显示雷达" name="nearby_people"/>
 	<menu_item_check label="显示附近语音" name="nearby_voice"/>
 	<menu_item_check label="显示封锁列表" name="block_list"/>
+	<menu_item_check label="沉浸式透明聊天" name="immersive_transparent_chat"/>
 	<menu_item_check label="使用 V1 风格的聊天记录" name="plain_text_chat_history"/>
 	<menu_item_check label="在聊天标题中显示个人资料图标" name="chat_header_icons"/>
 	<context_menu label="字体大小..." name="font_size">

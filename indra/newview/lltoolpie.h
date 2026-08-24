@@ -66,6 +66,7 @@ public:
     LLPickInfo&         getPick() { return mPick; }
 // [RLVa:KB] - Checked: 2010-03-06 (RLVa-1.2.0c) | Added: RLVa-1.2.0a
     LLPickInfo&         getHoverPick() { return mHoverPick; }
+    bool                isHoveringAvatar(const LLUUID& avatar_id) const;
 // [/RLVa:KB]
     U8                  getClickAction() { return mClickAction; }
     LLViewerObject*     getClickActionObject() { return mClickActionObject; }
@@ -142,6 +143,8 @@ private:
     LLUUID              mMediaMouseCaptureID;
     LLPickInfo          mPick;
     LLPickInfo          mHoverPick;
+    LLUUID              mHoverAvatarID;
+    LLFrameTimer        mHoverAvatarTimer;
     LLPickInfo          mSteerPick;
     LLPointer<LLViewerObject> mClickActionObject;
     U8                  mClickAction;

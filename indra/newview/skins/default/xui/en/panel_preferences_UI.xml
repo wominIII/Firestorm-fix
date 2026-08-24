@@ -1928,6 +1928,18 @@ Second Life viewer default 0. Viewer 1 default 2.
 Second Life viewer default 20. Viewer 1 default 18.
         </text>
 
+        <check_box
+         control_name="FSModernInventoryView"
+         follows="left|top"
+         height="18"
+         label="Use modern inventory view"
+         layout="topleft"
+         left="10"
+         name="FSModernInventoryView"
+         top_pad="10"
+         tool_tip="Adds comfortable row spacing, clearer folder separation, alternating row backgrounds, and places local labels above original names. Turn off to restore the original inventory style."
+         width="430" />
+
         <text
          top_pad="10"
          left="10"

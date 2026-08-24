@@ -81,6 +81,7 @@
 #include "llsprite.h"
 #include "lltargetingmotion.h"
 #include "lltoolmgr.h"
+#include "lltoolpie.h"
 #include "lltoolmorph.h"
 #include "llviewercamera.h"
 #include "llviewertexlayer.h"
@@ -2072,7 +2073,7 @@ void LLVOAvatar::renderOnlySelectedBones(const std::vector<std::string> &selecte
 
         gGL.popMatrix();
 
-        
+
         // renderBoxAroundJointAttachments( jointp );
 
     }
@@ -2162,7 +2163,7 @@ void LLVOAvatar::renderOnlySelectedBones(const std::vector<std::string> &selecte
 void LLVOAvatar::renderBoxAroundJointAttachments(LLJoint * joint)
 {
     LLJointRiggingInfo* rig_info = NULL;
-    
+
     if (joint->getJointNum() < mJointRiggingInfoTab.size())
     {
         rig_info = &mJointRiggingInfoTab[joint->getJointNum()];
@@ -3830,19 +3831,25 @@ void LLVOAvatar::idleUpdateNameTag(const LLVector3& root_pos_last)
 // [/RLVa:KB]
     bool visible_chat = use_chat_bubbles && (mChats.size() || mTyping);
     bool visible_typing = use_typing_bubbles && mTyping;
+    static LLCachedControl<S32> name_tag_mode(gSavedSettings, "AvatarNameTagMode", 1);
+    constexpr S32 NAME_TAG_MODE_HOVER = 3;
+    const bool hover_only = name_tag_mode == NAME_TAG_MODE_HOVER;
+    const bool hover_name = hover_only
+        && LLWorld::instance().getAllowRenderName() > RENDER_NAME_NEVER
+        && LLToolPie::getInstance()->isHoveringAvatar(getID());
     bool render_name =  visible_chat ||
                 visible_typing ||
 // [RLVa:KB] - Checked: RLVa-2.0.1
                         ((fRlvShowAvTag) &&
 // [/RLVa:KB]
-                        ((sRenderName == RENDER_NAME_ALWAYS) ||
+                        (hover_name ||
+                         (!hover_only && (sRenderName == RENDER_NAME_ALWAYS)) ||
                          (sRenderName == RENDER_NAME_FADE && time_visible < NAME_SHOW_TIME)));
     // If it's your own avatar, don't draw in mouselook, and don't
     // draw if we're specifically hiding our own name.
     if (isSelf())
     {
         static LLCachedControl<bool> render_name_show_self(gSavedSettings, "RenderNameShowSelf");
-        static LLCachedControl<S32> name_tag_mode(gSavedSettings, "AvatarNameTagMode");
         render_name = render_name
             && !gAgentCamera.cameraMouselook()
             && (visible_chat || (render_name_show_self && name_tag_mode));

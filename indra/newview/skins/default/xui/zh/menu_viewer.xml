@@ -7,7 +7,7 @@
 		<menu_item_check label="库存" name="Inventory"/>
 		<menu_item_call label="新库存窗口" name="NewInventoryWindow"/>
 		<menu_item_check label="受保护的文件夹" name="Protected Folders"/>
-		<menu_item_check label="装扮收藏夹" name="WearableFavorites"/>
+		<menu_item_check label="快捷装备架" name="WearableFavorites"/>
 		<menu_item_call label="精选" name="Picks"/>
 		<menu_item_call label="体验" name="Experiences"/>
 		<menu_item_call label="档案" name="Profile"/>

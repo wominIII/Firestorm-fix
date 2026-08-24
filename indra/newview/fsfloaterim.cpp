@@ -808,6 +808,21 @@ FSFloaterIM::~FSFloaterIM()
     LLFloaterChatMentionPicker::removeParticipantSource(this);
 }
 
+void FSFloaterIM::draw()
+{
+    setBackgroundVisible(!gSavedSettings.getBOOL("FSImmersiveTransparentChat"));
+    LLTransientDockableFloater::draw();
+}
+
+F32 FSFloaterIM::getCurrentTransparency()
+{
+    if (gSavedSettings.getBOOL("FSImmersiveTransparentChat"))
+    {
+        return 0.f;
+    }
+    return LLTransientDockableFloater::getCurrentTransparency();
+}
+
 void FSFloaterIM::onVoiceChannelStateChanged(const LLVoiceChannel::EState& old_state, const LLVoiceChannel::EState& new_state)
 {
     LL_DEBUGS("FSFloaterIM") << "FSFloaterIM::onVoiceChannelStateChanged" << LL_ENDL;
@@ -1440,7 +1455,7 @@ FSFloaterIM* FSFloaterIM::show(const LLUUID& session_id)
     // <AS:chanayane> [FIRE-34494] fixes unable to open an IM with someone who started a group chat
     // Prevent showing non-IM sessions in FSFloaterIM::show()
     LLIMModel::LLIMSession* session = LLIMModel::getInstance()->findIMSession(session_id);
-    if (!session || ( 
+    if (!session || (
            IM_NOTHING_SPECIAL          != session->mType
         && IM_SESSION_P2P_INVITE       != session->mType
         && IM_SESSION_INVITE           != session->mType

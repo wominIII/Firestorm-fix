@@ -88,6 +88,14 @@ public :
      */
     static void translateMessage(const std::string &from_lang, const std::string &to_lang, const std::string &mesg, TranslationSuccess_fn success, TranslationFailure_fn failure);
 
+    // Translate long text through the traditional service in bounded,
+    // UTF-8-safe chunks. Results are returned in source order.
+    static void translateMessageChunked(const std::string& from_lang,
+                                        const std::string& to_lang,
+                                        const std::string& mesg,
+                                        TranslationSuccess_fn success,
+                                        TranslationFailure_fn failure);
+
     // Translate received nearby chat or IM through the selected incoming mode.
     static void translateIncomingMessage(const std::string& from_lang, const std::string& to_lang,
                                          const std::string& mesg, TranslationSuccess_fn success,

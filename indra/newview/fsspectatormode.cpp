@@ -1,6 +1,17 @@
 /**
  * @file fsspectatormode.cpp
  * @brief Local first-person spectator camera controls.
+ *
+ * $LicenseInfo:firstyear=2026&license=viewerlgpl$
+ * Firestorm Viewer Source Code
+ * Copyright (C) 2026, Firestorm contributors.
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License version 2.1.
+ * This library is distributed without any warranty; without even the implied
+ * warranty of merchantability or fitness for a particular purpose.
+ * See <https://www.gnu.org/licenses/> for the full license text.
+ * $/LicenseInfo$
  */
 
 #include "llviewerprecompiledheaders.h"
@@ -11,6 +22,7 @@
 #include "llagentcamera.h"
 #include "llappviewer.h"
 #include "llfocusmgr.h"
+#include "llfloatercamera.h"
 #include "llkeyboard.h"
 #include "llmath.h"
 #include "llviewercamera.h"
@@ -77,6 +89,11 @@ void FSSpectatorMode::enter()
         LLViewerJoystick::getInstance()->setOverrideCamera(false);
     }
 
+    // Spectator movement reads the physical keys directly. Clear any avatar
+    // control bits which were already set before those normal movement
+    // callbacks start being consumed by spectator mode.
+    resetAvatarMovementState();
+
     const LLVector3 at_axis = LLViewerCamera::getInstance()->getAtAxis();
     sYaw = std::atan2(at_axis.mV[VY], at_axis.mV[VX]);
     sPitch = std::asin(llclamp(at_axis.mV[VZ], -1.f, 1.f));
@@ -94,6 +111,7 @@ void FSSpectatorMode::enter()
 
 void FSSpectatorMode::hold()
 {
+    resetAvatarMovementState();
     const F32 cos_pitch = std::cos(sPitch);
     const LLVector3 forward(cos_pitch * std::cos(sYaw), cos_pitch * std::sin(sYaw), std::sin(sPitch));
     const LLVector3d focus_global = sPositionGlobal + LLVector3d(forward * 4.f);
@@ -136,9 +154,16 @@ void FSSpectatorMode::leave()
 
     if (gAgent.isInitialized())
     {
+        // Leaving from the held state can otherwise leave Firestorm's camera
+        // floater in free-camera mode, where WASD continues to control the
+        // camera instead of the avatar.
+        LLFloaterCamera::resetCameraMode();
         gAgentCamera.changeCameraToThirdPerson(false);
-        gAgentCamera.setFocusOnAvatar(true, false);
+        // Restore the follow camera without deriving a new avatar orientation
+        // from the private spectator viewpoint.
+        gAgentCamera.setFocusOnAvatar(true, false, false);
         gAgentCamera.resetCameraRoll();
+        resetAvatarMovementState();
         gAgentCamera.updateCamera();
     }
 }
@@ -277,4 +302,26 @@ void FSSpectatorMode::setMouseCapture(bool captured)
         gViewerWindow->getWindow()->setMouseClipping(false);
         gViewerWindow->showCursor();
     }
+}
+
+void FSSpectatorMode::resetAvatarMovementState()
+{
+    if (!gAgent.isInitialized())
+    {
+        return;
+    }
+
+    // Movement key-up callbacks are intentionally consumed while spectator
+    // mode is engaged, so explicitly clear both simulator control flags and
+    // the camera-side key magnitudes at every state boundary.
+    gAgent.resetControlFlags();
+    gAgent.clearTempRun();
+    gAgentCamera.setAtKey(0);
+    gAgentCamera.setWalkKey(0);
+    gAgentCamera.setLeftKey(0);
+    gAgentCamera.setUpKey(0);
+    gAgentCamera.setYawKey(0.f);
+    gAgentCamera.setPitchKey(0.f);
+    gAgentCamera.setRollLeftKey(0.f);
+    gAgentCamera.setRollRightKey(0.f);
 }
