@@ -73,6 +73,12 @@ class ViewerManifest(LLManifest,FSViewerManifest):
         super(ViewerManifest, self).construct()
         self.path(src="../../scripts/messages/message_template.msg", dst="app_settings/message_template.msg")
 
+        # Ship the local stdio MCP server beside the viewer so a fresh install
+        # contains the exact server version that matches this bridge protocol.
+        with self.prefix(dst="mcp"):
+            self.path(src="../../scripts/firestorm_mcp/server.py", dst="firestorm_mcp_server.py")
+            self.path(src="../../scripts/firestorm_mcp/README.md", dst="README.md")
+
         # <FS:LO> Copy dictionaries to a place where the viewer can find them if ran from visual studio
         pkgdir = os.path.join(self.args['build'], os.pardir, 'packages')
         with self.prefix(src=pkgdir, dst="app_settings"):

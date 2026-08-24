@@ -9,6 +9,12 @@ Enable **Local MCP Bridge** in **World > AI Diagnostics and Repair Assistant**,
 then register `server.py` as a stdio MCP server. The viewer refreshes
 `snapshot.xml` once per second under its user settings directory.
 
+The current server also exposes client-local inventory labels. Inventory reads and
+search results include `local_label`; `get_inventory_local_label` reads it,
+`set_inventory_local_label` sets or clears it without changing the server-side name,
+and `ai_label_inventory_folder` labels the chosen folder itself plus every loaded
+descendant using the AI translation configuration in Firestorm.
+
 Server version 0.8 adds a persistent, cursor-based event feed for Viewer connection,
 login, selection, attachment, wearable, and animation changes. It also adds dry-run
 change plans, redacted command auditing, and exact undo records for settings, object

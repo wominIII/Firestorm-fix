@@ -4164,6 +4164,16 @@ void LLFolderBridge::performAction(LLInventoryModel* model, std::string action)
         model->collectDescendents(mUUID, categories, inventory_items, false);
         LLSD names = LLSD::emptyArray();
         uuid_vec_t ids;
+
+        // collectDescendents() deliberately excludes the selected root folder.
+        // Include it so "AI Auto Label Folder" labels both the folder the user
+        // clicked and everything contained beneath it.
+        if (const LLViewerInventoryCategory* root_category = model->getCategory(mUUID))
+        {
+            ids.push_back(root_category->getUUID());
+            names.append(root_category->getName());
+        }
+
         for (const LLPointer<LLViewerInventoryCategory>& category : categories)
         {
             if (category.notNull())

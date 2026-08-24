@@ -28,9 +28,11 @@
 #include "llfilesystem.h"
 #include "llfoldertype.h"
 #include "llinventoryfunctions.h"
+#include "llinventorybridge.h"
 #include "llinventorymodel.h"
 #include "llselectmgr.h"
 #include "llsdserialize.h"
+#include "lltranslate.h"
 #include "llviewerassetupload.h"
 #include "llviewercontrol.h"
 #include "llviewerinventory.h"
@@ -200,6 +202,7 @@ LLSD agentInventoryItemToLLSD(const LLViewerInventoryItem* item)
     result["flags"] = static_cast<S32>(item->getFlags());
     result["creation_date"] = LLDate(static_cast<F64>(item->getCreationDate()));
     result["permissions"] = agentInventoryPermissions(item);
+    result["local_label"] = FSInventoryLocalLabels::instance().get(item->getUUID());
     return result;
 }
 
@@ -216,6 +219,7 @@ LLSD agentInventoryCategoryToLLSD(const LLViewerInventoryCategory* category)
     result["descendent_count"] = category->getDescendentCount();
     result["complete"] = gInventory.isCategoryComplete(category->getUUID());
     result["protected_system_folder"] = category->getPreferredType() != LLFolderType::FT_NONE;
+    result["local_label"] = FSInventoryLocalLabels::instance().get(category->getUUID());
     return result;
 }
 
@@ -422,6 +426,7 @@ void FSMCPBridge::publishNow()
     snapshot["mcp_bridge"]["direct_transform_write"] = true;
     snapshot["mcp_bridge"]["script_management"] = true;
     snapshot["mcp_bridge"]["inventory_management"] = true;
+    snapshot["mcp_bridge"]["inventory_local_labels"] = true;
     snapshot["mcp_bridge"]["detailed_object_reads"] = true;
     snapshot["mcp_bridge"]["viewer_logged_in"] = gAgent.isInitialized();
     snapshot["mcp_bridge"]["event_stream"] = true;
@@ -494,7 +499,8 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         action != "inventory_get" && action != "inventory_list" &&
         action != "inventory_search" && action != "inventory_create_folder" &&
         action != "inventory_rename" && action != "inventory_move" &&
-        action != "inventory_trash" && action != "settings_list" &&
+        action != "inventory_trash" && action != "inventory_local_label_set" &&
+        action != "inventory_ai_label_folder" && action != "settings_list" &&
         action != "settings_get" && action != "settings_set" && action != "settings_reset" &&
         action != "mesh_upload_state" && action != "mesh_upload_configure" &&
         action != "mesh_upload_calculate")
@@ -520,6 +526,108 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
             else return failureResult(request, "Inventory entry was not found in the loaded inventory");
             result["path"] = inventoryPath(entry_id);
             return result;
+        }
+
+        if (action == "inventory_local_label_set")
+        {
+            const LLUUID entry_id(request["entry_id"].asString());
+            if (!isAgentInventoryObject(entry_id) || !gInventory.getObject(entry_id))
+                return failureResult(request, "Inventory entry was not found in the agent inventory");
+
+            std::string label = request["label"].asString();
+            LLStringUtil::trim(label);
+            if (label.size() > 1024 || label.find('\n') != std::string::npos || label.find('\r') != std::string::npos)
+                return failureResult(request, "Local label must be a single line no longer than 1024 UTF-8 bytes");
+
+            const std::string previous_label = FSInventoryLocalLabels::instance().get(entry_id);
+            FSInventoryLocalLabels::instance().set(entry_id, label);
+            LLSD result = scriptResult(request, true, "applied",
+                label.empty() ? "Inventory local label cleared" : "Inventory local label saved");
+            result["entry_id"] = entry_id;
+            result["previous_label"] = previous_label;
+            result["local_label"] = label;
+            return result;
+        }
+
+        if (action == "inventory_ai_label_folder")
+        {
+            const LLUUID folder_id(request["folder_id"].asString());
+            const LLViewerInventoryCategory* folder = gInventory.getCategory(folder_id);
+            if (!folder || !isAgentInventoryObject(folder_id))
+                return failureResult(request, "Inventory folder was not found in the agent inventory");
+            if (!gInventory.isCategoryComplete(folder_id))
+            {
+                gInventory.fetchDescendentsOf(folder_id);
+                return failureResult(request, "Inventory folder is incomplete; a server fetch was requested, so retry shortly");
+            }
+            if (!LLTranslate::isGPTTranslationConfigured())
+                return failureResult(request, "AI translation is not configured in the viewer");
+
+            LLInventoryModel::cat_array_t categories;
+            LLInventoryModel::item_array_t items;
+            gInventory.collectDescendents(folder_id, categories, items, false);
+            bool descendants_complete = true;
+            for (const LLPointer<LLViewerInventoryCategory>& category : categories)
+            {
+                if (category.notNull() && !gInventory.isCategoryComplete(category->getUUID()))
+                {
+                    gInventory.fetchDescendentsOf(category->getUUID());
+                    descendants_complete = false;
+                }
+            }
+            if (!descendants_complete)
+                return failureResult(request, "One or more descendant folders were incomplete; server fetches were requested, so retry shortly");
+
+            LLSD names = LLSD::emptyArray();
+            uuid_vec_t ids;
+            ids.push_back(folder->getUUID());
+            names.append(folder->getName());
+            for (const LLPointer<LLViewerInventoryCategory>& category : categories)
+            {
+                if (category.notNull())
+                {
+                    ids.push_back(category->getUUID());
+                    names.append(category->getName());
+                }
+            }
+            for (const LLPointer<LLViewerInventoryItem>& item : items)
+            {
+                if (item.notNull())
+                {
+                    ids.push_back(item->getUUID());
+                    names.append(item->getName());
+                }
+            }
+
+            LLTranslate::generateInventoryLocalLabels(names,
+                [request, folder_id, ids](LLSD labels)
+                {
+                    const S32 count = llmin(static_cast<S32>(ids.size()), static_cast<S32>(labels.size()));
+                    LLSD applied = LLSD::emptyArray();
+                    for (S32 i = 0; i < count; ++i)
+                    {
+                        std::string label = labels[i].asString();
+                        LLStringUtil::trim(label);
+                        if (label.empty()) continue;
+                        FSInventoryLocalLabels::instance().set(ids[i], label);
+                        LLSD entry;
+                        entry["entry_id"] = ids[i];
+                        entry["local_label"] = label;
+                        applied.append(entry);
+                    }
+                    LLSD result = scriptResult(request, true, "applied", "AI inventory local labels saved");
+                    result["folder_id"] = folder_id;
+                    result["requested"] = static_cast<S32>(ids.size());
+                    result["applied_count"] = static_cast<S32>(applied.size());
+                    result["labels"] = applied;
+                    writeResult(result);
+                },
+                [request](int status, std::string error)
+                {
+                    writeResult(failureResult(request,
+                        llformat("AI inventory labeling failed (%d): %s", status, error.c_str())));
+                });
+            return LLSD();
         }
 
         if (action == "inventory_list" || action == "inventory_search")
@@ -555,16 +663,17 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
             LLStringUtil::toLower(query);
             LLSD entries = LLSD::emptyArray();
             bool truncated = false;
-            auto matches = [&query](const std::string& name, const std::string& description)
+            auto matches = [&query](const LLUUID& id, const std::string& name, const std::string& description)
             {
                 if (query.empty()) return true;
-                std::string searchable = name + "\n" + description;
+                std::string searchable = name + "\n" + description + "\n" +
+                    FSInventoryLocalLabels::instance().get(id);
                 LLStringUtil::toLower(searchable);
                 return searchable.find(query) != std::string::npos;
             };
             for (const LLPointer<LLViewerInventoryCategory>& category : categories)
             {
-                if (category.isNull() || !matches(category->getName(), std::string())) continue;
+                if (category.isNull() || !matches(category->getUUID(), category->getName(), std::string())) continue;
                 if (static_cast<S32>(entries.size()) >= limit) { truncated = true; break; }
                 LLSD entry = agentInventoryCategoryToLLSD(category);
                 if (recursive) entry["path"] = inventoryPath(category->getUUID());
@@ -574,7 +683,7 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
             {
                 for (const LLPointer<LLViewerInventoryItem>& item : items)
                 {
-                    if (item.isNull() || !matches(item->getName(), item->getDescription())) continue;
+                    if (item.isNull() || !matches(item->getUUID(), item->getName(), item->getDescription())) continue;
                     if (static_cast<S32>(entries.size()) >= limit) { truncated = true; break; }
                     LLSD entry = agentInventoryItemToLLSD(item);
                     if (recursive) entry["path"] = inventoryPath(item->getUUID());

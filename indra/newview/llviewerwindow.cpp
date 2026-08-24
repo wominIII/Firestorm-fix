@@ -1335,9 +1335,6 @@ bool LLViewerWindow::handleMiddleMouseDown(LLWindow *window,  LLCoordGL pos, MAS
 
         mMiddleMouseDown = true;
         mGlobalMiddleMouseOrbit = true;
-        // Convert avatar-follow camera into a free camera before orbiting.
-        // Otherwise LLAgentCamera's normal orbit path rotates the avatar body.
-        gAgentCamera.setFocusOnAvatar(false, false);
         LLToolMgr::getInstance()->setTransientTool(LLToolCamera::getInstance());
         LLToolCamera::getInstance()->setGlobalMiddleMouseOrbit(true);
         LLToolCamera::getInstance()->handleMouseDown(x, y, mask | MASK_ORBIT);

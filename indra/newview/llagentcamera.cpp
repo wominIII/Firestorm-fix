@@ -902,15 +902,6 @@ F32 LLAgentCamera::getAgentHUDTargetZoom()
 //-----------------------------------------------------------------------------
 void LLAgentCamera::cameraOrbitAround(const F32 radians)
 {
-    // Global middle-button orbit is a local camera operation. Detach before
-    // choosing the normal orbit branch so it never yaws the avatar itself.
-    // Repeat this check because RLVa camera constraints may reattach focus
-    // between mouse-move events.
-    if (LLToolCamera::getInstance()->isGlobalMiddleMouseOrbit() && mFocusOnAvatar)
-    {
-        setFocusOnAvatar(false, false);
-    }
-
     LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
     if (selection->getObjectCount() && selection->getSelectType() == SELECT_TYPE_HUD)
     {
@@ -935,12 +926,6 @@ void LLAgentCamera::cameraOrbitAround(const F32 radians)
 //-----------------------------------------------------------------------------
 void LLAgentCamera::cameraOrbitOver(const F32 angle)
 {
-    // See cameraOrbitAround(): pitch the private camera, not the avatar.
-    if (LLToolCamera::getInstance()->isGlobalMiddleMouseOrbit() && mFocusOnAvatar)
-    {
-        setFocusOnAvatar(false, false);
-    }
-
     LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
     if (selection->getObjectCount() && selection->getSelectType() == SELECT_TYPE_HUD)
     {
@@ -3146,7 +3131,6 @@ void LLAgentCamera::setFocusOnAvatar(bool focus_on_avatar, bool animate, bool re
 
     mFocusOnAvatar = focus_on_avatar;
 }
-
 
 bool LLAgentCamera::setLookAt(ELookAtType target_type, LLViewerObject *object, LLVector3 position)
 {

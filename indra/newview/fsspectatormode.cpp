@@ -125,6 +125,9 @@ void FSSpectatorMode::hold()
     gAgentCamera.changeCameraToThirdPerson(false);
     gAgentCamera.setFocusOnAvatar(false, false);
     gAgentCamera.setCameraPosAndFocusGlobal(sPositionGlobal, focus_global, LLUUID::null);
+    // setCameraPosAndFocusGlobal normally animates from the previous native
+    // camera. Spectator mouse mode must stay exactly where it was toggled.
+    gAgentCamera.stopCameraAnimation();
     gAgentCamera.setRollAngle(sRoll);
     gAgentCamera.updateCamera();
 }

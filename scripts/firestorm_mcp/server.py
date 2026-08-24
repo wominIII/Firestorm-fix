@@ -705,7 +705,7 @@ TOOLS = [
     },
     {
         "name": "get_inventory_entry",
-        "description": "Get detailed metadata, permissions and full path for one agent-inventory item or folder UUID.",
+        "description": "Get detailed metadata, permissions, local Chinese label and full path for one agent-inventory item or folder UUID.",
         "inputSchema": {
             "type": "object",
             "properties": {"entry_id": {"type": "string"}},
@@ -713,6 +713,45 @@ TOOLS = [
             "additionalProperties": False,
         },
         "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "get_inventory_local_label",
+        "description": "Read the client-local label for one agent-inventory item or folder UUID without changing its server-side name.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {"entry_id": {"type": "string"}},
+            "required": ["entry_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": False},
+    },
+    {
+        "name": "set_inventory_local_label",
+        "description": "Set a client-local label on one inventory item or folder. Pass an empty label to clear it; the Second Life server name is never changed.",
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "entry_id": {"type": "string"},
+                "label": {"type": "string", "maxLength": 1024},
+            },
+            "required": ["entry_id", "label"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": False},
+    },
+    {
+        "name": "ai_label_inventory_folder",
+        "description": (
+            "Use the AI translation configuration in Firestorm to generate local Chinese labels for the selected "
+            "folder itself and every descendant folder and item. Existing local labels may be replaced; server names are unchanged."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {"folder_id": {"type": "string"}},
+            "required": ["folder_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
     },
     {
         "name": "list_inventory_folder",
@@ -1246,6 +1285,26 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         return store.execute("inspect_object", fields)
     if name == "get_inventory_entry":
         return store.execute("inventory_get", {"entry_id": arguments["entry_id"]})
+    if name == "get_inventory_local_label":
+        result = store.execute("inventory_get", {"entry_id": arguments["entry_id"]})
+        if not result.get("success"):
+            return result
+        entry = result.get("entry", {})
+        return {
+            "success": result.get("success", False),
+            "entry_id": arguments["entry_id"],
+            "name": entry.get("name"),
+            "kind": entry.get("kind"),
+            "local_label": entry.get("local_label", ""),
+        }
+    if name == "set_inventory_local_label":
+        return store.execute("inventory_local_label_set", {
+            "entry_id": arguments["entry_id"], "label": arguments["label"]
+        })
+    if name == "ai_label_inventory_folder":
+        return store.execute("inventory_ai_label_folder", {
+            "folder_id": arguments["folder_id"]
+        }, timeout=120.0)
     if name == "list_inventory_folder":
         fields = {key: arguments[key] for key in
                   ("folder_id", "recursive", "include_trash", "limit") if key in arguments}
