@@ -45,6 +45,7 @@
 
 #include <cmath>
 #include <memory>
+#include <set>
 
 namespace
 {
@@ -58,6 +59,8 @@ constexpr S32 MCP_MAX_SCRIPT_SOURCE_BYTES = 256 * 1024;
 constexpr S32 MCP_MAX_INVENTORY_RESULTS = 1000;
 constexpr S32 MCP_MAX_BATCH_ENTRIES = 100;
 constexpr S32 MCP_MAX_SETTINGS_RESULTS = 1000;
+constexpr S32 MCP_MAX_NEARBY_OBJECT_RESULTS = 500;
+constexpr S32 MCP_MAX_LINKED_PRIM_TRANSFORMS = 100;
 
 struct ScriptReadContext
 {
@@ -136,6 +139,91 @@ LLSD scriptResult(const LLSD& request, bool success, const std::string& state,
     result["message"] = message;
     result["completed_at"] = LLDate::now();
     return result;
+}
+
+LLSD vector3ToLLSD(const LLVector3& value)
+{
+    LLSD result = LLSD::emptyArray();
+    result.append(value.mV[VX]);
+    result.append(value.mV[VY]);
+    result.append(value.mV[VZ]);
+    return result;
+}
+
+LLSD quaternionToLLSD(const LLQuaternion& value)
+{
+    LLSD result = LLSD::emptyArray();
+    result.append(value.mQ[VX]);
+    result.append(value.mQ[VY]);
+    result.append(value.mQ[VZ]);
+    result.append(value.mQ[VW]);
+    return result;
+}
+
+std::string selectedObjectName(LLViewerObject* object)
+{
+    LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+    LLSelectNode* node = selection ? selection->findNode(object) : nullptr;
+    return node ? node->mName : std::string();
+}
+
+std::string selectedObjectDescription(LLViewerObject* object)
+{
+    LLObjectSelectionHandle selection = LLSelectMgr::getInstance()->getSelection();
+    LLSelectNode* node = selection ? selection->findNode(object) : nullptr;
+    return node ? node->mDescription : std::string();
+}
+
+bool linksetIsScripted(LLViewerObject* root)
+{
+    if (!root) return false;
+    if (root->flagScripted()) return true;
+    for (const LLPointer<LLViewerObject>& child : root->getChildren())
+    {
+        if (child.notNull() && child->flagScripted()) return true;
+    }
+    return false;
+}
+
+LLSD nearbyObjectToLLSD(LLViewerObject* object, F32 distance)
+{
+    LLSD entry;
+    LLViewerObject* root = object ? object->getRootEdit() : nullptr;
+    if (!object || !root)
+    {
+        return entry;
+    }
+
+    const std::string name = selectedObjectName(object);
+    entry["object_id"] = object->getID();
+    entry["root_id"] = root->getID();
+    entry["local_id"] = static_cast<S32>(object->getLocalID());
+    entry["name"] = name;
+    entry["name_known"] = !name.empty();
+    entry["distance_m"] = distance;
+    entry["is_root"] = object == root;
+    entry["is_attachment"] = object->isAttachment();
+    entry["is_mesh"] = object->isMesh();
+    entry["scripted"] = object->flagScripted();
+    entry["child_count"] = object == root ? root->numChildren() : 0;
+    entry["face_count"] = object->getNumTEs();
+    entry["permissions"]["you_owner"] = root->permYouOwner();
+    entry["permissions"]["group_owned"] = root->permGroupOwner();
+    entry["permissions"]["modify"] = object->permModify();
+    entry["permissions"]["move"] = object->permMove();
+
+    const LLVector3 position = object->getPositionEdit();
+    entry["position"] = LLSD::emptyArray();
+    entry["position"].append(position.mV[VX]);
+    entry["position"].append(position.mV[VY]);
+    entry["position"].append(position.mV[VZ]);
+    const LLVector3d global_position = object->getPositionGlobal();
+    entry["global_position"] = LLSD::emptyArray();
+    entry["global_position"].append(global_position.mdV[VX]);
+    entry["global_position"].append(global_position.mdV[VY]);
+    entry["global_position"].append(global_position.mdV[VZ]);
+    if (object->getRegion()) entry["region_name"] = object->getRegion()->getName();
+    return entry;
 }
 
 LLViewerInventoryItem* findTaskScript(LLViewerObject* object, const LLUUID& item_id)
@@ -421,13 +509,15 @@ void FSMCPBridge::publishNow()
         snapshot["selected_objects"] = LLSD::emptyArray();
     }
     snapshot["captured_at"] = LLDate::now();
-    snapshot["mcp_bridge"]["protocol_version"] = 7;
+    snapshot["mcp_bridge"]["protocol_version"] = 9;
     snapshot["mcp_bridge"]["read_only"] = false;
     snapshot["mcp_bridge"]["direct_transform_write"] = true;
     snapshot["mcp_bridge"]["script_management"] = true;
     snapshot["mcp_bridge"]["inventory_management"] = true;
     snapshot["mcp_bridge"]["inventory_local_labels"] = true;
     snapshot["mcp_bridge"]["detailed_object_reads"] = true;
+    snapshot["mcp_bridge"]["nearby_owned_object_discovery"] = true;
+    snapshot["mcp_bridge"]["linked_prim_transform_write"] = true;
     snapshot["mcp_bridge"]["viewer_logged_in"] = gAgent.isInitialized();
     snapshot["mcp_bridge"]["event_stream"] = true;
     snapshot["mcp_bridge"]["dry_run_plans"] = true;
@@ -482,7 +572,7 @@ void FSMCPBridge::processPendingRequest()
 
 LLSD FSMCPBridge::executeRequest(const LLSD& request)
 {
-    if (request["protocol_version"].asInteger() < 2 || request["protocol_version"].asInteger() > 7)
+    if (request["protocol_version"].asInteger() < 2 || request["protocol_version"].asInteger() > 9)
     {
         return failureResult(request, "Unsupported MCP write protocol version");
     }
@@ -491,11 +581,13 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         return failureResult(request, "MCP request expired before the viewer processed it");
     }
     const std::string action = request["action"].asString();
-    if (action != "set_object_transform" && action != "set_object_face_material" &&
+    if (action != "set_object_transform" && action != "set_linked_prim_transforms" &&
+        action != "set_object_face_material" &&
         action != "create_object_script" && action != "read_object_script" &&
         action != "update_object_script" && action != "patch_object_script" &&
         action != "delete_object_script" && action != "set_object_script_running" &&
         action != "reset_object_script" && action != "inspect_object" &&
+        action != "list_nearby_owned_objects" && action != "select_nearby_owned_object" &&
         action != "inventory_get" && action != "inventory_list" &&
         action != "inventory_search" && action != "inventory_create_folder" &&
         action != "inventory_rename" && action != "inventory_move" &&
@@ -909,11 +1001,96 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         return result;
     }
 
+    if (action == "list_nearby_owned_objects")
+    {
+        if (!gAgent.isInitialized())
+            return failureResult(request, "Nearby objects are unavailable before login completes");
+
+        const F32 radius = llclamp(request.has("radius_m")
+            ? static_cast<F32>(request["radius_m"].asReal()) : 32.f, 1.f, 256.f);
+        const S32 limit = llclamp(request.has("limit") ? request["limit"].asInteger() : 100,
+                                  1, MCP_MAX_NEARBY_OBJECT_RESULTS);
+        const bool include_children = request["include_children"].asBoolean();
+        const bool include_attachments = request["include_attachments"].asBoolean();
+        const bool include_group_owned = request["include_group_owned"].asBoolean();
+        const bool scripted_only = request["scripted_only"].asBoolean();
+        const LLVector3 agent_position = gAgent.getPositionAgent();
+
+        struct NearbyCandidate
+        {
+            LLViewerObject* object;
+            F32 distance;
+        };
+        std::vector<NearbyCandidate> candidates;
+        std::set<LLUUID> visited_roots;
+        const S32 object_count = gObjectList.getNumObjects();
+        for (S32 index = 0; index < object_count; ++index)
+        {
+            LLViewerObject* object = gObjectList.getObject(index);
+            if (!object || object->isDead() || object->isAvatar()) continue;
+            LLViewerObject* root = object->getRootEdit();
+            if (!root || root->isDead() || root->isAvatar()) continue;
+            if (!visited_roots.insert(root->getID()).second) continue;
+            if (!root->permYouOwner() && !(include_group_owned && root->permGroupOwner())) continue;
+            if (!include_attachments && root->isAttachment()) continue;
+            if (scripted_only && !linksetIsScripted(root)) continue;
+            const F32 distance = dist_vec(root->getPositionAgent(), agent_position);
+            if (distance > radius) continue;
+
+            candidates.push_back({ root, distance });
+            if (include_children)
+            {
+                for (const LLPointer<LLViewerObject>& child : root->getChildren())
+                {
+                    if (child.notNull()) candidates.push_back({ child.get(), distance });
+                }
+            }
+        }
+        std::sort(candidates.begin(), candidates.end(), [](const NearbyCandidate& left, const NearbyCandidate& right)
+        {
+            return left.distance < right.distance;
+        });
+
+        LLSD objects = LLSD::emptyArray();
+        const S32 returned = llmin(limit, static_cast<S32>(candidates.size()));
+        for (S32 index = 0; index < returned; ++index)
+            objects.append(nearbyObjectToLLSD(candidates[index].object, candidates[index].distance));
+
+        LLSD result = scriptResult(request, true, "loaded", "Nearby owned Viewer objects listed");
+        result["objects"] = objects;
+        result["returned"] = returned;
+        result["matched"] = static_cast<S32>(candidates.size());
+        result["truncated"] = returned < static_cast<S32>(candidates.size());
+        result["radius_m"] = radius;
+        result["coverage"] = "viewer_loaded_objects_only";
+        result["name_note"] = "Names are populated when already known through the current Viewer selection; use select_nearby_owned_object, then inspect_object for full details.";
+        return result;
+    }
+
     LLUUID object_id(request["object_id"].asString());
     LLViewerObject* object = gObjectList.findObject(object_id);
     if (object_id.isNull() || !object)
     {
         return failureResult(request, "Target object is not currently present in the Viewer object list");
+    }
+
+    if (action == "select_nearby_owned_object")
+    {
+        LLViewerObject* root = object->getRootEdit();
+        if (!root || (!root->permYouOwner() && !root->permGroupOwner()))
+            return failureResult(request, "Target is not owned by the current agent or a group");
+        const bool additive = request["additive"].asBoolean();
+        if (!additive) LLSelectMgr::getInstance()->deselectAll();
+        const bool include_linkset = !request.has("include_linkset") || request["include_linkset"].asBoolean();
+        if (include_linkset) LLSelectMgr::getInstance()->selectObjectAndFamily(root, additive);
+        else LLSelectMgr::getInstance()->selectObjectOnly(object);
+
+        LLSD result = scriptResult(request, true, "selected", "Nearby owned object selected and highlighted in Firestorm");
+        result["object_id"] = object->getID();
+        result["root_id"] = root->getID();
+        result["include_linkset"] = include_linkset;
+        result["additive"] = additive;
+        return result;
     }
 
     if (action == "inspect_object")
@@ -922,18 +1099,21 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
         const bool include_linkset = request.has("include_linkset") ? request["include_linkset"].asBoolean() : true;
         if (include_inventory && !object->getInventoryRoot()) object->requestInventory();
         LLSD result = scriptResult(request, true, "loaded", "Object details loaded");
-        result["object"] = FSAIAssistantService::collectObjectSnapshot(object, std::string(), std::string(), include_inventory);
+        result["object"] = FSAIAssistantService::collectObjectSnapshot(
+            object, selectedObjectName(object), selectedObjectDescription(object), include_inventory);
         result["linkset"] = LLSD::emptyArray();
         if (include_linkset)
         {
             LLViewerObject* root = object->getRootEdit();
             if (root)
             {
-                result["linkset"].append(FSAIAssistantService::collectObjectSnapshot(root, std::string(), std::string(), false));
+                result["linkset"].append(FSAIAssistantService::collectObjectSnapshot(
+                    root, selectedObjectName(root), selectedObjectDescription(root), false));
                 for (const LLPointer<LLViewerObject>& child : root->getChildren())
                 {
                     if (child.notNull()) result["linkset"].append(
-                        FSAIAssistantService::collectObjectSnapshot(child.get(), std::string(), std::string(), false));
+                        FSAIAssistantService::collectObjectSnapshot(child.get(), selectedObjectName(child.get()),
+                            selectedObjectDescription(child.get()), false));
                 }
             }
         }
@@ -944,6 +1124,120 @@ LLSD FSMCPBridge::executeRequest(const LLSD& request)
     if (!isObjectInSingleSelectedLinkset(object))
     {
         return failureResult(request, "Target must belong to the single linkset selected in Firestorm");
+    }
+
+    if (action == "set_linked_prim_transforms")
+    {
+        LLViewerObject* selected_root = object->getRootEdit();
+        if (!selected_root || object != selected_root)
+            return failureResult(request, "object_id must identify the selected linkset root");
+        if (!selected_root->permModify())
+            return failureResult(request, "Selected linkset does not grant modify permission");
+
+        const LLSD& transforms = request["transforms"];
+        if (!transforms.isArray() || transforms.size() == 0 ||
+            transforms.size() > MCP_MAX_LINKED_PRIM_TRANSFORMS)
+            return failureResult(request, "transforms must contain 1 to 100 child prim updates");
+
+        struct LinkedPrimTransform
+        {
+            LLViewerObject* object{ nullptr };
+            bool has_position{ false };
+            bool has_rotation{ false };
+            bool has_scale{ false };
+            LLVector3 local_position;
+            LLQuaternion local_rotation;
+            LLVector3 scale;
+            LLSD previous;
+        };
+        std::vector<LinkedPrimTransform> updates;
+        std::set<LLUUID> visited;
+        U32 update_type = UPD_NONE;
+        for (LLSD::array_const_iterator it = transforms.beginArray(); it != transforms.endArray(); ++it)
+        {
+            const LLUUID prim_id((*it)["object_id"].asString());
+            LLViewerObject* prim = gObjectList.findObject(prim_id);
+            if (prim_id.isNull() || !prim || prim->isDead())
+                return failureResult(request, "A child prim UUID is invalid or no longer loaded");
+            if (prim == selected_root || prim->getRootEdit() != selected_root)
+                return failureResult(request, "Every transform target must be a child of the selected linkset root");
+            if (!visited.insert(prim_id).second)
+                return failureResult(request, "A child prim appears more than once in transforms");
+
+            const std::string coordinate_space = (*it).has("coordinate_space")
+                ? (*it)["coordinate_space"].asString() : "local";
+            if (coordinate_space != "local" && coordinate_space != "world")
+                return failureResult(request, "coordinate_space must be local or world");
+
+            LinkedPrimTransform update;
+            update.object = prim;
+            update.has_position = (*it).has("position");
+            update.has_rotation = (*it).has("rotation_quaternion");
+            update.has_scale = (*it).has("scale");
+            if (!update.has_position && !update.has_rotation && !update.has_scale)
+                return failureResult(request, "Every child prim update must contain position, rotation_quaternion and/or scale");
+            if ((update.has_position && !prim->permMove()) ||
+                ((update.has_rotation || update.has_scale) && !prim->permModify()))
+                return failureResult(request, "A child prim does not grant the required move/modify permission");
+
+            LLVector3 requested_position;
+            LLQuaternion requested_rotation;
+            if (update.has_position && !readVector3((*it)["position"], requested_position))
+                return failureResult(request, "Each position must contain three finite numbers");
+            if (update.has_rotation && !readQuaternion((*it)["rotation_quaternion"], requested_rotation))
+                return failureResult(request, "Each rotation_quaternion must contain four finite numbers");
+            if (update.has_scale && !readVector3((*it)["scale"], update.scale))
+                return failureResult(request, "Each scale must contain three finite numbers");
+
+            if (update.has_position)
+            {
+                update.local_position = coordinate_space == "local" ? requested_position :
+                    (requested_position - selected_root->getPositionEdit()) * ~selected_root->getRotationEdit();
+                update_type |= UPD_POSITION;
+            }
+            if (update.has_rotation)
+            {
+                update.local_rotation = coordinate_space == "local" ? requested_rotation :
+                    requested_rotation * ~selected_root->getRotationEdit();
+                update_type |= UPD_ROTATION;
+            }
+            if (update.has_scale)
+            {
+                const F32 min_scale = LLWorld::getInstance()->getRegionMinPrimScale();
+                const F32 max_scale = LLWorld::getInstance()->getRegionMaxPrimScale();
+                if (update.scale.mV[VX] < min_scale || update.scale.mV[VY] < min_scale || update.scale.mV[VZ] < min_scale ||
+                    update.scale.mV[VX] > max_scale || update.scale.mV[VY] > max_scale || update.scale.mV[VZ] > max_scale)
+                    return failureResult(request, "A child prim scale is outside the region's allowed range");
+                update_type |= UPD_SCALE;
+            }
+
+            update.previous["object_id"] = prim_id;
+            update.previous["coordinate_space"] = "local";
+            update.previous["position"] = vector3ToLLSD(prim->getPosition());
+            update.previous["rotation_quaternion"] = quaternionToLLSD(prim->getRotation());
+            update.previous["scale"] = vector3ToLLSD(prim->getScale());
+            updates.push_back(update);
+        }
+
+        LLSD applied = LLSD::emptyArray();
+        LLSD previous = LLSD::emptyArray();
+        for (LinkedPrimTransform& update : updates)
+        {
+            if (update.has_position) update.object->setPosition(update.local_position);
+            if (update.has_rotation) update.object->setRotation(update.local_rotation);
+            if (update.has_scale) update.object->setScale(update.scale, true);
+            applied.append(update.object->getID());
+            previous.append(update.previous);
+        }
+        LLSelectMgr::getInstance()->sendMultipleUpdate(update_type);
+        LLSelectMgr::getInstance()->updateSelectionCenter();
+
+        LLSD result = scriptResult(request, true, "applied", "Linked child prim transforms sent to the simulator");
+        result["root_id"] = selected_root->getID();
+        result["applied_object_ids"] = applied;
+        result["applied_count"] = static_cast<S32>(applied.size());
+        result["previous_transforms"] = previous;
+        return result;
     }
 
     const bool script_action = action == "create_object_script" || action == "read_object_script" ||
@@ -1525,7 +1819,7 @@ void FSMCPBridge::writeResult(const LLSD& result)
 void FSMCPBridge::writeStatus(bool enabled, const std::string& message)
 {
     LLSD status;
-    status["protocol_version"] = 7;
+    status["protocol_version"] = 9;
     status["enabled"] = enabled;
     status["state"] = message;
     status["updated_at"] = LLDate::now();

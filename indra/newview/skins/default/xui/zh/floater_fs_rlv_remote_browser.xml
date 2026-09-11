@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater name="fs_rlv_remote_browser" title="远程 RLV 文件夹浏览器">
+  <text name="intro_text">通过对方佩戴的 Relay 浏览附近玩家公开的 #RLV 文件夹。始终遵守对方的授权；不会暴露或复制库存资源。</text>
+  <button label="复制控制器脚本" name="copy_script_btn"/>
+  <button label="刷新附近玩家" name="refresh_btn"/>
+  <text name="script_help">粘贴进可修改物体中的脚本，保存后佩戴该物体。</text>
+  <text name="status_text">未发现控制器。</text>
+  <text name="avatars_label">附近玩家</text>
+  <scroll_list name="avatar_list">
+    <scroll_list.columns label="玩家" name="name"/>
+    <scroll_list.columns label="距离" name="distance"/>
+    <scroll_list.columns label="Relay 状态" name="status"/>
+  </scroll_list>
+  <button label="请求访问" name="request_btn"/>
+  <button label="结束／释放" name="release_btn"/>
+  <text name="folders_label">远程虚拟文件夹</text>
+  <text name="path_text">远程 RLV / #RLV</text>
+  <button label="上一级" name="back_btn"/>
+  <scroll_list name="folder_list">
+    <scroll_list.columns label="穿戴状态" name="worn"/>
+    <scroll_list.columns label="文件夹" name="folder"/>
+    <scroll_list.columns label="路径" name="path"/>
+  </scroll_list>
+  <button label="打开" name="open_btn"/>
+  <button label="添加" name="attach_btn"/>
+  <button label="全部添加" name="attach_all_btn"/>
+  <button label="脱下" name="detach_btn"/>
+  <button label="全部脱下" name="detach_all_btn"/>
+  <text name="safety_text">这里只显示对方 Viewer 返回的文件夹名称和穿戴状态。应用文件夹时操作的是当前选择的玩家，不会穿到你自己身上，也不会转移对方的物品。</text>
+</floater>

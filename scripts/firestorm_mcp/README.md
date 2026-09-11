@@ -15,11 +15,28 @@ search results include `local_label`; `get_inventory_local_label` reads it,
 and `ai_label_inventory_folder` labels the chosen folder itself plus every loaded
 descendant using the AI translation configuration in Firestorm.
 
+Server version 0.10 adds `set_linked_prim_transforms`, which updates one or up to
+100 child prims in the single selected linkset without moving its root. Requests may
+use root-relative local coordinates or Viewer edit-space world coordinates. Firestorm
+validates the complete batch before applying it, returns exact previous local transforms,
+and the MCP server records those values for undo. Object snapshots now expose both
+edit-space and local position/rotation explicitly.
+
+Server version 0.9 adds nearby owned-object discovery over the Viewer's currently
+loaded object list. `list_nearby_owned_objects` returns nearest-first UUIDs, linkset
+roots, positions, distances and permission/status fields with radius and result caps;
+`select_nearby_owned_object` safely selects either the whole owned linkset or one exact
+prim so it is highlighted in Firestorm. Follow it with `inspect_object` for faces,
+task inventory and complete linkset details. The discovery result is explicitly local
+Viewer coverage, not a promise that every object in the simulator has loaded.
+
 Server version 0.8 adds a persistent, cursor-based event feed for Viewer connection,
 login, selection, attachment, wearable, and animation changes. It also adds dry-run
 change plans, redacted command auditing, and exact undo records for settings, object
 transforms, face materials, and Mesh uploader configuration. Script source and credential
-values are never retained in the audit log. Protocol version 7 adds direct Mesh uploader diagnostics, typed configuration of common
+values are never retained in the audit log. Protocol version 9 adds permission-gated single/batch linked child prim transforms.
+Protocol version 8 adds nearby owned-object discovery and selection/highlighting.
+Protocol version 7 adds direct Mesh uploader diagnostics, typed configuration of common
 upload options, local feasibility reporting, server-side fee calculation status, and
 safe fee calculation without triggering the final paid upload. Protocol version 6 added searchable, paginated viewer/per-account setting discovery,
 typed setting reads and writes, and reset-to-default operations. Credential values

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<floater can_close="true" can_minimize="true" can_resize="true" height="620" layout="topleft" min_height="500" min_width="700" name="fs_rlv_remote_browser" save_rect="true" title="Remote RLV Browser" width="820">
+  <text height="38" left="12" name="intro_text" top="12" width="796" word_wrap="true">Browse the shared #RLV folders of nearby avatars through their worn Relay. The target's Relay permission is always respected; this does not expose or copy inventory assets.</text>
+  <button height="28" label="Copy controller script" left="12" name="copy_script_btn" top="58" width="190"/>
+  <button height="28" label="Refresh nearby avatars" left="212" name="refresh_btn" top="58" width="190"/>
+  <text height="38" left="416" name="script_help" top="54" width="392" word_wrap="true">Paste into a script inside a modifiable object, save, then wear that object.</text>
+  <text height="38" left="12" name="status_text" top="98" width="796" word_wrap="true">Controller not found.</text>
+  <text height="18" left="12" name="avatars_label" top="142" width="250">Nearby avatars</text>
+  <scroll_list draw_heading="true" draw_stripes="true" follows="left|top|bottom" height="316" left="12" name="avatar_list" top="164" width="330">
+    <scroll_list.columns label="Avatar" name="name" width="145"/>
+    <scroll_list.columns label="Distance" name="distance" width="65"/>
+    <scroll_list.columns label="Relay state" name="status" width="120"/>
+  </scroll_list>
+  <button height="28" label="Request access" left="12" name="request_btn" top="492" width="155"/>
+  <button height="28" label="End / release" left="177" name="release_btn" top="492" width="155"/>
+  <text height="18" left="358" name="folders_label" top="142" width="440">Remote virtual folder</text>
+  <text height="22" left="358" name="path_text" top="164" width="450">Remote RLV / #RLV</text>
+  <button height="24" label="Up" left="746" name="back_btn" top="160" width="62"/>
+  <scroll_list draw_heading="true" draw_stripes="true" follows="left|right|top|bottom" height="286" left="358" name="folder_list" top="192" width="450">
+    <scroll_list.columns label="Worn" name="worn" width="92"/>
+    <scroll_list.columns label="Folder" name="folder" width="138"/>
+    <scroll_list.columns label="Path" name="path" width="220"/>
+  </scroll_list>
+  <button height="28" label="Open" left="358" name="open_btn" top="492" width="82"/>
+  <button height="28" label="Add" left="448" name="attach_btn" top="492" width="82"/>
+  <button height="28" label="Add all" left="538" name="attach_all_btn" top="492" width="82"/>
+  <button height="28" label="Detach" left="628" name="detach_btn" top="492" width="82"/>
+  <button height="28" label="Detach all" left="718" name="detach_all_btn" top="492" width="90"/>
+  <text height="62" left="12" name="safety_text" top="540" width="796" word_wrap="true">This browser only mirrors folder names and worn-state digits reported by the target Viewer. Applying a folder affects the selected target through their Relay; it never wears the folder on you and never transfers their items.</text>
+</floater>

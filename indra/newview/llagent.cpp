@@ -28,6 +28,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "llagent.h"
+#include "llappviewer.h"
 
 #include "pipeline.h"
 
@@ -1375,6 +1376,11 @@ bool LLAgent::canManageEstate() const
 //-----------------------------------------------------------------------------
 void LLAgent::sendMessage()
 {
+    if (LLAppViewer::instance() && LLAppViewer::instance()->isNetworkRecoveryActive())
+    {
+        LL_DEBUGS("NetworkRecovery") << "Deferring agent message while the main region connection recovers." << LL_ENDL;
+        return;
+    }
     if (gDisconnected)
     {
         LL_WARNS() << "Trying to send message when disconnected!" << LL_ENDL;
@@ -1393,6 +1399,11 @@ void LLAgent::sendMessage()
 //-----------------------------------------------------------------------------
 void LLAgent::sendReliableMessage()
 {
+    if (LLAppViewer::instance() && LLAppViewer::instance()->isNetworkRecoveryActive())
+    {
+        LL_DEBUGS("NetworkRecovery") << "Deferring reliable agent message while the main region connection recovers." << LL_ENDL;
+        return;
+    }
     if (gDisconnected)
     {
         LL_DEBUGS() << "Trying to send message when disconnected!" << LL_ENDL;

@@ -55,6 +55,7 @@
 
 class LLCommandLineParser;
 class LLFrameTimer;
+class LLHost;
 class LLPumpIO;
 class LLTextureCache;
 class LLImageDecodeThread;
@@ -148,9 +149,14 @@ public:
     std::string getWindowTitle() const; // The window display name.
 
     void forceDisconnect(const std::string& msg); // Force disconnection, with a message to the user.
-    void requestAutoReconnect(const std::string& msg);
-    bool autoReconnectRequested() const { return mAutoReconnectRequested; }
-    S32 getAutoReconnectAttempt() const { return mAutoReconnectAttempt; }
+
+    // Preserve the current simulator session while a short network outage is
+    // being recovered. Recovery is only considered complete after both the
+    // UDP circuit and the region event poll receive fresh server data.
+    void noteNetworkRecoveryFailure(const LLHost& host);
+    void noteNetworkRecoveryEventPollSuccess(const LLHost& host);
+    void handleNetworkRecoveryCircuitTimeout(const LLHost& host);
+    bool isNetworkRecoveryActive() const { return mNetworkRecoveryActive && !mQuitRequested && !LLApp::isExiting(); }
 
     // sendSimpleLogoutRequest does not create a marker file.
     // Meant for lost network case, and for forced shutdowns,
@@ -382,8 +388,13 @@ private:
     bool mQuitRequested;                // User wants to quit, may have modified documents open.
     bool mClosingFloaters;
     bool mLogoutRequestSent;            // Disconnect message sent to simulator, no longer safe to send messages to the sim.
-    bool mAutoReconnectRequested;
-    S32 mAutoReconnectAttempt;
+    bool mNetworkRecoveryActive;
+    bool mNetworkRecoveryCircuitResurrected;
+    bool mNetworkRecoveryEventPollRestored;
+    U32 mNetworkRecoveryPacketsIn;
+    std::string mNetworkRecoveryHost;
+    LLTimer mNetworkRecoveryGraceTimer;
+    LLTimer mNetworkRecoveryRetryTimer;
     struct SettingsFiles* mSettingsLocationList;
 
     LLWatchdogTimeout* mMainloopTimeout;

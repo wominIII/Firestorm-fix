@@ -510,7 +510,6 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
                      PWSTR     pCmdLine,
                      int       nCmdShow)
 {
-    std::wstring viewer_command_line(pCmdLine ? pCmdLine : L"");
 #if LL_VELOPACK
     // Velopack MUST be initialized first - it may handle install/uninstall
     // commands and exit the process before we do anything else.
@@ -521,31 +520,6 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
         return 0;
     }
 #endif
-
-    if (viewer_command_line.starts_with(L"--autoreconnectwait "))
-    {
-        std::wistringstream command_line_stream(viewer_command_line);
-        std::wstring wait_option;
-        std::wstring delay_option;
-        DWORD parent_pid = 0;
-        U32 reconnect_delay = 0;
-        command_line_stream >> wait_option >> parent_pid >> delay_option >> reconnect_delay;
-
-        if (delay_option == L"--autoreconnectdelay")
-        {
-            HANDLE parent_process = OpenProcess(SYNCHRONIZE, FALSE, parent_pid);
-            if (parent_process)
-            {
-                WaitForSingleObject(parent_process, INFINITE);
-                CloseHandle(parent_process);
-            }
-            Sleep(llclamp(reconnect_delay, 1U, 60U) * 1000);
-
-            std::getline(command_line_stream, viewer_command_line);
-            const std::wstring::size_type first_argument = viewer_command_line.find_first_not_of(L" \t");
-            viewer_command_line = first_argument == std::wstring::npos ? L"" : viewer_command_line.substr(first_argument);
-        }
-    }
 
     // Call Tracy first thing to have it allocate memory
     // https://github.com/wolfpld/tracy/issues/196
@@ -590,7 +564,7 @@ int APIENTRY WINMAIN(HINSTANCE hInstance,
     gIconResource = MAKEINTRESOURCE(IDI_LL_ICON);
     gIconSmallResource = MAKEINTRESOURCE(IDI_LL_ICON_SMALL);
 
-    LLAppViewerWin32* viewer_app_ptr = new LLAppViewerWin32(ll_convert_wide_to_string(viewer_command_line).c_str());
+    LLAppViewerWin32* viewer_app_ptr = new LLAppViewerWin32(ll_convert_wide_to_string(pCmdLine).c_str());
 
     gOldTerminateHandler = std::set_terminate(exceptionTerminateHandler);
 
@@ -1092,40 +1066,7 @@ bool LLAppViewerWin32::init()
 
 bool LLAppViewerWin32::cleanup()
 {
-    const bool reconnect = autoReconnectRequested();
-    const S32 reconnect_attempt = getAutoReconnectAttempt();
-    const U32 reconnect_delay = llclamp(gSavedSettings.getU32("FSAutomaticReconnectDelay"), 1U, 60U);
-    const std::wstring executable = ll_convert_string_to_wide(gDirUtilp->getExecutablePathAndName());
-    const std::wstring executable_dir = ll_convert_string_to_wide(gDirUtilp->getExecutableDir());
-
-    if (reconnect)
-    {
-        gSavedSettings.setS32("FSAutomaticReconnectAttempt", reconnect_attempt);
-    }
-
     bool result = LLAppViewer::cleanup();
-
-    if (reconnect)
-    {
-        std::wstring command_line = L"\"" + executable + L"\" --autoreconnectwait " +
-                                    std::to_wstring(LLApp::getPid()) + L" --autoreconnectdelay " +
-                                    std::to_wstring(reconnect_delay) + L" --autologin";
-        STARTUPINFOW startup_info = {};
-        startup_info.cb = sizeof(startup_info);
-        PROCESS_INFORMATION process_info = {};
-
-        if (CreateProcessW(executable.c_str(), command_line.data(), nullptr, nullptr, FALSE, 0,
-                           nullptr, executable_dir.c_str(), &startup_info, &process_info))
-        {
-            CloseHandle(process_info.hThread);
-            CloseHandle(process_info.hProcess);
-        }
-        else
-        {
-            LL_WARNS("AutoReconnect") << "Failed to start automatic reconnect process, Windows error "
-                                       << GetLastError() << LL_ENDL;
-        }
-    }
 
     gDXHardware.cleanup();
 

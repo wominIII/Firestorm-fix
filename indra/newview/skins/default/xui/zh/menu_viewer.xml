@@ -166,6 +166,7 @@
 		<menu_item_call label="声音浏览器" name="Sound Explorer"/>
 		<menu_item_call label="动画浏览器" name="Animation Explorer"/>
 		<menu_item_call label="AI 诊断与修复助手" name="AI Diagnostics and Repair Assistant"/>
+		<menu_item_call label="远程 RLV 文件夹浏览器" name="remote_rlv_folder_browser"/>
 		<menu_item_call label="资源封锁清单" name="asset_blacklist"/>
 		<menu_item_call label="化身渲染设置" name="Avatar Render Settings"/>
 		<menu label="化身显示模式" name="AvatarComplexityMode">

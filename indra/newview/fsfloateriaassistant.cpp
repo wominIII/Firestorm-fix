@@ -150,8 +150,10 @@ LLSD objectToLLSD(LLViewerObject* object, const std::string& name,
     result["name"] = name;
     result["description"] = description;
     result["position"] = vectorToLLSD(object->getPositionEdit());
+    result["local_position"] = vectorToLLSD(object->getPosition());
     result["global_position"] = vectorToLLSD(object->getPositionGlobal());
     result["rotation_quaternion"] = quaternionToLLSD(object->getRotationEdit());
+    result["local_rotation_quaternion"] = quaternionToLLSD(object->getRotation());
     result["scale"] = vectorToLLSD(object->getScale());
     result["is_attachment"] = object->isAttachment();
     result["is_mesh"] = object->isMesh();
@@ -251,6 +253,7 @@ LLSD FSAIAssistantService::collectSnapshot()
     snapshot["capabilities"]["upload_assets"] = false;
     snapshot["capabilities"]["modify_requires_permission"] = true;
     snapshot["capabilities"]["direct_transform_write"] = true;
+    snapshot["capabilities"]["linked_prim_transform_write"] = true;
     snapshot["capabilities"]["script_management"] = true;
     snapshot["capabilities"]["script_patch_in_place"] = true;
     snapshot["capabilities"]["inventory_management"] = true;

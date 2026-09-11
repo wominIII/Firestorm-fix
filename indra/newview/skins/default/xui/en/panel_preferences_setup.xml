@@ -202,15 +202,15 @@
 		 width="150" />
 
 		<check_box
-		 control_name="FSAutomaticReconnect"
+		 control_name="FSNetworkSessionRecovery"
 		 height="16"
-		 label="Auto-reconnect after disconnection"
+		 label="Recover current session after a temporary connection loss"
 		 layout="topleft"
 		 left="200"
-		 name="automatic_reconnect"
-		 tool_tip="Uses the normal logout and settings-save flow, restarts this viewer after 3 seconds, then logs in with the saved account. Requires Remember username and Remember password."
+		 name="network_session_recovery"
+		 tool_tip="Keeps the current region session open and restores its network channels without restarting or logging in again. If the server has already ended the session, the normal disconnection message is shown."
 		 top_delta="0"
-		 width="320" />
+		 width="360" />
 
 		<text
 		 type="string"

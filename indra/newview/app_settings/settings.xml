@@ -26076,10 +26076,10 @@ Change of this parameter will affect the layout of buttons in notification toast
         <string>zh</string>
       </array>
     </map>
-    <key>FSAutomaticReconnect</key>
+    <key>FSNetworkSessionRecovery</key>
     <map>
       <key>Comment</key>
-      <string>Gracefully log out, restart the viewer, and automatically log in after an unexpected network disconnection</string>
+      <string>Keep the current simulator session alive and attempt to restore its UDP circuit and event poll after a temporary network outage</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -26087,38 +26087,16 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <integer>1</integer>
     </map>
-    <key>FSAutomaticReconnectDelay</key>
+    <key>FSNetworkSessionRecoveryGrace</key>
     <map>
       <key>Comment</key>
-      <string>Seconds to wait after the old viewer process exits before automatically reconnecting</string>
+      <string>Seconds to keep retrying the existing simulator session after its UDP circuit times out</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
       <string>U32</string>
       <key>Value</key>
-      <integer>3</integer>
-    </map>
-    <key>FSAutomaticReconnectMaxAttempts</key>
-    <map>
-      <key>Comment</key>
-      <string>Maximum number of consecutive automatic reconnect attempts</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>U32</string>
-      <key>Value</key>
-      <integer>3</integer>
-    </map>
-    <key>FSAutomaticReconnectAttempt</key>
-    <map>
-      <key>Comment</key>
-      <string>Current consecutive automatic reconnect attempt count</string>
-      <key>Persist</key>
-      <integer>1</integer>
-      <key>Type</key>
-      <string>S32</string>
-      <key>Value</key>
-      <integer>0</integer>
+      <integer>120</integer>
       <key>HideFromEditor</key>
       <integer>1</integer>
     </map>

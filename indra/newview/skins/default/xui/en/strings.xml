@@ -227,6 +227,9 @@ If you feel this is an error, please contact support@secondlife.com</string>
 
 	<!-- Disconnection -->
 	<string name="AgentLostConnection">This region may be experiencing trouble.  Please check your connection to the Internet.</string>
+	<string name="FSNetworkRecoveryStarted">Connection interrupted. Firestorm is preserving the current session and attempting to restore it.</string>
+	<string name="FSNetworkRecoveryRestored">Connection restored. The current session continued without logging in again.</string>
+	<string name="FSNetworkRecoveryFailed">The server no longer accepted the current session. Normal disconnection handling will continue.</string>
 	<string name="SavingSettings">Saving your settings...</string>
 	<string name="LoggingOut">Logging out...</string>
 	<string name="ShuttingDown">Shutting down...</string>

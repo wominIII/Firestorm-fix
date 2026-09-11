@@ -307,6 +307,16 @@ namespace Details
 
                     ++errorCount;
 
+                    // After several consecutive failures, expose a degraded
+                    // connection immediately instead of waiting for the UDP
+                    // circuit's much longer timeout. The existing event poll
+                    // retry loop remains responsible for retry timing.
+                    if (errorCount == 3 && gAgent.getRegion() &&
+                        gAgent.getRegion()->getHost().getIPandPort() == mSenderIp)
+                    {
+                        LLAppViewer::instance()->noteNetworkRecoveryFailure(gAgent.getRegion()->getHost());
+                    }
+
                     LL_WARNS("LLEventPollImpl") << "<" << counter << "> Retrying in " << waitToRetry <<
                         // <FS:Beq> FIRE-36454 TP Disconnects in 7.2.3
                         // " seconds, error count is now " << errorCount << LL_ENDL;
@@ -337,7 +347,7 @@ namespace Details
                     if (gAgent.getRegion() && gAgent.getRegion()->getHost().getIPandPort() == mSenderIp)
                     {
                         LL_WARNS("LLEventPollImpl") << "< " << counter << "> Forcing disconnect due to stalled main region event poll." << LL_ENDL;
-                        LLAppViewer::instance()->requestAutoReconnect(LLTrans::getString("AgentLostConnection"));
+                        LLAppViewer::instance()->forceDisconnect(LLTrans::getString("AgentLostConnection"));
                     }
                     else
                     {
@@ -348,6 +358,11 @@ namespace Details
             }
 
             errorCount = 0;
+
+            if (gAgent.getRegion() && gAgent.getRegion()->getHost().getIPandPort() == mSenderIp)
+            {
+                LLAppViewer::instance()->noteNetworkRecoveryEventPollSuccess(gAgent.getRegion()->getHost());
+            }
 
             if (!result.isMap() ||
                 !result.has("events") ||

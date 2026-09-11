@@ -1705,6 +1705,13 @@
           parameter="fs_xtoys" />
       </menu_item_call>
       <menu_item_call
+        label="Remote RLV Folder Browser"
+        name="remote_rlv_folder_browser">
+        <menu_item_call.on_click
+          function="Floater.Toggle"
+          parameter="fs_rlv_remote_browser" />
+      </menu_item_call>
+      <menu_item_call
         label="Asset Blacklist"
         name="asset_blacklist">
         <menu_item_call.on_click

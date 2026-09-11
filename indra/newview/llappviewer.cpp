@@ -27,6 +27,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "llappviewer.h"
+#include "llcircuit.h"
 
 // Viewer includes
 #include "llversioninfo.h"
@@ -772,8 +773,11 @@ LLAppViewer::LLAppViewer()
     mQuitRequested(false),
     mClosingFloaters(false),
     mLogoutRequestSent(false),
-    mAutoReconnectRequested(false),
-    mAutoReconnectAttempt(0),
+    mNetworkRecoveryActive(false),
+    mNetworkRecoveryCircuitResurrected(false),
+    mNetworkRecoveryEventPollRestored(false),
+    mNetworkRecoveryPacketsIn(0),
+    mNetworkRecoveryHost(),
     mMainloopTimeout(NULL),
     mAgentRegionLastAlive(false),
     mRandomizeFramerate(LLCachedControl<bool>(gSavedSettings,"Randomize Framerate", false)),
@@ -5692,31 +5696,91 @@ void LLAppViewer::forceDisconnect(const std::string& mesg)
     }
 }
 
-void LLAppViewer::requestAutoReconnect(const std::string& mesg)
+namespace
 {
-    if (mAutoReconnectRequested || mQuitRequested || LLApp::isExiting())
+void network_recovery_circuit_timeout(const LLHost& host, void* user_data)
+{
+    LLAppViewer* viewer = static_cast<LLAppViewer*>(user_data);
+    if (viewer)
+    {
+        viewer->handleNetworkRecoveryCircuitTimeout(host);
+    }
+}
+
+void show_network_recovery_message(const std::string& message_name)
+{
+    LLSD args;
+    args["MESSAGE"] = LLTrans::getString(message_name);
+    LLNotificationsUtil::add("SystemMessageTip", args);
+}
+}
+
+void LLAppViewer::noteNetworkRecoveryFailure(const LLHost& host)
+{
+    static LLCachedControl<bool> enabled(gSavedSettings, "FSNetworkSessionRecovery", true);
+    LLViewerRegion* region = gAgent.getRegion();
+    if (!enabled || mNetworkRecoveryActive || gDisconnected || !region ||
+        region->getHost() != host || LLStartUp::getStartupState() < STATE_STARTED)
     {
         return;
     }
 
-    static LLCachedControl<bool> enabled(gSavedSettings, "FSAutomaticReconnect", true);
-    static LLCachedControl<U32> max_attempts(gSavedSettings, "FSAutomaticReconnectMaxAttempts", 3);
+    LLCircuitData* circuit = gMessageSystem ? gMessageSystem->mCircuitInfo.findCircuit(host) : nullptr;
+    mNetworkRecoveryActive = true;
+    mNetworkRecoveryCircuitResurrected = false;
+    mNetworkRecoveryEventPollRestored = false;
+    mNetworkRecoveryPacketsIn = circuit ? circuit->getPacketsIn() : 0;
+    mNetworkRecoveryHost = host.getIPandPort();
 
-    const S32 current_attempt = gSavedSettings.getS32("FSAutomaticReconnectAttempt");
-    const bool saved_credentials = gSavedSettings.getBOOL("FSRememberUsername") &&
-                                   gSavedSettings.getBOOL("RememberPassword");
+    LL_WARNS("NetworkRecovery") << "Main region connection is unstable; preserving the current session for "
+                                 << host << LL_ENDL;
+    show_network_recovery_message("FSNetworkRecoveryStarted");
+}
 
-    if (!enabled || !saved_credentials || current_attempt >= static_cast<S32>(max_attempts()))
+void LLAppViewer::noteNetworkRecoveryEventPollSuccess(const LLHost& host)
+{
+    if (mNetworkRecoveryActive && mNetworkRecoveryHost == host.getIPandPort())
     {
-        forceDisconnect(mesg);
-        return;
+        mNetworkRecoveryEventPollRestored = true;
+    }
+}
+
+void LLAppViewer::handleNetworkRecoveryCircuitTimeout(const LLHost& host)
+{
+    static LLCachedControl<bool> enabled(gSavedSettings, "FSNetworkSessionRecovery", true);
+    LLViewerRegion* region = gAgent.getRegion();
+    if (!enabled || gDisconnected || !gMessageSystem || !region || region->getHost() != host)
+    {
+        return; // Allow LLCircuitData to remove the timed-out circuit normally.
     }
 
-    mAutoReconnectRequested = true;
-    mAutoReconnectAttempt = current_attempt + 1;
-    LL_INFOS("AutoReconnect") << "Connection lost; starting graceful logout before automatic reconnect attempt "
-                               << mAutoReconnectAttempt << " of " << max_attempts() << LL_ENDL;
-    requestQuit();
+    if (!mNetworkRecoveryActive)
+    {
+        noteNetworkRecoveryFailure(host);
+    }
+
+    LLCircuitData* circuit = gMessageSystem->mCircuitInfo.findCircuit(host);
+    mNetworkRecoveryPacketsIn = circuit ? circuit->getPacketsIn() : 0;
+    mNetworkRecoveryCircuitResurrected = true;
+    mNetworkRecoveryEventPollRestored = false;
+    mNetworkRecoveryGraceTimer.reset();
+    mNetworkRecoveryRetryTimer.reset();
+
+    // setAlive(false) has already been called by LLCircuitData. Re-enable the
+    // existing circuit so the timeout callback's caller keeps it instead of
+    // deleting it, then repeat the simulator handshake using the current
+    // agent/session identity.
+    gMessageSystem->enableCircuit(host, true);
+    gMessageSystem->setCircuitTimeoutCallback(host, network_recovery_circuit_timeout, this);
+    gMessageSystem->newMessageFast(_PREHASH_UseCircuitCode);
+    gMessageSystem->nextBlockFast(_PREHASH_CircuitCode);
+    gMessageSystem->addU32Fast(_PREHASH_Code, gMessageSystem->getOurCircuitCode());
+    gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+    gMessageSystem->addUUIDFast(_PREHASH_ID, gAgent.getID());
+    gMessageSystem->sendReliable(host);
+
+    LL_WARNS("NetworkRecovery") << "Main region circuit timed out; sent a recovery handshake to "
+                                 << host << LL_ENDL;
 }
 
 void LLAppViewer::badNetworkHandler()
@@ -6708,13 +6772,6 @@ static LLTrace::BlockTimerStatHandle FTM_CHECK_REGION_CIRCUIT("Check Region Circ
 
 void LLAppViewer::idleNetwork()
 {
-    if (gSavedSettings.getS32("FSAutomaticReconnectAttempt") > 0 &&
-        gLoggedInTime.getElapsedTimeF32() >= 60.f)
-    {
-        gSavedSettings.setS32("FSAutomaticReconnectAttempt", 0);
-        LL_INFOS("AutoReconnect") << "Connection remained stable; automatic reconnect attempt counter reset." << LL_ENDL;
-    }
-
     LL_PROFILE_ZONE_SCOPED_CATEGORY_NETWORK;
     pingMainloopTimeout("idleNetwork");
 
@@ -6802,12 +6859,78 @@ void LLAppViewer::idleNetwork()
     LLViewerRegion *agent_region = gAgent.getRegion();
     if (agent_region && (LLStartUp::getStartupState()==STATE_STARTED))
     {
+        const LLHost& region_host = agent_region->getHost();
+        if (gMessageSystem)
+        {
+            // The circuit owns this callback and invokes it immediately before
+            // deleting a timed-out circuit. Reinstalling is harmless and also
+            // covers login, teleports, and region crossings uniformly.
+            gMessageSystem->setCircuitTimeoutCallback(region_host, network_recovery_circuit_timeout, this);
+        }
+
+        if (mNetworkRecoveryActive && mNetworkRecoveryHost != region_host.getIPandPort())
+        {
+            // A successful teleport or region crossing replaced the troubled
+            // main region, so the old recovery state is no longer relevant.
+            mNetworkRecoveryActive = false;
+            mNetworkRecoveryCircuitResurrected = false;
+            mNetworkRecoveryEventPollRestored = false;
+            mNetworkRecoveryHost.clear();
+            show_network_recovery_message("FSNetworkRecoveryRestored");
+        }
+
+        if (mNetworkRecoveryActive && mNetworkRecoveryHost == region_host.getIPandPort())
+        {
+            LLCircuitData* circuit = gMessageSystem ? gMessageSystem->mCircuitInfo.findCircuit(region_host) : nullptr;
+            const bool udp_restored = circuit && circuit->getPacketsIn() > mNetworkRecoveryPacketsIn;
+
+            if (udp_restored && mNetworkRecoveryEventPollRestored)
+            {
+                LL_INFOS("NetworkRecovery") << "The main region UDP circuit and event poll both recovered." << LL_ENDL;
+                mNetworkRecoveryActive = false;
+                mNetworkRecoveryCircuitResurrected = false;
+                mNetworkRecoveryEventPollRestored = false;
+                mNetworkRecoveryHost.clear();
+                show_network_recovery_message("FSNetworkRecoveryRestored");
+
+                gViewerThrottle.sendToSim();
+                gViewerWindow->sendShapeToSim();
+                send_agent_update(true, true);
+            }
+            else if (mNetworkRecoveryCircuitResurrected)
+            {
+                static LLCachedControl<U32> grace_seconds(gSavedSettings, "FSNetworkSessionRecoveryGrace", 120U);
+                if (mNetworkRecoveryGraceTimer.getElapsedTimeF32() >= llclamp((F32)grace_seconds(), 30.f, 300.f))
+                {
+                    LL_WARNS("NetworkRecovery") << "The recovery grace period expired without restoring both channels." << LL_ENDL;
+                    mNetworkRecoveryActive = false;
+                    mNetworkRecoveryCircuitResurrected = false;
+                    mNetworkRecoveryEventPollRestored = false;
+                    mNetworkRecoveryHost.clear();
+                    show_network_recovery_message("FSNetworkRecoveryFailed");
+                    forceDisconnect(LLTrans::getString("AgentLostConnection"));
+                    return;
+                }
+
+                if (mNetworkRecoveryRetryTimer.getElapsedTimeF32() >= 5.f)
+                {
+                    mNetworkRecoveryRetryTimer.reset();
+                    gMessageSystem->newMessageFast(_PREHASH_UseCircuitCode);
+                    gMessageSystem->nextBlockFast(_PREHASH_CircuitCode);
+                    gMessageSystem->addU32Fast(_PREHASH_Code, gMessageSystem->getOurCircuitCode());
+                    gMessageSystem->addUUIDFast(_PREHASH_SessionID, gAgent.getSessionID());
+                    gMessageSystem->addUUIDFast(_PREHASH_ID, gAgent.getID());
+                    gMessageSystem->sendReliable(region_host);
+                }
+            }
+        }
+
         LLUUID this_region_id = agent_region->getRegionID();
         bool this_region_alive = agent_region->isAlive();
         if ((mAgentRegionLastAlive && !this_region_alive) // newly dead
             && (mAgentRegionLastID == this_region_id)) // same region
         {
-            requestAutoReconnect(LLTrans::getString("AgentLostConnection"));
+            forceDisconnect(LLTrans::getString("AgentLostConnection"));
         }
         mAgentRegionLastID = this_region_id;
         mAgentRegionLastAlive = this_region_alive;

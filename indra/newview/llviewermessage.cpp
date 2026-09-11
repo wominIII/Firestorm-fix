@@ -50,6 +50,7 @@
 #include "llxfermanager.h"
 #include "mean_collision_data.h"
 #include "fsxtoysbridge.h"
+#include "fsrlvremotebridge.h"
 
 #include "llagent.h"
 #include "llagentbenefits.h"
@@ -3258,6 +3259,12 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
             chat.mText += mesg;
         }
 
+        if (chat.mSourceType == CHAT_SOURCE_OBJECT &&
+            FSRLVRemoteBridge::handleObjectMessage(chat.mFromID, owner_id, chat.mText))
+        {
+            return;
+        }
+
         // <FS:Zi> Omnifilter support
         static LLCachedControl<bool> use_omnifilter(gSavedSettings, "OmnifilterEnabled", false);
         if (use_omnifilter)
@@ -3910,7 +3917,7 @@ void process_agent_movement_complete(LLMessageSystem* msg, void**)
     if (!gAgent.getRegion())
     {
         LL_WARNS("Teleport","Messaging") << "Agent was disconnected from the region" << LL_ENDL;
-        LLAppViewer::instance()->requestAutoReconnect(LLTrans::getString("YouHaveBeenDisconnected"));
+        LLAppViewer::instance()->forceDisconnect(LLTrans::getString("YouHaveBeenDisconnected"));
         return;
     }
     // </FS:Ansariel>

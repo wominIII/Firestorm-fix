@@ -117,10 +117,12 @@ set(viewer_SOURCE_FILES
     fsmeshreconstructor.cpp
     fsfloateraddtocontactset.cpp
     fsfloateriaassistant.cpp
+    fsfloaterrlvremotebrowser.cpp
     fsfloaterxtoys.cpp
     fsfavoritegroups.cpp
     fsinventorycustomtabs.cpp
     fsmcpbridge.cpp
+    fsrlvremotebridge.cpp
     fsxtoysbridge.cpp
     fsspectatormode.cpp
     fsfloaterassetblacklist.cpp
@@ -983,10 +985,12 @@ set(viewer_HEADER_FILES
     fsexportperms.h
     fsfloateraddtocontactset.h
     fsfloateriaassistant.h
+    fsfloaterrlvremotebrowser.h
     fsfloaterxtoys.h
     fsfavoritegroups.h
     fsinventorycustomtabs.h
     fsmcpbridge.h
+    fsrlvremotebridge.h
     fsxtoysbridge.h
     fsspectatormode.h
     fsfloaterassetblacklist.h

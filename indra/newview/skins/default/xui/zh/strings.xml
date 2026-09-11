@@ -227,6 +227,9 @@ support@secondlife.com.</string>
 
 	<!-- Disconnection -->
 	<string name="AgentLostConnection">当前区域可能出现问题，请检查你的互联网连接。</string>
+	<string name="FSNetworkRecoveryStarted">连接中断。Firestorm 正在保留当前会话并尝试原地恢复。</string>
+	<string name="FSNetworkRecoveryRestored">连接已恢复，当前会话已继续，无需重新登录。</string>
+	<string name="FSNetworkRecoveryFailed">服务器已不再接受当前会话，将继续执行正常断线处理。</string>
 	<string name="SavingSettings">正在保存你的设置...</string>
 	<string name="LoggingOut">正在注销...</string>
 	<string name="ShuttingDown">正在关闭...</string>

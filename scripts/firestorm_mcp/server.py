@@ -25,7 +25,8 @@ import uuid
 
 
 SERVER_NAME = "firestorm-local"
-SERVER_VERSION = "0.8.0"
+SERVER_VERSION = "0.10.0"
+VIEWER_PROTOCOL_VERSION = 9
 DEFAULT_PROTOCOL_VERSION = "2024-11-05"
 
 
@@ -401,8 +402,13 @@ class FirestormSnapshot:
             raise RuntimeError("Another Firestorm MCP write request is already pending")
 
         request_id = str(uuid.uuid4())
+        viewer_protocol = int(status.get("protocol_version", 0))
+        if action in {"list_nearby_owned_objects", "select_nearby_owned_object"} and viewer_protocol < 8:
+            raise RuntimeError("The running Firestorm viewer does not support nearby object discovery; install protocol version 8 or newer")
+        if action == "set_linked_prim_transforms" and viewer_protocol < 9:
+            raise RuntimeError("The running Firestorm viewer does not support linked child prim transforms; install protocol version 9 or newer")
         request = {
-            "protocol_version": 7,
+            "protocol_version": min(VIEWER_PROTOCOL_VERSION, viewer_protocol),
             "request_id": request_id,
             "action": action,
             "expires_at": time.time() + timeout,
@@ -685,6 +691,45 @@ TOOLS = [
         "annotations": {"readOnlyHint": True, "openWorldHint": False},
     },
     {
+        "name": "list_nearby_owned_objects",
+        "description": (
+            "Discover objects owned by the current avatar among objects already loaded by Firestorm. "
+            "Results are sorted nearest first and include UUID, linkset root, position, distance, "
+            "permissions and basic geometry/script flags. This is not a simulator-wide search."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "radius_m": {"type": "number", "minimum": 1, "maximum": 256, "default": 32},
+                "limit": {"type": "integer", "minimum": 1, "maximum": 500, "default": 100},
+                "include_children": {"type": "boolean", "default": False},
+                "include_attachments": {"type": "boolean", "default": False},
+                "include_group_owned": {"type": "boolean", "default": False},
+                "scripted_only": {"type": "boolean", "default": False},
+            },
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "select_nearby_owned_object",
+        "description": (
+            "Select and visibly highlight one currently loaded object owned by the current avatar. "
+            "By default the complete linkset is selected; disable include_linkset to select only the exact prim."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "object_id": {"type": "string"},
+                "include_linkset": {"type": "boolean", "default": True},
+                "additive": {"type": "boolean", "default": False},
+            },
+            "required": ["object_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": False, "openWorldHint": True},
+    },
+    {
         "name": "inspect_object",
         "description": (
             "Inspect any currently loaded object UUID in detail, optionally requesting its task inventory "
@@ -856,6 +901,40 @@ TOOLS = [
                 "reason": {"type": "string", "maxLength": 500},
             },
             "required": ["object_id"],
+            "additionalProperties": False,
+        },
+        "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
+    },
+    {
+        "name": "set_linked_prim_transforms",
+        "description": (
+            "Move, rotate and/or scale one or more child prims without moving the linkset root. "
+            "The complete linkset must be the single current Firestorm selection. Coordinates default "
+            "to local space relative to the root; world space is converted safely to local space. "
+            "All entries are validated before any update is applied."
+        ),
+        "inputSchema": {
+            "type": "object",
+            "properties": {
+                "linkset_root_id": {"type": "string"},
+                "transforms": {
+                    "type": "array", "minItems": 1, "maxItems": 100,
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "object_id": {"type": "string", "description": "Exact child prim UUID; the root is rejected."},
+                            "coordinate_space": {"type": "string", "enum": ["local", "world"], "default": "local"},
+                            "position": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+                            "rotation_quaternion": {"type": "array", "items": {"type": "number"}, "minItems": 4, "maxItems": 4},
+                            "scale": {"type": "array", "items": {"type": "number"}, "minItems": 3, "maxItems": 3},
+                        },
+                        "required": ["object_id"],
+                        "additionalProperties": False,
+                    },
+                },
+                "reason": {"type": "string", "maxLength": 500},
+            },
+            "required": ["linkset_root_id", "transforms"],
             "additionalProperties": False,
         },
         "annotations": {"readOnlyHint": False, "destructiveHint": True, "openWorldHint": True},
@@ -1243,7 +1322,8 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
     if name == "get_object_transform":
         obj = find_object(snapshot, str(arguments["object_id"]))
         keys = (
-            "object_id", "name", "position", "rotation_quaternion", "scale",
+            "object_id", "name", "position", "local_position", "rotation_quaternion",
+            "local_rotation_quaternion", "scale",
             "attachment_point", "is_attachment", "is_mesh", "is_rigged_mesh",
             "is_root", "link_children", "permissions",
         )
@@ -1279,6 +1359,16 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         return {"captured_at": snapshot.get("captured_at"), "animations": snapshot.get("animations", [])}
     if name == "get_full_snapshot":
         return snapshot
+    if name == "list_nearby_owned_objects":
+        fields = {key: arguments[key] for key in (
+            "radius_m", "limit", "include_children", "include_attachments",
+            "include_group_owned", "scripted_only",
+        ) if key in arguments}
+        return store.execute("list_nearby_owned_objects", fields)
+    if name == "select_nearby_owned_object":
+        fields = {key: arguments[key] for key in
+                  ("object_id", "include_linkset", "additive") if key in arguments}
+        return store.execute("select_nearby_owned_object", fields)
     if name == "inspect_object":
         fields = {key: arguments[key] for key in
                   ("object_id", "include_inventory", "include_linkset") if key in arguments}
@@ -1342,6 +1432,22 @@ def call_tool(store: FirestormSnapshot, name: str, arguments: dict):
         if result.get("success"):
             journal.push_undo("set_object_transform", undo,
                               f"Restore transform of {obj.get('name') or obj.get('object_id')}")
+        return result
+    if name == "set_linked_prim_transforms":
+        fields = {
+            "object_id": arguments["linkset_root_id"],
+            "transforms": arguments["transforms"],
+        }
+        if "reason" in arguments:
+            fields["reason"] = arguments["reason"]
+        result = store.execute("set_linked_prim_transforms", fields)
+        previous = result.get("previous_transforms", [])
+        if result.get("success") and previous:
+            journal.push_undo("set_linked_prim_transforms", {
+                "object_id": arguments["linkset_root_id"],
+                "transforms": previous,
+                "reason": "Undo linked child prim transform",
+            }, f"Restore {len(previous)} linked child prim transform(s)")
         return result
     if name == "set_object_face_material":
         allowed = (

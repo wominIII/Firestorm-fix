@@ -196,6 +196,7 @@
 #include "fsareasearch.h"
 #include "fsfloateraddtocontactset.h"
 #include "fsfloateriaassistant.h"
+#include "fsfloaterrlvremotebrowser.h"
 #include "fsfloaterxtoys.h"
 #include "fsfloaterassetblacklist.h"
 #include "fsfloateravatarrendersettings.h"
@@ -639,6 +640,7 @@ void LLViewerFloaterReg::registerFloaters()
     LLFloaterReg::add("primfeed", "floater_primfeed.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterPrimfeed>);
     LLFloaterReg::add("fs_asset_blacklist", "floater_fs_asset_blacklist.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterAssetBlacklist>);
     LLFloaterReg::add("fs_ai_assistant", "floater_fs_ai_assistant.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterAIAssistant>);
+    LLFloaterReg::add("fs_rlv_remote_browser", "floater_fs_rlv_remote_browser.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterRLVRemoteBrowser>);
     LLFloaterReg::add("fs_xtoys", "floater_fs_xtoys.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterXToys>);
     LLFloaterReg::add("fs_avatar_render_settings", "floater_fs_avatar_render_settings.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterAvatarRenderSettings>);
     LLFloaterReg::add("fs_big_preview", "floater_fs_big_preview.xml", (LLFloaterBuildFunc)&LLFloaterReg::build<FSFloaterBigPreview>);
